@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.isoFilePath = new System.Windows.Forms.TextBox();
             this.title = new System.Windows.Forms.Label();
             this.openISO = new System.Windows.Forms.Button();
@@ -45,6 +47,14 @@
             this.openDownstairs = new System.Windows.Forms.CheckBox();
             this.passwordRando = new System.Windows.Forms.CheckBox();
             this.chibiVision = new System.Windows.Forms.CheckBox();
+            this.Chibi_Robo_Icon = new System.Windows.Forms.PictureBox();
+            this.PBar = new System.Windows.Forms.ProgressBar();
+            this.Load = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.walkingBatteryDrain = new System.Windows.Forms.CheckBox();
+            this.joggingBatteryDrain = new System.Windows.Forms.CheckBox();
+            this.runningDecreasesBattery = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).BeginInit();
             this.SuspendLayout();
             // 
             // isoFilePath
@@ -62,11 +72,12 @@
             // 
             this.title.AutoSize = true;
             this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title.Location = new System.Drawing.Point(12, 9);
+            this.title.Location = new System.Drawing.Point(17, 9);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(304, 26);
+            this.title.Size = new System.Drawing.Size(245, 26);
             this.title.TabIndex = 2;
-            this.title.Text = "Chibi-Robo Randomizer v1.1a";
+            this.title.Text = "Chibi-Robo Randomizer";
+            this.title.Click += new System.EventHandler(this.title_Click);
             // 
             // openISO
             // 
@@ -129,29 +140,31 @@
             // 
             this.freePJ.AutoSize = true;
             this.freePJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.freePJ.Location = new System.Drawing.Point(273, 161);
+            this.freePJ.Location = new System.Drawing.Point(648, 56);
             this.freePJ.Name = "freePJ";
             this.freePJ.Size = new System.Drawing.Size(91, 24);
             this.freePJ.TabIndex = 10;
             this.freePJ.Text = "Free PJs";
             this.freePJ.UseVisualStyleBackColor = true;
+            this.freePJ.CheckedChanged += new System.EventHandler(this.freePJ_CheckedChanged);
             // 
             // openUpstairs
             // 
             this.openUpstairs.AutoSize = true;
             this.openUpstairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openUpstairs.Location = new System.Drawing.Point(423, 160);
+            this.openUpstairs.Location = new System.Drawing.Point(804, 56);
             this.openUpstairs.Name = "openUpstairs";
             this.openUpstairs.Size = new System.Drawing.Size(130, 24);
             this.openUpstairs.TabIndex = 11;
             this.openUpstairs.Text = "Open Upstairs";
             this.openUpstairs.UseVisualStyleBackColor = true;
+            this.openUpstairs.CheckedChanged += new System.EventHandler(this.openUpstairs_CheckedChanged);
             // 
             // seedLabel
             // 
             this.seedLabel.AutoSize = true;
             this.seedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seedLabel.Location = new System.Drawing.Point(74, 199);
+            this.seedLabel.Location = new System.Drawing.Point(264, 157);
             this.seedLabel.Name = "seedLabel";
             this.seedLabel.Size = new System.Drawing.Size(51, 20);
             this.seedLabel.TabIndex = 12;
@@ -161,7 +174,7 @@
             // seed
             // 
             this.seed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seed.Location = new System.Drawing.Point(123, 196);
+            this.seed.Location = new System.Drawing.Point(321, 157);
             this.seed.Name = "seed";
             this.seed.Size = new System.Drawing.Size(121, 26);
             this.seed.TabIndex = 13;
@@ -169,17 +182,17 @@
             // statusDialog
             // 
             this.statusDialog.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusDialog.Location = new System.Drawing.Point(12, 283);
+            this.statusDialog.Location = new System.Drawing.Point(12, 384);
             this.statusDialog.Name = "statusDialog";
             this.statusDialog.ReadOnly = true;
-            this.statusDialog.Size = new System.Drawing.Size(601, 155);
+            this.statusDialog.Size = new System.Drawing.Size(1130, 155);
             this.statusDialog.TabIndex = 14;
             this.statusDialog.Text = "";
             // 
             // randomizeButton
             // 
             this.randomizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.randomizeButton.Location = new System.Drawing.Point(12, 228);
+            this.randomizeButton.Location = new System.Drawing.Point(12, 329);
             this.randomizeButton.Name = "randomizeButton";
             this.randomizeButton.Size = new System.Drawing.Size(161, 49);
             this.randomizeButton.TabIndex = 15;
@@ -191,52 +204,132 @@
             // 
             this.batteryCharge.AutoSize = true;
             this.batteryCharge.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryCharge.Location = new System.Drawing.Point(273, 190);
+            this.batteryCharge.Location = new System.Drawing.Point(960, 56);
             this.batteryCharge.Name = "batteryCharge";
-            this.batteryCharge.Size = new System.Drawing.Size(144, 24);
+            this.batteryCharge.Size = new System.Drawing.Size(182, 24);
             this.batteryCharge.TabIndex = 16;
-            this.batteryCharge.Text = "Charged Battery";
+            this.batteryCharge.Text = "Charged Giga Battery";
             this.batteryCharge.UseVisualStyleBackColor = true;
+            this.batteryCharge.CheckedChanged += new System.EventHandler(this.batteryCharge_CheckedChanged);
             // 
             // openDownstairs
             // 
             this.openDownstairs.AutoSize = true;
             this.openDownstairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openDownstairs.Location = new System.Drawing.Point(423, 190);
+            this.openDownstairs.Location = new System.Drawing.Point(648, 97);
             this.openDownstairs.Name = "openDownstairs";
             this.openDownstairs.Size = new System.Drawing.Size(150, 24);
             this.openDownstairs.TabIndex = 17;
             this.openDownstairs.Text = "Open Downstairs";
             this.openDownstairs.UseVisualStyleBackColor = true;
+            this.openDownstairs.CheckedChanged += new System.EventHandler(this.openDownstairs_CheckedChanged);
             // 
             // passwordRando
             // 
             this.passwordRando.AutoSize = true;
             this.passwordRando.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passwordRando.Location = new System.Drawing.Point(423, 220);
+            this.passwordRando.Location = new System.Drawing.Point(960, 97);
             this.passwordRando.Name = "passwordRando";
             this.passwordRando.Size = new System.Drawing.Size(182, 24);
             this.passwordRando.TabIndex = 18;
             this.passwordRando.Text = "Randomize Password";
             this.passwordRando.UseVisualStyleBackColor = true;
+            this.passwordRando.CheckedChanged += new System.EventHandler(this.passwordRando_CheckedChanged);
             // 
             // chibiVision
             // 
             this.chibiVision.AutoSize = true;
             this.chibiVision.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chibiVision.Location = new System.Drawing.Point(273, 220);
+            this.chibiVision.Location = new System.Drawing.Point(804, 97);
             this.chibiVision.Name = "chibiVision";
             this.chibiVision.Size = new System.Drawing.Size(137, 24);
             this.chibiVision.TabIndex = 19;
             this.chibiVision.Text = "Chibi-Vision Off";
             this.chibiVision.UseVisualStyleBackColor = true;
             // 
+            // Chibi_Robo_Icon
+            // 
+            this.Chibi_Robo_Icon.Image = global::ChibiRoboRando.Properties.Resources.chibi_body_icon;
+            this.Chibi_Robo_Icon.Location = new System.Drawing.Point(285, 4);
+            this.Chibi_Robo_Icon.Name = "Chibi_Robo_Icon";
+            this.Chibi_Robo_Icon.Size = new System.Drawing.Size(100, 50);
+            this.Chibi_Robo_Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.Chibi_Robo_Icon.TabIndex = 20;
+            this.Chibi_Robo_Icon.TabStop = false;
+            this.Chibi_Robo_Icon.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // PBar
+            // 
+            this.PBar.Location = new System.Drawing.Point(182, 343);
+            this.PBar.Name = "PBar";
+            this.PBar.Size = new System.Drawing.Size(960, 23);
+            this.PBar.TabIndex = 21;
+            this.PBar.Visible = false;
+            // 
+            // Load
+            // 
+            this.Load.AutoSize = true;
+            this.Load.Location = new System.Drawing.Point(179, 327);
+            this.Load.Name = "Load";
+            this.Load.Size = new System.Drawing.Size(54, 13);
+            this.Load.TabIndex = 22;
+            this.Load.Text = "Loading...";
+            this.Load.Visible = false;
+            this.Load.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // walkingBatteryDrain
+            // 
+            this.walkingBatteryDrain.AutoSize = true;
+            this.walkingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.walkingBatteryDrain.Location = new System.Drawing.Point(648, 140);
+            this.walkingBatteryDrain.Name = "walkingBatteryDrain";
+            this.walkingBatteryDrain.Size = new System.Drawing.Size(276, 24);
+            this.walkingBatteryDrain.TabIndex = 25;
+            this.walkingBatteryDrain.Text = "Walking Doesnt Decreases Battery";
+            this.walkingBatteryDrain.UseVisualStyleBackColor = true;
+            this.walkingBatteryDrain.Visible = false;
+            this.walkingBatteryDrain.CheckedChanged += new System.EventHandler(this.walkingBatteryDrain_CheckedChanged);
+            // 
+            // joggingBatteryDrain
+            // 
+            this.joggingBatteryDrain.AutoSize = true;
+            this.joggingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.joggingBatteryDrain.Location = new System.Drawing.Point(648, 170);
+            this.joggingBatteryDrain.Name = "joggingBatteryDrain";
+            this.joggingBatteryDrain.Size = new System.Drawing.Size(276, 24);
+            this.joggingBatteryDrain.TabIndex = 26;
+            this.joggingBatteryDrain.Text = "Jogging Doesnt Decreases Battery";
+            this.joggingBatteryDrain.UseVisualStyleBackColor = true;
+            this.joggingBatteryDrain.Visible = false;
+            // 
+            // runningDecreasesBattery
+            // 
+            this.runningDecreasesBattery.AutoSize = true;
+            this.runningDecreasesBattery.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.runningDecreasesBattery.Location = new System.Drawing.Point(648, 200);
+            this.runningDecreasesBattery.Name = "runningDecreasesBattery";
+            this.runningDecreasesBattery.Size = new System.Drawing.Size(280, 24);
+            this.runningDecreasesBattery.TabIndex = 27;
+            this.runningDecreasesBattery.Text = "Running Doesnt Decreases Battery";
+            this.runningDecreasesBattery.UseVisualStyleBackColor = true;
+            this.runningDecreasesBattery.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.ClientSize = new System.Drawing.Size(625, 450);
+            this.ClientSize = new System.Drawing.Size(1154, 551);
+            this.Controls.Add(this.runningDecreasesBattery);
+            this.Controls.Add(this.joggingBatteryDrain);
+            this.Controls.Add(this.walkingBatteryDrain);
+            this.Controls.Add(this.Load);
+            this.Controls.Add(this.PBar);
+            this.Controls.Add(this.Chibi_Robo_Icon);
             this.Controls.Add(this.chibiVision);
             this.Controls.Add(this.passwordRando);
             this.Controls.Add(this.openDownstairs);
@@ -254,9 +347,10 @@
             this.Controls.Add(this.openISO);
             this.Controls.Add(this.title);
             this.Controls.Add(this.isoFilePath);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Chibi-Robo Randomizer v1.1a";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Text = "Chibi-Robo Randomizer";
+            ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -281,6 +375,13 @@
         private System.Windows.Forms.CheckBox openDownstairs;
         private System.Windows.Forms.CheckBox passwordRando;
         private System.Windows.Forms.CheckBox chibiVision;
+        private System.Windows.Forms.PictureBox Chibi_Robo_Icon;
+        private System.Windows.Forms.ProgressBar PBar;
+        private System.Windows.Forms.Label Load;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.CheckBox walkingBatteryDrain;
+        private System.Windows.Forms.CheckBox joggingBatteryDrain;
+        private System.Windows.Forms.CheckBox runningDecreasesBattery;
     }
 }
 

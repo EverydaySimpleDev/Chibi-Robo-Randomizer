@@ -1,16 +1,19 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Diagnostics;
-using Newtonsoft.Json.Linq;
-using System.IO;
-using System.Reflection;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace WindowsFormsApp1
 {
@@ -28,6 +31,8 @@ namespace WindowsFormsApp1
         JObject shopObj;
         JObject globals;
 
+        JObject messages;
+
         RootObject stageData;
         ItemPool itemPool;
         Random r;
@@ -37,6 +42,16 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+
+            Random r = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                seed.Text += (char)r.Next(33, 126);
+            }
+
+            
+            
+
         }
 
         private void openISO_Click(object sender, EventArgs e)
@@ -55,9 +70,11 @@ namespace WindowsFormsApp1
 
         private void openDestination_Click(object sender, EventArgs e)
         {
-            using (FolderBrowserDialog dialog = new FolderBrowserDialog()) 
+
+            using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
-                if (dialog.ShowDialog() == DialogResult.OK) 
+                dialog.ShowNewFolderButton = true;
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     destinationPath.Text = dialog.SelectedPath;
                 }
@@ -71,14 +88,7 @@ namespace WindowsFormsApp1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //Load Resources
 
-            //General Initialization Zone (tm)
-            Random r = new Random();
-            for (int i = 0; i < 10; i++) 
-            {
-                seed.Text += (char)r.Next(33, 126);
-            }
         }
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -96,8 +106,15 @@ namespace WindowsFormsApp1
         //This is where the magic happens!
         private void randomizeButton_Click(object sender, EventArgs e)
         {
+
             if (validInput())
             {
+
+                PBar.Visible = true;
+                Load.Visible = true;
+
+                PBar.Value = 10;
+
                 //Takes each character of the string and casts it to an int, then adds each together to create a integer representation of the seed
                 int randoSeed = 0;
 
@@ -162,7 +179,7 @@ namespace WindowsFormsApp1
 
 
                 //Edits for Open Downstairs
-                if (freePJ.Checked)
+                if (openDownstairs.Checked)
                 {
                     JToken unusedShopItem = shopObj.SelectToken("items[17]");
                     unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
@@ -170,6 +187,24 @@ namespace WindowsFormsApp1
                     unusedShopItem.SelectToken("limit").Replace(1);
                 }
 
+                //Battery Drain Settings
+                if (walkingBatteryDrain.Checked)
+                {
+                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
+                    batteryGlobal.SelectToken("walk").Replace("0");
+                }
+
+                if (joggingBatteryDrain.Checked)
+                {
+                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
+                    batteryGlobal.SelectToken("jog").Replace("0");
+                }
+
+                if (runningDecreasesBattery.Checked)
+                {
+                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
+                    batteryGlobal.SelectToken("run").Replace("0");
+                }
 
                 //Edits for Open Upstairs setting
                 if (openUpstairs.Checked)
@@ -180,7 +215,8 @@ namespace WindowsFormsApp1
                     StreamReader readOpenUpstairs = new StreamReader(openUpstairsStream);
                     latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
                 }
-              
+
+
 
                 //Spoiler log output
                 using (StreamWriter logOutput = new StreamWriter(File.OpenWrite(destinationPath.Text + "\\Spoiler Log " + randoSeed + ".txt")))
@@ -202,11 +238,17 @@ namespace WindowsFormsApp1
                     {
                         logOutput.WriteLine(key + ": " + newSpoilerLog[key]);
                     }
+
                 }
 
                 reimportStages();
 
+                PBar.Value = 100;
+
                 statusDialog.Text += "\nISO Rebuilding Complete :)";
+
+                PBar.Visible = false;
+                Load.Visible = false;
             }
         }
 
@@ -225,7 +267,6 @@ namespace WindowsFormsApp1
                 File.Delete(f);
             }
 
-            //statusDialog.Text += "stage export --iso \"" + newIsoPath + "\" stage07 -o " + Directory.GetCurrentDirectory() + @"stage07.json";
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage07 -o \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage01 -o \"" + Directory.GetCurrentDirectory() + @"\stage01.json" + "\"");
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage11 -o \"" + Directory.GetCurrentDirectory() + @"\stage11.json" + "\"");
@@ -238,6 +279,15 @@ namespace WindowsFormsApp1
             runUnplugCommand("globals export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\globals.json");
 
             runUnplugCommand("shop export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
+
+            //runUnplugCommand("messages export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
+
+            //WriteXML("stage14:15:26", "Welcome To The Randomizer <br>");
+
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
+            doc.Save(Directory.GetCurrentDirectory() + @"\messages.xml");
 
             globals = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("globals.json")) as JObject;
 
@@ -300,6 +350,8 @@ namespace WindowsFormsApp1
                 cmd.WaitForExit();
             }           
         }
+
+
         private bool validInput()
         {
             statusDialog.Text = "";
@@ -309,7 +361,8 @@ namespace WindowsFormsApp1
 
             if (isoValidation.ToLower() == ".iso")
             {
-                statusDialog.Text += "Validated ISO";
+                statusDialog.Text += "Validated ISO"; 
+
             }
             else
             {
@@ -344,6 +397,7 @@ namespace WindowsFormsApp1
         private Dictionary<string, string> shuffleItemsGlitchless() 
         {
             //*** SETUP ***
+            
 
             //List of all checks
             List<ItemLocation> allLocations = new List<ItemLocation>();
@@ -760,20 +814,33 @@ namespace WindowsFormsApp1
             File.WriteAllText("stage11.json", drainObj.ToString());
             File.WriteAllText("globals.json", globals.ToString());
 
+            PBar.Value = 45;
+
             string test = shopObj.ToString().Substring(14, shopObj.ToString().Length - 15);
             //JSON formatting for the shop is borked so this is the reconversion into the form that Unplug is looking for
             File.WriteAllText("shop.json", shopObj.ToString().Substring(14, shopObj.ToString().Length - 15));
 
+            // Running unplug commands
+            // https://github.com/adierking/unplug/blob/main/docs/tour.md#editing-cutscene-messages
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage01 \"" + Directory.GetCurrentDirectory() + @"\stage01.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage02 \"" + Directory.GetCurrentDirectory() + @"\stage02.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage03 \"" + Directory.GetCurrentDirectory() + @"\stage03.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage04 \"" + Directory.GetCurrentDirectory() + @"\stage04.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage06 \"" + Directory.GetCurrentDirectory() + @"\stage06.json" + "\"");
+
+            PBar.Value = 50;
+
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage07 \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage09 \"" + Directory.GetCurrentDirectory() + @"\stage09.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage11 \"" + Directory.GetCurrentDirectory() + @"\stage11.json" + "\"");
             runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
+
+            runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
+
+            //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
+
+            PBar.Value = 60;
 
             List<string> oldFiles = new List<string>();
             foreach (string f in Directory.GetFiles(Directory.GetCurrentDirectory()))
@@ -789,5 +856,58 @@ namespace WindowsFormsApp1
             }
         }
 
+        private void title_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openUpstairs_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void freePJ_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void passwordRando_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openDownstairs_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+
+            if(PBar.Value == 100)
+            {
+                timer1.Stop();
+            }
+        }
+
+        private void walkingBatteryDrain_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void batteryCharge_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
