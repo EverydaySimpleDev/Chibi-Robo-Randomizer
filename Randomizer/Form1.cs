@@ -761,6 +761,11 @@ namespace WindowsFormsApp1
                     }
                 }
                 roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].item").Replace(itemName);
+
+                if(itemName != "item_frog_ring" || itemName != "frog_ring")
+                {
+                    roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].limit").Replace(1);
+                }
             }
             else 
             {
