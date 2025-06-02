@@ -11673,32 +11673,16 @@ evt_item_brush_133:
 	lib	38.w
 	set	flag(476.d), 1.d
 	set	var(108.d), var(107.d)
-	if	flag(395.d), else *loc_3083
+	;if	flag(395.d), else *loc_3083
 	set	flag(395.d), 0.w
 	run	*sub_880
 loc_3083:
 ; Toothbrush event 
 	pushbp
 	setsp	item_name(16.d)
-	popbp
-	call	-26.d, 133.d, 46.d
-	mdir	20000.d, @cam, 30.w, -1.d
-	sfx	-65536.d, 4.d, 50.w, 0.w
-	anim	20000.d, 213.d
-	anim	133.d, 5.w
-	wait	@anim, 20000.d, -1.d
-	wait	@time, 40.w
-	sfx	-65536.d, 4.d, 100.w, 255.w
-	menu	1000.d, 0.w
 	pushbp
-	setsp	item_name(16.d)
-	popbp
-	menu	1000.d, -1.d
-	pushbp
-	setsp	item_name(16.d)
 	popbp
 	lib	254.w
-	printf	"歯ブラシＧＥＴ！\n"
 	lib	39.w
 	return
 
@@ -11707,10 +11691,17 @@ sub_1686:
 	disp	10106.d, 0.d
 	lib	12.w
 	lib	38.w
+	camera	@unk236, 3.w
 	mdir	20000.d, @obj, 133.d, 30.w, 3.d
 	wait	@dir, 20000.d
+	camera	@obj, 133.d, 2.d, 150.w
+	wait	@cam
 	sfx	288.d, 1.d
+	camera	@unk229, 8.w, 2.d, 120.w
+	wait	@cam
 	wait	@sfx, 288.d
+	sfx	138.d, 1.d
+	wait	@sfx, 138.d
 	camera	@unk237, 3.w
 	lib	55.w
 	lib	96.w

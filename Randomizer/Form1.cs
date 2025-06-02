@@ -841,7 +841,17 @@ namespace WindowsFormsApp1
             runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
 
+
+            // Birthday Party Into
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
+
+            // Living Room
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+
+            // Update Messages
             runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
+
+
 
             //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
