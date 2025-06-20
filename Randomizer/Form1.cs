@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +17,12 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 
+
 namespace WindowsFormsApp1
 {
     public partial class Form1 : Form
     {
-        
+
         JObject livingRoomObj;
         JObject kitchenObj;
         JObject drainObj;
@@ -33,11 +36,16 @@ namespace WindowsFormsApp1
 
         JObject messages;
 
+        JObject apData;
+        string apDataPath;
+        int apDataIndex = 0;
+
         RootObject stageData;
         ItemPool itemPool;
         Random r;
         string newIsoPath;
         int newPassword;
+        
 
         public Form1()
         {
@@ -49,23 +57,21 @@ namespace WindowsFormsApp1
                 seed.Text += (char)r.Next(33, 126);
             }
 
-            
-            
 
         }
 
         private void openISO_Click(object sender, EventArgs e)
         {
-            using (OpenFileDialog ofd = new OpenFileDialog()) 
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.InitialDirectory = "c:\\";
+                ofd.InitialDirectory = "D:\\Archipelago\\Dev";
                 ofd.Filter = "ISO File (*.iso)|*.iso";
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     isoFilePath.Text = ofd.FileName;
                 }
-            }      
+            }
         }
 
         private void openDestination_Click(object sender, EventArgs e)
@@ -80,6 +86,78 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
+        private void openAPZip_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.InitialDirectory = "D:\\Archipelago\\Dev\\Archipelago\\output";
+                ofd.Filter = "(*.json)|*.json";
+                ofd.RestoreDirectory = true;
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    apZipPath.Text = ofd.FileName;
+
+                    string fileName = Path.GetFileName(ofd.FileName);
+
+                    // Get file name and remove .zip from the path
+                    seed.Text = fileName.Remove(fileName.Length - 5, 5);
+
+                }
+            }
+
+            apData = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
+
+            string pjCheck = apData.SelectToken("free_pjs").ToString();
+
+            if(pjCheck == "1")
+            {
+                freePJ.Checked = true;
+            } else {
+                freePJ.Checked = false;
+            }
+
+            string chargedGigaBatteryCheck = apData.SelectToken("charged_giga_battery").ToString();
+
+            if (chargedGigaBatteryCheck == "1")
+            {
+                batteryCharge.Checked = true;
+            } else {
+                batteryCharge.Checked = false;
+            }
+
+            string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
+
+            if (openUpstairsCheck == "1")
+            {
+                openUpstairs.Checked = true;
+            } else {
+                openUpstairs.Checked = false;
+            }
+
+            string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
+
+            if (openDownStairsCheck == "1")
+            {
+                openDownstairs.Checked = true;
+            } else {
+                openDownstairs.Checked = false;
+            }
+
+            string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
+
+            if (chibiVisionString == "1")
+            {
+                chibiVision.Checked = true;
+            } else {
+                chibiVision.Checked = false;
+            }
+
+            logicSettings.SelectedItem = "No Logic";
+
+
+        }
+
 
         private void isoFilePath_TextChanged(object sender, EventArgs e)
         {
@@ -110,9 +188,6 @@ namespace WindowsFormsApp1
             if (validInput())
             {
 
-                PBar.Visible = true;
-                Load.Visible = true;
-
                 PBar.Value = 10;
 
                 //Takes each character of the string and casts it to an int, then adds each together to create a integer representation of the seed
@@ -126,7 +201,7 @@ namespace WindowsFormsApp1
                 newPassword = 200667;
 
                 newIsoPath = destinationPath.Text + "\\chibiRando_" + randoSeed + ".iso";
-                
+
                 File.Copy(isoFilePath.Text, newIsoPath, true);
 
                 initializeStages();
@@ -151,7 +226,7 @@ namespace WindowsFormsApp1
                 //Settings involving edits to globals
 
                 //Turns off Chibi Vision for all objects if enabled
-                if (chibiVision.Checked) 
+                if (chibiVision.Checked)
                 {
                     for (int i = 0; i < 159; i++)
                     {
@@ -160,7 +235,7 @@ namespace WindowsFormsApp1
                 }
 
                 //Randomizes foot passcode, if enabled
-                if (passwordRando.Checked) 
+                if (passwordRando.Checked)
                 {
                     newPassword = r.Next(100000, 999999);
                     globals.SelectToken("stats[12].name").Replace("Password: " + newPassword);
@@ -169,7 +244,7 @@ namespace WindowsFormsApp1
 
 
                 //Add PJs to Shop if enabled
-                if (freePJ.Checked) 
+                if (freePJ.Checked)
                 {
                     JToken unusedShopItem = shopObj.SelectToken("items[16]");
                     unusedShopItem.SelectToken("item").Replace("pajamas");
@@ -246,23 +321,20 @@ namespace WindowsFormsApp1
                 PBar.Value = 100;
 
                 statusDialog.Text += "\nISO Rebuilding Complete :)";
-
-                PBar.Visible = false;
-                Load.Visible = false;
             }
         }
 
-        private void initializeStages() 
+        private void initializeStages()
         {
             List<string> oldFiles = new List<string>();
-            foreach (string f in Directory.GetFiles(Directory.GetCurrentDirectory())) 
+            foreach (string f in Directory.GetFiles(Directory.GetCurrentDirectory()))
             {
-                if (f.Substring(0,4) == "stage")
+                if (f.Substring(0, 4) == "stage")
                 {
                     oldFiles.Add(f);
                 }
             }
-            foreach (string f in oldFiles) 
+            foreach (string f in oldFiles)
             {
                 File.Delete(f);
             }
@@ -305,7 +377,7 @@ namespace WindowsFormsApp1
 
 
         }
-        private void runUnplugCommand(string command) 
+        private void runUnplugCommand(string command)
         {
             using (Process cmd = new Process())
             {
@@ -326,7 +398,7 @@ namespace WindowsFormsApp1
 
 
                 ProcessStartInfo unplugCommandInfo = new ProcessStartInfo();
-                
+
                 //string fullCommand = Directory.GetCurrentDirectory() + "" + command;
                 string fullCommand = "" + Directory.GetCurrentDirectory() + "\\unplug.exe " + command;
 
@@ -343,12 +415,12 @@ namespace WindowsFormsApp1
 
                 //statusDialog.Text += "\nFull Command: " + fullCommand;
                 //statusDialog.Text += "\nArguments put into CMD: " + unplugCommandInfo.Arguments;
-                
+
                 StreamReader sr = cmd.StandardOutput;
                 string test = sr.ReadToEnd();
                 //statusDialog.Text += "\n" + sr.ReadToEnd();
                 cmd.WaitForExit();
-            }           
+            }
         }
 
 
@@ -361,7 +433,7 @@ namespace WindowsFormsApp1
 
             if (isoValidation.ToLower() == ".iso")
             {
-                statusDialog.Text += "Validated ISO"; 
+                statusDialog.Text += "Validated ISO";
 
             }
             else
@@ -384,7 +456,7 @@ namespace WindowsFormsApp1
             {
                 statusDialog.Text += "\nValidation complete";
             }
-            else 
+            else
             {
                 statusDialog.Text += "\n[ERROR] Please select a game mode from the dropdown menu.";
                 return false;
@@ -394,10 +466,10 @@ namespace WindowsFormsApp1
         }
 
         //Picks locations for the items, puts them into the appropriate locations, and then returns the spoiler log
-        private Dictionary<string, string> shuffleItemsGlitchless() 
+        private Dictionary<string, string> shuffleItemsGlitchless()
         {
             //*** SETUP ***
-            
+
 
             //List of all checks
             List<ItemLocation> allLocations = new List<ItemLocation>();
@@ -423,15 +495,15 @@ namespace WindowsFormsApp1
             }
 
             //Clears all key item checks and replaces them with coin_c objects
-            foreach (ItemLocation location in allLocations) 
+            foreach (ItemLocation location in allLocations)
             {
                 if (allLocations.IndexOf(location) > (allLocations.Count() - stageData.rooms[8].locations.Count()))
                 {
                     break;
                 }
-                for (int i = 0; i < itemPool.Items.Count - 8; i++) 
+                for (int i = 0; i < itemPool.Items.Count - 8; i++)
                 {
-                    if (location.ObjectName == itemPool.Items[i].objectName) 
+                    if (location.ObjectName == itemPool.Items[i].objectName)
                     {
                         shuffleItem("item_kami_kuzu", occupiedChecks, new string[] { }, allLocations);
                         //insertItem("item_kami_kuzu", allLocations.IndexOf(location));
@@ -440,7 +512,6 @@ namespace WindowsFormsApp1
                 }
             }
 
-            //ugh
             for (int i = 0; i < occupiedChecks.Count; i++)
                 occupiedChecks[i] = false;
 
@@ -459,201 +530,292 @@ namespace WindowsFormsApp1
             shopObj.SelectToken("items[14].item").Replace(null);
             shopObj.SelectToken("items[15].item").Replace(null);
 
-            #region Junk Items
-
-            for (int i = 0; i < 28; i++)
+            if(apData != null)
             {
-                spoilerLog.Add("10M Coin " + (i + 1), allLocations[shuffleItem("coin_c", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+
+                JObject locations = apData.SelectToken("Locations").ToObject<JObject>();
+
+
+                foreach (KeyValuePair<string, JToken> location in locations)
+                {
+
+
+                    string locationName = location.Key;
+                    string name = location.Value.SelectToken("name").ToString();
+                    string objectName = location.Value.SelectToken("object").ToString();
+
+
+                    var roomID = get_room_id_by_name(location.Key);
+
+                    var roomObject = get_room_object_id_by_name(location.Key);
+
+                    //Console.WriteLine("Room ID: " + roomID );
+                    //Console.WriteLine("Room Object: " + roomObject);
+
+                    //Console.WriteLine("Location Name: " + locationName);
+                    //Console.WriteLine("Object Name: " + objectName);
+                    //Console.WriteLine("Stage Location ID: " + stageData.rooms[roomID].locations[apDataIndex].ID);
+                    //Console.WriteLine("AP Data Index: " + apDataIndex);
+
+
+                    // shop items are not the same as normal items
+                    if (roomID != 8)
+                    {
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object").Replace(objectName);
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(null);
+
+                    } else
+                    {
+                        // Disable shop items for now
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("item").Replace(name);
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("price").Replace(10);
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("limit").Replace(1); 
+                    }
+
+
+                        spoilerLog.Add(name, stageData.rooms[roomID].locations[apDataIndex].Description);
+
+                    //if (apDataIndex <= stageData.rooms[roomID].locations.Count && roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object") != null)
+                    //{
+                    //    roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object").Replace(objectName);
+                    //    roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(null);
+
+                    //    spoilerLog.Add(name, stageData.rooms[roomID].locations[apDataIndex].Description);
+
+                    //}
+
+
+
+                    //var itemPoolLocation = stageData.rooms[roomID].locations[apDataIndex].Description.ToString();
+
+                    //Console.WriteLine("AP Location: " + location.Key);
+
+                    //Console.WriteLine("Js Location: " + itemPoolLocation);
+
+                    //Console.WriteLine("Room ID: " + roomID);
+
+                    //Console.WriteLine("apData Index: " + apDataIndex);
+
+                    //Console.WriteLine(locationName);
+
+                    //var locationIndex = allLocations.Find(x => x.Equals(locationName));
+
+                    //Console.WriteLine(locationIndex);
+
+                    //int nextCheck = r.Next(0, allLocations.Count() - 1);
+
+                    //spoilerLog.Add(name, allLocations[apDataIndex].Description);
+
+
+
+                    apDataIndex++;
+
+                }
+
+
+                //livingRoomObj.SelectToken("objects[447].object").Replace("item_mag_cup");
+
+
+            } else {
+
+                #region Junk Items
+
+                for (int i = 0; i < 28; i++)
+                {
+                    spoilerLog.Add("10M Coin " + (i + 1), allLocations[shuffleItem("coin_c", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+                }
+
+                for (int i = 0; i < 7; i++)
+                {
+                    spoilerLog.Add("50M Coin " + (i + 1), allLocations[shuffleItem("coin_s", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    spoilerLog.Add("100M Coin " + (i + 1), allLocations[shuffleItem("coin_g", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+                }
+
+                for (int i = 0; i < 15; i++)
+                {
+                    spoilerLog.Add("Happy Block " + (i + 1), allLocations[shuffleItem("living_happy_box", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+                }
+                #endregion
+
+                #region Key Item Important Checks
+                //Shuffles Charger
+                int chargerCheck;
+                if (openUpstairs.Checked)
+                    chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "divorce" }, allLocations);
+                else
+                    chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
+
+                spoilerLog.Add("Giga-Charger", allLocations[chargerCheck].Description);
+                chargerLocation = allLocations[chargerCheck];
+
+
+                //Shuffles Uncharged Battery
+
+                int uBatteryCheck;
+                if (openUpstairs.Checked)
+                    uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "divorce" }, allLocations);
+                else
+                    uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
+
+                spoilerLog.Add("Giga-Battery", allLocations[uBatteryCheck].Description);
+                batteryLocation = allLocations[uBatteryCheck];
+
+                if (batteryLocation.Prereqs.Contains("toothbrush") || chargerLocation.Prereqs.Contains("toothbrush"))
+                {
+                    spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "ladder", "bridge", "toothbrush" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "toothbrush" }, allLocations)].Description);
+                }
+
+                if (batteryLocation.Prereqs.Contains("squirter") || batteryLocation.Prereqs.Contains("frog suit") || chargerLocation.Prereqs.Contains("squirter") || chargerLocation.Prereqs.Contains("frog suit"))
+                {
+                    spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit", "ladder", "bridge" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit" }, allLocations)].Description);
+                }
+
+                if (batteryLocation.Prereqs.Contains("blaster") || chargerLocation.Prereqs.Contains("blaster"))
+                {
+                    spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "ladder", "bridge", "blaster" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "blaster" }, allLocations)].Description);
+                }
+
+                if (batteryLocation.Prereqs.Contains("radar") || chargerLocation.Prereqs.Contains("radar"))
+                {
+                    spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "ladder", "bridge", "radar" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "radar" }, allLocations)].Description);
+                }
+
+
+                if (batteryLocation.Prereqs.Contains("mug") || chargerLocation.Prereqs.Contains("mug"))
+                {
+                    spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "ladder", "bridge", "mug" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "mug" }, allLocations)].Description);
+                }
+
+                if (batteryLocation.Prereqs.Contains("spoon") || chargerLocation.Prereqs.Contains("spoon"))
+                {
+                    spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon", "ladder", "bridge" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon" }, allLocations)].Description);
+                }
+
+                if (batteryLocation.Prereqs.Contains("charge chip") || chargerLocation.Prereqs.Contains("charge chip"))
+                {
+                    spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip", "ladder", "bridge" }, allLocations)].Description);
+                }
+                else
+                {
+                    spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip" }, allLocations)].Description);
+                }
+
+                spoilerLog.Add("Red Shoe", allLocations[shuffleItem("item_peets_kutu", occupiedChecks, new string[] { "red shoe", "ladder", "bridge" }, allLocations)].Description);
+
+
+                if (batteryCharge.Checked)
+                {
+                    spoilerLog.Add("Charged Giga-Battery", allLocations[shuffleItem("item_deka_denchi_full", occupiedChecks, new string[] { }, allLocations)].Description);
+                }
+
+                #endregion
+
+                //Checks that are Key Items but don't lock progression or check access
+                #region Key Item (Misc.) Checks
+
+                spoilerLog.Add("Toy Receipt", allLocations[shuffleItem("item_receipt", occupiedChecks, new string[] { "divorce" }, allLocations)].Description);
+
+                spoilerLog.Add("Range Chip", allLocations[shuffleItem("item_chip_54", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Alien Ear Chip", allLocations[shuffleItem("item_hocyouki", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Chibi-Battery", allLocations[shuffleItem("item_c_denchi", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Free Rangers Photo", allLocations[shuffleItem("item_army_photo", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Red Block", allLocations[shuffleItem("item_t_block_6", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Green Block", allLocations[shuffleItem("item_t_block_4", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("White Block", allLocations[shuffleItem("item_t_block_3", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Red Crayon", allLocations[shuffleItem("item_kure_1", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Yellow Crayon", allLocations[shuffleItem("item_kure_3", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Green Crayon", allLocations[shuffleItem("item_kure_4", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Purple Crayon", allLocations[shuffleItem("item_kure_5", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Dog Tags", allLocations[shuffleItem("item_tug", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Bandage", allLocations[shuffleItem("item_houtai", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Ticket Stub", allLocations[shuffleItem("item_ticket", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Gunpowder", allLocations[shuffleItem("item_kayaku", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Hot Rod", allLocations[shuffleItem("item_car_item", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Space Scrambler", allLocations[shuffleItem("item_nwing_item", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Scurvy Splinter", allLocations[shuffleItem("npc_hock_ship_114", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Passed-Out Frog", allLocations[shuffleItem("item_frog", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Dinahs Teeth", allLocations[shuffleItem("item_rex_tooth", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Snorkel", allLocations[shuffleItem("item_goggle", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("AA Battery", allLocations[shuffleItem("item_denchi_3", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("C Battery", allLocations[shuffleItem("item_denchi_2", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("D Battery", allLocations[shuffleItem("item_denchi_1", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                spoilerLog.Add("Wedding Ring", allLocations[shuffleItem("item_papa_yubiwa", occupiedChecks, new string[] { }, allLocations)].Description);
+
+                // 10 Frog Rings
+
+                for (int i = 0; i < 10; i++)
+                {
+                    spoilerLog.Add("Frog Ring " + (i + 1), allLocations[shuffleItem("item_frog_ring", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
+                }
+                #endregion
+
+                int legCheck;
+                legCheck = shuffleItem("item_left_foot", occupiedChecks, new string[] { }, allLocations);
+
+                spoilerLog.Add("Giga-Robo's Left Leg", allLocations[legCheck].Description);
+                legLocation = allLocations[legCheck];
+
             }
 
-            for (int i = 0; i < 7; i++)
-            {
-                spoilerLog.Add("50M Coin " + (i + 1), allLocations[shuffleItem("coin_s", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-            }
-
-            for (int i = 0; i < 4; i++)
-            {
-                spoilerLog.Add("100M Coin " + (i + 1), allLocations[shuffleItem("coin_g", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-            }
-
-            for (int i = 0; i < 15; i++)
-            {
-                spoilerLog.Add("Happy Block " + (i + 1), allLocations[shuffleItem("living_happy_box", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-            }
-            #endregion
-
-            #region Key Item Important Checks
-            //Shuffles Charger
-            int chargerCheck;
-            if (openUpstairs.Checked)
-                chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "divorce" }, allLocations);
-            else
-                chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
-
-            spoilerLog.Add("Giga-Charger", allLocations[chargerCheck].Description);
-            chargerLocation = allLocations[chargerCheck];
-
-
-            //Shuffles Uncharged Battery
-
-            int uBatteryCheck;
-            if (openUpstairs.Checked)
-                uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "divorce" }, allLocations);
-            else
-                uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
-
-            spoilerLog.Add("Giga-Battery", allLocations[uBatteryCheck].Description);
-            batteryLocation = allLocations[uBatteryCheck];
-
-            if (batteryLocation.Prereqs.Contains("toothbrush") || chargerLocation.Prereqs.Contains("toothbrush"))
-            {
-                spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "ladder", "bridge", "toothbrush" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "toothbrush" }, allLocations)].Description);
-            }
-
-            if (batteryLocation.Prereqs.Contains("squirter") || batteryLocation.Prereqs.Contains("frog suit") || chargerLocation.Prereqs.Contains("squirter") || chargerLocation.Prereqs.Contains("frog suit"))
-            {
-                spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit", "ladder", "bridge" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit" }, allLocations)].Description);
-            }
-
-            if (batteryLocation.Prereqs.Contains("blaster") || chargerLocation.Prereqs.Contains("blaster"))
-            {
-                spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "ladder", "bridge", "blaster" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "blaster" }, allLocations)].Description);
-            }
-
-            if (batteryLocation.Prereqs.Contains("radar") || chargerLocation.Prereqs.Contains("radar"))
-            {
-                spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "ladder", "bridge", "radar" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "radar" }, allLocations)].Description);
-            }
-
-
-            if (batteryLocation.Prereqs.Contains("mug") || chargerLocation.Prereqs.Contains("mug"))
-            {
-                spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "ladder", "bridge", "mug" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "mug" }, allLocations)].Description);
-            }
-
-            if (batteryLocation.Prereqs.Contains("spoon") || chargerLocation.Prereqs.Contains("spoon"))
-            {
-                spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon", "ladder", "bridge" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon" }, allLocations)].Description);
-            }
-
-            if (batteryLocation.Prereqs.Contains("charge chip") || chargerLocation.Prereqs.Contains("charge chip"))
-            {
-                spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip", "ladder", "bridge" }, allLocations)].Description);
-            }
-            else
-            {
-                spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip" }, allLocations)].Description);
-            }
-
-            spoilerLog.Add("Red Shoe", allLocations[shuffleItem("item_peets_kutu", occupiedChecks, new string[] { "red shoe", "ladder", "bridge" }, allLocations)].Description);
-
-
-            if (batteryCharge.Checked)
-            {
-                spoilerLog.Add("Charged Giga-Battery", allLocations[shuffleItem("item_deka_denchi_full", occupiedChecks, new string[] { }, allLocations)].Description);
-            }
-
-            #endregion
-
-            //Checks that are Key Items but don't lock progression or check access
-            #region Key Item (Misc.) Checks
-
-            spoilerLog.Add("Toy Receipt", allLocations[shuffleItem("item_receipt", occupiedChecks, new string[] { "divorce" }, allLocations)].Description);
-
-            spoilerLog.Add("Range Chip", allLocations[shuffleItem("item_chip_54", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Alien Ear Chip", allLocations[shuffleItem("item_hocyouki", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Chibi-Battery", allLocations[shuffleItem("item_c_denchi", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Free Rangers Photo", allLocations[shuffleItem("item_army_photo", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Red Block", allLocations[shuffleItem("item_t_block_6", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Green Block", allLocations[shuffleItem("item_t_block_4", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("White Block", allLocations[shuffleItem("item_t_block_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Red Crayon", allLocations[shuffleItem("item_kure_1", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Yellow Crayon", allLocations[shuffleItem("item_kure_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Green Crayon", allLocations[shuffleItem("item_kure_4", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Purple Crayon", allLocations[shuffleItem("item_kure_5", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Dog Tags", allLocations[shuffleItem("item_tug", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Bandage", allLocations[shuffleItem("item_houtai", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Ticket Stub", allLocations[shuffleItem("item_ticket", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Gunpowder", allLocations[shuffleItem("item_kayaku", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Hot Rod", allLocations[shuffleItem("item_car_item", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Space Scrambler", allLocations[shuffleItem("item_nwing_item", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Scurvy Splinter", allLocations[shuffleItem("npc_hock_ship_114", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Passed-Out Frog", allLocations[shuffleItem("item_frog", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Dinahs Teeth", allLocations[shuffleItem("item_rex_tooth", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Snorkel", allLocations[shuffleItem("item_goggle", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("AA Battery", allLocations[shuffleItem("item_denchi_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("C Battery", allLocations[shuffleItem("item_denchi_2", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("D Battery", allLocations[shuffleItem("item_denchi_1", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            spoilerLog.Add("Wedding Ring", allLocations[shuffleItem("item_papa_yubiwa", occupiedChecks, new string[] { }, allLocations)].Description);
-
-            // 10 Frog Rings
-
-            for (int i = 0; i < 10; i++)
-            {
-                spoilerLog.Add("Frog Ring " + (i + 1), allLocations[shuffleItem("item_frog_ring", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-            }
-            #endregion
-
-            int legCheck;
-            legCheck = shuffleItem("item_left_foot", occupiedChecks, new string[] {}, allLocations);
-
-            spoilerLog.Add("Giga-Robo's Left Leg", allLocations[legCheck].Description);
-            legLocation = allLocations[legCheck];
-
+         
             return spoilerLog;
         }
 
 
         //Randomizes the location of the given item
-        private int shuffleItem(string objectName, List<bool> occupiedLocations, string[] prerequisites, List<ItemLocation> allChecks ) 
+        private int shuffleItem(string objectName, List<bool> occupiedLocations, string[] prerequisites, List<ItemLocation> allChecks)
         {
             while (true)
             {
@@ -672,9 +834,9 @@ namespace WindowsFormsApp1
                     JToken roomToEdit;
                     int roomIndex;
 
-                    switch (nextCheck) 
+                    switch (nextCheck)
                     {
-                        case  int n when n < stageData.rooms[0].locations.Count():
+                        case int n when n < stageData.rooms[0].locations.Count():
                             relativeCheck = nextCheck;
                             roomToEdit = livingRoomObj;
                             roomIndex = 0;
@@ -726,17 +888,17 @@ namespace WindowsFormsApp1
                             break;
                     }
 
-                    insertItem(objectName, relativeCheck, roomToEdit, roomIndex);                    
+                    insertItem(objectName, relativeCheck, roomToEdit, roomIndex);
                     return nextCheck;
                 }
             }
-            
+
         }
 
         //Determines if a location is a valid position for an object given the prerequisites
         private bool validLocation(int location, string[] prerequisites, List<ItemLocation> allChecks)
         {
-            foreach (string p in prerequisites) 
+            foreach (string p in prerequisites)
             {
                 if (allChecks[location].Prereqs.Contains(p) || allChecks[location].Prereqs.Contains("suitcase"))
                     return false;
@@ -746,7 +908,7 @@ namespace WindowsFormsApp1
 
 
         //Inserts objectName at given location, assuming location is pulled from allLocations
-        private void insertItem(string objectName, int relativeLocation, JToken roomObject, int roomIndex) 
+        private void insertItem(string objectName, int relativeLocation, JToken roomObject, int roomIndex)
         {
             //Standard rooms
             if (roomIndex == 8)
@@ -762,12 +924,12 @@ namespace WindowsFormsApp1
                 }
                 roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].item").Replace(itemName);
 
-                if(itemName != "item_frog_ring" || itemName != "frog_ring")
+                if (itemName != "item_frog_ring" || itemName != "frog_ring")
                 {
                     roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].limit").Replace(1);
                 }
             }
-            else 
+            else
             {
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
 
@@ -794,9 +956,20 @@ namespace WindowsFormsApp1
                     case "item_junk_a":
                     case "item_junk_b":
                     case "item_junk_c":
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
+                        break;
+                    case "living_happy_box":
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("explode");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("climb");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("clamber");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("fall");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("grab");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
                         break;
                     default:
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("flash");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
@@ -807,7 +980,7 @@ namespace WindowsFormsApp1
         }
 
         //Reimports the JSON stage and shop data into the ISO
-        private void reimportStages() 
+        private void reimportStages()
         {
             File.WriteAllText("stage01.json", kitchenObj.ToString());
             File.WriteAllText("stage02.json", foyerObj.ToString());
@@ -820,6 +993,21 @@ namespace WindowsFormsApp1
             File.WriteAllText("globals.json", globals.ToString());
 
             PBar.Value = 45;
+
+            // Birthday Party Into
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
+
+            // Living Room
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+
+            // Update Messages
+            //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
+
+            // Globals
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\globals.us" + "\"");
+            runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
+
+            //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
             string test = shopObj.ToString().Substring(14, shopObj.ToString().Length - 15);
             //JSON formatting for the shop is borked so this is the reconversion into the form that Unplug is looking for
@@ -838,22 +1026,10 @@ namespace WindowsFormsApp1
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage07 \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage09 \"" + Directory.GetCurrentDirectory() + @"\stage09.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage11 \"" + Directory.GetCurrentDirectory() + @"\stage11.json" + "\"");
-            runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
+
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
 
 
-            // Birthday Party Into
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
-
-            // Living Room
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
-
-            // Update Messages
-            runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
-
-
-
-            //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
             PBar.Value = 60;
 
@@ -869,6 +1045,152 @@ namespace WindowsFormsApp1
             {
                 File.Delete(f);
             }
+        }
+
+        string lastRoom = "Living Room";
+
+        private JObject get_room_object_id_by_name(string location)
+        {
+            string roomTempName = location.Substring(0, location.IndexOf("-") + 1).Trim(new Char[] { ' ', '-' });
+
+            if (roomTempName == "Living Room")
+            {
+                return livingRoomObj;
+            }
+            else if (roomTempName == "Kitchen")
+            {
+                return kitchenObj;
+            }
+            else if (roomTempName == "Sink Drain")
+            {
+                return drainObj;
+            }
+            else if (roomTempName == "Foyer")
+            {
+                return foyerObj;
+            }
+            else if (roomTempName == "Basement")
+            {
+                return basementObj;
+            }
+            else if (roomTempName == "Backyard")
+            {
+                return backyardObj;
+            }
+            else if (roomTempName == "Jenny's Room")
+            {
+                return jennyRoomObj;
+            }
+            else if (roomTempName == "Bedroom")
+            {
+                return bedroomObj;
+            }
+            else if (roomTempName == "Chibi House")
+            {
+                return shopObj;
+            }
+            else
+            {
+                return null;
+            }
+
+        }
+
+        private int get_room_id_by_name(string location)
+        {
+
+            string roomTempName = location.Substring(0, location.IndexOf("-") + 1).Trim(new Char[] { ' ', '-' });
+
+            if(roomTempName == "Living Room")
+            {
+                return 0;
+            } 
+            else if (roomTempName == "Kitchen")
+            {
+                if(lastRoom != "Kitchen")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                
+                return 1;
+            }
+            else if (roomTempName == "Sink Drain")
+            {
+                if (lastRoom != "Sink Drain")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 2;
+            }
+            else if (roomTempName == "Foyer")
+            {
+                if (lastRoom != "Foyer")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 3;
+            }
+            else if (roomTempName == "Basement")
+            {
+                if (lastRoom != "Basement")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 4;
+            }
+            else if (roomTempName == "Backyard")
+            {
+                if (lastRoom != "Backyard")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 5;
+            }
+            else if (roomTempName == "Jenny's Room")
+            {
+                if (lastRoom != "Jenny's Room")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 6;
+            }
+            else if (roomTempName == "Bedroom")
+            {
+                if (lastRoom != "Bedroom")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 7;
+            }
+            else if (roomTempName == "Chibi House")
+            {
+                if (lastRoom != "Chibi House")
+                {
+                    lastRoom = roomTempName;
+                    apDataIndex = 0;
+
+                }
+                return 8;
+            } else
+            {
+                return -1;
+            }
+
+
         }
 
         private void title_Click(object sender, EventArgs e)
@@ -909,7 +1231,7 @@ namespace WindowsFormsApp1
         private void timer1_Tick(object sender, EventArgs e)
         {
 
-            if(PBar.Value == 100)
+            if (PBar.Value == 100)
             {
                 timer1.Stop();
             }
@@ -924,5 +1246,12 @@ namespace WindowsFormsApp1
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+       
     }
 }

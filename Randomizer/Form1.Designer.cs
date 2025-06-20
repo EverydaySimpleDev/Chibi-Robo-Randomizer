@@ -49,11 +49,12 @@
             this.chibiVision = new System.Windows.Forms.CheckBox();
             this.Chibi_Robo_Icon = new System.Windows.Forms.PictureBox();
             this.PBar = new System.Windows.Forms.ProgressBar();
-            this.Load = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.walkingBatteryDrain = new System.Windows.Forms.CheckBox();
             this.joggingBatteryDrain = new System.Windows.Forms.CheckBox();
             this.runningDecreasesBattery = new System.Windows.Forms.CheckBox();
+            this.apZipPath = new System.Windows.Forms.TextBox();
+            this.openAPZip = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).BeginInit();
             this.SuspendLayout();
             // 
@@ -115,7 +116,7 @@
             // 
             this.settingsLabel.AutoSize = true;
             this.settingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsLabel.Location = new System.Drawing.Point(18, 160);
+            this.settingsLabel.Location = new System.Drawing.Point(13, 201);
             this.settingsLabel.Name = "settingsLabel";
             this.settingsLabel.Size = new System.Drawing.Size(107, 20);
             this.settingsLabel.TabIndex = 7;
@@ -131,7 +132,7 @@
             "Glitchless",
             "Glitched",
             "No Logic"});
-            this.logicSettings.Location = new System.Drawing.Point(123, 157);
+            this.logicSettings.Location = new System.Drawing.Point(118, 198);
             this.logicSettings.Name = "logicSettings";
             this.logicSettings.Size = new System.Drawing.Size(121, 28);
             this.logicSettings.TabIndex = 8;
@@ -164,7 +165,7 @@
             // 
             this.seedLabel.AutoSize = true;
             this.seedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seedLabel.Location = new System.Drawing.Point(264, 157);
+            this.seedLabel.Location = new System.Drawing.Point(259, 198);
             this.seedLabel.Name = "seedLabel";
             this.seedLabel.Size = new System.Drawing.Size(51, 20);
             this.seedLabel.TabIndex = 12;
@@ -174,7 +175,7 @@
             // seed
             // 
             this.seed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seed.Location = new System.Drawing.Point(321, 157);
+            this.seed.Location = new System.Drawing.Point(316, 198);
             this.seed.Name = "seed";
             this.seed.Size = new System.Drawing.Size(121, 26);
             this.seed.TabIndex = 13;
@@ -264,18 +265,6 @@
             this.PBar.Name = "PBar";
             this.PBar.Size = new System.Drawing.Size(960, 23);
             this.PBar.TabIndex = 21;
-            this.PBar.Visible = false;
-            // 
-            // Load
-            // 
-            this.Load.AutoSize = true;
-            this.Load.Location = new System.Drawing.Point(179, 327);
-            this.Load.Name = "Load";
-            this.Load.Size = new System.Drawing.Size(54, 13);
-            this.Load.TabIndex = 22;
-            this.Load.Text = "Loading...";
-            this.Load.Visible = false;
-            this.Load.Click += new System.EventHandler(this.label1_Click);
             // 
             // timer1
             // 
@@ -318,16 +307,38 @@
             this.runningDecreasesBattery.UseVisualStyleBackColor = true;
             this.runningDecreasesBattery.Visible = false;
             // 
+            // apZipPath
+            // 
+            this.apZipPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.apZipPath.Location = new System.Drawing.Point(123, 142);
+            this.apZipPath.Name = "apZipPath";
+            this.apZipPath.ReadOnly = true;
+            this.apZipPath.Size = new System.Drawing.Size(490, 26);
+            this.apZipPath.TabIndex = 31;
+            this.apZipPath.Text = "<- Set Archipelago Data To Enable Integration (Optional)";
+            // 
+            // openAPZip
+            // 
+            this.openAPZip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.openAPZip.Location = new System.Drawing.Point(17, 138);
+            this.openAPZip.Name = "openAPZip";
+            this.openAPZip.Size = new System.Drawing.Size(100, 35);
+            this.openAPZip.TabIndex = 30;
+            this.openAPZip.Text = "Open AP";
+            this.openAPZip.UseVisualStyleBackColor = true;
+            this.openAPZip.Click += new System.EventHandler(this.openAPZip_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(1154, 551);
+            this.Controls.Add(this.apZipPath);
+            this.Controls.Add(this.openAPZip);
             this.Controls.Add(this.runningDecreasesBattery);
             this.Controls.Add(this.joggingBatteryDrain);
             this.Controls.Add(this.walkingBatteryDrain);
-            this.Controls.Add(this.Load);
             this.Controls.Add(this.PBar);
             this.Controls.Add(this.Chibi_Robo_Icon);
             this.Controls.Add(this.chibiVision);
@@ -377,11 +388,12 @@
         private System.Windows.Forms.CheckBox chibiVision;
         private System.Windows.Forms.PictureBox Chibi_Robo_Icon;
         private System.Windows.Forms.ProgressBar PBar;
-        private System.Windows.Forms.Label Load;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox walkingBatteryDrain;
         private System.Windows.Forms.CheckBox joggingBatteryDrain;
         private System.Windows.Forms.CheckBox runningDecreasesBattery;
+        private System.Windows.Forms.TextBox apZipPath;
+        private System.Windows.Forms.Button openAPZip;
     }
 }
 

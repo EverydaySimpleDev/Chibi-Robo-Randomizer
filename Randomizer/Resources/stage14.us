@@ -143,7 +143,19 @@ sub_2:
 	ptcl	12.d, @obj, 182.d, -1010.d, 1573.w, -37.d, 100.w, 100.w, 100.w, 0.w
 	if	or(eq(flag(312.d), 1.w), eq(flag(313.d), 1.w)), else *skip_intro_window
 	goto	*loc_4
-
+tooth_brush_toggle:
+	win	@unk209
+	win	@color, 0.w, 0.w, 0.w, 255.w
+	win	@pos, 320.w, 260.w
+	select	"Give Toothbrush\n",
+		"Remove Toothbrush"
+	case	eq(result, 0.w), else *tooth_brush_toggle_1
+	set	item(16.d), 1.w
+	break	*tooth_brush_toggle
+tooth_brush_toggle_1:
+	case	eq(result, 1.w), else *tooth_brush_toggle
+	set	item(16.d), 0.w
+	break	*tooth_brush_toggle
 skip_intro_window:
 	win	@unk209
 	win	@color, 0.w, 0.w, 0.w, 255.w
@@ -153,6 +165,19 @@ skip_intro_window:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	case	eq(result, 0.w), else *loc_15
+	; set	item(21.d), 1.w ; spoon
+	; set	item(22.d), 1.w ; mug
+	; set	item(56.d), 1.w ; syringe
+	; set	item(24.d), 1.w ; Drake Redcrest Suit
+	; set	item(25.d), 1.w ; Toa Suit
+	; set	atc(1.d), 0.w ; copter / propeller
+	; set	atc(3.d), 1.w ; radar
+	; set	atc(2.d), 1.w ; blaster
+	msg	voice(4.b),
+		"Thank you for trying out the randomizer!\n",
+		"  I hope you have a great time!",
+		wait(255.b)
+	popbp
 	set	flag(313.d), 1.w
 	set	flag(1195.d), 1.w
 	set	flag(1196.d), 0.w

@@ -10,7 +10,7 @@
 					"id": 19,
 					"name": "item_frog_ring",
 					"prereqs": [ "ladder", "blaster", "copter" ],
-					"description": "Living Room Frog Ring (Behind Window)"
+					"description": "Living Room - Frog Ring (Behind Window)"
 				},
 				{
 					"x": -266.7,
@@ -19,7 +19,7 @@
 					"id": 20,
 					"name": "item_frog_ring",
 					"prereqs": [ "ladder", "bridge", "copter" ],
-					"description": "Living Room Frog Ring (Corkboard)"
+					"description": "Living Room - Frog Ring (Corkboard)"
 				},
 				{
 					"x": -252.52,
@@ -28,7 +28,7 @@
 					"id": 21,
 					"name": "item_frog_ring",
 					"prereqs": [],
-					"description": "Living Room Frog Ring (Shelf)"
+					"description": "Living Room - Frog Ring (Shelf)"
 				},
 				{
 					"x": -47.9,
@@ -37,7 +37,7 @@
 					"id": 36,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Table 10M Coin"
+					"description": "Living Room - Table 10M Coin"
 				},
 				{
 					"x": -252.19,
@@ -46,7 +46,7 @@
 					"id": 37,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room Under Bookshelf 10M Coin"
+					"description": "Living Room - Under Bookshelf 10M Coin"
 				},
 				{
 					"x": -271.91,
@@ -55,7 +55,7 @@
 					"id": 38,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room Under TV 10M Coin"
+					"description": "Living Room - Under TV 10M Coin"
 				},
 				{
 					"x": -227.34,
@@ -64,7 +64,7 @@
 					"id": 39,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Bookshelf 10M Coin A"
+					"description": "Living Room - Bookshelf 10M Coin A"
 				},
 				{
 					"x": -227.86,
@@ -73,7 +73,7 @@
 					"id": 40,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Bookshelf 10M Coin B"
+					"description": "Living Room - Bookshelf 10M Coin B"
 				},
 				{
 					"x": 37.5,
@@ -82,7 +82,7 @@
 					"id": 41,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room Armchair 10M Coin"
+					"description": "Living Room - Armchair 10M Coin"
 				},
 				{
 					"x": 155.72,
@@ -91,7 +91,7 @@
 					"id": 42,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room Under Couch 10M Coin"
+					"description": "Living Room - Under Couch 10M Coin"
 				},
 				{
 					"x": 174.79,
@@ -100,7 +100,7 @@
 					"id": 43,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Backseat 10M Coin A"
+					"description": "Living Room - Couch Backseat 10M Coin A"
 				},
 				{
 					"x": 174.81,
@@ -109,7 +109,7 @@
 					"id": 44,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Backseat 10M Coin B"
+					"description": "Living Room - Couch Backseat 10M Coin B"
 				},
 				{
 					"x": 174.87,
@@ -118,7 +118,7 @@
 					"id": 45,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Backseat 10M Coin C"
+					"description": "Living Room - Couch Backseat 10M Coin C"
 				},
 				{
 					"x": 68.83,
@@ -127,7 +127,7 @@
 					"id": 46,
 					"name": "coin_s",
 					"prereqs": [],
-					"description": "Living Room Cupholder 50M Coin"
+					"description": "Living Room - Cupholder 50M Coin"
 				},
 				{
 					"x": 255.74,
@@ -136,7 +136,7 @@
 					"id": 47,
 					"name": "coin_s",
 					"prereqs": [ "ladder", "bridge", "copter" ],
-					"description": "Living Room Plant Shelf 50M A"
+					"description": "Living Room - Plant Shelf 50M A"
 				},
 				{
 					"x": 238.9,
@@ -145,7 +145,7 @@
 					"id": 48,
 					"name": "coin_s",
 					"prereqs": [ "ladder", "bridge", "copter" ],
-					"description": "Living Room Plant Shelf 50M B"
+					"description": "Living Room - Plant Shelf 50M B"
 				},
 				{
 					"x": 214.86,
@@ -154,16 +154,16 @@
 					"id": 49,
 					"name": "coin_s",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Plant Leaf 50M Coin"
+					"description": "Living Room - Plant Leaf 50M Coin"
 				},
 				{
 					"x": 84.53,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 295.04,
 					"id": 115,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper by Trashbin B"
+					"description": "Living Room - Wastepaper by Trashbin B"
 				},
 				{
 					"x": 183.17,
@@ -172,16 +172,16 @@
 					"id": 116,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Candy Wrapper above Trashbin"
+					"description": "Living Room - Candy Wrapper above Trashbin A"
 				},
 				{
 					"x": 209.81,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 122.44,
 					"id": 117,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper by Trashbin A"
+					"description": "Living Room - Wastepaper by Trashbin A"
 				},
 				{
 					"x": 73.24,
@@ -190,7 +190,7 @@
 					"id": 118,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Cupholder Wastepaper"
+					"description": "Living Room - Cupholder Wastepaper"
 				},
 				{
 					"x": -49.27,
@@ -199,7 +199,7 @@
 					"id": 119,
 					"name": "item_cookie_kakera",
 					"prereqs": [],
-					"description": "Living Room Cookie Crumbs under Table"
+					"description": "Living Room - Cookie Crumbs under Table"
 				},
 				{
 					"x": 222.72,
@@ -208,7 +208,7 @@
 					"id": 120,
 					"name": "item_cookie_kakera",
 					"prereqs": [],
-					"description": "Living Room Cookie Crumbs by Record Player"
+					"description": "Living Room - Cookie Crumbs by Record Player"
 				},
 				{
 					"x": 46.27,
@@ -217,7 +217,7 @@
 					"id": 133,
 					"name": "item_brush",
 					"prereqs": [],
-					"description": "Living Room Toothbrush"
+					"description": "Living Room - Toothbrush"
 				},
 				{
 					"x": 21.63,
@@ -226,7 +226,7 @@
 					"id": 240,
 					"name": "living_happy_box",
 					"prereqs": [],
-					"description": "Living Room Armchair Happy Block"
+					"description": "Living Room - Armchair Happy Block"
 				},
 				{
 					"x": -226.97,
@@ -235,7 +235,7 @@
 					"id": 241,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Bookshelf Happy Block (Lower)"
+					"description": "Living Room - Bookshelf Happy Block (Lower)"
 				},
 				{
 					"x": 219.88,
@@ -244,7 +244,7 @@
 					"id": 242,
 					"name": "living_happy_box",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Top of Record Player Shelving Happy Block"
+					"description": "Living Room - Top of Record Player Shelving Happy Block"
 				},
 				{
 					"x": -242.18,
@@ -253,7 +253,7 @@
 					"id": 243,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Bookshelf Happy Block (Upper)"
+					"description": "Living Room - Bookshelf Happy Block (Upper)"
 				},
 				{
 					"x": 254.99,
@@ -262,7 +262,7 @@
 					"id": 244,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Plant Shelf Happy Block (Lower)"
+					"description": "Living Room - Plant Shelf Happy Block (Lower)"
 				},
 				{
 					"x": -121.32,
@@ -271,7 +271,7 @@
 					"id": 245,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Grandfather Clock Shelving Happy Block"
+					"description": "Living Room - Grandfather Clock Shelving Happy Block"
 				},
 				{
 					"x": -54.34,
@@ -280,7 +280,7 @@
 					"id": 246,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room Happy Block above Chibi-House "
+					"description": "Living Room - Happy Block above Chibi House"
 				},
 				{
 					"x": 248.94,
@@ -289,7 +289,7 @@
 					"id": 247,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "bridge", "copter" ],
-					"description": "Living Room Plant Shelf Happy Block (Upper)"
+					"description": "Living Room - Plant Shelf Happy Block (Upper)"
 				},
 				{
 					"x": -228.64,
@@ -298,7 +298,7 @@
 					"id": 248,
 					"name": "living_happy_box",
 					"prereqs": [ "ladder", "bridge", "copter" ],
-					"description": "Living Room Happy Block above Fireplace"
+					"description": "Living Room - Happy Block above Fireplace"
 				},
 				{
 					"x": 261.32,
@@ -307,34 +307,34 @@
 					"id": 249,
 					"name": "living_happy_box",
 					"prereqs": [],
-					"description": "Living Room Happy Block by Record Player"
+					"description": "Living Room - Happy Block by Record Player"
 				},
 				{
 					"x": 180.42,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -363.39,
 					"id": 257,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper by Door to Kitchen"
+					"description": "Living Room - Wastepaper by Door to Kitchen"
 				},
 				{
 					"x": -195.06,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -308.29,
 					"id": 258,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Fireplace Wastepaper A"
+					"description": "Living Room - Fireplace Wastepaper A"
 				},
 				{
 					"x": -182.73,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -306.4,
 					"id": 259,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Fireplace Wastepaper B"
+					"description": "Living Room - Fireplace Wastepaper B"
 				},
 				{
 					"x": -5.15,
@@ -343,7 +343,7 @@
 					"id": 260,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper on Stack of Books"
+					"description": "Living Room - Wastepaper on Stack of Books"
 				},
 				{
 					"x": 155.75,
@@ -352,7 +352,7 @@
 					"id": 261,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Wastepaper B"
+					"description": "Living Room - Couch Wastepaper B"
 				},
 				{
 					"x": -6.98,
@@ -361,7 +361,7 @@
 					"id": 278,
 					"name": "coin_s",
 					"prereqs": [],
-					"description": "Living Room Armchair 50M Coin"
+					"description": "Living Room - Armchair 50M Coin"
 				},
 				{
 					"x": 229.41,
@@ -370,16 +370,16 @@
 					"id": 279,
 					"name": "coin_s",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Lamp 50M Coin"
+					"description": "Living Room - Lamp 50M Coin"
 				},
 				{
 					"x": 90.95,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 74.65,
 					"id": 319,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper by Toothbrush Spawn"
+					"description": "Living Room - Wastepaper by Toothbrush Spawn"
 				},
 				{
 					"x": 59.86,
@@ -388,7 +388,7 @@
 					"id": 320,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper below Cupholder"
+					"description": "Living Room - Wastepaper below Cupholder"
 				},
 				{
 					"x": 158.25,
@@ -397,7 +397,7 @@
 					"id": 321,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Wastepaper A"
+					"description": "Living Room - Couch Wastepaper A"
 				},
 				{
 					"x": 117.8,
@@ -406,7 +406,7 @@
 					"id": 322,
 					"name": "item_cookie_kakera",
 					"prereqs": [],
-					"description": "Living Room Cookie Crumbs under Couch"
+					"description": "Living Room - Cookie Crumbs under Couch"
 				},
 				{
 					"x": 155.45,
@@ -415,7 +415,7 @@
 					"id": 323,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Cookie Crumbs on Couch"
+					"description": "Living Room - Cookie Crumbs on Couch"
 				},
 				{
 					"x": 277.76,
@@ -424,25 +424,25 @@
 					"id": 324,
 					"name": "leaf",
 					"prereqs": [],
-					"description": "Living Room Twig A"
+					"description": "Living Room - Twig A"
 				},
 				{
 					"x": 263.28,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -62.9,
 					"id": 325,
 					"name": "leaf",
 					"prereqs": [],
-					"description": "Living Room Twig B"
+					"description": "Living Room - Twig B"
 				},
 				{
 					"x": 253.65,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -94.75,
 					"id": 326,
 					"name": "leaf",
 					"prereqs": [],
-					"description": "Living Room Twig C"
+					"description": "Living Room - Twig C"
 				},
 				{
 					"x": -43.46,
@@ -451,7 +451,7 @@
 					"id": 338,
 					"name": "coin_s",
 					"prereqs": [ "ladder", "copter" ],
-					"description": "Living Room 50M Coin on top of Chibi-House"
+					"description": "Living Room - 50M Coin on top of Chibi House"
 				},
 				{
 					"x": 113.39,
@@ -460,34 +460,34 @@
 					"id": 339,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch 10M Coin (Below Left Armrest)"
+					"description": "Living Room - Couch 10M Coin (Below Left Armrest)"
 				},
 				{
 					"x": -3.48,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 364.34,
 					"id": 340,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room 10M Coin behind Grandfather Clock Shelving C"
+					"description": "Living Room - 10M Coin behind Grandfather Clock Shelving A"
 				},
 				{
 					"x": 9.25,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 364.24,
 					"id": 341,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room 10M Coin behind Grandfather Clock Shelving B"
+					"description": "Living Room - 10M Coin behind Grandfather Clock Shelving B"
 				},
 				{
 					"x": 22.11,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 364.29,
 					"id": 342,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Living Room 10M Coin behind Grandfather Clock Shelving A"
+					"description": "Living Room - 10M Coin behind Grandfather Clock Shelving C"
 				},
 				{
 					"x": 253.16,
@@ -496,7 +496,7 @@
 					"id": 367,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper above Trashbin B"
+					"description": "Living Room - Wastepaper above Trashbin A"
 				},
 				{
 					"x": 246.22,
@@ -505,7 +505,7 @@
 					"id": 368,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Living Room Wastepaper above Trashbin A"
+					"description": "Living Room - Wastepaper above Trashbin B"
 				},
 				{
 					"x": 215.29,
@@ -514,7 +514,7 @@
 					"id": 437,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Candy Wrapper above Trashbin"
+					"description": "Living Room - Candy Wrapper above Trashbin B"
 				},
 				{
 					"x": -90.19,
@@ -523,7 +523,7 @@
 					"id": 438,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Candy Wrapper by Jenny A"
+					"description": "Living Room - Candy Wrapper by Jenny A"
 				},
 				{
 					"x": 136.28,
@@ -532,7 +532,7 @@
 					"id": 439,
 					"name": "item_candy_gomi",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Candy Wrapper"
+					"description": "Living Room - Couch Candy Wrapper"
 				},
 				{
 					"x": 76.43,
@@ -541,7 +541,7 @@
 					"id": 440,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Candy Wrapper by Jenny B"
+					"description": "Living Room - Candy Wrapper by Jenny B"
 				},
 				{
 					"x": -44.18,
@@ -550,7 +550,7 @@
 					"id": 441,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Candy Wrapper on Book Stack"
+					"description": "Living Room - Candy Wrapper on Book Stack"
 				},
 				{
 					"x": 22.73,
@@ -559,7 +559,7 @@
 					"id": 442,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Armchair Candy Wrapper B"
+					"description": "Living Room - Armchair Candy Wrapper B"
 				},
 				{
 					"x": 22.36,
@@ -568,7 +568,7 @@
 					"id": 443,
 					"name": "item_candy_gomi",
 					"prereqs": [],
-					"description": "Living Room Armchair Candy Wrapper A"
+					"description": "Living Room - Armchair Candy Wrapper A"
 				},
 				{
 					"x": 79.08,
@@ -577,7 +577,7 @@
 					"id": 444,
 					"name": "item_candy_gomi",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Cupholder Candy Wrapper"
+					"description": "Living Room - Cupholder Candy Wrapper"
 				},
 				{
 					"x": 151.28,
@@ -586,7 +586,7 @@
 					"id": 445,
 					"name": "item_okasi_gomi_1",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Couch Candy Bag"
+					"description": "Living Room - Couch Candy Bag"
 				},
 				{
 					"x": -4.27,
@@ -595,7 +595,7 @@
 					"id": 446,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Table Cookie Box A"
+					"description": "Living Room - Table Cookie Box A"
 				},
 				{
 					"x": 0.91,
@@ -604,7 +604,7 @@
 					"id": 447,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "copter" ],
-					"description": "Living Room Table Cookie Box B"
+					"description": "Living Room - Table Cookie Box B"
 				}
 			]
 		},
@@ -618,7 +618,7 @@
 					"id": 36,
 					"name": "item_mag_cup",
 					"prereqs": [],
-					"description": "Kitchen Mug Location"
+					"description": "Kitchen - Mug Location"
 				},
 				{
 					"x": -60.84,
@@ -627,7 +627,7 @@
 					"id": 37,
 					"name": "item_spoon",
 					"prereqs": [ "ladder" ],
-					"description": "Kitchen Spoon Location"
+					"description": "Kitchen - Spoon Location"
 				},
 				{
 					"x": -304.46,
@@ -636,7 +636,7 @@
 					"id": 152,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Kitchen Wastepaper by Foyer Door"
+					"description": "Kitchen - Wastepaper by Foyer - Door"
 				},
 				{
 					"x": 219.24,
@@ -645,16 +645,16 @@
 					"id": 153,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Kitchen Wastepaper under Counter"
+					"description": "Kitchen - Wastepaper under Counter"
 				},
 				{
 					"x": 142.44,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -86.09,
 					"id": 155,
 					"name": "item_cookie_kakera",
 					"prereqs": [],
-					"description": "Kitchen Cookie Crumbs by Tao's Bowl"
+					"description": "Kitchen - Cookie Crumbs by Tao's Bowl"
 				},
 				{
 					"x": 163.08,
@@ -663,7 +663,7 @@
 					"id": 156,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder" ],
-					"description": "Kitchen Cookie Crumbs by Spoon"
+					"description": "Kitchen - Cookie Crumbs by Spoon"
 				},
 				{
 					"x": 6.36,
@@ -672,7 +672,7 @@
 					"id": 158,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Cookie Crumbs on Kitchen Table"
+					"description": "Kitchen - Cookie Crumbs on Kitchen - Table"
 				},
 				{
 					"x": -251.1,
@@ -681,7 +681,7 @@
 					"id": 159,
 					"name": "item_cookie_kakera",
 					"prereqs": [],
-					"description": "Kitchen Cookie Crumbs next to Fridge on Counter"
+					"description": "Kitchen - Cookie Crumbs next to Fridge on Counter"
 				},
 				{
 					"x": -40.0,
@@ -690,7 +690,7 @@
 					"id": 163,
 					"name": "living_happy_block",
 					"prereqs": [ "bridge", "blaster", "copter" ],
-					"description": "Kitchen Table Happy Block"
+					"description": "Kitchen - Table Happy Block"
 				},
 				{
 					"x": -104.59,
@@ -699,7 +699,7 @@
 					"id": 167,
 					"name": "living_happy_block",
 					"prereqs": [ "blaster" ],
-					"description": "Kitchen Cabinet Happy Block"
+					"description": "Kitchen - Cabinet Happy Block"
 				},
 				{
 					"x": -216.94,
@@ -708,7 +708,7 @@
 					"id": 168,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder" ],
-					"description": "Kitchen Happy Block above Bandage"
+					"description": "Kitchen - Happy Block above Bandage"
 				},
 				{
 					"x": 269.73,
@@ -717,34 +717,34 @@
 					"id": 170,
 					"name": "living_happy_block",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Happy Block by Bridge-Only Chibi-Door"
+					"description": "Kitchen - Happy Block by Bridge-Only Chibi-Door"
 				},
 				{
 					"x": 328.65,
-					"y": 0.05,
+					"y": 1.505,
 					"z": -33.22,
 					"id": 206,
 					"name": "item_leaf",
 					"prereqs": [],
-					"description": "Kitchen Twig A"
+					"description": "Kitchen - Twig A"
 				},
 				{
 					"x": 352.19,
-					"y": 0.05,
+					"y": 1.505,
 					"z": -48.09,
 					"id": 207,
 					"name": "item_leaf",
 					"prereqs": [],
-					"description": "Kitchen Twig B"
+					"description": "Kitchen - Twig B"
 				},
 				{
 					"x": 358.63,
-					"y": 0.05,
+					"y": 1.505,
 					"z": -35.65,
 					"id": 208,
 					"name": "item_leaf",
 					"prereqs": [],
-					"description": "Kitchen Twig C"
+					"description": "Kitchen - Twig C"
 				},
 				{
 					"x": 314.25,
@@ -753,16 +753,16 @@
 					"id": 227,
 					"name": "item_tug",
 					"prereqs": [],
-					"description": "Kitchen Dog Tags Location"
+					"description": "Kitchen - Dog Tags Location"
 				},
 				{
 					"x": -242.47,
 					"y": 169.1,
-					"z": 0.0,
+					"z": 1.50,
 					"id": 228,
 					"name": "item_houtai",
 					"prereqs": [ "ladder", "blaster", "copter" ],
-					"description": "Kitchen Bandage Location"
+					"description": "Kitchen - Bandage Location"
 				},
 				{
 					"x": -42.31,
@@ -771,7 +771,7 @@
 					"id": 240,
 					"name": "item_frog_ring",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Frog Ring (Table)"
+					"description": "Kitchen - Frog Ring (Table)"
 				},
 				{
 					"x": -244.03,
@@ -780,7 +780,7 @@
 					"id": 304,
 					"name": "item_akikan",
 					"prereqs": [],
-					"description": "Kitchen Pink Soda Can"
+					"description": "Kitchen - Pink Soda Can"
 				},
 				{
 					"x": -258.19,
@@ -789,7 +789,7 @@
 					"id": 305,
 					"name": "item_akikan",
 					"prereqs": [],
-					"description": "Kitchen Purple Soda Can"
+					"description": "Kitchen - Purple Soda Can"
 				},
 				{
 					"x": -71.14,
@@ -798,7 +798,7 @@
 					"id": 306,
 					"name": "item_candy_gomi",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Table Candy Wrapper A"
+					"description": "Kitchen - Table Candy Wrapper A"
 				},
 				{
 					"x": -82.19,
@@ -807,7 +807,7 @@
 					"id": 307,
 					"name": "item_candy_gomi",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Table Candy Wrapper B"
+					"description": "Kitchen - Table Candy Wrapper B"
 				},
 				{
 					"x": -24.39,
@@ -816,7 +816,7 @@
 					"id": 308,
 					"name": "item_okasi_gomi_1",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen Table Candy Bag"
+					"description": "Kitchen - Table Candy Bag"
 				},
 				{
 					"x": 143.33,
@@ -825,7 +825,7 @@
 					"id": 309,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "ladder" ],
-					"description": "Kitchen Cookie Box by Spoon A"
+					"description": "Kitchen - Cookie Box by Spoon A"
 				},
 				{
 					"x": 161.88,
@@ -834,7 +834,7 @@
 					"id": 310,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "ladder" ],
-					"description": "Kitchen Cookie Box by Spoon B"
+					"description": "Kitchen - Cookie Box by Spoon B"
 				},
 				{
 					"x": -80.55,
@@ -843,7 +843,7 @@
 					"id": 358,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "blaster", "copter" ],
-					"description": "Kitchen High Cupboard 10M Coin"
+					"description": "Kitchen - High Cupboard 10M Coin"
 				},
 				{
 					"x": -315.53,
@@ -852,7 +852,7 @@
 					"id": 359,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Kitchen 10M Coin by Stove"
+					"description": "Kitchen - 10M Coin by Stove"
 				},
 				{
 					"x": 51.5,
@@ -861,7 +861,7 @@
 					"id": 360,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Kitchen 10M Coin by Sink"
+					"description": "Kitchen - 10M Coin by Sink"
 				},
 				{
 					"x": 211.96,
@@ -870,7 +870,7 @@
 					"id": 361,
 					"name": "coin_c",
 					"prereqs": [],
-					"description": "Kitchen 10M behind Bottles"
+					"description": "Kitchen - 10M behind Bottles"
 				}
 			]
 		},
@@ -884,7 +884,7 @@
 					"id": 49,
 					"name": "coin_g",
 					"prereqs": ["copter"],
-					"description": "Sink Drain Middle Row 100M Coin C"
+					"description": "Sink Drain - Middle Row 100M Coin C"
 				},
 				{
 					"x": -162.0,
@@ -893,7 +893,7 @@
 					"id": 50,
 					"name": "coin_g",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Middle Row 100M Coin B"
+					"description": "Sink Drain - Middle Row 100M Coin B"
 				},
 				{
 					"x": -174.0,
@@ -902,7 +902,7 @@
 					"id": 51,
 					"name": "coin_g",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Middle Row 100M Coin A"
+					"description": "Sink Drain - Middle Row 100M Coin A"
 				},
 				{
 					"x": -186.0,
@@ -911,7 +911,7 @@
 					"id": 52,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Middle Row 10M Coin C"
+					"description": "Sink Drain - Middle Row 10M Coin C"
 				},
 				{
 					"x": -198.0,
@@ -920,7 +920,7 @@
 					"id": 53,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Middle Row 10M Coin B"
+					"description": "Sink Drain - Middle Row 10M Coin B"
 				},
 				{
 					"x": -210.0,
@@ -929,7 +929,7 @@
 					"id": 54,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Middle Row 10M Coin A"
+					"description": "Sink Drain - Middle Row 10M Coin A"
 				},
 				{
 					"x": -300.0,
@@ -938,7 +938,7 @@
 					"id": 55,
 					"name": "coin_g",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Top Row 100M Coin"
+					"description": "Sink Drain - Top Row 100M Coin"
 				},
 				{
 					"x": -288.0,
@@ -947,7 +947,7 @@
 					"id": 56,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Top Row 10M Coin B"
+					"description": "Sink Drain - Top Row 10M Coin B"
 				},
 				{
 					"x": -276.0,
@@ -956,16 +956,16 @@
 					"id": 57,
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain Top Row 10M Coin A"
+					"description": "Sink Drain - Top Row 10M Coin A"
 				},
 				{
 					"x": -214.17,
 					"y": -90.29,
-					"z": 0.06,
+					"z": 1.506,
 					"id": 62,
 					"name": "item_frog_ring",
 					"prereqs": [ "copter", "blaster" ],
-					"description": "Sink Drain Frog Ring"
+					"description": "Sink Drain - Frog Ring"
 				}
 			]
 		},
@@ -979,7 +979,7 @@
 					"id": 27,
 					"name": "coin_c",
 					"prereqs": [ "copter", "ladder" ],
-					"description": "Foyer Top of Stairs 10M Coin"
+					"description": "Foyer - Top of Stairs 10M Coin"
 				},
 				{
 					"x": 92.85,
@@ -988,7 +988,7 @@
 					"id": 336,
 					"name": "item_army_photo",
 					"prereqs": [],
-					"description": "Foyer Free Rangers Photo"
+					"description": "Foyer - Free Rangers Photo"
 				},
 				{
 					"x": -180.84,
@@ -997,7 +997,7 @@
 					"id": 382,
 					"name": "item_frog_ring",
 					"prereqs": [ "copter", "ladder", "blaster" ],
-					"description": "Foyer Waterfall Frog Ring"
+					"description": "Foyer - Waterfall Frog Ring"
 				},
 				{
 					"x": -184.28,
@@ -1006,7 +1006,7 @@
 					"id": 385,
 					"name": "item_t_block_6",
 					"prereqs": [ "copter", "ladder" ],
-					"description": "Foyer Red Block"
+					"description": "Foyer - Red Block"
 				}
 			]
 		},
@@ -1021,7 +1021,7 @@
 					"id": 6,
 					"name": "item_deka_denchi",
 					"prereqs": ["mug"],
-					"description": "Basement Giga-Battery"
+					"description": "Basement - Giga-Battery"
 				},
 				{
 					"x": 105.5,
@@ -1030,7 +1030,7 @@
 					"id": 12,
 					"name": "item_chibi_house_denti_2",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Giga-Charger"
+					"description": "Basement - Giga-Charger"
 				},
 				{
 					"x": -107.7,
@@ -1039,7 +1039,7 @@
 					"id": 14,
 					"name": "souko_wine_bottle",
 					"prereqs": [ "mug" ],
-					"description": "Basement Wine Bottle A"
+					"description": "Basement - Wine Bottle A"
 				},
 				{
 					"x": -42.46,
@@ -1048,25 +1048,25 @@
 					"id": 15,
 					"name": "souko_wine_bottle",
 					"prereqs": [ "mug" ],
-					"description": "Basement Wine Bottle B"
+					"description": "Basement - Wine Bottle B"
 				},
 				{
 					"x": -89.29,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -51.66,
 					"id": 56,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "mug" ],
-					"description": "Basement Wastepaper below Dresser"
+					"description": "Basement - Wastepaper below Dresser"
 				},
 				{
 					"x": -29.36,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 75.61,
 					"id": 57,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "mug" ],
-					"description": "Basement Wastepaper below Stairs"
+					"description": "Basement - Wastepaper below Stairs"
 				},
 				{
 					"x": -36.18,
@@ -1075,7 +1075,7 @@
 					"id": 58,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "mug" ],
-					"description": "Basement Wastepaper on Stairs"
+					"description": "Basement - Wastepaper on Stairs"
 				},
 				{
 					"x": -47.82,
@@ -1084,7 +1084,7 @@
 					"id": 59,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Wastepaper on Shelf"
+					"description": "Basement - Wastepaper on Shelf"
 				},
 				{
 					"x": -60.8,
@@ -1093,7 +1093,7 @@
 					"id": 98,
 					"name": "souko_wine_bottle_b",
 					"prereqs": [ "mug" ],
-					"description": "Basement Broken Bottle Bottom"
+					"description": "Basement - Broken Bottle Bottom"
 				},
 				{
 					"x": -100.83,
@@ -1102,7 +1102,7 @@
 					"id": 99,
 					"name": "souko_wine_bottle_a",
 					"prereqs": [ "mug" ],
-					"description": "Basement Broken Bottle Top"
+					"description": "Basement - Broken Bottle Top"
 				},
 				{
 					"x": -140.78,
@@ -1111,7 +1111,7 @@
 					"id": 144,
 					"name": "item_kayaku",
 					"prereqs": [ "blaster", "mug" ],
-					"description": "Basement Gunpowder"
+					"description": "Basement - Gunpowder"
 				},
 				{
 					"x": 102.14,
@@ -1120,7 +1120,7 @@
 					"id": 151,
 					"name": "item_frog_ring",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Frog Ring"
+					"description": "Basement - Frog Ring"
 				},
 				{
 					"x": -65.33,
@@ -1129,7 +1129,7 @@
 					"id": 210,
 					"name": "item_akikan",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Purple Can"
+					"description": "Basement - Purple Can"
 				},
 				{
 					"x": -110.26,
@@ -1138,7 +1138,7 @@
 					"id": 211,
 					"name": "item_candy_gomi",
 					"prereqs": [ "blaster", "mug" ],
-					"description": "Basement Cabinet Trash A"
+					"description": "Basement - Cabinet Trash A"
 				},
 				{
 					"x": -21.81,
@@ -1147,7 +1147,7 @@
 					"id": 212,
 					"name": "item_candy_gomi",
 					"prereqs": [ "blaster", "mug" ],
-					"description": "Basement Cabinet Trash B"
+					"description": "Basement - Cabinet Trash B"
 				},
 				{
 					"x": -40.21,
@@ -1156,7 +1156,7 @@
 					"id": 213,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Shelf Happy Block B"
+					"description": "Basement - Shelf Happy Block B"
 				},
 				{
 					"x": -54.9,
@@ -1165,7 +1165,7 @@
 					"id": 214,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Shelf Happy Block A"
+					"description": "Basement - Shelf Happy Block A"
 				},
 				{
 					"x": 61.06,
@@ -1174,7 +1174,7 @@
 					"id": 215,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Rafters Happy Block B"
+					"description": "Basement - Rafters Happy Block B"
 				},
 				{
 					"x": -121.82,
@@ -1183,7 +1183,7 @@
 					"id": 216,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Rafters Happy Block A"
+					"description": "Basement - Rafters Happy Block A"
 				},
 				{
 					"x": -56.98,
@@ -1192,7 +1192,7 @@
 					"id": 217,
 					"name": "living_happy_box",
 					"prereqs": [ "mug" ],
-					"description": "Basement Stairs Happy Block"
+					"description": "Basement - Stairs Happy Block"
 				},
 				{
 					"x": -88.16,
@@ -1201,7 +1201,7 @@
 					"id": 243,
 					"name": "coin_c",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement Swing 10M Coin"
+					"description": "Basement - Swing 10M Coin"
 				}
 			]
 		},
@@ -1215,7 +1215,7 @@
 					"id": 106,
 					"name": "item_leaf",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Twig by Glass Door"
+					"description": "Backyard - Twig by Glass Door"
 				},
 				{
 					"x": 447.28,
@@ -1224,7 +1224,7 @@
 					"id": 107,
 					"name": "item_leaf",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Twig by Fence"
+					"description": "Backyard - Twig by Fence"
 				},
 				{
 					"x": 623.65,
@@ -1233,7 +1233,7 @@
 					"id": 108,
 					"name": "item_leaf",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Twig under Tree"
+					"description": "Backyard - Twig under Tree"
 				},
 				{
 					"x": 346.09,
@@ -1242,7 +1242,7 @@
 					"id": 109,
 					"name": "item_leaf",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Twig under Awning"
+					"description": "Backyard - Twig under Awning"
 				},
 				{
 					"x": 456.92,
@@ -1251,7 +1251,7 @@
 					"id": 112,
 					"name": "npc_hock_ship_114",
 					"prereqs": [ "blaster", "spoon" ],
-					"description": "Backyard Scurvy Splinter"
+					"description": "Backyard - Scurvy Splinter"
 				},
 				{
 					"x": 541.26,
@@ -1260,7 +1260,7 @@
 					"id": 123,
 					"name": "item_kusa",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Weeds A"
+					"description": "Backyard - Weeds A"
 				},
 				{
 					"x": 547.27,
@@ -1269,7 +1269,7 @@
 					"id": 124,
 					"name": "item_kusa",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Weeds B"
+					"description": "Backyard - Weeds B"
 				},
 				{
 					"x": 562.89,
@@ -1278,7 +1278,7 @@
 					"id": 125,
 					"name": "item_kusa",
 					"prereqs": [ "blaster" ],
-					"description": "Backyard Weeds C"
+					"description": "Backyard - Weeds C"
 				},
 				{
 					"x": 627.9,
@@ -1287,7 +1287,7 @@
 					"id": 126,
 					"name": "item_frog_ring",
 					"prereqs": [ "blaster", "copter" ],
-					"description": "Backyard Frog Ring"
+					"description": "Backyard - Frog Ring"
 				},
 				{
 					"x": 285.66,
@@ -1296,7 +1296,7 @@
 					"id": 274,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard Right Awning Happy Block C"
+					"description": "Backyard - Right Awning Happy Block C"
 				},
 				{
 					"x": 300.41,
@@ -1305,7 +1305,7 @@
 					"id": 275,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard Right Awning Happy Block B"
+					"description": "Backyard - Right Awning Happy Block B"
 				},
 				{
 					"x": 382.31,
@@ -1314,7 +1314,7 @@
 					"id": 276,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard Left Awning Happy Block"
+					"description": "Backyard - Left Awning Happy Block"
 				},
 				{
 					"x": 536.38,
@@ -1323,7 +1323,7 @@
 					"id": 277,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip" ],
-					"description": "Backyard Tree Happy Block"
+					"description": "Backyard - Tree Happy Block"
 				},
 				{
 					"x": 315.48,
@@ -1332,7 +1332,7 @@
 					"id": 278,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard Right Awning Happy Block A"
+					"description": "Backyard - Right Awning Happy Block A"
 				},
 				{
 					"x": 386.2,
@@ -1341,7 +1341,7 @@
 					"id": 292,
 					"name": "item_t_block_3",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard White Block"
+					"description": "Backyard - White Block"
 				}
 			]
 		},
@@ -1355,7 +1355,7 @@
 					"id": 104,
 					"name": "item_denchi_3",
 					"prereqs": [ "ladder", "red shoe", "mug" ],
-					"description": "Jennys Room AA Battery"
+					"description": "Jenny's Room - AA Battery"
 				},
 				{
 					"x": 92.86,
@@ -1364,7 +1364,7 @@
 					"id": 106,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Happy Block by TV"
+					"description": "Jenny's Room - Happy Block by TV"
 				},
 				{
 					"x": 235.65,
@@ -1373,7 +1373,7 @@
 					"id": 107,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Happy Block on Train Shelf B"
+					"description": "Jenny's Room - Happy Block on Train Shelf B"
 				},
 				{
 					"x": -6.65,
@@ -1382,7 +1382,7 @@
 					"id": 109,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Happy Block on Chair"
+					"description": "Jenny's Room - Happy Block on Chair"
 				},
 				{
 					"x": -261.73,
@@ -1391,7 +1391,7 @@
 					"id": 110,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Happy Block on Bookshelf"
+					"description": "Jenny's Room - Happy Block on Bookshelf"
 				},
 				{
 					"x": -200.36,
@@ -1400,7 +1400,7 @@
 					"id": 111,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Happy Block on Train Shelf A"
+					"description": "Jenny's Room - Happy Block on Train Shelf A"
 				},
 				{
 					"x": 207.84,
@@ -1409,7 +1409,7 @@
 					"id": 122,
 					"name": "item_denchi_1",
 					"prereqs": [ "ladder", "red shoe", "blaster", "copter", "mug" ],
-					"description": "Jennys Room D Battery"
+					"description": "Jenny's Room - D Battery"
 				},
 				{
 					"x": 214.54,
@@ -1418,34 +1418,34 @@
 					"id": 124,
 					"name": "item_denchi_2",
 					"prereqs": [ "ladder", "red shoe", "blaster", "copter", "mug" ],
-					"description": "Jennys Room C Battery"
+					"description": "Jenny's Room - C Battery"
 				},
 				{
 					"x": -200.88,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 105.19,
 					"id": 153,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper by Trashcan"
+					"description": "Jenny's Room - Wastepaper by Trashcan"
 				},
 				{
 					"x": 205.72,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 80.36,
 					"id": 154,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper by Piano"
+					"description": "Jenny's Room - Wastepaper by Piano"
 				},
 				{
 					"x": 92.85,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -350.66,
 					"id": 155,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper under Dresser"
+					"description": "Jenny's Room - Wastepaper under Dresser"
 				},
 				{
 					"x": -73.55,
@@ -1454,7 +1454,7 @@
 					"id": 156,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper under Bed A"
+					"description": "Jenny's Room - Wastepaper under Bed A"
 				},
 				{
 					"x": -81.62,
@@ -1463,7 +1463,7 @@
 					"id": 157,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper under Bed B"
+					"description": "Jenny's Room - Wastepaper under Bed B"
 				},
 				{
 					"x": -9.96,
@@ -1472,7 +1472,7 @@
 					"id": 158,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper under Bed C"
+					"description": "Jenny's Room - Wastepaper under Bed C"
 				},
 				{
 					"x": -23.25,
@@ -1481,7 +1481,7 @@
 					"id": 159,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper under Bed D"
+					"description": "Jenny's Room - Wastepaper under Bed D"
 				},
 				{
 					"x": 16.92,
@@ -1490,7 +1490,7 @@
 					"id": 161,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Wastepaper by Crayon Box"
+					"description": "Jenny's Room - Wastepaper by Crayon Box"
 				},
 				{
 					"x": 225.0,
@@ -1499,7 +1499,7 @@
 					"id": 181,
 					"name": "item_peets_kutu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Red Shoe"
+					"description": "Jenny's Room - Red Shoe"
 				},
 				{
 					"x": 181.07,
@@ -1508,7 +1508,7 @@
 					"id": 226,
 					"name": "item_frog_ring",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Frog Ring"
+					"description": "Jenny's Room - Frog Ring"
 				},
 				{
 					"x": 33.49,
@@ -1517,7 +1517,7 @@
 					"id": 236,
 					"name": "item_tyuusyaki",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Squirter"
+					"description": "Jenny's Room - Squirter"
 				},
 				{
 					"x": 249.91,
@@ -1526,52 +1526,52 @@
 					"id": 263,
 					"name": "item_goggle",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Snorkel"
+					"description": "Jenny's Room - Snorkel"
 				},
 				{
 					"x": -90.26,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -314.07,
 					"id": 282,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs under Bed A"
+					"description": "Jenny's Room - Cookie Crumbs under Bed A"
 				},
 				{
 					"x": -19.39,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -346.09,
 					"id": 283,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs under Bed B"
+					"description": "Jenny's Room - Cookie Crumbs under Bed B"
 				},
 				{
 					"x": 2.43,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -312.23,
 					"id": 284,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs under Bed C"
+					"description": "Jenny's Room - Cookie Crumbs under Bed C"
 				},
 				{
 					"x": -72.37,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -313.31,
 					"id": 285,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs under Bed D"
+					"description": "Jenny's Room - Cookie Crumbs under Bed D"
 				},
 				{
 					"x": -101.56,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 157.52,
 					"id": 286,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs by Chair"
+					"description": "Jenny's Room - Cookie Crumbs by Chair"
 				},
 				{
 					"x": -76.06,
@@ -1580,7 +1580,7 @@
 					"id": 287,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs on Desk A"
+					"description": "Jenny's Room - Cookie Crumbs on Desk A"
 				},
 				{
 					"x": -84.1,
@@ -1589,7 +1589,7 @@
 					"id": 288,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Crumbs B"
+					"description": "Jenny's Room - Cookie Crumbs B"
 				},
 				{
 					"x": -65.37,
@@ -1598,7 +1598,7 @@
 					"id": 289,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper below Bed A"
+					"description": "Jenny's Room - Candy Wrapper below Bed A"
 				},
 				{
 					"x": 1.08,
@@ -1607,7 +1607,7 @@
 					"id": 290,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper below Bed B"
+					"description": "Jenny's Room - Candy Wrapper below Bed B"
 				},
 				{
 					"x": -12.21,
@@ -1616,7 +1616,7 @@
 					"id": 291,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper below Bed C"
+					"description": "Jenny's Room - Candy Wrapper below Bed C"
 				},
 				{
 					"x": -90.83,
@@ -1625,7 +1625,7 @@
 					"id": 292,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper on Bed A"
+					"description": "Jenny's Room - Candy Wrapper on Bed A"
 				},
 				{
 					"x": -3.17,
@@ -1634,7 +1634,7 @@
 					"id": 293,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper on Bed B"
+					"description": "Jenny's Room - Candy Wrapper on Bed B"
 				},
 				{
 					"x": 27.53,
@@ -1643,7 +1643,7 @@
 					"id": 294,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper by TV"
+					"description": "Jenny's Room - Candy Wrapper by TV"
 				},
 				{
 					"x": 33.62,
@@ -1652,7 +1652,7 @@
 					"id": 295,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper by Crayon Box A"
+					"description": "Jenny's Room - Candy Wrapper by Crayon Box A"
 				},
 				{
 					"x": 73.26,
@@ -1661,16 +1661,16 @@
 					"id": 296,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Wrapper by Crayon Box B"
+					"description": "Jenny's Room - Candy Wrapper by Crayon Box B"
 				},
 				{
 					"x": -89.44,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -334.07,
 					"id": 297,
 					"name": "item_okasi_gomi_1",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Bag under Bed "
+					"description": "Jenny's Room - Candy Bag under Bed"
 				},
 				{
 					"x": 0.26,
@@ -1679,25 +1679,25 @@
 					"id": 298,
 					"name": "item_okasi_gomi_1",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Candy Bag on Bed"
+					"description": "Jenny's Room - Candy Bag on Bed"
 				},
 				{
 					"x": -15.62,
-					"y": 0.1,
+					"y": 0.00,
 					"z": -328.33,
 					"id": 299,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Box under Bed A"
+					"description": "Jenny's Room - Cookie Box under Bed A"
 				},
 				{
 					"x": -36.64,
-					"y": 0.1,
+					"y": 0.00,
 					"z": -358.68,
 					"id": 300,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Box under Bed B"
+					"description": "Jenny's Room - Cookie Box under Bed B"
 				},
 				{
 					"x": -102.23,
@@ -1706,7 +1706,7 @@
 					"id": 301,
 					"name": "item_okasi_gomi_2",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Cookie Box on Desk"
+					"description": "Jenny's Room - Cookie Box on Desk"
 				},
 				{
 					"x": -74.23,
@@ -1715,7 +1715,7 @@
 					"id": 302,
 					"name": "item_akikan",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Orange Can"
+					"description": "Jenny's Room - Orange Can"
 				},
 				{
 					"x": -81.1,
@@ -1724,7 +1724,7 @@
 					"id": 303,
 					"name": "item_akikan",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Purple Can"
+					"description": "Jenny's Room - Purple Can"
 				},
 				{
 					"x": 14.59,
@@ -1733,7 +1733,7 @@
 					"id": 306,
 					"name": "item_kure_1",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Red Crayon"
+					"description": "Jenny's Room - Red Crayon"
 				},
 				{
 					"x": -234.02,
@@ -1742,7 +1742,7 @@
 					"id": 307,
 					"name": "item_kure_3",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Yellow Crayon"
+					"description": "Jenny's Room - Yellow Crayon"
 				},
 				{
 					"x": -9.17,
@@ -1751,7 +1751,7 @@
 					"id": 308,
 					"name": "item_kure_4",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Green Crayon"
+					"description": "Jenny's Room - Green Crayon"
 				},
 				{
 					"x": -259.56,
@@ -1760,7 +1760,7 @@
 					"id": 309,
 					"name": "item_kure_5",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Jennys Room Purple Crayon"
+					"description": "Jenny's Room - Purple Crayon"
 				},
 				{
 					"x":175.03,
@@ -1769,7 +1769,7 @@
 					"id":364,
 					"name": "item_t_block_4",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Green Block"
+					"description": "Jenny's Room - Green Block"
 				},
 				{
 					"x": -85.34,
@@ -1778,7 +1778,7 @@
 					"id": 369,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Jennys Room Stool 10M Coin"
+					"description": "Jenny's Room - Stool 10M Coin"
 				},
 				{
 					"x": 20.94,
@@ -1787,7 +1787,7 @@
 					"id": 371,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Bed Railing 10M Coin B"
+					"description": "Jenny's Room - Bed Railing 10M Coin B"
 				},
 				{
 					"x": -120.77,
@@ -1796,7 +1796,7 @@
 					"id": 372,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Bed Railing 10M Coin A"
+					"description": "Jenny's Room - Bed Railing 10M Coin A"
 				},
 				{
 					"x": -196.81,
@@ -1805,16 +1805,16 @@
 					"id": 373,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room Slide 10M Coin"
+					"description": "Jenny's Room - Slide 10M Coin"
 				},
 				{
 					"x": 259.1,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 18.54,
 					"id": 374,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Jennys Room 10M Coin under Castle"
+					"description": "Jenny's Room - 10M Coin under Castle"
 				}
 			]
 		},
@@ -1828,7 +1828,7 @@
 					"id": 163,
 					"name": "item_rex_tooth",
 					"prereqs": [ "ladder", "frog suit", "mug" ],
-					"description": "Bedroom Dinahs Teeth"
+					"description": "Bedroom - Dinahs Teeth"
 				},
 				{
 					"x": 143.92,
@@ -1837,7 +1837,7 @@
 					"id": 174,
 					"name": "item_left_foot",
 					"prereqs": [ "ladder", "suitcase", "mug" ],
-					"description": "Bedroom Left Leg in Suitcase"
+					"description": "Bedroom - Left Leg in Suitcase"
 				},
 				{
 					"x": -4.06,
@@ -1846,52 +1846,52 @@
 					"id": 194,
 					"name": "item_ticket",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Ticket Stub"
+					"description": "Bedroom - Ticket Stub"
 				},
 				{
 					"x": -113.75,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 272.03,
 					"id": 213,
 					"name": "item_frog",
 					"prereqs": [ "ladder", "frog suit", "mug" ],
-					"description": "Bedroom Passed-Out Frog"
+					"description": "Bedroom - Passed-Out Frog"
 				},
 				{
 					"x": 64.01,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -132.31,
 					"id": 281,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom Wastepaper by Bills B"
+					"description": "Bedroom - Wastepaper by Bills B"
 				},
 				{
 					"x": 57.22,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -124.83,
 					"id": 282,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom Wastepaper by Bills A"
+					"description": "Bedroom - Wastepaper by Bills A"
 				},
 				{
 					"x": 264.24,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 0.58,
 					"id": 283,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom Wastepaper under Bed"
+					"description": "Bedroom - Wastepaper under Bed"
 				},
 				{
 					"x": 101.02,
-					"y": 0.0,
+					"y": 0.00,
 					"z": 239.17,
 					"id": 284,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom Wastepaper under Vanity"
+					"description": "Bedroom - Wastepaper under Vanity"
 				},
 				{
 					"x": 108.8,
@@ -1900,7 +1900,7 @@
 					"id": 285,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Wastepaper on Vanity"
+					"description": "Bedroom - Wastepaper on Vanity"
 				},
 				{
 					"x": 109.17,
@@ -1909,7 +1909,7 @@
 					"id": 286,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Wastepaper on Bed"
+					"description": "Bedroom - Wastepaper on Bed"
 				},
 				{
 					"x": 180.62,
@@ -1918,7 +1918,7 @@
 					"id": 287,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Wastepaper by Dinahs Place A"
+					"description": "Bedroom - Wastepaper by Dinahs Place A"
 				},
 				{
 					"x": 195.16,
@@ -1927,7 +1927,7 @@
 					"id": 288,
 					"name": "item_kami_kuzu",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Wastepaper by Dinahs Place B"
+					"description": "Bedroom - Wastepaper by Dinahs Place B"
 				},
 				{
 					"x": 83.35,
@@ -1936,7 +1936,7 @@
 					"id": 289,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Cookie Crumbs on Toybox"
+					"description": "Bedroom - Cookie Crumbs on Toybox"
 				},
 				{
 					"x": 41.01,
@@ -1945,7 +1945,7 @@
 					"id": 290,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Vanity Candy Wrapper A"
+					"description": "Bedroom - Vanity Candy Wrapper A"
 				},
 				{
 					"x": 28.55,
@@ -1954,7 +1954,7 @@
 					"id": 291,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Vanity Candy Wrapper B"
+					"description": "Bedroom - Vanity Candy Wrapper B"
 				},
 				{
 					"x": -54.0,
@@ -1963,7 +1963,7 @@
 					"id": 292,
 					"name": "item_candy_gomi",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom Shelf Candy Wrapper"
+					"description": "Bedroom - Shelf Candy Wrapper"
 				},
 				{
 					"x": 63.97,
@@ -1972,7 +1972,7 @@
 					"id": 293,
 					"name": "item_okasi_gomi_1",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Vanity Candy Bag"
+					"description": "Bedroom - Vanity Candy Bag"
 				},
 				{
 					"x": -3.85,
@@ -1981,7 +1981,7 @@
 					"id": 314,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Happy Block by Ticket Stub (Lower Shelf)"
+					"description": "Bedroom - Happy Block by Ticket Stub (Lower Shelf)"
 				},
 				{
 					"x": -4.44,
@@ -1990,7 +1990,7 @@
 					"id": 316,
 					"name": "living_happy_block",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Happy Block by Ticket Stub (Higher Shelf)"
+					"description": "Bedroom - Happy Block by Ticket Stub (Higher Shelf)"
 				},
 				{
 					"x": 127.26,
@@ -1999,7 +1999,7 @@
 					"id": 369,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom Vanity Stool 10M Coin"
+					"description": "Bedroom - Vanity Stool 10M Coin"
 				},
 				{
 					"x": 33.03,
@@ -2008,16 +2008,16 @@
 					"id": 370,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom 10M Coin by Dinahs Place"
+					"description": "Bedroom - 10M Coin by Dinahs Place"
 				},
 				{
 					"x": 86.9,
-					"y": 0.0,
+					"y": 0.00,
 					"z": -162.78,
 					"id": 371,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom 10M Coin under Bed"
+					"description": "Bedroom - 10M Coin under Bed"
 				},
 				{
 					"x": 48.32,
@@ -2026,7 +2026,7 @@
 					"id": 372,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "copter", "mug" ],
-					"description": "Bedroom 10M Coin on Nightstand"
+					"description": "Bedroom - 10M Coin on Nightstand"
 				},
 				{
 					"x": -77.06,
@@ -2035,7 +2035,7 @@
 					"id": 373,
 					"name": "coin_c",
 					"prereqs": [ "ladder", "mug" ],
-					"description": "Bedroom 10M Coin on Shelf"
+					"description": "Bedroom - 10M Coin on Shelf"
 				}
 			]
 		},
@@ -2049,7 +2049,7 @@
 					"id": 3,
 					"name": "item_tane_a_92",
 					"prereqs": [ "shop" ],
-					"description": "Shop Pink Flower Seed"
+					"description": "Chibi House - Pink Flower Seed"
 				},
 				{
 					"x": 0,
@@ -2058,7 +2058,7 @@
 					"id": 4,
 					"name": "item_tane_a_93",
 					"prereqs": [ "shop" ],
-					"description": "Shop Blue Flower Seed"
+					"description": "Chibi House - Blue Flower Seed"
 				},
 				{
 					"x": 0,
@@ -2067,7 +2067,7 @@
 					"id": 5,
 					"name": "item_tane_a_94",
 					"prereqs": [ "shop" ],
-					"description": "Shop White Flower Seed"
+					"description": "Chibi House - White Flower Seed"
 				},
 				{
 					"x": 0,
@@ -2076,7 +2076,7 @@
 					"id": 6,
 					"name": "item_tane_a_152",
 					"prereqs": [ "shop" ],
-					"description": "Shop Nectar Flower Seed"
+					"description": "Chibi House - Nectar Flower Seed"
 				},
 				{
 					"x": 0,
@@ -2085,7 +2085,7 @@
 					"id": 7,
 					"name": "item_chip_53",
 					"prereqs": [ "blaster", "shop" ],
-					"description": "Shop Charge Chip"
+					"description": "Chibi House - Charge Chip"
 				},
 				{
 					"x": 0,
@@ -2094,7 +2094,7 @@
 					"id": 9,
 					"name": "item_c_denchi",
 					"prereqs": [ "shop" ],
-					"description": "Shop Chibi-Battery"
+					"description": "Chibi House - Chibi-Battery"
 				},
 				{
 					"x": 0,
@@ -2103,7 +2103,7 @@
 					"id": 10,
 					"name": "cb_cannon_lv2",
 					"prereqs": [ "shop" ],
-					"description": "Shop Chibi-Blaster"
+					"description": "Chibi House - Chibi-Blaster"
 				},
 				{
 					"x": 0,
@@ -2112,7 +2112,7 @@
 					"id": 11,
 					"name": "item_chip_54",
 					"prereqs": [ "blaster", "shop" ],
-					"description": "Shop Range Chip"
+					"description": "Chibi House - Range Chip"
 				},
 				{
 					"x": 0,
@@ -2121,7 +2121,7 @@
 					"id": 12,
 					"name": "cb_radar",
 					"prereqs": [ "shop", "divorce" ],
-					"description": "Shop Chibi-Radar"
+					"description": "Chibi House - Chibi-Radar"
 				},
 				{
 					"x": 0,
@@ -2130,7 +2130,7 @@
 					"id": 13,
 					"name": "item_hocyouki",
 					"prereqs": [ "shop", "radar" ],
-					"description": "Shop Alien Ear Chip"
+					"description": "Chibi House - Alien Ear Chip"
 				},
 				{
 					"x": 0,
@@ -2139,7 +2139,7 @@
 					"id": 14,
 					"name": "item_car_item",
 					"prereqs": [ "shop" ],
-					"description": "Shop Hot Rod"
+					"description": "Chibi House - Hot Rod"
 				},
 				{
 					"x": 0,
@@ -2148,7 +2148,7 @@
 					"id": 15,
 					"name": "item_nwing_item",
 					"prereqs": [ "shop" ],
-					"description": "Shop Space Scrambler"
+					"description": "Chibi House - Space Scrambler"
 				}
 			]
 		}
