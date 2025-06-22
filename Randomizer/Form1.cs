@@ -575,37 +575,6 @@ namespace WindowsFormsApp1
 
                         spoilerLog.Add(name, stageData.rooms[roomID].locations[apDataIndex].Description);
 
-                    //if (apDataIndex <= stageData.rooms[roomID].locations.Count && roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object") != null)
-                    //{
-                    //    roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object").Replace(objectName);
-                    //    roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(null);
-
-                    //    spoilerLog.Add(name, stageData.rooms[roomID].locations[apDataIndex].Description);
-
-                    //}
-
-
-
-                    //var itemPoolLocation = stageData.rooms[roomID].locations[apDataIndex].Description.ToString();
-
-                    //Console.WriteLine("AP Location: " + location.Key);
-
-                    //Console.WriteLine("Js Location: " + itemPoolLocation);
-
-                    //Console.WriteLine("Room ID: " + roomID);
-
-                    //Console.WriteLine("apData Index: " + apDataIndex);
-
-                    //Console.WriteLine(locationName);
-
-                    //var locationIndex = allLocations.Find(x => x.Equals(locationName));
-
-                    //Console.WriteLine(locationIndex);
-
-                    //int nextCheck = r.Next(0, allLocations.Count() - 1);
-
-                    //spoilerLog.Add(name, allLocations[apDataIndex].Description);
-
 
 
                     apDataIndex++;
@@ -933,6 +902,15 @@ namespace WindowsFormsApp1
             {
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
 
+                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(null);
+
+                var yPOS = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").SelectToken("y").ToString();
+
+                if(yPOS != null && yPOS == "0.0")
+                {
+                    roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").SelectToken("y").Replace(10.0);
+                }
+
                 //Setting the correct flags for the new object
                 int finalFlagIndex = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children().Count() - 1;
 
@@ -966,7 +944,6 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("clamber");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("fall");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("grab");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
                         break;
                     default:
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
@@ -993,6 +970,8 @@ namespace WindowsFormsApp1
             File.WriteAllText("globals.json", globals.ToString());
 
             PBar.Value = 45;
+
+            // Import custom scritping First
 
             // Birthday Party Into
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");

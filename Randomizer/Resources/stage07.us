@@ -4995,7 +4995,7 @@ loc_1145:
 		wait(254.b)
 	break	*loc_1140
 loc_1147:
-	case	eq(var(0.d), 1.w), else *tooth_brush_toggle
+	case	eq(var(0.d), 1.w), else *loc_1149
 	msg	voice(3.b),
 		"Thanks, Chibi-Robo...\n",
 		"Zzzzzzzz...",

@@ -9,7 +9,7 @@ lib_73:
 	set	flag(35.d), 1.w
 	if	eq(time(0.d), 0.d), else *loc_1538
 	run	*sub_1498
-	printf	"夜です\n"
+	printf	"夜です\n" ;It's night
 	set	time(0.d), 1.d
 	if	ne(map(0.d), 5.d), else *loc_1497
 	color	-2.d, @modulate, 100.w, 100.w, 150.w, 0.w
@@ -18,7 +18,7 @@ loc_1497:
 loc_1538:
 	elif	eq(time(0.d), 1.d), else *loc_1547
 	run	*sub_1546
-	printf	"昼です\n"
+	printf	"昼です\n" ; It's noon
 	set	time(0.d), 0.d
 	if	ne(map(0.d), 5.d), else *loc_1545
 	color	-2.d, @blend, 0.w, 0.w, 0.w, 0.w
@@ -28,7 +28,7 @@ loc_1545:
 	run	*lib_265
 	endif	*loc_1234
 loc_1547:
-	printf	"昼夜ステータスがないよ\n"
+	printf	"昼夜ステータスがないよ\n" ; There is no day or night status
 loc_1234:
 	set	time(1.d), 0.d
 	run	*lib_252
@@ -216,18 +216,18 @@ loc_1447:
 	if	gt(var(116.d), var(107.d)), else *loc_1451
 	set	var(116.d), var(107.d)
 	set	var(77.d), 25.d
-	printf	"パパは庭にいます\n"
+	printf	"パパは庭にいます\n" ; Daddy is in the garden
 	endif	*loc_1450
 loc_1451:
 	elif	eq(var(116.d), var(107.d)), else *loc_1453
 	set	var(116.d), add(var(107.d), 2.w)
 	set	var(77.d), 24.d
-	printf	"パパキッチン２日目\n"
+	printf	"パパキッチン２日目\n" ; Papa Kitchen Day 2
 	endif	*loc_1450
 loc_1453:
 	set	var(116.d), add(var(107.d), 1.w)
 	set	var(77.d), 24.d
-	printf	"パパキッチン１日目\n"
+	printf	"パパキッチン１日目\n" ; Papa Kitchen Day 1
 loc_1450:
 	endif	*loc_1253
 loc_1454:
@@ -283,33 +283,33 @@ loc_1385:
 loc_1372:
 	elif	flag(671.d), else *loc_1380
 	if	eq(var(697.d), 1.w), else *loc_1376
-	printf	"べべ　配置３"
+	printf	"べべ　配置３" ; (Sophie) Bebe Placement 3 
 	set	var(133.d), 30.d
 	set	var(134.d), 30.d
 	endif	*loc_1375
 loc_1376:
 	elif	eq(var(697.d), 2.w), else *loc_1378
-	printf	"べべ　配置４"
+	printf	"べべ　配置４" ; (Sophie) Bebe Placement 4
 	set	var(133.d), 32.d
 	set	var(134.d), 32.d
 	endif	*loc_1375
 loc_1378:
 	elif	ge(var(697.d), 3.w), else *loc_1375
-	printf	"べべ　配置５"
+	printf	"べべ　配置５" ; (Sophie) Bebe Placement 5
 	set	var(133.d), 34.d
 	set	var(134.d), 34.d
 loc_1375:
 	endif	*loc_1260
 loc_1380:
 	elif	and(eq(flag(558.d), 1.w), eq(flag(559.d), 0.w)), else *loc_1382
-	printf	"べべ　配置６"
+	printf	"べべ　配置６" ; (Sophie) Bebe Placement 6
 	set	var(133.d), 1.d
 	set	var(134.d), 1.d
 	endif	*loc_1260
 loc_1382:
 	elif	and(and(and(eq(time(0.d), 0.d), ge(var(703.d), 1.d)), flag(460.d)), flag(532.d)), else *loc_1260
 	if	not(flag(1674.d)), else *loc_1260
-	printf	"リブ　べべ　廊下にセット"
+	printf	"リブ　べべ　廊下にセット" ; Rib Bebe (Sophie) set in the hallway
 	set	flag(1674.d), 1.w
 	set	var(133.d), 10.d
 	set	var(134.d), 10.d
@@ -393,33 +393,33 @@ loc_1344:
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_1345
 	set	var(78.d), 10.d
-	printf	"かみ"
+	printf	"かみ" ; paper
 	break	*loc_1343
 loc_1345:
 	case	eq(var(0.d), 1.w), else *loc_1347
 	set	var(78.d), 20.d
-	printf	"にわ"
+	printf	"にわ" ; Chicken
 	break	*loc_1343
 loc_1347:
 	case	eq(var(0.d), 2.w), else *loc_1343
 	if	le(rand(9.w), 4.w), else *loc_1356
 	if	eq(item(25.d), 0.w), else *loc_1353
 	set	var(78.d), 40.d
-	printf	"みず"
+	printf	"みず" ; Water
 	endif	*loc_1351
 loc_1353:
 	elif	flag(533.d), else *loc_1355
 	set	var(78.d), 40.d
-	printf	"みず"
+	printf	"みず" ; Water
 	endif	*loc_1351
 loc_1355:
 	set	var(78.d), 10.d
-	printf	"かみ"
+	printf	"かみ" ; paper
 loc_1351:
 	endif	*loc_1352
 loc_1356:
 	set	var(78.d), 10.d
-	printf	"かみ"
+	printf	"かみ" ; paper
 loc_1352:
 	break	*loc_1343
 loc_1343:
@@ -427,7 +427,7 @@ loc_1343:
 loc_1273:
 	pushbp
 	setsp	var(78.d)
-	printf	"今日のタオは%dにいます"
+	printf	"今日のタオは%dにいます" ; Tao is at %d today
 	popbp
 	if	and(eq(time(0.d), 0.d), flag(547.d)), else *loc_1326
 	if	and(eq(flag(11.d), 1.w), eq(flag(17.d), 0.w)), else *loc_1327
@@ -542,29 +542,29 @@ sub_1397:
 	set	var(140.d), var(118.d)
 	pushbp
 	setsp	var(140.d)
-	printf	"スンミダは%d"
+	printf	"スンミダは%d" ; Sunmida is %d
 	popbp
 loc_1401:
 	while	eq(var(140.d), var(118.d)), else *loc_1409
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_1402
 	set	var(118.d), 20.d
-	printf	"水　スンミダ"
+	printf	"水　スンミダ" ; Water Sunmida
 	break	*loc_1400
 loc_1402:
 	case	eq(var(0.d), 1.w), else *loc_1404
 	set	var(118.d), 30.d
-	printf	"火　スンミダ"
+	printf	"火　スンミダ" ; Fire Sunmida
 	break	*loc_1400
 loc_1404:
 	case	eq(var(0.d), 2.w), else *loc_1400
 	if	ge(var(143.d), 6.w), else *loc_1408
 	set	var(118.d), 50.d
-	printf	"庭　スンミダ"
+	printf	"庭　スンミダ" ; Garden: Sunmida
 	endif	*loc_1407
 loc_1408:
 	set	var(118.d), 30.d
-	printf	"火　スンミダ"
+	printf	"火　スンミダ" ; Fire Sunmida
 loc_1407:
 	break	*loc_1400
 loc_1400:
@@ -738,14 +738,14 @@ loc_1544:
 sub_1595:
 	if	and(eq(flag(1188.d), 1.w), eq(flag(1189.d), 0.w)), else *loc_1599
 	if	ge(var(853.d), 1.w), else *loc_1598
-	printf	"トイレックスが行動に移します\n"
+	printf	"トイレックスが行動に移します\n" ; Toiletex springs into action
 	set	flag(1189.d), 1.w
 	set	flag(1190.d), 1.w
 loc_1598:
-	printf	"○●○●○●○●○●　カウントプラス\n"
+	printf	"○●○●○●○●○●　カウントプラス\n" ; ○●○●○●○●○● Count Plus
 	set	var(853.d), add(var(853.d), 1.w)
 loc_1599:
-	printf	"●須藤間苦労\n"
+	printf	"●須藤間苦労\n" ; ● Sudo's hardships
 	set	flag(1614.d), 0.w
 	set	var(1073.d), 0.w
 	set	var(695.d), 0.w
@@ -840,7 +840,7 @@ loc_6:
 	if	gt(var(0.d), 0.w), else *loc_3
 	set	flag(33.d), 1.w
 	set	money, sub(money, var(0.d))
-	printf	"マネ減らす\n"
+	printf	"マネ減らす\n" ; reduce money
 loc_3:
 	if	eq(hold, -1.d), else *loc_5
 	call	20000.d, -1.d
@@ -920,7 +920,7 @@ loc_28:
 	sfx	-65435.d, 2.d, 100.w
 	break	*loc_13
 loc_30:
-	printf	"その他\n"
+	printf	"その他\n" ; others
 	if	and(flag(11.d), eq(flag(960.d), 0.w)), else *loc_33
 	sfx	-65468.d, 4.d, 100.w, 0.w
 	endif	*loc_32
@@ -939,7 +939,7 @@ loc_13:
 	.lib	96.w, *lib_96
 lib_96:
 	case	eq(map(0.d), 1.d), else *loc_66
-	printf	"キッチン\n"
+	printf	"キッチン\n" ; kitchen
 	if	flag(1654.d), else *loc_65
 	sfx	-65455.d, 1.d
 	endif	*loc_63
@@ -949,32 +949,32 @@ loc_63:
 	break	*loc_64
 loc_66:
 	case	eq(map(0.d), 3.d), else *loc_68
-	printf	"倉庫\n"
+	printf	"倉庫\n" ; storehouse
 	break	*loc_64
 loc_68:
 	case	eq(map(0.d), 6.d), else *loc_70
-	printf	"パマ部屋\n"
+	printf	"パマ部屋\n" ; pama room
 	sfx	-65531.d, 3.d, 100.w
 	break	*loc_64
 loc_70:
 	case	eq(map(0.d), 9.d), else *loc_74
-	printf	"裏庭\n"
+	printf	"裏庭\n" ; backyard
 	if	or(eq(flag(907.d), 1.d), eq(flag(935.d), 1.d)), else *loc_73
 	sfx	-65519.d, 4.d, 100.w, 128.w
 loc_73:
 	break	*loc_64
 loc_74:
 	case	eq(map(0.d), 5.d), else *loc_76
-	printf	"ちびロボハウス\n"
+	printf	"ちびロボハウス\n" ; Chibi Robo House
 	break	*loc_64
 loc_76:
 	case	eq(map(0.d), 16.d), else *loc_78
-	printf	"ＵＦＯ内部\n"
+	printf	"ＵＦＯ内部\n" ; Inside the UFO
 	sfx	-65508.d, 3.d, 100.w
 	break	*loc_64
 loc_78:
 	case	eq(map(0.d), 4.d), else *loc_83
-	printf	"ジェニーのへや\n"
+	printf	"ジェニーのへや\n" ; Jenny's Room
 	if	and(and(eq(var(123.d), 4.d), eq(var(130.d), 5.d)), eq(flag(815.d), 0.d)), else *loc_82
 	sfx	-65446.d, 3.d, 100.w
 	endif	*loc_81
@@ -984,7 +984,7 @@ loc_81:
 	break	*loc_64
 loc_83:
 	case	eq(map(0.d), 2.d), else *loc_94
-	printf	"廊下\n"
+	printf	"廊下\n" ; corridor
 	if	or(or(or(eq(var(32.d), 1.d), eq(var(32.d), 2.d)), eq(var(32.d), 3.d)), eq(var(32.d), 4.d)), else *loc_86
 	sfx	-65502.d, 1.d
 	return
@@ -1006,7 +1006,7 @@ loc_88:
 	break	*loc_64
 loc_94:
 	case	eq(map(0.d), 18.d), else *loc_96
-	printf	"過去\n"
+	printf	"過去\n" ; past
 	sfx	-65493.d, 3.d, 100.w
 	break	*loc_64
 loc_96:
@@ -1014,7 +1014,7 @@ loc_96:
 	sfx	-65435.d, 3.d, 100.w
 	break	*loc_64
 loc_98:
-	printf	"その他\n"
+	printf	"その他\n" ; others
 	if	and(flag(11.d), eq(flag(960.d), 0.w)), else *loc_101
 	sfx	-65468.d, 4.d, 0.w, 0.w
 	sfx	-65468.d, 4.d, 100.w, 180.w
@@ -1655,7 +1655,7 @@ lib_5:
 loc_212:
 	while	1.w, else *loc_702
 	case	eq(var(0.d), 0.d), else *loc_376
-	printf	"ＬＶ１チェック\n"
+	printf	"ＬＶ１チェック\n" ; Level 1 Check
 	if	and(ge(exp, 80.d), not(flag(100.d))), else *loc_215
 	set	var(0.d), add(var(0.d), 1.w)
 	if	eq(var(5.d), 1.d), else *loc_213
@@ -1666,7 +1666,7 @@ loc_213:
 	set	flag(34.d), 0.w
 loc_209:
 	set	flag(100.d), 1.w
-	printf	"あがってたので再チェック\n"
+	printf	"あがってたので再チェック\n" ; It was up so I checked again
 	endif	*loc_210
 loc_215:
 	if	and(not(flag(138.d)), flag(100.d)), else *loc_375
@@ -1679,13 +1679,13 @@ loc_375:
 	setsp	1000000.d
 	run	*sub_339
 	popbp
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out ; It will come out
 	return
 loc_210:
 	break	*loc_211
 loc_376:
 	case	eq(var(0.d), 1.d), else *loc_389
-	printf	"ＬＶ２チェック\n"
+	printf	"ＬＶ２チェック\n" ; Level 2 Check
 	if	and(ge(exp, 200.d), not(flag(101.d))), else *loc_384
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(101.d), 1.w
@@ -1712,13 +1712,13 @@ loc_386:
 	setsp	100000.d
 	run	*sub_339
 	popbp
-	printf	"あがってないので抜けます\n"
+	printf	"あがってないので抜けます\n" ; It's not rising so I'll leave it out
 	return
 loc_381:
 	break	*loc_211
 loc_389:
 	case	eq(var(0.d), 2.d), else *loc_404
-	printf	"ＬＶ３チェック\n"
+	printf	"ＬＶ３チェック\n" ; Level 3 Check
 	if	and(ge(exp, 440.d), not(flag(102.d))), else *loc_397
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(102.d), 1.w
@@ -1749,13 +1749,13 @@ loc_399:
 	setsp	10000.w
 	run	*sub_339
 	popbp
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out ; It will come out
 	return
 loc_394:
 	break	*loc_211
 loc_404:
 	case	eq(var(0.d), 3.d), else *loc_421
-	printf	"ＬＶ４チェック\n"
+	printf	"ＬＶ４チェック\n" ; Level 4 Check
 	if	and(ge(exp, 800.d), not(flag(103.d))), else *loc_412
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(103.d), 1.w
@@ -1790,13 +1790,13 @@ loc_414:
 	setsp	1000.w
 	run	*sub_339
 	popbp
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out ; It will come out
 	return
 loc_409:
 	break	*loc_211
 loc_421:
 	case	eq(var(0.d), 4.d), else *loc_440
-	printf	"ＬＶ５チェック\n"
+	printf	"ＬＶ５チェック\n" ; Level 5 Check
 	if	and(ge(exp, 1280.d), not(flag(104.d))), else *loc_429
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(104.d), 1.w
@@ -1834,14 +1834,14 @@ loc_431:
 	setsp	90.w
 	setsp	100.w
 	run	*sub_339
-	popbp
-	printf	"抜けます\n"
+	popbp 
+	printf	"抜けます\n" ; It will come out ; It will come out
 	return
 loc_426:
 	break	*loc_211
 loc_440:
 	case	eq(var(0.d), 5.d), else *loc_461
-	printf	"ＬＶ６チェック\n"
+	printf	"ＬＶ６チェック\n" ; Level 6 Check
 	if	and(ge(exp, 1780.d), not(flag(105.d))), else *loc_448
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(105.d), 1.w
@@ -1880,13 +1880,13 @@ loc_450:
 	set	var(302.d), 10.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_445:
 	break	*loc_211
 loc_461:
 	case	eq(var(0.d), 6.d), else *loc_484
-	printf	"ＬＶ７チェック\n"
+	printf	"ＬＶ７チェック\n" ; Level 7 Check
 	if	and(ge(exp, 2380.d), not(flag(106.d))), else *loc_469
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(106.d), 1.w
@@ -1929,13 +1929,13 @@ loc_471:
 	set	var(302.d), 9.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_466:
 	break	*loc_211
 loc_484:
 	case	eq(var(0.d), 7.d), else *loc_509
-	printf	"ＬＶ８チェック\n"
+	printf	"ＬＶ８チェック\n" ; Level 8 Check
 	if	and(ge(exp, 3080.d), not(flag(107.d))), else *loc_492
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(107.d), 1.w
@@ -1982,13 +1982,13 @@ loc_494:
 	set	var(302.d), 8.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_489:
 	break	*loc_211
 loc_509:
 	case	eq(var(0.d), 8.d), else *loc_536
-	printf	"ＬＶ９チェック\n"
+	printf	"ＬＶ９チェック\n" ; Level 9 Check
 	if	and(ge(exp, 3880.d), not(flag(108.d))), else *loc_517
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(108.d), 1.w
@@ -2039,13 +2039,13 @@ loc_519:
 	set	var(302.d), 7.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_514:
 	break	*loc_211
 loc_536:
 	case	eq(var(0.d), 9.d), else *loc_565
-	printf	"ＬＶ１０チェック\n"
+	printf	"ＬＶ１０チェック\n" ; Level 10 Check
 	if	and(ge(exp, 4780.d), not(flag(109.d))), else *loc_544
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(109.d), 1.w
@@ -2100,13 +2100,13 @@ loc_546:
 	set	var(302.d), 6.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_541:
 	break	*loc_211
 loc_565:
 	case	eq(var(0.d), 10.d), else *loc_596
-	printf	"ＬＶ１１チェック\n"
+	printf	"ＬＶ１１チェック\n" ; Level 11 Check
 	if	and(ge(exp, 5780.d), not(flag(110.d))), else *loc_573
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(110.d), 1.w
@@ -2165,13 +2165,13 @@ loc_575:
 	set	var(302.d), 5.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_570:
 	break	*loc_211
 loc_596:
 	case	eq(var(0.d), 11.d), else *loc_629
-	printf	"ＬＶ１２チェック\n"
+	printf	"ＬＶ１２チェック\n" ; Level 12 Check
 	if	and(ge(exp, 6880.d), not(flag(111.d))), else *loc_604
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(111.d), 1.w
@@ -2234,13 +2234,13 @@ loc_606:
 	set	var(302.d), 4.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_601:
 	break	*loc_211
 loc_629:
 	case	eq(var(0.d), 12.d), else *loc_664
-	printf	"ＬＶ１３チェック\n"
+	printf	"ＬＶ１３チェック\n" ; Level 13 Check
 	if	and(ge(exp, 8080.d), not(flag(112.d))), else *loc_637
 	set	var(0.d), add(var(0.d), 1.w)
 	set	flag(112.d), 1.w
@@ -2307,13 +2307,13 @@ loc_639:
 	set	var(302.d), 3.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_634:
 	break	*loc_211
 loc_664:
 	case	eq(var(0.d), 13.d), else *loc_692
-	printf	"ＬＶ１４チェック\n"
+	printf	"ＬＶ１４チェック\n" ; Level 14 Check
 	if	and(not(flag(150.d)), flag(112.d)), else *loc_668
 	run	*sub_217
 	endif	*loc_667
@@ -2368,7 +2368,7 @@ loc_667:
 	set	var(302.d), 2.w
 	set	var(301.d), var(300.d)
 	set	var(300.d), var(302.d)
-	printf	"抜けます\n"
+	printf	"抜けます\n" ; It will come out
 	return
 loc_692:
 	case	eq(var(0.d), 14.d), else *loc_694
@@ -2378,15 +2378,15 @@ loc_694:
 	return
 loc_696:
 	case	eq(var(0.d), 16.d), else *loc_698
-	printf	"ＬＶ１７チェック\n"
+	printf	"ＬＶ１７チェック\n" ; Level 17 Check
 	return
 loc_698:
 	case	eq(var(0.d), 17.d), else *loc_700
-	printf	"ＬＶ１８チェック\n"
+	printf	"ＬＶ１８チェック\n" ; Level 18 Check
 	return
 loc_700:
 	case	eq(var(0.d), 18.d), else *loc_211
-	printf	"ＬＶ１９チェック\n"
+	printf	"ＬＶ１９チェック\n" ; Level 19 Check
 	return
 loc_211:
 	goto	*loc_212
@@ -2824,7 +2824,7 @@ loc_231:
 
 	.lib	41.w, *lib_41
 lib_41:
-	printf	"記録\n"
+	printf	"記録\n" ; record
 	set	var(63.d), obj(@dir, 20000.d)
 	set	var(64.d), obj(@pos_x, 20000.d)
 	set	var(65.d), obj(@pos_y, 20000.d)
@@ -2835,7 +2835,7 @@ lib_41:
 
 	.lib	42.w, *lib_42
 lib_42:
-	printf	"配置\n"
+	printf	"配置\n" ; Configuration
 	pos	20000.d, var(64.d), var(65.d), var(66.d)
 	dir	20000.d, var(63.d)
 	if	or(or(or(eq(var(67.d), 2242.d), eq(var(67.d), 2243.d)), eq(var(67.d), 2244.d)), eq(var(67.d), 2245.d)), else *loc_1008
@@ -2901,14 +2901,14 @@ loc_2057:
 lib_70:
 	menu	2.d
 	if	lt(result, 0.w), else *loc_1995
-	printf	"何も選んでいません\n"
+	printf	"何も選んでいません\n" ; You haven't selected anything
 	set	result, 0.w
 	return
 loc_1995:
 	set	var(62.d), result
 	pushbp
 	setsp	var(62.d)
-	printf	"選んだアイテム　%d"
+	printf	"選んだアイテム　%d" ; selected item %d
 	popbp
 	call	20000.d, 500.d, var(62.d)
 	run	*lib_305
@@ -3564,7 +3564,7 @@ lib_11:
 
 	.lib	136.w, *lib_136
 lib_136:
-	printf	"トンピー記録\n"
+	printf	"トンピー記録\n" ; tompy record
 	set	var(83.d), obj(@dir, 20005.d)
 	set	var(84.d), obj(@pos_x, 20005.d)
 	set	var(85.d), obj(@pos_y, 20005.d)
@@ -3575,7 +3575,7 @@ lib_136:
 
 	.lib	137.w, *lib_137
 lib_137:
-	printf	"トンピー配置\n"
+	printf	"トンピー配置\n" ; Tompi arrangement
 	pos	20005.d, var(84.d), var(85.d), var(86.d)
 	dir	20005.d, var(83.d)
 	anim	20005.d, var(87.d)
@@ -4404,9 +4404,9 @@ loc_3269:
 
 	.lib	209.w, *lib_209
 lib_209:
-	printf	"ポッパーヒット中(ＯＮ)\n"
+	printf	"ポッパーヒット中(ＯＮ)\n" ; Popper hit (ON)
 	call	-27.d, sp(1.b), 43.d
-	printf	"ドアFX配置り\n"
+	printf	"ドアFX配置り\n" ; Door FX placement
 	set	var(0.d), obj(@pos_x, sp(2.b))
 	set	var(1.d), obj(@pos_y, sp(2.b))
 	set	var(2.d), obj(@pos_z, sp(2.b))
@@ -4414,7 +4414,7 @@ lib_209:
 	pos	sp(0.b), var(0.d), var(1.d), var(2.d)
 	dir	sp(0.b), var(3.d)
 	if	eq(hit, 2000.d), else *loc_3273
-	printf	"単発当たり\n"
+	printf	"単発当たり\n" ; per single shot
 	anim	sp(0.b), 1.w
 	sfx	420.d, 1.d
 	wait	@anim, sp(0.b), -1.d
@@ -4423,7 +4423,7 @@ lib_209:
 loc_3273:
 	elif	eq(hit, 2001.d), else *loc_3272
 	set	flag(638.d), 1.w
-	printf	"溜め当たり\n"
+	printf	"溜め当たり\n" ; per reservoir
 	disp	sp(1.b), 0.d
 	disp	sp(2.b), 1.d
 	anim	sp(2.b), 7.w
@@ -4433,7 +4433,7 @@ loc_3273:
 	anim	sp(2.b), 4.w
 	anim	sp(0.b), 0.w
 loc_3272:
-	printf	"ポッパーヒット中(ＯＦＦ)\n"
+	printf	"ポッパーヒット中(ＯＦＦ)\n" ; Popper hit (OFF)
 	call	-26.d, sp(1.b), 43.d
 	return
 
@@ -6161,7 +6161,7 @@ lib_290:
 
 	.lib	226.w, *lib_226
 lib_226:
-	printf	"リブの中\n"
+	printf	"リブの中\n" ; inside the ribs
 	if	ne(hit, -1.d), else *loc_3383
 	case	eq(hit, add(3000.d, 3.d)), else *loc_3388
 	pushbp
@@ -6215,7 +6215,7 @@ loc_2160:
 	attach	20005.d, *sub_2248
 	run	*sub_2161
 loc_2247:
-	printf	"ここ\n"
+	printf	"ここ\n"; here
 	set	flag(480.d), 0.w
 	return
 
@@ -6275,7 +6275,7 @@ sub_2161:
 	set	adda(var(81.d), 1.w)
 	pushbp
 	setsp	var(81.d)
-	printf	"ヨゴレ %d\n"
+	printf	"ヨゴレ %d\n" ; Dirt %d\
 	popbp
 	if	ge(var(81.d), 10.w), else *loc_2245
 	set	var(0.d), rand(30.w)
@@ -6505,7 +6505,7 @@ lib_198:
 
 	.lib	122.w, *lib_122
 lib_122:
-	printf	"SUB_TRASHBOX は使用不可\n"
+	printf	"SUB_TRASHBOX は使用不可\n" ; SUB_TRASHBOX is not available
 	return
 
 
@@ -6643,7 +6643,7 @@ lib_132:
 
 sub_2699:
 	if	eq(flag(1128.d), 1.w), else *loc_2702
-	printf	"クラッカーの位置が近く\n"
+	printf	"クラッカーの位置が近く\n" ; The crackers are nearby
 	set	flag(1128.d), 0.w
 	set	var(0.d), add(var(659.d), 30.w)
 	set	var(2.d), sub(var(659.d), 60.w)
@@ -6651,7 +6651,7 @@ sub_2699:
 	set	var(3.d), add(var(658.d), mul(cos(mul(var(0.d), 100.w)), 7.w))
 	endif	*loc_2701
 loc_2702:
-	printf	"クラッカーの位置が普通\n"
+	printf	"クラッカーの位置が普通\n" ; The cracker position is normal.
 	set	var(0.d), add(var(659.d), 30.w)
 	set	var(2.d), sub(var(659.d), 60.w)
 	set	var(1.d), add(var(656.d), mul(sin(mul(var(0.d), 100.w)), 12.w))
@@ -7051,17 +7051,17 @@ sub_1319:
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_1322
 	set	var(684.d), 1.d
-	printf	"ほねはキッチンです"
+	printf	"ほねはキッチンです" ; The bone is the kitchen
 	break	*loc_1321
 loc_1322:
 	case	eq(var(0.d), 1.w), else *loc_1324
 	set	var(684.d), 2.d
-	printf	"ほねはにわ１です"
+	printf	"ほねはにわ１です" ; Bone Haniwa 1
 	break	*loc_1321
 loc_1324:
 	case	eq(var(0.d), 2.w), else *loc_1321
 	set	var(684.d), 3.d
-	printf	"ほねはにわ２です"
+	printf	"ほねはにわ２です" ; Bone Haniwa 2
 	break	*loc_1321
 loc_1321:
 	return
@@ -7381,7 +7381,7 @@ loc_3329:
 loc_3338:
 	pushbp
 	setsp	var(bp(4.b))
-	printf	"宇宙人もワープ  [%d]\n"
+	printf	"宇宙人もワープ  [%d]\n" ; Aliens also warp [%d]
 	popbp
 	pushbp
 	setsp	bp(0.b)
@@ -9277,7 +9277,7 @@ lib_69:
 
 	.lib	97.w, *lib_97
 lib_97:
-	printf	"デカロボの声\n"
+	printf	"デカロボの声\n" ; Dekarobo's voice
 	if	eq(flag(1677.d), 1.w), else *loc_2127
 	return
 loc_2127:
@@ -10334,12 +10334,12 @@ loc_988:
 	set	var(900.d), add(var(900.d), 1.w)
 	pushbp
 	setsp	var(900.d)
-	printf	"タライチャージ %d\n"
+	printf	"タライチャージ %d\n" ; Tarai Charge %d
 	popbp
 	endif	*loc_991
 loc_992:
 	elif	ge(rand(9.w), 7.w), else *loc_991
-	printf	"タライチャージ達成\n"
+	printf	"タライチャージ達成\n" ; Tarai Charge Achieved
 	read	@anim, 20000.d, *loc_1003
 	wait	@read, 20000.d
 	set	var(670.d), add(var(670.d), 1.w)
@@ -10794,7 +10794,7 @@ loc_3155:
 	call	-12.d, 0.w
 	if	eq(result, 0.w), else *loc_3152
 	run	*lib_39
-	printf	"うごかす\n"
+	printf	"うごかす\n" ; move
 	endif	*loc_3140
 loc_3152:
 	msg	voice(0.b),
@@ -11117,12 +11117,12 @@ lib_104:
 	set	var(1009.d), sp(1.b)
 	set	var(1008.d), sp(0.b)
 	if	eq(cur_suit, 0.d), else *loc_2251
-	printf	"きぐるみを着てないので　Ｚアクション不可です\n"
+	printf	"きぐるみを着てないので　Ｚアクション不可です\n" ; I'm not wearing a costume so I can't do Z actions.
 	set	result, 0.d
 	return
 loc_2251:
 	if	ne(cur_atc, 0.d), else *loc_2253
-	printf	"アタッチメント装備しているので　Ｚアクション不可です\n"
+	printf	"アタッチメント装備しているので　Ｚアクション不可です\n" ; Z action is not possible because it is equipped with an attachment.
 	set	result, 0.d
 	return
 loc_2253:
@@ -11140,7 +11140,7 @@ loc_2253:
 loc_2255:
 	set	var(0.d), obj(@anim, 20000.d)
 	if	and(and(and(and(and(and(and(ne(var(0.d), 17.d), ne(var(0.d), 8.d)), ne(var(0.d), 3.d)), ne(var(0.d), 12.d)), ne(var(0.d), 4.d)), ne(var(0.d), 13.d)), ne(var(0.d), 119.d)), ne(var(0.d), 136.d)), else *loc_2257
-	printf	"アニメ状態が　Ｚアクション不可です\n"
+	printf	"アニメ状態が　Ｚアクション不可です\n" ; Z action is not possible in the animation state
 	set	result, 0.d
 	return
 loc_2257:
@@ -11204,7 +11204,7 @@ loc_3379:
 	setsp	flag(1614.d)
 	setsp	var(695.d)
 	setsp	var(1073.d)
-	printf	"(ハッピーボックス)　壊した数:%d ハッピー数:%d　終了？:%d\n"
+	printf	"(ハッピーボックス)　壊した数:%d ハッピー数:%d　終了？:%d\n" ; (Happy Box) Number destroyed: %d Number of happy boxes: %d Finished?: %d
 	popbp
 	return
 
@@ -12466,17 +12466,17 @@ sub_2070:
 	popbp
 	run	*lib_14
 	if	eq(var(62.d), 113.d), else *loc_2073
-	printf	"フラワー１"
+	printf	"フラワー１" ; flower 1
 	pos	var(1533.d), 500.w, 2100.w, 800.w
 	endif	*loc_2072
 loc_2073:
 	elif	eq(var(62.d), 156.d), else *loc_2075
-	printf	"フラワー2"
+	printf	"フラワー2" ; flower 2
 	pos	var(1533.d), 500.w, 2200.w, 1000.w
 	endif	*loc_2072
 loc_2075:
 	elif	eq(var(62.d), 157.d), else *loc_2072
-	printf	"フラワー3"
+	printf	"フラワー3" ; flower 3
 	pos	var(1533.d), 500.w, 2100.w, 800.w
 loc_2072:
 	disp	var(1533.d), 1.d
@@ -12788,7 +12788,7 @@ loc_873:
 loc_868:
 	endif	*loc_784
 loc_875:
-	printf	"ゴミ会話抜けあり\n"
+	printf	"ゴミ会話抜けあり\n" ; Some garbage conversations missing
 loc_784:
 	set	flag(1638.d), 0.w
 	set	flag(1639.d), 0.w
@@ -13569,17 +13569,17 @@ loc_3578:
 	popbp
 	run	*lib_14
 	if	eq(var(62.d), 113.d), else *loc_3584
-	printf	"フラワー１"
+	printf	"フラワー１" ; flower 1
 	pos	var(1533.d), 600.w, 1600.w, 880.w
 	endif	*loc_3580
 loc_3584:
 	elif	eq(var(62.d), 156.d), else *loc_3586
-	printf	"フラワー2"
+	printf	"フラワー2" ; flower 2
 	pos	var(1533.d), -900.d, 1600.w, 850.w
 	endif	*loc_3580
 loc_3586:
 	elif	eq(var(62.d), 157.d), else *loc_3580
-	printf	"フラワー3"
+	printf	"フラワー3" ; flower 3
 	pos	var(1533.d), 600.w, 1600.w, 900.w
 loc_3580:
 	disp	var(1533.d), 1.d
@@ -14580,7 +14580,7 @@ loc_2802:
 	set	flag(1688.d), 1.w
 	endif	*loc_2799
 loc_2804:
-	printf	"現在のマップが無い為、タオ行動戻せない"
+	printf	"現在のマップが無い為、タオ行動戻せない" ; Because there is no current map, Tao's actions cannot be restored.
 loc_2799:
 	break	*loc_2800
 loc_2809:
@@ -16708,7 +16708,7 @@ loc_3683:
 loc_3678:
 	endif	*loc_3595
 loc_3685:
-	printf	"ゴミ会話抜けあり\n"
+	printf	"ゴミ会話抜けあり\n" ; Some garbage conversations missing
 loc_3595:
 	set	flag(1638.d), 0.w
 	set	flag(1639.d), 0.w

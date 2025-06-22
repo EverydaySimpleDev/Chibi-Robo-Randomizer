@@ -253,19 +253,19 @@
 			"flags": [ "interact" ]
 		},
 		{
-			"objectName": "item_junk_a",
+			"objectName": "item_junk_a", // Scrap A
 			"itemName": "",
 			"numChecks": 15,
 			"flags": [ "interact" ]
 		},
 		{
-			"objectName": "item_junk_b",
+			"objectName": "item_junk_b", // Scrap B
 			"itemName": "",
 			"numChecks": 15,
 			"flags": [ "interact" ]
 		},
 		{
-			"objectName": "item_junk_c",
+			"objectName": "item_junk_c", // Scrap C
 			"itemName": "",
 			"numChecks": 10,
 			"flags": [ "interact" ]
