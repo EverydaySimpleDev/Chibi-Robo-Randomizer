@@ -45,7 +45,11 @@ namespace WindowsFormsApp1
         Random r;
         string newIsoPath;
         int newPassword;
-        
+
+        int CoinFlagID = 1;
+        int HappyBoxFlagID = 1;
+        int ItemFlagID = 1;
+
 
         public Form1()
         {
@@ -103,57 +107,67 @@ namespace WindowsFormsApp1
                     // Get file name and remove .zip from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
 
+                    apData = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
+
+                    string pjCheck = apData.SelectToken("free_pjs").ToString();
+
+                    if (pjCheck == "1")
+                    {
+                        freePJ.Checked = true;
+                    }
+                    else
+                    {
+                        freePJ.Checked = false;
+                    }
+
+                    string chargedGigaBatteryCheck = apData.SelectToken("charged_giga_battery").ToString();
+
+                    if (chargedGigaBatteryCheck == "1")
+                    {
+                        batteryCharge.Checked = true;
+                    }
+                    else
+                    {
+                        batteryCharge.Checked = false;
+                    }
+
+                    string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
+
+                    if (openUpstairsCheck == "1")
+                    {
+                        openUpstairs.Checked = true;
+                    }
+                    else
+                    {
+                        openUpstairs.Checked = false;
+                    }
+
+                    string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
+
+                    if (openDownStairsCheck == "1")
+                    {
+                        openDownstairs.Checked = true;
+                    }
+                    else
+                    {
+                        openDownstairs.Checked = false;
+                    }
+
+                    string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
+
+                    if (chibiVisionString == "1")
+                    {
+                        chibiVision.Checked = true;
+                    }
+                    else
+                    {
+                        chibiVision.Checked = false;
+                    }
+
+                    logicSettings.SelectedItem = "No Logic";
+
                 }
             }
-
-            apData = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
-
-            string pjCheck = apData.SelectToken("free_pjs").ToString();
-
-            if(pjCheck == "1")
-            {
-                freePJ.Checked = true;
-            } else {
-                freePJ.Checked = false;
-            }
-
-            string chargedGigaBatteryCheck = apData.SelectToken("charged_giga_battery").ToString();
-
-            if (chargedGigaBatteryCheck == "1")
-            {
-                batteryCharge.Checked = true;
-            } else {
-                batteryCharge.Checked = false;
-            }
-
-            string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
-
-            if (openUpstairsCheck == "1")
-            {
-                openUpstairs.Checked = true;
-            } else {
-                openUpstairs.Checked = false;
-            }
-
-            string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
-
-            if (openDownStairsCheck == "1")
-            {
-                openDownstairs.Checked = true;
-            } else {
-                openDownstairs.Checked = false;
-            }
-
-            string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
-
-            if (chibiVisionString == "1")
-            {
-                chibiVision.Checked = true;
-            } else {
-                chibiVision.Checked = false;
-            }
-
-            logicSettings.SelectedItem = "No Logic";
 
 
         }
@@ -549,20 +563,17 @@ namespace WindowsFormsApp1
 
                     var roomObject = get_room_object_id_by_name(location.Key);
 
-                    //Console.WriteLine("Room ID: " + roomID );
-                    //Console.WriteLine("Room Object: " + roomObject);
 
-                    //Console.WriteLine("Location Name: " + locationName);
-                    //Console.WriteLine("Object Name: " + objectName);
-                    //Console.WriteLine("Stage Location ID: " + stageData.rooms[roomID].locations[apDataIndex].ID);
-                    //Console.WriteLine("AP Data Index: " + apDataIndex);
-
+                    // Add the capsule as the multiworld item
+                    if (objectName.Contains("archipelago_item"))
+                    {
+                        objectName = "item_capsule_17";
+                    }
 
                     // shop items are not the same as normal items
                     if (roomID != 8)
                     {
                         roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object").Replace(objectName);
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(null);
 
                     } else
                     {
@@ -572,10 +583,7 @@ namespace WindowsFormsApp1
                         //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("limit").Replace(1); 
                     }
 
-
-                        spoilerLog.Add(name, stageData.rooms[roomID].locations[apDataIndex].Description);
-
-
+                    //spoilerLog.Add(name + " " + apDataIndex, stageData.rooms[roomID].locations[apDataIndex].Description);
 
                     apDataIndex++;
 
@@ -584,8 +592,11 @@ namespace WindowsFormsApp1
 
                 //livingRoomObj.SelectToken("objects[447].object").Replace("item_mag_cup");
 
+                
 
-            } else {
+
+            }
+            else {
 
                 #region Junk Items
 
@@ -879,6 +890,7 @@ namespace WindowsFormsApp1
         //Inserts objectName at given location, assuming location is pulled from allLocations
         private void insertItem(string objectName, int relativeLocation, JToken roomObject, int roomIndex)
         {
+
             //Standard rooms
             if (roomIndex == 8)
             {
@@ -902,15 +914,6 @@ namespace WindowsFormsApp1
             {
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
 
-                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(null);
-
-                var yPOS = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").SelectToken("y").ToString();
-
-                if(yPOS != null && yPOS == "0.0")
-                {
-                    roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").SelectToken("y").Replace(10.0);
-                }
-
                 //Setting the correct flags for the new object
                 int finalFlagIndex = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children().Count() - 1;
 
@@ -925,7 +928,7 @@ namespace WindowsFormsApp1
                 {
                     oldFlags[i].Remove();
                 }
-
+           
                 switch (objectName)
                 {
                     case "coin_c":
@@ -936,6 +939,8 @@ namespace WindowsFormsApp1
                     case "item_junk_c":
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
+                        CoinFlagID++;
                         break;
                     case "living_happy_box":
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
@@ -944,6 +949,8 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("clamber");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("fall");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("grab");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(HappyBoxFlagID);
+                        HappyBoxFlagID++;
                         break;
                     default:
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
@@ -951,6 +958,8 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
+                        ItemFlagID++;
                         break;
                 }
             }

@@ -463,7 +463,7 @@ loc_5:
 	kill	169.d
 	kill	170.d
 	kill	298.d
-	printf	"バースディ食べ物kill\n"
+	printf	"バースディ食べ物kill\n" ; Birthday food kill
 loc_242:
 	if	flag(1523.d), else *loc_239
 	endif	*loc_8
@@ -476,23 +476,23 @@ loc_8:
 	if	flag(1676.d), else *loc_223
 	kill	20012.d
 	kill	280.d
-	printf	"ベベ＆べべ日記kill　完全終了\n"
+	printf	"ベベ＆べべ日記kill　完全終了\n" ; Bebe & Bebe Diary Kill Completely Finished
 	endif	*loc_10
 loc_223:
 	elif	and(flag(19.d), eq(time(0.d), 0.d)), else *loc_225
 	kill	20012.d
 	kill	280.d
-	printf	"タオ噛み　ベベ＆べべ日記kill\n"
+	printf	"タオ噛み　ベベ＆べべ日記kill\n" ; Tao bite Bebe & Bebe diary kill
 	endif	*loc_10
 loc_225:
 	elif	or(and(eq(time(0.d), 0.d), eq(var(78.d), 10.d)), and(eq(time(0.d), 0.d), eq(var(78.d), 20.d))), else *loc_227
 	kill	20012.d
 	kill	280.d
-	printf	"ベベ＆べべ日記kill\n"
+	printf	"ベベ＆べべ日記kill\n" ; Bebe & Bebe Diary Kill
 	endif	*loc_10
 loc_227:
 	elif	and(and(and(eq(flag(17.d), 1.w), eq(flag(19.d), 0.w)), eq(var(78.d), 50.d)), eq(time(0.d), 0.d)), else *loc_229
-	printf	"○べべ&日記　KILL0513　タオが庭でブロック噛んでるヨ１"
+	printf	"○べべ&日記　KILL0513　タオが庭でブロック噛んでるヨ１" ; ○Bebe & Diary KILL0513 Tao is chewing a block in the garden 1
 	kill	20012.d
 	kill	280.d
 	endif	*loc_10
@@ -504,49 +504,49 @@ loc_229:
 loc_231:
 	elif	flag(1523.d), else *loc_233
 	kill	280.d
-	printf	"べべ日記kill\n"
+	printf	"べべ日記kill\n" ; Bebe Diary Kill
 	endif	*loc_10
 loc_233:
 	elif	flag(671.d), else *loc_235
 	kill	280.d
-	printf	"べべ日記kill\n"
+	printf	"べべ日記kill\n" ; Bebe Diary Kill
 	endif	*loc_10
 loc_235:
 	elif	and(eq(flag(11.d), 1.w), eq(flag(17.d), 0.w)), else *loc_237
 	kill	20012.d
 	kill	280.d
-	printf	"ベベ＆べべ日記kill\n"
+	printf	"ベベ＆べべ日記kill\n" ; Bebe & Bebe Diary Kill
 	endif	*loc_10
 loc_237:
 	elif	flag(39.d), else *loc_10
 	kill	20012.d
 	kill	280.d
-	printf	"ベベ＆べべ日記kill\n"
+	printf	"ベベ＆べべ日記kill\n" ; Bebe & Bebe Diary Kill
 loc_10:
 	kill	281.d
-	printf	"ベベペンkill\n"
+	printf	"ベベペンkill\n" ; Bebepen kill
 	if	eq(time(0.d), 1.d), else *loc_221
 	kill	20010.d
-	printf	"サンプーkill\n"
+	printf	"サンプーkill\n" ; sampoo kill
 	endif	*loc_12
 loc_221:
 	if	ge(var(75.d), 10.d), else *loc_12
 	kill	20010.d
-	printf	"サンプーkill\n"
+	printf	"サンプーkill\n" ; sampoo kill
 loc_12:
 	if	not(flag(613.d)), else *loc_220
 	kill	377.d
 	kill	378.d
-	printf	"たまごっちkill\n"
+	printf	"たまごっちkill\n" ; Tamagotchi Kill
 loc_220:
 	if	flag(602.d), else *loc_219
 	kill	20001.d
-	printf	"パパkill\n"
+	printf	"パパkill\n" ; jenny kill ; daddy kill
 loc_219:
 	if	eq(flag(19.d), 0.d), else *loc_218
 	kill	484.d
 	kill	491.d
-	printf	"えんでぃんぐ後デカロボkill\n"
+	printf	"えんでぃんぐ後デカロボkill\n" ; After the ending, Dekarobo kill
 loc_218:
 	if	flag(19.d), else *loc_192
 	if	flag(1577.d), else *loc_186
@@ -584,7 +584,7 @@ loc_190:
 loc_189:
 	endif	*loc_22
 loc_191:
-	printf	"エンディング後の家族セットフラグが入っていません"
+	printf	"エンディング後の家族セットフラグが入っていません" ; The family set flag after the ending is not included
 loc_22:
 	endif	*loc_23
 loc_192:
@@ -594,21 +594,21 @@ loc_192:
 	kill	20003.d
 	kill	20004.d
 	set	flag(1699.d), 1.w
-	printf	"ママkill\n"
-	printf	"パパkill\n"
-	printf	"ジェニーkill\n"
-	printf	"タオkill\n"
+	printf	"ママkill\n" ; mom kill
+	printf	"パパkill\n" ; jenny kill ; daddy kill
+	printf	"ジェニーkill\n" ; jenny kill
+	printf	"タオkill\n" ; tao kill
 	endif	*loc_23
 loc_194:
 	elif	and(flag(11.d), eq(flag(960.d), 0.w)), else *loc_197
 	run	*sub_196
-	printf	"庭kill\n"
+	printf	"庭kill\n" ; garden kill
 	kill	20008.d
-	printf	"ギッチョマンkill\n"
+	printf	"ギッチョマンkill\n" ; Gitchoman kill
 	kill	334.d
-	printf	"クレヨン汚れkill\n"
+	printf	"クレヨン汚れkill\n" ; Crayon stain kill
 	kill	53.d
-	printf	"お絵かきkill\n"
+	printf	"お絵かきkill\n" ; drawing kill
 	endif	*loc_23
 loc_197:
 	elif	eq(time(0.d), 1.d), else *loc_205
@@ -621,39 +621,39 @@ loc_203:
 loc_200:
 	kill	20003.d
 	kill	53.d
-	printf	"ジェニー＆お絵描きkill\n"
+	printf	"ジェニー＆お絵描きkill\n" ; Jenny & Drawing Kill
 	kill	20002.d
 	if	eq(var(112.d), 41.d), else *loc_202
 	kill	20001.d
-	printf	"パパkill\n"
+	printf	"パパkill\n" ; jenny kill ; daddy kill
 loc_202:
 	endif	*loc_23
 loc_205:
 	if	or(eq(var(75.d), 12.d), eq(var(75.d), 17.d)), else *loc_217
 	kill	20003.d
-	printf	"ジェニーkill\n"
+	printf	"ジェニーkill\n" ; jenny kill
 loc_217:
 	if	or(or(eq(var(77.d), 23.d), eq(var(77.d), 24.d)), eq(var(77.d), 33.d)), else *loc_214
 	kill	20001.d
-	printf	"パパkill\n"
+	printf	"パパkill\n" ; jenny kill
 	endif	*loc_208
 loc_214:
 	elif	eq(var(77.d), 25.d), else *loc_208
 	if	eq(flag(699.d), 1.w), else *loc_208
 	kill	20001.d
-	printf	"パパkill\n"
+	printf	"パパkill\n" ; jenny kill
 	endif	*loc_208
 loc_208:
 	if	eq(var(76.d), 10.d), else *loc_213
 	kill	20002.d
-	printf	"ママkill\n"
+	printf	"ママkill\n" ; mom kill
 loc_213:
 	if	eq(var(78.d), 100.d), else *loc_211
 	endif	*loc_23
 loc_211:
 	elif	eq(var(78.d), 10.d), else *loc_23
 	kill	20004.d
-	printf	"タオkill\n"
+	printf	"タオkill\n" ; tao kill
 	set	flag(1699.d), 1.w
 loc_23:
 	if	and(eq(flag(17.d), 1.d), eq(flag(960.d), 0.d)), else *loc_181
@@ -662,38 +662,38 @@ loc_181:
 	elif	and(eq(flag(16.d), 1.w), eq(flag(17.d), 0.w)), else *loc_183
 	endif	*loc_25
 loc_183:
-	printf	"吊られてるkill\n"
+	printf	"吊られてるkill\n" ; Hanging kill
 	kill	432.d
 	kill	433.d
 	kill	434.d
 	kill	435.d
-	printf	"クモの巣kill\n"
+	printf	"クモの巣kill\n" ; Spider Web Kill
 	kill	488.d
 loc_25:
 	if	eq(var(135.d), 4.d), else *loc_180
 	kill	20008.d
-	printf	"ギッチョkill\n"
+	printf	"ギッチョkill\n" ; Gitchok Kill
 loc_180:
 	if	or(lt(var(701.d), 1.d), eq(flag(335.d), 1.d)), else *loc_179
 	kill	255.d
-	printf	"除幕kill\n"
+	printf	"除幕kill\n" ; kill
 loc_179:
 	if	lt(var(701.d), 1.d), else *loc_178
 	kill	69.d
 	kill	70.d
 	kill	71.d
-	printf	"レチッカーズアッパーkill\n"
+	printf	"レチッカーズアッパーkill\n" ; Reticker's Upperkill
 loc_178:
 	if	lt(var(705.d), 1.d), else *loc_177
 	kill	72.d
 	kill	73.d
-	printf	"レチッカーズブリッジkill\n"
+	printf	"レチッカーズブリッジkill\n" ; Reticker's Bridge Kill
 loc_177:
 	kill	284.d
-	printf	"レチッカーズワープkill\n"
+	printf	"レチッカーズワープkill\n" ; Reticker's Warp kill
 	if	or(eq(flag(333.d), 0.d), eq(flag(334.d), 1.d)), else *loc_176
 	kill	262.d
-	printf	"スパイダーkill\n"
+	printf	"スパイダーkill\n" ; spider kill
 loc_176:
 	if	or(eq(flag(16.d), 0.d), eq(flag(17.d), 1.d)), else *loc_175
 	kill	335.d
@@ -718,9 +718,9 @@ loc_176:
 	kill	460.d
 	kill	490.d
 	kill	467.d
-	printf	"マザースパイダー＋ＥＴＣkill\n"
-	printf	"スパイダーアイkill\n"
-	printf	"マザーエフェクトkill\n"
+	printf	"マザースパイダー＋ＥＴＣkill\n" ; Mother Spider + ETC kill
+	printf	"スパイダーアイkill\n" ; Spider Eye kill
+	printf	"マザーエフェクトkill\n" ; mother effect kill
 	endif	*loc_32
 loc_175:
 	call	335.d, 7.d, 0.d
@@ -744,7 +744,7 @@ loc_32:
 	kill	269.d
 	kill	270.d
 	kill	271.d
-	printf	"ミニスパイダーkill\n"
+	printf	"ミニスパイダーkill\n" ; Mini Spider Kill
 	kill	172.d
 	kill	173.d
 	kill	174.d
@@ -755,12 +755,12 @@ loc_32:
 	kill	179.d
 	kill	180.d
 	kill	181.d
-	printf	"スパイダーＦＸkill\n"
+	printf	"スパイダーＦＸkill\n" ; Spider FX kill
 loc_174:
 	if	eq(flag(333.d), 0.d), else *loc_173
 	kill	182.d
 	kill	171.d
-	printf	"ミニスパイダー＆ＦＸkill\n"
+	printf	"ミニスパイダー＆ＦＸkill\n" ; Mini Spider & FXkill
 loc_173:
 	if	eq(flag(334.d), 1.d), else *loc_172
 	kill	184.d
@@ -774,7 +774,7 @@ loc_173:
 	kill	181.d
 loc_172:
 	if	eq(var(135.d), 5.d), else *loc_170
-	printf	"宇宙人はkillしない\n"
+	printf	"宇宙人はkillしない\n" ; Aliens don't kill
 	endif	*loc_37
 loc_170:
 	elif	or(eq(flag(472.d), 0.d), eq(flag(473.d), 1.d)), else *loc_37
@@ -782,7 +782,7 @@ loc_170:
 	kill	20046.d
 	kill	20047.d
 	kill	20048.d
-	printf	"宇宙人kill\n"
+	printf	"宇宙人kill\n" ; spaceman kill
 loc_37:
 	if	and(eq(flag(472.d), 1.d), eq(flag(473.d), 0.d)), else *loc_169
 	kill	183.d
@@ -806,12 +806,12 @@ loc_37:
 	kill	179.d
 	kill	180.d
 	kill	181.d
-	printf	"ミニスパイダーkill\n"
+	printf	"ミニスパイダーkill\n" ; Mini Spider Kill
 loc_169:
 	if	flag(48.d), else *loc_168
 	kill	310.d
 	kill	299.d
-	printf	"窓われkill\n"
+	printf	"窓われkill\n" ; Window kill
 loc_168:
 	if	eq(time(0.d), 0.d), else *loc_159
 	if	and(flag(11.d), eq(flag(960.d), 0.w)), else *loc_148
@@ -819,7 +819,7 @@ loc_168:
 	kill	459.d
 	kill	121.d
 	kill	492.d
-	printf	"ＴＶ　NEWS１・２　ギッチョ１・２kill\n"
+	printf	"ＴＶ　NEWS１・２　ギッチョ１・２kill\n" ; TV News 1 & 2 Gitcho 1 & 2 Kill
 	endif	*loc_42
 loc_148:
 	elif	eq(var(135.d), 7.d), else *loc_153
@@ -830,12 +830,12 @@ loc_148:
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_152
 	kill	459.d
 	kill	492.d
-	printf	"ＴＶ　NEWS２　ギッチョ２kill\n"
+	printf	"ＴＶ　NEWS２　ギッチョ２kill\n" ; TV News 2 Gitcho 2kill
 	endif	*loc_151
 loc_152:
 	kill	121.d
 	kill	272.d
-	printf	"ＴＶ　NEWS１　ギッチョ１kill\n"
+	printf	"ＴＶ　NEWS１　ギッチョ１kill\n" ; TV NEWS1 Gitcho 1kill
 loc_151:
 	endif	*loc_42
 loc_153:
@@ -847,19 +847,19 @@ loc_153:
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_157
 	kill	459.d
 	kill	492.d
-	printf	"ＴＶ　NEWS２　ギッチョ２kill\n"
+	printf	"ＴＶ　NEWS２　ギッチョ２kill\n" ; TV News 2 Gitcho 2kill
 	endif	*loc_156
 loc_157:
 	kill	272.d
 	kill	459.d
 	kill	121.d
-	printf	"ＴＶ　NEWS１・２　ギッチョ１kill\n"
+	printf	"ＴＶ　NEWS１・２　ギッチョ１kill\n" ; TV News 1 & 2 Gitcho 1kill
 loc_156:
 	endif	*loc_42
 loc_158:
 	kill	459.d
 	kill	492.d
-	printf	"ＴＶ　NEWS２　ギッチョ２kill\n"
+	printf	"ＴＶ　NEWS２　ギッチョ２kill\n" ; TV News 2 Gitcho 2kill
 loc_42:
 	endif	*loc_43
 loc_159:
@@ -868,34 +868,34 @@ loc_159:
 	kill	459.d
 	kill	121.d
 	kill	492.d
-	printf	"ＴＶ　ニュース１・２　ギッチョ１・２kill\n"
+	printf	"ＴＶ　ニュース１・２　ギッチョ１・２kill\n" ; TV News 1 & 2 Gitcho 1 & 2 Kill
 	endif	*loc_43
 loc_161:
 	elif	eq(var(135.d), 7.d), else *loc_163
 	kill	272.d
 	kill	121.d
-	printf	"ＴＶ　ニュース１　ギッチョ１kill\n"
+	printf	"ＴＶ　ニュース１　ギッチョ１kill\n" ; TV News 1 Gitcho 1kill
 	endif	*loc_43
 loc_163:
 	elif	eq(var(135.d), 5.d), else *loc_165
 	kill	272.d
 	kill	459.d
 	kill	121.d
-	printf	"ＴＶ　ニュース１・２　ギッチョ１kill\n"
+	printf	"ＴＶ　ニュース１・２　ギッチョ１kill\n" ; TV News 1 & 2 Gitcho 1kill
 	endif	*loc_43
 loc_165:
 	elif	eq(flag(350.d), 0.w), else *loc_167
 	kill	492.d
 	kill	459.d
 	kill	272.d
-	printf	"ＴＶ　ニュース１・２　ギッチョ２kill\n"
+	printf	"ＴＶ　ニュース１・２　ギッチョ２kill\n" ; TV News 1 & 2 Gitcho 2kill
 	endif	*loc_43
 loc_167:
 	kill	272.d
 	kill	459.d
 	kill	121.d
 	kill	492.d
-	printf	"ＴＶ　ニュース１・２　ギッチョ１・２kill\n"
+	printf	"ＴＶ　ニュース１・２　ギッチョ１・２kill\n" ; TV News 1 & 2 Gitcho 1 & 2 Kill
 loc_43:
 	if	eq(time(0.d), 0.d), else *loc_141
 	run	*sub_87
@@ -904,40 +904,40 @@ loc_43:
 	set	var(1.d), result
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_84
 	kill	20008.d
-	printf	"本物ギッチョkill\n"
+	printf	"本物ギッチョkill\n" ; Real Gitcho Kill
 	endif	*loc_46
 loc_84:
 	elif	eq(var(135.d), 8.d), else *loc_86
 	kill	20008.d
-	printf	"本物ギッチョkill\n"
+	printf	"本物ギッチョkill\n" ; Real Gitcho Kill
 	kill	358.d
-	printf	"おもちゃギッチョkill\n"
+	printf	"おもちゃギッチョkill\n" ; Toy Gitcho Kill
 	endif	*loc_46
 loc_86:
 	kill	358.d
-	printf	"おもちゃギッチョkill\n"
+	printf	"おもちゃギッチョkill\n" ; Toy Gitcho Kill
 loc_46:
 	endif	*loc_47
 loc_141:
 	if	and(flag(11.d), not(flag(960.d))), else *loc_143
 	kill	20008.d
-	printf	"本物ギッチョkill\n"
+	printf	"本物ギッチョkill\n" ; Real Gitcho Kill
 	endif	*loc_47
 loc_143:
 	elif	eq(var(135.d), 8.d), else *loc_145
 	kill	20008.d
-	printf	"本物ギッチョkill\n"
+	printf	"本物ギッチョkill\n" ; Real Gitcho Kill
 	kill	358.d
-	printf	"おもちゃギッチョkill\n"
+	printf	"おもちゃギッチョkill\n" ; Toy Gitcho Kill
 	endif	*loc_47
 loc_145:
 	elif	eq(var(112.d), 100.d), else *loc_147
 	kill	20008.d
-	printf	"本物ギッチョkill\n"
+	printf	"本物ギッチョkill\n" ; Real Gitcho Kill
 	endif	*loc_47
 loc_147:
 	kill	358.d
-	printf	"おもちゃギッチョkill\n"
+	printf	"おもちゃギッチョkill\n" ; Toy Gitcho Kill
 loc_47:
 	if	or(eq(flag(13.d), 0.d), eq(flag(640.d), 1.d)), else *loc_83
 	kill	347.d
@@ -949,18 +949,18 @@ loc_47:
 	kill	363.d
 	kill	364.d
 	kill	365.d
-	printf	"改造ポッパーkill\n"
+	printf	"改造ポッパーkill\n" ; Modified Popper Kill
 loc_83:
 	if	eq(flag(478.d), 0.w), else *loc_82
 	kill	20006.d
-	printf	"コンセントマンkill\n"
+	printf	"コンセントマンkill\n" ; outlet man kill
 loc_82:
 	kill	20011.d
 	kill	135.d
-	printf	"スンミダ＆スンわれ&箱kill\n"
+	printf	"スンミダ＆スンわれ&箱kill\n" ; Sunmida & Sunware & Box Kill
 	if	or(lt(var(701.d), 1.d), eq(flag(335.d), 1.d)), else *loc_81
 	kill	466.d
-	printf	"カメラひび割れ２Ｄkill\n"
+	printf	"カメラひび割れ２Ｄkill\n" ; Camera crack 2D kill
 loc_81:
 	if	and(flag(11.d), not(flag(960.d))), else *loc_80
 	endif	*loc_52
@@ -1012,8 +1012,8 @@ loc_79:
 	kill	72.d
 	kill	73.d
 	kill	284.d
-	printf	"マザーのを倒してマザー部屋から帰ってきたとき\n"
-	printf	"コンセントマン、ベベ、ハッピーＢＯＸ、ＴＶニュース＆ニュース２などkill\n"
+	printf	"マザーのを倒してマザー部屋から帰ってきたとき\n" ; When you come back from the Mother's room after defeating Mother's
+	printf	"コンセントマン、ベベ、ハッピーＢＯＸ、ＴＶニュース＆ニュース２などkill\n" ; Concent Man, Bebe, Happy Box, TV News & News 2, etc.
 loc_78:
 	if	and(eq(flag(13.d), 1.w), eq(flag(640.d), 0.w)), else *loc_77
 	kill	20006.d
@@ -1056,9 +1056,9 @@ loc_78:
 	kill	72.d
 	kill	73.d
 	kill	284.d
-	printf	"ポッパー改造計画\n"
-	printf	"コンセントマン、ベベ、ハッピーＢＯＸ、ＴＶニュース＆ニュース２などkill\n"
-	printf	"ちびドアマップをkill\n"
+	printf	"ポッパー改造計画\n" ; Popper modification plan
+	printf	"コンセントマン、ベベ、ハッピーＢＯＸ、ＴＶニュース＆ニュース２などkill\n" ; Concent Man, Bebe, Happy Box, TV News & News 2, etc.
+	printf	"ちびドアマップをkill\n" ; Kill the Chibi Door Map
 loc_77:
 	if	flag(1179.d), else *loc_76
 	run	*sub_59
@@ -1120,7 +1120,7 @@ loc_1079:
 	run	*sub_1062
 	run	*sub_1074
 	if	not(flag(395.d)), else *loc_881
-	printf	"KIT: 汚れの説明 ON\n"
+	printf	"KIT: 汚れの説明 ON\n" ; KIT: Stain Description ON
 	run	*sub_880
 loc_881:
 	set	flag(359.d), 0.w
@@ -1478,19 +1478,19 @@ loc_1032:
 	run	*sub_116
 	set	var(1.d), result
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_1058
-	printf	"killしてる\n"
+	printf	"killしてる\n" ; I'm killing
 	endif	*loc_1036
 loc_1058:
-	printf	"ボーン\n"
+	printf	"ボーン\n" ; bone
 	born	10111.d, 1.d, 3212.w, 0.w, -10064.d, 0.w, 45000.d, 500.w, 1000.w, *sub_1410
 loc_1036:
 	endif	*loc_1037
 loc_1059:
 	if	eq(var(112.d), 100.d), else *loc_1061
-	printf	"パパごっち中につきボーン出さない\n"
+	printf	"パパごっち中につきボーン出さない\n" ; Papa Gotchi is in the middle of playing so don't throw a bone
 	endif	*loc_1037
 loc_1061:
-	printf	"ボーン\n"
+	printf	"ボーン\n" ; bone
 	born	10111.d, 1.d, 3212.w, 0.w, -10064.d, 0.w, 45000.d, 500.w, 1000.w, *sub_1410
 loc_1037:
 	if	eq(flag(11.d), 0.w), else *loc_1057
@@ -1822,7 +1822,7 @@ loc_2791:
 	lib	86.w
 	popbp
 	run	*sub_2792
-	printf	"誰もいない\n"
+	printf	"誰もいない\n" ; There's no one there
 	return
 loc_2150:
 	set	flag(45.d), 0.d
@@ -1840,14 +1840,14 @@ loc_400:
 loc_398:
 	lib	73.w
 	if	eq(time(0.d), 1.d), else *loc_395
-	printf	"夜です\n"
+	printf	"夜です\n" ; It's night
 	endif	*loc_394
 loc_395:
 	elif	eq(time(0.d), 0.d), else *loc_397
-	printf	"昼です\n"
+	printf	"昼です\n" ; It's noon
 	endif	*loc_394
 loc_397:
-	printf	"昼夜ステータスがないよ\n"
+	printf	"昼夜ステータスがないよ\n" ; There is no day or night status
 loc_394:
 	lib	121.w
 	return
@@ -2151,13 +2151,13 @@ sub_3301:
 
 sub_1114:
 	if	or(eq(flag(170.d), 1.w), ge(var(159.d), 3.w)), else *loc_1117
-	printf	"呼び出し鳴らしません"
+	printf	"呼び出し鳴らしません" ; No ring
 	endif	*loc_1116
 loc_1117:
 	if	eq(flag(615.d), 0.w), else *loc_1116
 	set	flag(615.d), 1.w
 	sfx	391.d, 1.d
-	printf	"たまごっち呼び出しSEがなります"
+	printf	"たまごっち呼び出しSEがなります" ; Tamagotchi calling sound effect will be played
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_1123
 	if	flag(1514.d), else *loc_1122
@@ -2743,7 +2743,7 @@ loc_416:
 	endif	*loc_411
 loc_418:
 	elif	eq(var(77.d), 31.d), else *loc_420
-	printf	"パパ昼\n"
+	printf	"パパ昼\n" ; dad day
 	set	flag(160.d), 1.w
 	disp	20001.d, 1.d
 	pos	20001.d, -11161.d, 0.w, 21047.w
@@ -2860,7 +2860,7 @@ loc_802:
 	endif	*loc_790
 loc_804:
 	elif	ge(var(75.d), 16.d), else *loc_806
-	printf	"ジェニ昼\n"
+	printf	"ジェニ昼\n" ; jenny noon
 	set	flag(160.d), 1.w
 	disp	20003.d, 1.d
 	pos	20003.d, -12049.d, 0.w, 12630.w
@@ -2972,7 +2972,7 @@ loc_830:
 	break	*loc_829
 loc_832:
 	case	eq(var(75.d), 3.d), else *loc_829
-	printf	"未使用:BUG\n"
+	printf	"未使用:BUG\n" ; Unused:BUG
 	break	*loc_829
 loc_829:
 	endif	*loc_790
@@ -3178,7 +3178,7 @@ loc_717:
 loc_719:
 	elif	eq(var(113.d), 37.d), else *loc_721
 	set	flag(165.d), 1.w
-	printf	"ジェニ夜\n"
+	printf	"ジェニ夜\n" ; jenny night
 	disp	20003.d, 1.d
 	pos	20003.d, -12049.d, 0.w, 12630.w
 	dir	20003.d, -44.d
@@ -3954,7 +3954,7 @@ loc_2279:
 	endif	*loc_2179
 loc_2283:
 	elif	eq(flag(17.d), 1.w), else *loc_2285
-	printf	"ジェニーいませんbug\n"
+	printf	"ジェニーいませんbug\n" ; Jenny is not here bug
 	endif	*loc_2179
 loc_2285:
 	elif	or(ge(var(75.d), 16.d), ge(var(113.d), 37.d)), else *loc_2287
@@ -4644,7 +4644,7 @@ sub_2355:
 	.interact  18.d, *evt_npc_mama_18
 evt_npc_mama_18:
 	if	or(eq(hit, 2000.d), eq(hit, 2001.d)), else *loc_2322
-	printf	"ホッパーは吉田君"
+	printf	"ホッパーは吉田君" ; Hopper is Yoshida
 	return
 loc_2322:
 	if	and(eq(time(0.d), 1.d), eq(var(111.d), 501.d)), else *loc_2326
@@ -5543,7 +5543,7 @@ loc_1231:
 	endif	*loc_1163
 loc_1264:
 	elif	and(eq(time(0.d), 0.d), eq(var(77.d), 33.d)), else *loc_1266
-	printf	"パパはいないハズ"
+	printf	"パパはいないハズ" ; Daddy's not here
 	endif	*loc_1163
 loc_1266:
 	elif	and(eq(time(0.d), 1.d), eq(var(112.d), 100.d)), else *loc_1280
@@ -5675,16 +5675,16 @@ loc_1280:
 	endif	*loc_1163
 loc_1282:
 	elif	or(eq(var(77.d), 29.d), eq(var(112.d), 45.d)), else *loc_1284
-	printf	"援護ゲーム中　パパいません"
+	printf	"援護ゲーム中　パパいません" ; During the support game, daddy's not here
 	endif	*loc_1163
 loc_1284:
 	elif	or(eq(var(77.d), 28.d), eq(var(112.d), 44.d)), else *loc_1286
-	printf	"援護ゲーム中　パパバグです"
+	printf	"援護ゲーム中　パパバグです" ; During the support game, it's Papa Bug
 	endif	*loc_1163
 loc_1286:
 	elif	or(eq(var(77.d), 27.d), eq(var(112.d), 43.d)), else *loc_1302
 	if	eq(flag(12.d), 1.w), else *loc_1290
-	printf	"ミドルスパイダー１回戦死亡"
+	printf	"ミドルスパイダー１回戦死亡" ; Middle Spider dies in the first round
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
@@ -5904,7 +5904,7 @@ loc_1313:
 	anim	20003.d, 18.d
 loc_1310:
 	if	or(eq(time(0.d), 0.d), and(eq(time(0.d), 1.d), eq(var(111.d), 500.d))), else *loc_1312
-	printf	"フライパンＯＮ\n"
+	printf	"フライパンＯＮ\n" ; Frying pan ON
 	anim	20002.d, add(64.d, mul(39.d, 65536.d))
 	call	20002.d, 2.d, 1115.d
 	disp	485.d, 1.d
@@ -6945,13 +6945,13 @@ loc_2416:
 loc_2418:
 	if	or(or(or(or(or(and(eq(cur_suit, 1.d), eq(flag(1501.d), 0.w)), and(eq(cur_suit, 2.d), eq(flag(1503.d), 0.w))), and(eq(cur_suit, 7.d), eq(flag(1504.d), 0.w))), and(eq(cur_suit, 6.d), eq(flag(1507.d), 0.w))), and(eq(cur_suit, 4.d), eq(flag(1505.d), 0.w))), and(eq(cur_suit, 8.d), eq(flag(1583.d), 0.w))), else *loc_2426
 	if	or(ge(var(78.d), 102.d), ge(var(114.d), 503.d)), else *loc_2423
-	printf	"TAO_POPPER2_AFTER(他のきぐるみ)\n"
+	printf	"TAO_POPPER2_AFTER(他のきぐるみ)\n" ; TAO_POPPER2_AFTER (other costumes)
 	sfx	350.d, 1.d
 	run	*sub_2422
 	endif	*loc_2421
 loc_2423:
 	elif	or(ge(var(78.d), 100.d), ge(var(114.d), 500.d)), else *loc_2425
-	printf	"TAO_KAIGENREI(他のきぐるみ)\n"
+	printf	"TAO_KAIGENREI(他のきぐるみ)\n" ; TAO_KAIGENREI (other costumes)
 	sfx	350.d, 1.d
 	run	*sub_2422
 	endif	*loc_2421
@@ -7070,7 +7070,7 @@ loc_1403:
 
 sub_625:
 	if	eq(flag(160.d), 1.w), else *loc_628
-	printf	"ローカルファミリー\n"
+	printf	"ローカルファミリー\n" ; local family
 	endif	*loc_627
 loc_628:
 	elif	and(ge(var(701.d), 1.d), eq(flag(335.d), 0.w)), else *loc_630
@@ -7091,7 +7091,7 @@ loc_636:
 	endif	*loc_627
 loc_646:
 	elif	eq(var(135.d), 7.d), else *loc_653
-	printf	"ソファーの上\n"
+	printf	"ソファーの上\n" ; on the sofa
 	disp	20008.d, 1.d
 	pos	20008.d, 293.w, 4004.w, -12232.d
 	dir	20008.d, -45.d
@@ -7132,7 +7132,7 @@ loc_663:
 	elif	eq(var(135.d), 2.d), else *loc_667
 	disp	20008.d, 1.d
 	pos	20008.d, -12743.d, 0.w, -1.d
-	printf	"ギッチョアタッチＯＮ\n"
+	printf	"ギッチョアタッチＯＮ\n" ; Gitcho Attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 	if	flag(1532.d), else *loc_666
@@ -7143,7 +7143,7 @@ loc_667:
 	elif	flag(350.d), else *loc_669
 	disp	20008.d, 1.d
 	pos	20008.d, -12743.d, 0.w, -1.d
-	printf	"ギッチョアタッチＯＮ\n"
+	printf	"ギッチョアタッチＯＮ\n" ; Gitcho Attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 	endif	*loc_627
@@ -7813,7 +7813,7 @@ loc_2512:
 	if	eq(var(135.d), 7.d), else *loc_2511
 	endif	*loc_2510
 loc_2511:
-	printf	"ギッチョアタッチＯＮあああ\n"
+	printf	"ギッチョアタッチＯＮあああ\n" ; Gitcho attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 loc_2510:
@@ -8872,7 +8872,7 @@ loc_2789:
 	lib	348.w
 	camera	@unk209, 2.d, 100.w
 	lib	39.w
-	printf	"ギッチョおもちゃモデル\n"
+	printf	"ギッチョおもちゃモデル\n" ; Gitcho Toy Model
 	return
 
 
@@ -8918,7 +8918,7 @@ loc_547:
 	endif	*loc_544
 loc_549:
 	elif	and(and(and(eq(flag(17.d), 1.w), eq(flag(19.d), 0.w)), eq(var(78.d), 50.d)), eq(time(0.d), 0.d)), else *loc_551
-	printf	"べべは噛まれています0518"
+	printf	"べべは噛まれています0518" ; Bebe is bitten 0518
 	endif	*loc_544
 loc_551:
 	elif	and(eq(flag(1531.d), 0.w), eq(flag(1523.d), 1.w)), else *loc_556
@@ -8978,7 +8978,7 @@ loc_573:
 	run	*sub_116
 	set	var(1.d), result
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_577
-	printf	"おもちゃなのでボーンしない\n"
+	printf	"おもちゃなのでボーンしない\n" ; It's a toy so it won't break
 	endif	*loc_576
 loc_577:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -8986,7 +8986,7 @@ loc_576:
 	endif	*loc_567
 loc_578:
 	if	and(eq(time(0.d), 1.d), eq(var(112.d), 100.d)), else *loc_580
-	printf	"パパごっちでボーンなし\n"
+	printf	"パパごっちでボーンなし\n" ; Papa gotchi no bones
 	endif	*loc_567
 loc_580:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -9013,7 +9013,7 @@ loc_589:
 	run	*sub_116
 	set	var(1.d), result
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_593
-	printf	"おもちゃなのでボーンしない\n"
+	printf	"おもちゃなのでボーンしない\n" ; It's a toy so it won't break
 	endif	*loc_592
 loc_593:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -9021,7 +9021,7 @@ loc_592:
 	endif	*loc_587
 loc_594:
 	if	and(eq(time(0.d), 1.d), eq(var(112.d), 100.d)), else *loc_596
-	printf	"パパごっちでボーンなし\n"
+	printf	"パパごっちでボーンなし\n" ; Papa gotchi no bones
 	endif	*loc_587
 loc_596:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -9046,7 +9046,7 @@ loc_603:
 	run	*sub_116
 	set	var(1.d), result
 	if	or(eq(var(0.d), 1.d), eq(var(1.d), 1.d)), else *loc_607
-	printf	"おもちゃなのでボーンしない\n"
+	printf	"おもちゃなのでボーンしない\n" ; It's a toy so it won't break
 	endif	*loc_606
 loc_607:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -9054,7 +9054,7 @@ loc_606:
 	endif	*loc_568
 loc_608:
 	if	and(eq(time(0.d), 1.d), eq(var(112.d), 100.d)), else *loc_610
-	printf	"パパごっちでボーンなし\n"
+	printf	"パパごっちでボーンなし\n" ; Papa gotchi no bones
 	endif	*loc_568
 loc_610:
 	born	10112.d, 3.d, 7079.w, 0.w, -22435.d, 0.w, 25000.w, 5000.w, 18000.w, *sub_1639
@@ -9958,7 +9958,7 @@ loc_1483:
 	popbp
 	endif	*loc_1456
 loc_1485:
-	printf	"べべのバグです　話せません"
+	printf	"べべのバグです　話せません" ; Bebe's bug. I can't speak.
 loc_1456:
 	if	eq(flag(171.d), 0.w), else *loc_1459
 	lib	14.w
@@ -10440,7 +10440,7 @@ loc_1475:
 	camera	@unk229, 23.w, 0.d, 150.w
 	camera	@distance, 139.w, 0.d, 150.w
 	mdir	20008.d, @dir, 360.w, 100.w, 2.d
-	printf	"べべ　その声に起き上がるアニメ"
+	printf	"べべ　その声に起き上がるアニメ" ; Bebe - An anime that wakes you up when you hear that voice
 	anim	20012.d, 1052.d, 1046.d
 	wait	@anim, 20012.d, -1.d
 	wait	@time, 50.w
@@ -10583,7 +10583,7 @@ loc_1475:
 	camera	@unk229, 23.w, 3.d, 0.w
 	camera	@distance, 139.w, 3.d, 0.w
 	disp	20008.d, 0.d
-	printf	"べべ　気絶して魂が蝶になり飛んでいく"
+	printf	"べべ　気絶して魂が蝶になり飛んでいく" ; Bebe faints and her soul turns into a butterfly and flies away
 	lib	266.w
 	pos	20053.d, var(1512.d), var(1513.d), var(1514.d)
 	dir	20053.d, var(1515.d)
@@ -10831,7 +10831,7 @@ sub_3165:
 
 
 sub_3166:
-	printf	"はじまり\n"
+	printf	"はじまり\n" ; beginning
 loc_3172:
 	while	1.w, else *loc_3200
 	set	var(105.d), obj(@anim, 20000.d)
@@ -11330,14 +11330,14 @@ sub_1663:
 	if	eq(flag(949.d), 0.d), else *loc_1668
 	set	flag(949.d), 1.d
 	color	20000.d, @modulate, 255.w, 255.w, 245.w, 60.w
-	printf	"スタンドライトＯＮ～♪\n"
+	printf	"スタンドライトＯＮ～♪\n" ; Stand light ON♪
 loc_1668:
 	endif	*loc_1667
 loc_1669:
 	if	eq(flag(949.d), 1.d), else *loc_1667
 	set	flag(949.d), 0.d
 	color	20000.d, @modulate, 150.w, 150.w, 230.w, 60.w
-	printf	"スタンドライトＯＦＦ～♪\n"
+	printf	"スタンドライトＯＦＦ～♪\n" ; Stand light OFF~♪
 loc_1667:
 	wait	@time, 1.w
 	goto	*sub_1663
@@ -11358,14 +11358,14 @@ loc_764:
 	endif	*loc_763
 loc_766:
 	elif	and(eq(flag(13.d), 1.w), eq(flag(640.d), 0.w)), else *loc_770
-	printf	"ポッパー２改造イベント突入\n"
+	printf	"ポッパー２改造イベント突入\n" ; Popper 2 modification event begins
 	run	*sub_768
 	run	*sub_347
 	run	*sub_769
 	endif	*loc_763
 loc_770:
 	elif	and(eq(flag(540.d), 1.w), eq(flag(640.d), 0.w)), else *loc_773
-	printf	"ミドル１回戦死んでしまった後しかこない\n"
+	printf	"ミドル１回戦死んでしまった後しかこない\n" ; It only comes after the first round of the middle game is over
 	run	*sub_332
 	run	*sub_347
 	run	*sub_769
@@ -11375,11 +11375,11 @@ loc_770:
 	endif	*loc_763
 loc_773:
 	elif	and(flag(11.d), eq(flag(640.d), 0.w)), else *loc_763
-	printf	"デフォルト\n"
+	printf	"デフォルト\n" ; default
 	run	*sub_332
 	run	*sub_347
 	run	*sub_769
-	printf	"スパアタック生成\n"
+	printf	"スパアタック生成\n" ; Spa Attack Generation
 	run	*sub_772
 loc_763:
 	return
@@ -11655,23 +11655,6 @@ sub_1685:
 	disp	10162.d, 0.d
 	lib	12.w
 	lib	54.w
-	camera	@unk236, 3.w
-	camera	@pos, 19522.w, 2015.w, -16595.d, 1.d, 300.w
-	camera	@unk227, 25099.w, -192.d, -21568.d, 1.d, 300.w
-	camera	@unk229, 25.w, 1.d, 300.w
-	camera	@distance, 77.w, 1.d, 300.w
-	wait	@time, 60.w
-	mdir	20000.d, @obj, 430.d, 30.w, 3.d
-	wait	@cam
-	anim	20000.d, 93.d, 94.d
-	wait	@time, 30.w
-	camera	@pos, 19522.w, 2015.w, -16595.d, 2.d, 400.w
-	camera	@unk227, 24108.w, 6761.w, -20734.d, 2.d, 400.w
-	camera	@unk229, 25.w, 2.d, 400.w
-	camera	@distance, 77.w, 2.d, 400.w
-	sfx	288.d, 1.d
-	wait	@cam
-	wait	@time, 100.w
 	msg	voice(0.b),
 		"Say, I think you can climb up that cord.",
 		wait(254.b)
@@ -11697,7 +11680,7 @@ loc_3083:
 	setsp	item_name(16.d)
 	pushbp
 	popbp
-	lib	254.w
+	; lib	254.w
 	lib	39.w
 	return
 
@@ -12446,7 +12429,7 @@ loc_361:
 	wait	@anim, 77.d, -1.d
 	anim	77.d, 0.w
 	wait	@time, 1.w
-	printf	"ドン！　ドン！　ミドルスパイダーが扉にアタック！"
+	printf	"ドン！　ドン！　ミドルスパイダーが扉にアタック！" ; Bang! Bang! The Middle Spider attacks the door!
 	sfx	1441805.d, 0.d
 	camera	@pos, -22445.d, 2022.w, 21274.w, 3.d, 0.w
 	camera	@unk227, -21052.d, 2719.w, 21639.w, 3.d, 0.w
@@ -13037,7 +13020,7 @@ sub_1689:
 	lib	96.w
 	lib	106.w
 	read	@anim, 20008.d, 0.d
-	printf	"ギッチョアタッチＯＮ\n"
+	printf	"ギッチョアタッチＯＮ\n" ; Gitcho Attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 	lib	39.w
@@ -13307,7 +13290,7 @@ sub_2611:
 	read	@anim, 20000.d, *loc_2856
 	run	*sub_2612
 	read	@anim, 20000.d, 0.d
-	printf	"★正義テスト　合格\n"
+	printf	"★正義テスト　合格\n" ; ★Justice test passed
 	wait	@cam
 	pushbp
 	setsp	50.w
@@ -14730,7 +14713,7 @@ loc_2888:
 	set	adda(var(31.d), 1.w)
 	pushbp
 	setsp	var(31.d)
-	printf	"パトロールタイム　[%d]\n"
+	printf	"パトロールタイム　[%d]\n" ; Patrol time [%d]
 	popbp
 	if	eq(var(31.d), 500.d), else *loc_2898
 	attach	5.d, *sub_2901
@@ -14764,7 +14747,7 @@ loc_2935:
 	set	adda(var(31.d), 1.w)
 	pushbp
 	setsp	var(31.d)
-	printf	"パトロールタイム　[%d]\n"
+	printf	"パトロールタイム　[%d]\n" ; Patrol time [%d]
 	popbp
 	if	eq(var(31.d), 500.d), else *loc_2944
 	attach	5.d, *sub_2901
@@ -14991,13 +14974,13 @@ loc_2913:
 	lib	58.w
 	popbp
 	wait	@dir, 20008.d
-	printf	"ギッチョアタッチＯＮ\n"
+	printf	"ギッチョアタッチＯＮ\n" ; Gitcho Attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 	lib	155.w
 	set	flag(1005.d), 0.w
 	if	not(flag(395.d)), else *loc_2915
-	printf	"KIT: 汚れの説明 ON\n"
+	printf	"KIT: 汚れの説明 ON\n" ; KIT: Stain Description ON
 	run	*sub_880
 loc_2915:
 	lib	96.w
@@ -15596,7 +15579,7 @@ loc_1725:
 	set	adda(var(54.d), 1.w)
 loc_1724:
 	if	ge(var(54.d), 11.w), else *loc_1722
-	printf	"ミニ全滅\n"
+	printf	"ミニ全滅\n" ; mini annihilation
 	set	flag(969.d), 1.d
 	sfx	-65504.d, 2.d, 300.w
 	lib	96.w
@@ -16791,7 +16774,7 @@ loc_1785:
 	if	eq(time(0.d), 1.d), else *loc_1788
 	disp	20008.d, 1.d
 	pos	20008.d, -12743.d, 0.w, -1.d
-	printf	"ギッチョアタッチＯＮ\n"
+	printf	"ギッチョアタッチＯＮ\n" ; Gitcho Attach ON
 	set	flag(359.d), 1.w
 	run	*sub_637
 	endif	*loc_1787
@@ -18382,17 +18365,17 @@ sub_924:
 	return
 loc_926:
 	case	eq(var(696.d), 0.w), else *loc_939
-	printf	"LIV: デフォルト\n"
+	printf	"LIV: デフォルト\n" ; LIV: Default
 	run	*sub_929
 	break	*loc_928
 loc_939:
 	case	eq(var(696.d), 1.w), else *loc_946
-	printf	"LIV: 汚れ多い\n"
+	printf	"LIV: 汚れ多い\n" ; LIV: Very dirty
 	run	*sub_941
 	break	*loc_928
 loc_946:
 	case	eq(var(696.d), 2.w), else *loc_949
-	printf	"LIV: 汚れ少ない\n"
+	printf	"LIV: 汚れ少ない\n" ; LIV: Less dirt
 	run	*sub_948
 	break	*loc_928
 loc_949:
@@ -19197,7 +19180,7 @@ sub_931:
 loc_934:
 	pushbp
 	setsp	bp(0.b)
-	printf	"よごれ %d 消えてます\n"
+	printf	"よごれ %d 消えてます\n" ; %d of dirt has disappeared
 	popbp
 loc_933:
 	return
@@ -20308,7 +20291,7 @@ evt_map_jump_box_366:
 
 	.interact  336.d, *evt_item_record_giccio_336
 evt_item_record_giccio_336:
-	printf	"ギッチョマンレコード入手\n(ファンキーフラグ代入)\n"
+	printf	"ギッチョマンレコード入手\n(ファンキーフラグ代入)\n" ; Get Gitchoman Records (Funky Flag Substitute)
 	set	var(125.d), 20.d
 	set	var(124.d), 20.d
 	wait	@time, 1.w
@@ -22125,7 +22108,7 @@ sub_1967:
 	run	*sub_1972
 	endif	*loc_1971
 loc_2003:
-	printf	"引出し00　終了\n"
+	printf	"引出し00　終了\n" ; Withdrawal 00 End
 loc_1971:
 	return
 loc_2004:
@@ -22145,7 +22128,7 @@ sub_2006:
 	set	var(1040.d), 5.d
 	printf	"COIN05_DETACH\n"
 	run	*sub_1972
-	printf	"引出し05　終了\n"
+	printf	"引出し05　終了\n" ; Drawer 05 Finished
 loc_2010:
 	return
 loc_2011:
@@ -22165,7 +22148,7 @@ sub_2013:
 	set	var(1040.d), 2.d
 	printf	"COIN02_DETACH\n"
 	run	*sub_1972
-	printf	"引出し02　終了\n"
+	printf	"引出し02　終了\n" ; Drawer 02 Finished
 loc_2017:
 	return
 loc_2018:
@@ -22185,7 +22168,7 @@ sub_2020:
 	set	var(1040.d), 1.d
 	printf	"COIN01_DETACH\n"
 	run	*sub_1972
-	printf	"引出し01　終了\n"
+	printf	"引出し01　終了\n" ; Drawer 01 Finished
 loc_2024:
 	return
 loc_2025:
@@ -22205,7 +22188,7 @@ sub_2027:
 	set	var(1040.d), 3.d
 	printf	"COIN03_DETACH\n"
 	run	*sub_1972
-	printf	"引出し03　終了\n"
+	printf	"引出し03　終了\n" ; Drawer 03 Finished
 loc_2031:
 	return
 loc_2032:
@@ -22289,7 +22272,7 @@ sub_1975:
 	set	var(1048.d), result
 	if	eq(var(1047.d), 1.w), else *loc_1985
 	case	eq(var(1048.d), 0.w), else *loc_1980
-	printf	"金　(Ｘ)\n"
+	printf	"金　(Ｘ)\n" ; Gold (X)
 	pos	var(1041.d), add(var(1044.d), 800.w), add(var(1045.d), 800.w), var(1046.d)
 	disp	var(1041.d), 1.d
 	scale	var(1041.d), 100.w, 100.w, 100.w
@@ -22306,7 +22289,7 @@ sub_1975:
 	break	*loc_1978
 loc_1980:
 	case	eq(var(1048.d), 1.w), else *loc_1982
-	printf	"銀　(Ｘ)\n"
+	printf	"銀　(Ｘ)\n" ; Silver (X)
 	pos	var(1042.d), add(var(1044.d), 800.w), add(var(1045.d), 800.w), var(1046.d)
 	disp	var(1042.d), 1.d
 	scale	var(1042.d), 100.w, 100.w, 100.w
@@ -22323,7 +22306,7 @@ loc_1980:
 	break	*loc_1978
 loc_1982:
 	case	eq(var(1048.d), 2.w), else *loc_1984
-	printf	"銅　(Ｘ)\n"
+	printf	"銅　(Ｘ)\n" ; Copper (X)
 	pos	var(1043.d), add(var(1044.d), 800.w), add(var(1045.d), 800.w), var(1046.d)
 	disp	var(1043.d), 1.d
 	scale	var(1043.d), 100.w, 100.w, 100.w
@@ -22339,13 +22322,13 @@ loc_1982:
 	disp	var(1043.d), 0.d
 	break	*loc_1978
 loc_1984:
-	printf	"はずれ　(Ｘ)\n"
+	printf	"はずれ　(Ｘ)\n" ; Miss (X)
 	break	*loc_1978
 loc_1978:
 	endif	*loc_1979
 loc_1985:
 	case	eq(var(1048.d), 0.w), else *loc_1987
-	printf	"金　(Ｚ)\n"
+	printf	"金　(Ｚ)\n" ; Gold (Z)
 	pos	var(1041.d), var(1044.d), add(var(1045.d), 800.w), sub(var(1046.d), 800.w)
 	disp	var(1041.d), 1.d
 	scale	var(1041.d), 100.w, 100.w, 100.w
@@ -22362,7 +22345,7 @@ loc_1985:
 	break	*loc_1979
 loc_1987:
 	case	eq(var(1048.d), 1.w), else *loc_1989
-	printf	"銀　(Ｚ)\n"
+	printf	"銀　(Ｚ)\n" ; Silver (Z)
 	pos	var(1042.d), var(1044.d), add(var(1045.d), 800.w), sub(var(1046.d), 800.w)
 	disp	var(1042.d), 1.d
 	scale	var(1042.d), 100.w, 100.w, 100.w
@@ -22379,7 +22362,7 @@ loc_1987:
 	break	*loc_1979
 loc_1989:
 	case	eq(var(1048.d), 2.w), else *loc_1991
-	printf	"銅　(Ｚ)\n"
+	printf	"銅　(Ｚ)\n" ; Copper (Z)
 	pos	var(1043.d), var(1044.d), add(var(1045.d), 800.w), sub(var(1046.d), 800.w)
 	disp	var(1043.d), 1.d
 	scale	var(1043.d), 100.w, 100.w, 100.w
@@ -22395,7 +22378,7 @@ loc_1989:
 	disp	var(1043.d), 0.d
 	break	*loc_1979
 loc_1991:
-	printf	"はずれ　(Ｚ)\n"
+	printf	"はずれ　(Ｚ)\n" ; Miss (Z)
 	break	*loc_1979
 loc_1979:
 	return
@@ -22461,7 +22444,7 @@ loc_3339:
 
 
 sub_772:
-	printf	"スパイダーアタック初期化\n"
+	printf	"スパイダーアタック初期化\n" ; Spider Attack Initialization
 	timer	120.w, *sub_2034
 	return
 
@@ -22471,7 +22454,7 @@ sub_2034:
 	setsp	77.d
 	run	*sub_2035
 	popbp
-	printf	"スパイダーアタック初期化\n"
+	printf	"スパイダーアタック初期化\n" ; Spider Attack Initialization
 	timer	120.w, *sub_2034
 	return
 
@@ -22486,7 +22469,7 @@ loc_2037:
 	wait	@read, 20002.d
 	wait	@read, 20003.d
 	wait	@read, 20001.d
-	printf	"スパイダーアタック\n"
+	printf	"スパイダーアタック\n" ; Spider Attack
 	lib	98.w
 	if	eq(result, 0.d), else *loc_2039
 	return
@@ -23516,7 +23499,7 @@ loc_3385:
 loc_3377:
 	wait	@sfx, 394.d
 	run	*sub_3370
-	printf	"ばつ　正解　喜びアニメ"
+	printf	"ばつ　正解　喜びアニメ" ; Bad Answer Joy Anime
 	sfx	394.d, 1.d
 	if	flag(1514.d), else *loc_3384
 	anim2	378.d, 9.w, 0.w, 30.d
@@ -23553,7 +23536,7 @@ loc_3388:
 	endif	*loc_3391
 loc_3392:
 	elif	eq(var(160.d), 3.d), else *loc_3400
-	printf	"はく　正解　アニメ問い合わせ中！"
+	printf	"はく　正解　アニメ問い合わせ中！" ; Haku Correct Answer Anime inquiry in progress!
 	if	flag(1514.d), else *loc_3399
 	anim2	378.d, 9.w, 0.w, 30.d
 	endif	*loc_3395
@@ -23596,7 +23579,7 @@ loc_3402:
 	if	eq(var(160.d), 1.d), else *loc_3406
 	anim2	378.d, 5.w, 0.w, 30.d
 	run	*sub_3370
-	printf	"すいみん中　正解　暗転"
+	printf	"すいみん中　正解　暗転" ; During swimming, the screen goes dark.
 	sfx	394.d, 1.d
 	anim2	378.d, 5.w, 0.w, 30.d
 	wait	@anim, 378.d, -1.d
@@ -23833,7 +23816,7 @@ loc_3382:
 
 
 sub_3371:
-	printf	"NG音"
+	printf	"NG音" ; of sound
 	sfx	392.d, 1.d
 	wait	@sfx, 392.d
 	wait	@time, 100.w
