@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,11 +12,13 @@ using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
+using static System.Windows.Forms.AxHost;
 
 
 namespace WindowsFormsApp1
@@ -519,7 +522,7 @@ namespace WindowsFormsApp1
                 {
                     if (location.ObjectName == itemPool.Items[i].objectName)
                     {
-                        shuffleItem("item_kami_kuzu", occupiedChecks, new string[] { }, allLocations);
+                        shuffleItem("coin_c", occupiedChecks, new string[] { }, allLocations);
                         //insertItem("item_kami_kuzu", allLocations.IndexOf(location));
                         break;
                     }
@@ -544,59 +547,139 @@ namespace WindowsFormsApp1
             shopObj.SelectToken("items[14].item").Replace(null);
             shopObj.SelectToken("items[15].item").Replace(null);
 
-            if(apData != null)
+            if (apData != null)
             {
 
+                // Get All Locations Of Json for AP
                 JObject locations = apData.SelectToken("Locations").ToObject<JObject>();
 
+                //int shopId = 0;
 
+                int apItemFlag = 1;
+
+                int apHappyBoxFlagID = 1;
+
+                int apCoinFlagID = 1;
+
+
+                // Loop through each location josin
                 foreach (KeyValuePair<string, JToken> location in locations)
                 {
-
 
                     string locationName = location.Key;
                     string name = location.Value.SelectToken("name").ToString();
                     string objectName = location.Value.SelectToken("object").ToString();
 
-
                     var roomID = get_room_id_by_name(location.Key);
 
                     var roomObject = get_room_object_id_by_name(location.Key);
 
-
-                    // Add the capsule as the multiworld item
+                    // Add the timer as the multiworld item (Hopefully there is a way to add a new item down the road for new ingame text?)
+                    // The timer doesn't do anything other it does add a pick up to the location that we can attach a flag 
+                    // timer doesn't get added to the player inventory so no need to worry about carry limit
                     if (objectName.Contains("archipelago_item"))
                     {
-                        objectName = "item_capsule_17";
+                        objectName = "item_timer_15";
                     }
 
                     // shop items are not the same as normal items
                     if (roomID != 8)
                     {
+                        // Add the object name into the location
                         roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].object").Replace(objectName);
 
-                    } else
+
+                        switch (objectName)
+                        {
+                            case "coin_c":
+                            case "coin_s":
+                            case "coin_g":
+                            case "item_junk_a":
+                            case "item_junk_b":
+                            case "item_junk_c":
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("spawn");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("interact");
+
+                                // Set This Location Coin Pickup Flag
+                                //roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(apCoinFlagID);
+                                //Console.WriteLine(locationName + " Coin / Junk Flag: " + apCoinFlagID);
+                                //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
+                                //apCoinFlagID++;
+                                break;
+                            case "living_happy_box":
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("spawn");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("explode");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("climb");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("clamber");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("fall");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("grab");
+
+                                // Set This Location Happy Block Pickup Flag
+                                //roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(apHappyBoxFlagID);
+                                //Console.WriteLine(locationName + " Happy Block Flag: " + apHappyBoxFlagID);
+                                //apHappyBoxFlagID++;
+                                break;
+                            default:
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("spawn");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("flash");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("cull");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("lift");
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("interact");
+
+                                // Set This Location Item Pickup Flag
+                                roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(apItemFlag);
+                                Console.WriteLine(locationName + " - " + name + " - Item Flag: " + apItemFlag);
+
+                                apItemFlag++;
+
+
+                                // Spawn flags need to be betwwen 0 and 136
+                                // They are set per room per item 
+                                if (apItemFlag == 135)
+                                {
+                                    apItemFlag = 1;
+                                }
+
+                                break;
+                        }
+
+                        //roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(apItemFlag);
+
+                    }
+                    else
                     {
-                        // Disable shop items for now
-                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("item").Replace(name);
-                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("price").Replace(10);
-                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "]").SelectToken("limit").Replace(1); 
+
+                        // Disable shop for now since you can't have duplicate items in shop / doesn't work nicly in multiworld yet
+                        // The object name will need to be updated to the in game item ID
+                        // Example gunpowder = item_kayaku
+
+                        //shopObj.SelectToken("items[" + shopId + "].item").Replace(objectName);
+                        //shopObj.SelectToken("items["+ shopId +"].price").Replace(10);
+                        //shopObj.SelectToken("items["+ shopId + "].limit").Replace(1);
+
+                        //Console.WriteLine(objectName);
+
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].item").Replace(name);
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].price").Replace(10);
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].limit").Replace(1);
+                        //roomObject.SelectToken("items[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].item").Replace(objectName);
+
+                        //shopId++;
+
                     }
 
-                    //spoilerLog.Add(name + " " + apDataIndex, stageData.rooms[roomID].locations[apDataIndex].Description);
+                    //Console.WriteLine(name + " " + apDataIndex + " " + roomID);
+                    spoilerLog.Add(name + " " + apDataIndex + " " + roomID, stageData.rooms[roomID].locations[apDataIndex].Description);
 
                     apDataIndex++;
 
                 }
 
-
                 //livingRoomObj.SelectToken("objects[447].object").Replace("item_mag_cup");
 
-                
-
-
             }
-            else {
+            else
+            {
 
                 #region Junk Items
 
@@ -789,7 +872,7 @@ namespace WindowsFormsApp1
 
             }
 
-         
+
             return spoilerLog;
         }
 
@@ -928,7 +1011,7 @@ namespace WindowsFormsApp1
                 {
                     oldFlags[i].Remove();
                 }
-           
+
                 switch (objectName)
                 {
                     case "coin_c":
@@ -939,8 +1022,8 @@ namespace WindowsFormsApp1
                     case "item_junk_c":
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
-                        CoinFlagID++;
+                        //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
+                        //CoinFlagID++;
                         break;
                     case "living_happy_box":
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
@@ -949,8 +1032,8 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("clamber");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("fall");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("grab");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(HappyBoxFlagID);
-                        HappyBoxFlagID++;
+                        //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(HappyBoxFlagID);
+                        //HappyBoxFlagID++;
                         break;
                     default:
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
@@ -1089,19 +1172,19 @@ namespace WindowsFormsApp1
 
             string roomTempName = location.Substring(0, location.IndexOf("-") + 1).Trim(new Char[] { ' ', '-' });
 
-            if(roomTempName == "Living Room")
+            if (roomTempName == "Living Room")
             {
                 return 0;
-            } 
+            }
             else if (roomTempName == "Kitchen")
             {
-                if(lastRoom != "Kitchen")
+                if (lastRoom != "Kitchen")
                 {
                     lastRoom = roomTempName;
                     apDataIndex = 0;
 
                 }
-                
+
                 return 1;
             }
             else if (roomTempName == "Sink Drain")
@@ -1173,7 +1256,8 @@ namespace WindowsFormsApp1
 
                 }
                 return 8;
-            } else
+            }
+            else
             {
                 return -1;
             }
@@ -1240,6 +1324,6 @@ namespace WindowsFormsApp1
 
         }
 
-       
+
     }
 }

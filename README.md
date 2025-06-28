@@ -10,6 +10,8 @@ Chibi-Robo Randomizer is a Windows application that randomizes the locations of 
   - Click this button to select a NTSC-USA copy of the Chibi-Robo ISO file. (Do not ask for a download link for this, you must source it yourself!)
 - Browse
   - The randomizer will create a copy of the ISO file before applying the edits to the game files. Use the Browse button to select where this file will be saved.
+- Open AP
+  - This is a json file that the archipelago system will generate. This is required if you plan on connecting your game with the Archipelago multiworld rando[https://github.com/EverydaySimpleDev/Archipelago].
 - Mode / Logic
   - Select a game mode / logic setting from the dropdown. Currently, only Glitchless is supported, but make sure at least something is selected in this dropdown.
 - Seed
@@ -25,10 +27,10 @@ Chibi-Robo Randomizer is a Windows application that randomizes the locations of 
 - Chibi-Vision Off
   - Checking this will remove the item tag for key items that can be seen while Chibi-Vision is active, making it more difficult to sweep for key items immediately after visiting a room for the first time
 - Randomize Password
-  - Checking this will randomize the password required to turn on Giga-Robo to finish the game. This will require finding the engagement ring and reading the newly generated password from its item description, which will also be updated with the new random password. 
+  - Checking this will randomize the password required to turn on Giga-Robo to finish the game. This will require finding the engagement ring and reading the newly generated password from its item description, which will also be updated with the new random password.
 - Randomize
   -Click this button once finished with the above controls and the randomizer will create a new ISO at the file path you have specified with the Browse button!
-  
+
 ## KNOWN ISSUES
 
 - Some smaller key items (like upgrade chips) can't be picked up in all locations if they are too close to the ground.
