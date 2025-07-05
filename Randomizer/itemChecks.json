@@ -126,7 +126,7 @@
 					"z": -92.01,
 					"id": 46,
 					"name": "coin_s",
-					"prereqs": [],
+					"prereqs": [ "copter" ],
 					"description": "Living Room - Cupholder 50M Coin"
 				},
 				{
