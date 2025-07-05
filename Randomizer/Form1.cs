@@ -75,6 +75,7 @@ namespace WindowsFormsApp1
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
+                ofd.InitialDirectory = "D:\\Archipelago\\Dev";
                 ofd.Filter = "ISO File (*.iso)|*.iso";
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
@@ -101,6 +102,7 @@ namespace WindowsFormsApp1
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
+                ofd.InitialDirectory = "D:\\Archipelago\\Dev\\Archipelago\\output";
                 ofd.Filter = "(*.json)|*.json";
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)

@@ -170,7 +170,7 @@ skip_intro_window:
 	; set	item(56.d), 1.w ; syringe
 	; set	item(24.d), 1.w ; Drake Redcrest Suit
 	; set	item(25.d), 1.w ; Toa Suit
-	; set	atc(1.d), 0.w ; copter / propeller
+	set	atc(1.d), 0.w ; copter / propeller
 	; set	atc(3.d), 1.w ; radar
 	; set	atc(2.d), 1.w ; blaster
 	msg	voice(4.b),
