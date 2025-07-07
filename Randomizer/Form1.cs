@@ -646,11 +646,7 @@ namespace WindowsFormsApp1
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("lift");
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("interact");
 
-                                Console.WriteLine(objectName);
-                                Console.WriteLine(posY);
-
                                 posY = ((float)posY) + 2.0f;
-                                Console.WriteLine(posY);
 
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].position.y").Replace(posY);
 
@@ -678,6 +674,11 @@ namespace WindowsFormsApp1
                         {
                             apItemFlag = 1;
                         }
+
+                        JToken unusedShopItem = shopObj.SelectToken("items[17]");
+                        unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
+                        unusedShopItem.SelectToken("price").Replace(10);
+                        unusedShopItem.SelectToken("limit").Replace(1);
 
                         //roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].spawnFlag").Replace(apItemFlag);
 
@@ -1033,17 +1034,6 @@ namespace WindowsFormsApp1
             {
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
 
-                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
-
-                //var position = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").SelectToken("y");
-
-                //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position").Replace(ItemFlagID);
-
-                //Console.WriteLine(ItemFlagID);
-
-                //Console.WriteLine(objectName);
-
-                ItemFlagID++;
 
                 //Setting the correct flags for the new object
                 int finalFlagIndex = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children().Count() - 1;
@@ -1105,8 +1095,18 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-                        //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
-                        //ItemFlagID++;
+                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
+
+                        Console.WriteLine(objectName);
+                        Console.WriteLine(ItemFlagID);
+
+                        ItemFlagID++;
+
+                        if (ItemFlagID == 165)
+                        {
+                            ItemFlagID = 1;
+                        }
+
                         break;
                 }
 
@@ -1134,7 +1134,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+            //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
 
             // Update Messages
             //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
