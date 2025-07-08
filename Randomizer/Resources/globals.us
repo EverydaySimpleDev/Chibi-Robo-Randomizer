@@ -12214,13 +12214,19 @@ custom_debug_menu_radar_func:
 	set	atc(3.d), 1.w ; radar
 	return
 
+custom_debug_menu_copter:
+	.db "Enable Copter"
+
+custom_debug_menu_copter_func:
+	set	atc(1.d), 1.w ; copter
+	return
+
 	.lib	375.w, *lib_375
 lib_375:
 	call	-200.d, *loc_3953, *sub_3954
 	call	-200.d, *custom_debug_menu_blaster, *custom_debug_menu_blaster_func
 	call	-200.d, *custom_debug_menu_radar, *custom_debug_menu_radar_func
 	call	-200.d, *custom_debug_menu_copter, *custom_debug_menu_copter_func
-	; call	-200.d, *custom_debug_menu_drake_suit, *custom_debug_menu_drake_suit_func
 	return
 
 sub_3954:
