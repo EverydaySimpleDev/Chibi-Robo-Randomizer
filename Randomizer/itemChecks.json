@@ -175,6 +175,15 @@
 					"description": "Living Room - Candy Wrapper above Trashbin A"
 				},
 				{
+					"x": 215.29,
+					"y": 25.59,
+					"z": 352.46,
+					"id": 437,
+					"name": "item_candy_gomi",
+					"prereqs": [],
+					"description": "Living Room - Candy Wrapper above Trashbin B"
+				},
+				{
 					"x": 209.81,
 					"y": 0.00,
 					"z": 122.44,
@@ -508,15 +517,6 @@
 					"description": "Living Room - Wastepaper above Trashbin B"
 				},
 				{
-					"x": 215.29,
-					"y": 25.59,
-					"z": 352.46,
-					"id": 437,
-					"name": "item_candy_gomi",
-					"prereqs": [],
-					"description": "Living Room - Candy Wrapper above Trashbin B"
-				},
-				{
 					"x": -90.19,
 					"y": 1.5,
 					"z": 85.1,
@@ -524,15 +524,6 @@
 					"name": "item_candy_gomi",
 					"prereqs": [],
 					"description": "Living Room - Candy Wrapper by Jenny A"
-				},
-				{
-					"x": 136.28,
-					"y": 40.59,
-					"z": 94.04,
-					"id": 439,
-					"name": "item_candy_gomi",
-					"prereqs": [ "copter" ],
-					"description": "Living Room - Couch Candy Wrapper"
 				},
 				{
 					"x": 76.43,
@@ -544,6 +535,15 @@
 					"description": "Living Room - Candy Wrapper by Jenny B"
 				},
 				{
+					"x": 136.28,
+					"y": 40.59,
+					"z": 94.04,
+					"id": 439,
+					"name": "item_candy_gomi",
+					"prereqs": [ "copter" ],
+					"description": "Living Room - Couch Candy Wrapper"
+				},
+				{
 					"x": -44.18,
 					"y": 1.6,
 					"z": -167.99,
@@ -553,15 +553,6 @@
 					"description": "Living Room - Candy Wrapper on Book Stack"
 				},
 				{
-					"x": 22.73,
-					"y": 40.59,
-					"z": -140.7,
-					"id": 442,
-					"name": "item_candy_gomi",
-					"prereqs": [],
-					"description": "Living Room - Armchair Candy Wrapper B"
-				},
-				{
 					"x": 22.36,
 					"y": 40.59,
 					"z": -127.3,
@@ -569,6 +560,15 @@
 					"name": "item_candy_gomi",
 					"prereqs": [],
 					"description": "Living Room - Armchair Candy Wrapper A"
+				},
+				{
+					"x": 22.73,
+					"y": 40.59,
+					"z": -140.7,
+					"id": 442,
+					"name": "item_candy_gomi",
+					"prereqs": [],
+					"description": "Living Room - Armchair Candy Wrapper B"
 				},
 				{
 					"x": 79.08,
@@ -636,7 +636,7 @@
 					"id": 152,
 					"name": "item_kami_kuzu",
 					"prereqs": [],
-					"description": "Kitchen - Wastepaper by Foyer - Door"
+					"description": "Kitchen - Wastepaper by Foyer Door"
 				},
 				{
 					"x": 219.24,
@@ -672,7 +672,7 @@
 					"id": 158,
 					"name": "item_cookie_kakera",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen - Cookie Crumbs on Kitchen - Table"
+					"description": "Kitchen - Cookie Crumbs on Kitchen Table"
 				},
 				{
 					"x": -251.1,
@@ -717,7 +717,7 @@
 					"id": 170,
 					"name": "living_happy_block",
 					"prereqs": [ "bridge", "copter" ],
-					"description": "Kitchen - Happy Block by Bridge-Only Chibi-Door"
+					"description": "Kitchen - Happy Block by Bridge Only Chibi Door"
 				},
 				{
 					"x": 328.65,
@@ -878,13 +878,13 @@
 			"name": "drain",
 			"checks": [
 				{
-					"x": -150.0,
+					"x": -174.0,
 					"y": -40.9,
 					"z": 1.0,
-					"id": 49,
+					"id": 51,
 					"name": "coin_g",
-					"prereqs": ["copter"],
-					"description": "Sink Drain - Middle Row 100M Coin C"
+					"prereqs": [ "copter" ],
+					"description": "Sink Drain - Middle Row 100M Coin A"
 				},
 				{
 					"x": -162.0,
@@ -896,31 +896,13 @@
 					"description": "Sink Drain - Middle Row 100M Coin B"
 				},
 				{
-					"x": -174.0,
+					"x": -150.0,
 					"y": -40.9,
 					"z": 1.0,
-					"id": 51,
+					"id": 49,
 					"name": "coin_g",
 					"prereqs": [ "copter" ],
-					"description": "Sink Drain - Middle Row 100M Coin A"
-				},
-				{
-					"x": -186.0,
-					"y": -40.9,
-					"z": 1.0,
-					"id": 52,
-					"name": "coin_c",
-					"prereqs": [ "copter" ],
-					"description": "Sink Drain - Middle Row 10M Coin C"
-				},
-				{
-					"x": -198.0,
-					"y": -40.9,
-					"z": 1.0,
-					"id": 53,
-					"name": "coin_c",
-					"prereqs": [ "copter" ],
-					"description": "Sink Drain - Middle Row 10M Coin B"
+					"description": "Sink Drain - Middle Row 100M Coin C"
 				},
 				{
 					"x": -210.0,
@@ -932,6 +914,24 @@
 					"description": "Sink Drain - Middle Row 10M Coin A"
 				},
 				{
+					"x": -198.0,
+					"y": -40.9,
+					"z": 1.0,
+					"id": 53,
+					"name": "coin_c",
+					"prereqs": [ "copter" ],
+					"description": "Sink Drain - Middle Row 10M Coin B"
+				},
+				{
+					"x": -186.0,
+					"y": -40.9,
+					"z": 1.0,
+					"id": 52,
+					"name": "coin_c",
+					"prereqs": [ "copter" ],
+					"description": "Sink Drain - Middle Row 10M Coin C"
+				},
+				{
 					"x": -300.0,
 					"y": -12.1,
 					"z": 1.0,
@@ -941,15 +941,6 @@
 					"description": "Sink Drain - Top Row 100M Coin"
 				},
 				{
-					"x": -288.0,
-					"y": -12.1,
-					"z": 1.0,
-					"id": 56,
-					"name": "coin_c",
-					"prereqs": [ "copter" ],
-					"description": "Sink Drain - Top Row 10M Coin B"
-				},
-				{
 					"x": -276.0,
 					"y": -12.1,
 					"z": 1.0,
@@ -957,6 +948,15 @@
 					"name": "coin_c",
 					"prereqs": [ "copter" ],
 					"description": "Sink Drain - Top Row 10M Coin A"
+				},
+				{
+					"x": -288.0,
+					"y": -12.1,
+					"z": 1.0,
+					"id": 56,
+					"name": "coin_c",
+					"prereqs": [ "copter" ],
+					"description": "Sink Drain - Top Row 10M Coin B"
 				},
 				{
 					"x": -214.17,
@@ -1020,8 +1020,8 @@
 					"z": -37.12,
 					"id": 6,
 					"name": "item_deka_denchi",
-					"prereqs": ["mug"],
-					"description": "Basement - Giga-Battery"
+					"prereqs": [ "mug" ],
+					"description": "Basement - Giga Battery"
 				},
 				{
 					"x": 105.5,
@@ -1030,7 +1030,7 @@
 					"id": 12,
 					"name": "item_chibi_house_denti_2",
 					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement - Giga-Charger"
+					"description": "Basement - Giga Charger"
 				},
 				{
 					"x": -107.7,
@@ -1168,15 +1168,6 @@
 					"description": "Basement - Shelf Happy Block A"
 				},
 				{
-					"x": 61.06,
-					"y": 163.0,
-					"z": -63.59,
-					"id": 215,
-					"name": "living_happy_box",
-					"prereqs": [ "blaster", "copter", "mug" ],
-					"description": "Basement - Rafters Happy Block B"
-				},
-				{
 					"x": -121.82,
 					"y": 173.33,
 					"z": 60.21,
@@ -1184,6 +1175,15 @@
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "mug" ],
 					"description": "Basement - Rafters Happy Block A"
+				},
+				{
+					"x": 61.06,
+					"y": 163.0,
+					"z": -63.59,
+					"id": 215,
+					"name": "living_happy_box",
+					"prereqs": [ "blaster", "copter", "mug" ],
+					"description": "Basement - Rafters Happy Block B"
 				},
 				{
 					"x": -56.98,
@@ -1290,13 +1290,13 @@
 					"description": "Backyard - Frog Ring"
 				},
 				{
-					"x": 285.66,
+					"x": 315.48,
 					"y": 257.94,
-					"z": -45.18,
-					"id": 274,
+					"z": -44.69,
+					"id": 278,
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard - Right Awning Happy Block C"
+					"description": "Backyard - Right Awning Happy Block A"
 				},
 				{
 					"x": 300.41,
@@ -1306,6 +1306,15 @@
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
 					"description": "Backyard - Right Awning Happy Block B"
+				},
+				{
+					"x": 285.66,
+					"y": 257.94,
+					"z": -45.18,
+					"id": 274,
+					"name": "living_happy_box",
+					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
+					"description": "Backyard - Right Awning Happy Block C"
 				},
 				{
 					"x": 382.31,
@@ -1324,15 +1333,6 @@
 					"name": "living_happy_box",
 					"prereqs": [ "blaster", "copter", "charge chip" ],
 					"description": "Backyard - Tree Happy Block"
-				},
-				{
-					"x": 315.48,
-					"y": 257.94,
-					"z": -44.69,
-					"id": 278,
-					"name": "living_happy_box",
-					"prereqs": [ "blaster", "copter", "charge chip", "frog suit", "squirter" ],
-					"description": "Backyard - Right Awning Happy Block A"
 				},
 				{
 					"x": 386.2,
@@ -1855,7 +1855,7 @@
 					"id": 213,
 					"name": "item_frog",
 					"prereqs": [ "ladder", "frog suit", "mug" ],
-					"description": "Bedroom - Passed-Out Frog"
+					"description": "Bedroom - Passed Out Frog"
 				},
 				{
 					"x": 64.01,
