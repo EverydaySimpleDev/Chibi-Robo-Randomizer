@@ -170,7 +170,7 @@ skip_intro_window:
 	; set	item(56.d), 1.w ; syringe
 	; set	item(24.d), 1.w ; Drake Redcrest Suit
 	; set	item(25.d), 1.w ; Toa Suit
-	set	atc(1.d), 0.w ; copter / propeller
+	; set	atc(1.d), 0.w ; copter / propeller
 	; set	atc(3.d), 1.w ; radar
 	; set	atc(2.d), 1.w ; blaster
 	msg	voice(4.b),
@@ -185,6 +185,10 @@ skip_intro_window:
 	warp	5.d, 0.w
 
 loc_15:
+	msg	voice(4.b),
+		"Thank you for trying out the randomizer!\n",
+		"  I hope you have a great time!",
+		wait(255.b)
 	camera	@pos, -20759.d, 21116.w, -607.d, 3.d, 0.w
 	camera	@unk227, -13234.d, 19154.w, 12017.w, 3.d, 0.w
 	camera	@unk229, 25.w, 3.d, 0.w

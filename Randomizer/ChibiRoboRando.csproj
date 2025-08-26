@@ -231,6 +231,13 @@
     <None Include="Resources\stage14.us">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\tex1_400x188_fdd08a7791cd4603_5.xcf" />
+    <None Include="Resources\title_en_ap.tpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\title_en_rando.tpl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -250,6 +257,8 @@
     <Content Include="Resources\messages.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\tex1_400x188_fdd08a7791cd4603_5.png" />
+    <Content Include="Resources\title_en_rando.png" />
     <Content Include="unplug.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

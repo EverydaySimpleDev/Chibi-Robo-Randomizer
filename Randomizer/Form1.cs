@@ -665,6 +665,8 @@ namespace WindowsFormsApp1
 
                     //Console.WriteLine("Stage Data Desc: " + stageData.rooms[roomID].locations[apDataIndex].Description);
 
+                    //Console.WriteLine(objectName + " Flag: " + apSpawnFlag);
+
                     //spoilerLog.Add(name + " " + apDataIndex + " " + roomID, stageData.rooms[roomID].locations[apDataIndex].Description);
 
                     apSpawnFlag++;
@@ -1156,7 +1158,15 @@ namespace WindowsFormsApp1
 
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
 
+            if (apData != null)
+            {
+                runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_ap.tpl" + "\"");
+            
+            } else
+            {
+                runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_rando.tpl" + "\"");
 
+            }
 
             PBar.Value = 60;
 
