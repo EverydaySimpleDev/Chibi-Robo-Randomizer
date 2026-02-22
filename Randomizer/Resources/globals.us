@@ -10338,8 +10338,8 @@ loc_988:
 	popbp
 	endif	*loc_991
 loc_992:
-	elif	ge(rand(9.w), 7.w), else *loc_991
-	printf	"タライチャージ達成\n" ; Tarai Charge Achieved
+	elif	ge(rand(9.w), 7.w), else *loc_991 ; Wash Bin Logic
+	printf	"タライチャージ達成\n" ; Tarai Charge Achieved 
 	read	@anim, 20000.d, *loc_1003
 	wait	@read, 20000.d
 	set	var(670.d), add(var(670.d), 1.w)
@@ -10377,7 +10377,7 @@ loc_992:
 	sfx	70.d, 1.d
 	wait	@anim, sp(1.b), -1.d
 	wait	@time, 80.w
-	if	eq(var(902.d), 0.w), else *loc_1002
+	if	eq(var(902.d), 0.w), else *loc_1002 ; Wash Pan Dialog
 	wait	@time, 100.w
 	run	*lib_38
 	run	*lib_254

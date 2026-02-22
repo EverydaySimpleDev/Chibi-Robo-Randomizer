@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -57,6 +58,14 @@ namespace WindowsFormsApp1
         int apHappyBoxFlagID = 1;
         int apCoinFlagID = 1;
 
+        //List of all checks
+        List<ItemLocation> allLocations = new List<ItemLocation>();
+
+        //Tracks what checks are occupied
+        List<bool> occupiedChecks = new List<bool>();
+
+        //This will let us build the spoiler log later!
+        Dictionary<string, string> spoilerLog = new Dictionary<string, string>();
 
         public Form1()
         {
@@ -285,19 +294,22 @@ namespace WindowsFormsApp1
                 if (walkingBatteryDrain.Checked)
                 {
                     JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                    batteryGlobal.SelectToken("walk").Replace("0");
+
+                    batteryGlobal.SelectToken("walk").Replace(0);
+
+
                 }
 
                 if (joggingBatteryDrain.Checked)
                 {
                     JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                    batteryGlobal.SelectToken("jog").Replace("0");
+                    batteryGlobal.SelectToken("jog").Replace(0);
                 }
 
                 if (runningDecreasesBattery.Checked)
                 {
                     JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                    batteryGlobal.SelectToken("run").Replace("0");
+                    batteryGlobal.SelectToken("run").Replace(0);
                 }
 
                 //Edits for Open Upstairs setting
@@ -470,6 +482,16 @@ namespace WindowsFormsApp1
                 return false;
             }
 
+            if (apZipPath.Text != "<- Set Archipelago Data To Enable Integration")
+            {
+                statusDialog.Text += "\nValidated AP Path";
+            }
+            else
+            {
+                statusDialog.Text += "\n[ERROR] Invalid AP file path";
+                return false;
+            }
+
             if (logicSettings.SelectedItem != null)
             {
                 statusDialog.Text += "\nValidation complete";
@@ -488,15 +510,6 @@ namespace WindowsFormsApp1
         {
             //*** SETUP ***
 
-
-            //List of all checks
-            List<ItemLocation> allLocations = new List<ItemLocation>();
-
-            //Tracks what checks are occupied
-            List<bool> occupiedChecks = new List<bool>();
-
-            //This will let us build the spoiler log later!
-            Dictionary<string, string> spoilerLog = new Dictionary<string, string>();
 
             ItemLocation chargerLocation = null;
             ItemLocation batteryLocation = null;
@@ -550,6 +563,7 @@ namespace WindowsFormsApp1
             shopObj.SelectToken("items[13].item").Replace(null);
             shopObj.SelectToken("items[14].item").Replace(null);
             shopObj.SelectToken("items[15].item").Replace(null);
+
 
             if (apData != null)
             {
@@ -667,12 +681,12 @@ namespace WindowsFormsApp1
 
                     //Console.WriteLine(objectName + " Flag: " + apSpawnFlag);
 
-                    //spoilerLog.Add(name + " " + apDataIndex + " " + roomID, stageData.rooms[roomID].locations[apDataIndex].Description);
+                    spoilerLog.Add(name + " " + apDataIndex + " " + roomID, stageData.rooms[roomID].locations[apDataIndex].Description);
 
                     apSpawnFlag++;
                     apDataIndex++;
 
-                    if (apSpawnFlag == 135)
+                    if (apSpawnFlag == 134)
                     {
                         apSpawnFlag = 1;
                     }
@@ -1008,6 +1022,7 @@ namespace WindowsFormsApp1
             else
             {
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
+                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(null);
 
 
                 //Setting the correct flags for the new object
@@ -1038,7 +1053,7 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
                         CoinFlagID++;
 
-                        if (CoinFlagID == 165)
+                        if (CoinFlagID == 164)
                         {
                             CoinFlagID = 1;
                         }
@@ -1076,7 +1091,7 @@ namespace WindowsFormsApp1
 
                         ItemFlagID++;
 
-                        if (ItemFlagID == 165)
+                        if (ItemFlagID == 164)
                         {
                             ItemFlagID = 1;
                         }
@@ -1095,7 +1110,7 @@ namespace WindowsFormsApp1
 
                         ItemFlagID++;
 
-                        if (ItemFlagID == 165)
+                        if (ItemFlagID == 164)
                         {
                             ItemFlagID = 1;
                         }
@@ -1109,6 +1124,7 @@ namespace WindowsFormsApp1
         //Reimports the JSON stage and shop data into the ISO
         private void reimportStages()
         {
+
             File.WriteAllText("stage01.json", kitchenObj.ToString());
             File.WriteAllText("stage02.json", foyerObj.ToString());
             File.WriteAllText("stage03.json", basementObj.ToString());
@@ -1161,8 +1177,9 @@ namespace WindowsFormsApp1
             if (apData != null)
             {
                 runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_ap.tpl" + "\"");
-            
-            } else
+
+            }
+            else
             {
                 runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_rando.tpl" + "\"");
 
@@ -1388,11 +1405,7 @@ namespace WindowsFormsApp1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
-            if (PBar.Value == 100)
-            {
-                timer1.Stop();
-            }
+          
         }
 
         private void walkingBatteryDrain_CheckedChanged(object sender, EventArgs e)
@@ -1410,6 +1423,73 @@ namespace WindowsFormsApp1
 
         }
 
+        private void itemLocationsButton_Click(object sender, EventArgs e)
+        {
 
+            dataGridViewLocations.ColumnCount = 1; 
+
+            // Add columns
+            dataGridViewLocations.Columns[0].Name = "Location";
+
+            Stream stageDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemChecks.json");
+            StreamReader readStageData = new StreamReader(stageDataStream);
+            Stream itemPoolStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemPool.json");
+            StreamReader readItemPool = new StreamReader(itemPoolStream);
+
+            stageData = Newtonsoft.Json.JsonConvert.DeserializeObject<RootObject>(readStageData.ReadToEnd());
+
+            itemPool = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemPool>(readItemPool.ReadToEnd());
+
+            DataGridViewComboBoxColumn col = new DataGridViewComboBoxColumn();
+            col.DataPropertyName = "1";
+            dataGridViewLocations.Columns.Add(col);
+            dataGridViewLocations.Columns[1].Name = "Found Item";
+
+            ArrayList dataSorce = new ArrayList();
+
+            for ( var i = 0; i < itemPool.Items.Count; i++)
+            {
+                if(itemPool.Items[i].itemName != "")
+                {
+                    dataSorce.Add(itemPool.Items[i].itemName);
+                } else
+                {
+                    dataSorce.Add(itemPool.Items[i].objectName);
+                }
+                
+            }
+
+            col.DataSource = dataSorce;
+
+            for (int i = 0; i < stageData.rooms.Count; i++)
+            {
+                for (int j = 0; j < stageData.rooms[i].locations.Count(); j++)
+                {
+                    dataGridViewLocations.Rows.Add(stageData.rooms[i].locations[j].Description);
+                    //allLocations.Add(stageData.rooms[i].locations[j]);
+                    //occupiedChecks.Add(false);
+                }
+            }
+
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void logicSettings_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Custom
+            if (logicSettings.SelectedIndex == 3)
+            {
+                itemLocationsButton.Enabled = true;
+                itemLocationsButton.Visible = true;
+
+                dataGridViewLocations.Enabled = true;
+                dataGridViewLocations.Visible = true;
+            }
+        }
     }
 }

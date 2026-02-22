@@ -5008,21 +5008,6 @@ loc_1149:
 		"Zzzzzzzz...",
 		wait(254.b)
 	break	*loc_1140
-tooth_brush_toggle:
-	win	@unk209
-	win	@color, 0.w, 0.w, 0.w, 255.w
-	win	@pos, 320.w, 260.w
-	select	"Give Toothbrush\n",
-		"Remove Toothbrush"
-	case	eq(result, 0.w), else *tooth_brush_toggle_1
-	set	item(16.d), 1.w
-	popbp
-	break	*loc_1140
-tooth_brush_toggle_1:
-	case	eq(result, 1.w), else *tooth_brush_toggle
-	set	item(16.d), 0.w
-	popbp
-	break	*loc_1140
 loc_1140:
 	camera	@unk237, 3.w
 	lib	39.w

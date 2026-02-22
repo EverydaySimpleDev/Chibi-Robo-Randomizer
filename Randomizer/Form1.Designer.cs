@@ -55,7 +55,10 @@
             this.runningDecreasesBattery = new System.Windows.Forms.CheckBox();
             this.apZipPath = new System.Windows.Forms.TextBox();
             this.openAPZip = new System.Windows.Forms.Button();
+            this.itemLocationsButton = new System.Windows.Forms.Button();
+            this.dataGridViewLocations = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLocations)).BeginInit();
             this.SuspendLayout();
             // 
             // isoFilePath
@@ -75,9 +78,9 @@
             this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.title.Location = new System.Drawing.Point(17, 9);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(245, 26);
+            this.title.Size = new System.Drawing.Size(226, 26);
             this.title.TabIndex = 2;
-            this.title.Text = "Chibi-Robo Randomizer";
+            this.title.Text = "Chibi-Robo: Unpluged";
             this.title.Click += new System.EventHandler(this.title_Click);
             // 
             // openISO
@@ -136,6 +139,7 @@
             this.logicSettings.Name = "logicSettings";
             this.logicSettings.Size = new System.Drawing.Size(121, 28);
             this.logicSettings.TabIndex = 8;
+            this.logicSettings.SelectedIndexChanged += new System.EventHandler(this.logicSettings_SelectedIndexChanged);
             // 
             // freePJ
             // 
@@ -280,7 +284,6 @@
             this.walkingBatteryDrain.TabIndex = 25;
             this.walkingBatteryDrain.Text = "Walking Doesnt Decreases Battery";
             this.walkingBatteryDrain.UseVisualStyleBackColor = true;
-            this.walkingBatteryDrain.Visible = false;
             this.walkingBatteryDrain.CheckedChanged += new System.EventHandler(this.walkingBatteryDrain_CheckedChanged);
             // 
             // joggingBatteryDrain
@@ -293,7 +296,6 @@
             this.joggingBatteryDrain.TabIndex = 26;
             this.joggingBatteryDrain.Text = "Jogging Doesnt Decreases Battery";
             this.joggingBatteryDrain.UseVisualStyleBackColor = true;
-            this.joggingBatteryDrain.Visible = false;
             // 
             // runningDecreasesBattery
             // 
@@ -305,7 +307,6 @@
             this.runningDecreasesBattery.TabIndex = 27;
             this.runningDecreasesBattery.Text = "Running Doesnt Decreases Battery";
             this.runningDecreasesBattery.UseVisualStyleBackColor = true;
-            this.runningDecreasesBattery.Visible = false;
             // 
             // apZipPath
             // 
@@ -315,7 +316,7 @@
             this.apZipPath.ReadOnly = true;
             this.apZipPath.Size = new System.Drawing.Size(490, 26);
             this.apZipPath.TabIndex = 31;
-            this.apZipPath.Text = "<- Set Archipelago Data To Enable Integration (Optional)";
+            this.apZipPath.Text = "<- Set Archipelago Data To Enable Integration";
             // 
             // openAPZip
             // 
@@ -328,12 +329,38 @@
             this.openAPZip.UseVisualStyleBackColor = true;
             this.openAPZip.Click += new System.EventHandler(this.openAPZip_Click);
             // 
+            // itemLocationsButton
+            // 
+            this.itemLocationsButton.Enabled = false;
+            this.itemLocationsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.itemLocationsButton.Location = new System.Drawing.Point(17, 241);
+            this.itemLocationsButton.Name = "itemLocationsButton";
+            this.itemLocationsButton.Size = new System.Drawing.Size(146, 34);
+            this.itemLocationsButton.TabIndex = 32;
+            this.itemLocationsButton.Text = "Location Data";
+            this.itemLocationsButton.UseVisualStyleBackColor = true;
+            this.itemLocationsButton.Visible = false;
+            this.itemLocationsButton.Click += new System.EventHandler(this.itemLocationsButton_Click);
+            // 
+            // dataGridViewLocations
+            // 
+            this.dataGridViewLocations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewLocations.Enabled = false;
+            this.dataGridViewLocations.Location = new System.Drawing.Point(182, 241);
+            this.dataGridViewLocations.Name = "dataGridViewLocations";
+            this.dataGridViewLocations.Size = new System.Drawing.Size(960, 96);
+            this.dataGridViewLocations.TabIndex = 33;
+            this.dataGridViewLocations.Visible = false;
+            this.dataGridViewLocations.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(1154, 551);
+            this.Controls.Add(this.dataGridViewLocations);
+            this.Controls.Add(this.itemLocationsButton);
             this.Controls.Add(this.apZipPath);
             this.Controls.Add(this.openAPZip);
             this.Controls.Add(this.runningDecreasesBattery);
@@ -360,8 +387,9 @@
             this.Controls.Add(this.isoFilePath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Chibi-Robo Randomizer";
+            this.Text = "Chibi-Robo: Unpluged";
             ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLocations)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -394,6 +422,8 @@
         private System.Windows.Forms.CheckBox runningDecreasesBattery;
         private System.Windows.Forms.TextBox apZipPath;
         private System.Windows.Forms.Button openAPZip;
+        private System.Windows.Forms.Button itemLocationsButton;
+        private System.Windows.Forms.DataGridView dataGridViewLocations;
     }
 }
 

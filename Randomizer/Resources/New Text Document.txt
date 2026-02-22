@@ -1,0 +1,12 @@
+{
+        "id": 329,
+          "object": "test_box_12",
+          "position": { "x": 456.92, "y": -44.91, "z": -511.47},
+          "rotation": { "x": 0, "y": 153, "z": 0},
+          "scale": { "x": 1.0, "y": 1.0, "z": 1.0},
+          "data": 0,
+          "spawnFlag": 5,
+          "variant": 0,
+          "flags": ["spawn", "lift", "interact"],
+          "script": null
+}

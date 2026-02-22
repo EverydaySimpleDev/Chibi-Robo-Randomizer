@@ -1,12 +1,14 @@
-# Chibi-Robo Randomizer
+# Chibi-Robo: Unpluged
 
-Chibi-Robo Randomizer is a Windows application that randomizes the locations of equipment, quest items, trash, and more.
+Chibi-Robo: Unpluged is a Windows application that randomizes the locations of equipment, quest items, trash, and more.
 
 Chibi Robo Unplug Emo Tracker Pack: https://github.com/EverydaySimpleDev/EmoTrackerPacks
 
 ![Screencap of Randomizer GUI](/Randomizer/interfaceIMG.PNG)
 
 ## How to Use
+
+You will need an NTSC-U (GGTE01) Chibi-Robo! Plug Into Adventure! ISO. Other versions of the game are not supported.
 
 - Open ISO
   - Click this button to select a NTSC-USA copy of the Chibi-Robo ISO file. (Do not ask for a download link for this, you must source it yourself!)
@@ -40,14 +42,3 @@ Chibi Robo Unplug Emo Tracker Pack: https://github.com/EverydaySimpleDev/EmoTrac
 - Duplicate items cannot be randomized to different slots in the shop (meaning frog rings cannot appear in the shop)
 - If a shop location doesn't have an item randomized to it, it will not appear as an option in the shop (this is a temporary fix for the above)
 - AP Worlds do not have the shop items included in the rando
-
-# Enable Debug Menu
-
-I would recoumend using the below Gecko code in your dolphin so you can open the custom debug menu.
-This is a temp fix for the blaster / copter / radar items just in case you have a hard time with collecting them.
-It allows you to press X + Start to open the debug menu created by the randomizer
-
-C200FF60 00000003
-801C19BC 5400056B
-41820008 80648584
-81830148 00000000
