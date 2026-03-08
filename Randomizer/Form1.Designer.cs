@@ -78,9 +78,9 @@
             this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.title.Location = new System.Drawing.Point(17, 9);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(226, 26);
+            this.title.Size = new System.Drawing.Size(238, 26);
             this.title.TabIndex = 2;
-            this.title.Text = "Chibi-Robo: Unpluged";
+            this.title.Text = "Chibi-Robo: Unplugged";
             this.title.Click += new System.EventHandler(this.title_Click);
             // 
             // openISO
@@ -280,9 +280,9 @@
             this.walkingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.walkingBatteryDrain.Location = new System.Drawing.Point(648, 140);
             this.walkingBatteryDrain.Name = "walkingBatteryDrain";
-            this.walkingBatteryDrain.Size = new System.Drawing.Size(276, 24);
+            this.walkingBatteryDrain.Size = new System.Drawing.Size(271, 24);
             this.walkingBatteryDrain.TabIndex = 25;
-            this.walkingBatteryDrain.Text = "Walking Doesnt Decreases Battery";
+            this.walkingBatteryDrain.Text = "Walking Doesn\'t Decrease Battery";
             this.walkingBatteryDrain.UseVisualStyleBackColor = true;
             this.walkingBatteryDrain.CheckedChanged += new System.EventHandler(this.walkingBatteryDrain_CheckedChanged);
             // 
@@ -292,9 +292,9 @@
             this.joggingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.joggingBatteryDrain.Location = new System.Drawing.Point(648, 170);
             this.joggingBatteryDrain.Name = "joggingBatteryDrain";
-            this.joggingBatteryDrain.Size = new System.Drawing.Size(276, 24);
+            this.joggingBatteryDrain.Size = new System.Drawing.Size(271, 24);
             this.joggingBatteryDrain.TabIndex = 26;
-            this.joggingBatteryDrain.Text = "Jogging Doesnt Decreases Battery";
+            this.joggingBatteryDrain.Text = "Jogging Doesn\'t Decrease Battery";
             this.joggingBatteryDrain.UseVisualStyleBackColor = true;
             // 
             // runningDecreasesBattery
@@ -303,9 +303,9 @@
             this.runningDecreasesBattery.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.runningDecreasesBattery.Location = new System.Drawing.Point(648, 200);
             this.runningDecreasesBattery.Name = "runningDecreasesBattery";
-            this.runningDecreasesBattery.Size = new System.Drawing.Size(280, 24);
+            this.runningDecreasesBattery.Size = new System.Drawing.Size(275, 24);
             this.runningDecreasesBattery.TabIndex = 27;
-            this.runningDecreasesBattery.Text = "Running Doesnt Decreases Battery";
+            this.runningDecreasesBattery.Text = "Running Doesn\'t Decrease Battery";
             this.runningDecreasesBattery.UseVisualStyleBackColor = true;
             // 
             // apZipPath
@@ -387,7 +387,7 @@
             this.Controls.Add(this.isoFilePath);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Chibi-Robo: Unpluged";
+            this.Text = "Chibi-Robo: Unplugged";
             ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLocations)).EndInit();
             this.ResumeLayout(false);
