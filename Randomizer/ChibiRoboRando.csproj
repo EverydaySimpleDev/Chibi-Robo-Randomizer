@@ -240,6 +240,7 @@
     <None Include="Resources\title_en_rando.tpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="shipPlatform.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

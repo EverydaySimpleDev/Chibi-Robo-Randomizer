@@ -2266,7 +2266,7 @@ evt_map_jump_box_32:
 	if	eq(flag(1620.d), 1.w), else *loc_2984
 	run	*sub_1678
 loc_2984:
-	if	eq(flag(334.d), 1.d), else *loc_2983
+	if	eq(flag(334.d), 1.d), else *loc_2978 ; Leave living room
 	set	flag(969.d), 1.d
 loc_2983:
 	lib	54.w
@@ -2278,6 +2278,10 @@ loc_2983:
 	lib	39.w
 	return
 loc_2978:
+	set	var(135.d), 2.d
+	set	var(146.d), var(107.d)
+	set	flag(340.d), 1.w
+	set	flag(357.d), 1.w
 	camera	@pos, -20696.d, 4422.w, 22248.w, 2.d, 100.w
 	camera	@unk227, -41486.d, -4633.d, 30939.w, 2.d, 100.w
 	camera	@unk229, 26.w, 2.d, 100.w

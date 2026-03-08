@@ -322,8 +322,6 @@ namespace WindowsFormsApp1
                     latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
                 }
 
-
-
                 //Spoiler log output
                 using (StreamWriter logOutput = new StreamWriter(File.OpenWrite(destinationPath.Text + "\\Spoiler Log " + randoSeed + ".txt")))
                 {
@@ -589,8 +587,14 @@ namespace WindowsFormsApp1
                     // new item down the road for new ingame text?
                     if (objectName.Contains("archipelago_item"))
                     {
-                        objectName = "item_timer_15";
+                        //objectName = "item_timer_15";
                         //objectName = "energyb";
+                        //objectName = "takarabako";
+                        //objectName = "leaf";
+                        //objectName = "exclamation";
+                        //objectName = "test_ring";
+                        //objectName = "flower_cookie";
+                        objectName = "item_cookie_kakera";
                     }
 
                     // shop items are not the same as normal items
@@ -620,11 +624,12 @@ namespace WindowsFormsApp1
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("grab");
 
                                 break;
-
                             case "item_chip_53":
                             case "item_chip_54":
                             case "item_hocyouki":
                             case "item_receipt":
+                            case "item_army_photo":
+                            case "item_spoon":
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].flags[0]").AddAfterSelf("cull");
@@ -635,7 +640,6 @@ namespace WindowsFormsApp1
                                 posY = ((float)posY) + 2.0f;
 
                                 roomObject.SelectToken("objects[" + stageData.rooms[roomID].locations[apDataIndex].ID + "].position.y").Replace(posY);
-
 
                                 break;
                             default:
@@ -1053,7 +1057,7 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
                         CoinFlagID++;
 
-                        if (CoinFlagID == 164)
+                        if (CoinFlagID == 90)
                         {
                             CoinFlagID = 1;
                         }
@@ -1143,7 +1147,10 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
-            //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+            if (openDownstairs.Checked)
+            {
+                runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+            }
 
             // Update Messages
             //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");

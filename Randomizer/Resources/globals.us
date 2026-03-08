@@ -10338,7 +10338,7 @@ loc_988:
 	popbp
 	endif	*loc_991
 loc_992:
-	elif	ge(rand(9.w), 7.w), else *loc_991 ; Wash Bin Logic
+	elif	ge(rand(9.w), 7.w), else *loc_991 ; Wash Pan Logic
 	printf	"タライチャージ達成\n" ; Tarai Charge Achieved 
 	read	@anim, 20000.d, *loc_1003
 	wait	@read, 20000.d
