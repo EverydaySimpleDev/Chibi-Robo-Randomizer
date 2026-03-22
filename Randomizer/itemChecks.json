@@ -1763,10 +1763,10 @@
 					"description": "Jenny's Room - Purple Crayon"
 				},
 				{
-					"x":175.03,
-					"y":195.19,
-					"z":-300.82,
-					"id":364,
+					"x": 175.03,
+					"y": 195.19,
+					"z": -300.82,
+					"id": 364,
 					"name": "item_t_block_4",
 					"prereqs": [ "ladder", "mug" ],
 					"description": "Jenny's Room - Green Block"
@@ -2153,5 +2153,5 @@
 			]
 		}
 	]
-	
+
 }

@@ -134,7 +134,8 @@
             this.logicSettings.Items.AddRange(new object[] {
             "Glitchless",
             "Glitched",
-            "No Logic"});
+            "No Logic",
+            "AP Logic"});
             this.logicSettings.Location = new System.Drawing.Point(118, 198);
             this.logicSettings.Name = "logicSettings";
             this.logicSettings.Size = new System.Drawing.Size(121, 28);
