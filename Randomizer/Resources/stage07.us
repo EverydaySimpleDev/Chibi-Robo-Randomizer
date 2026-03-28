@@ -1341,32 +1341,32 @@ sub_243:
 	set	flag(0.d), 1.w
 	set	flag(1.d), 1.w
 	set	flag(315.d), 1.w
-	set	flag(476.d), 1.w
+	set	flag(476.d), 1.w 
 	set	flag(433.d), 1.w
 	set	flag(350.d), 1.w
-	set	flag(358.d), 1.w
+	set	flag(358.d), 1.w ; showed drake you are wearing the suit
 	set	flag(420.d), 1.w
 	set	flag(357.d), 1.w
 	set	flag(39.d), 0.w
-	set	flag(333.d), 1.w
+	set	flag(333.d), 1.w ; enable spiders to spawn
 	set	flag(334.d), 1.w
-	set	flag(335.d), 1.w
+	set	flag(335.d), 1.w ; enable spiders to spawn
 	set	var(114.d), 200.d
 	set	flag(452.d), 1.d
 	set	var(701.d), 1.d
-	set	var(728.d), 1.w
-	set	item(24.d), 1.w
-	set	item(25.d), 1.w
-	set	item(26.d), 1.w
-	set	item(32.d), 1.w
-	set	item(16.d), 1.w
-	set	item(21.d), 1.w
-	set	item(22.d), 1.w
-	set	item(53.d), 1.w
-	set	item(54.d), 1.w
-	set	atc(1.d), 1.w
-	set	atc(2.d), 1.w
-	set	atc(3.d), 1.w
+	set	var(728.d), 1.w ; Drake wants to see your new suit
+	set	item(24.d), 1.w ; Drake Redcrest Suite
+	set	item(25.d), 1.w ; Toa Suit
+	set	item(26.d), 1.w ; Frog Suit
+	set	item(32.d), 1.w ; Trauma Suit
+	set	item(16.d), 1.w ; Tooth Brush
+	set	item(21.d), 1.w ; Spoon
+	set	item(22.d), 1.w ; Mug
+	set	item(53.d), 1.w ; Charge Chip
+	set	item(54.d), 1.w ; Range Chip
+	set	atc(1.d), 1.w ; radar
+	set	atc(2.d), 1.w ; blaster
+	set	atc(3.d), 1.w ; copter
 loc_245:
 	return
 
@@ -2266,7 +2266,7 @@ evt_map_jump_box_32:
 	if	eq(flag(1620.d), 1.w), else *loc_2984
 	run	*sub_1678
 loc_2984:
-	if	eq(flag(334.d), 1.d), else *loc_2978 ; Leave living room
+	if	eq(flag(334.d), 1.d), else *loc_2983 ; leave living room
 	set	flag(969.d), 1.d
 loc_2983:
 	lib	54.w
@@ -9199,7 +9199,7 @@ loc_1523:
 		wait(255.b)
 	wait	@read, 20012.d
 	run	*sub_1494
-	run	*sub_1522
+	; run	*sub_1522 ; "Eeeep!!",
 	pushbp
 	setsp	actor_name(20012.d)
 	msg	voice(11.b),
@@ -12604,7 +12604,7 @@ loc_490:
 	endif	*loc_492
 loc_493:
 	move	20000.d, 400.w, 30.w, 3.d, -1.d
-loc_492:
+loc_492: ; Telly Teaching You About The Hud
 	wait	@move, 20000.d
 	disp	16.d, 1.d
 	call	20000.d, 700.d
@@ -12613,63 +12613,13 @@ loc_492:
 	setsp	20005.d
 	setsp	1.w
 	lib	93.w
-	popbp
-	msg	voice(0.b),
-		"Oh, Mr. Sanderson. Tsk tsk tsk.",
-		wait(255.b)
-	msg	voice(0.b),
-		"He had a little too much fun at the party.\n",
-		"I think he passed out from excitement.",
-		wait(255.b)
-	wait	@time, 30.w
-	mdir	20005.d, @obj, 20000.d, 20.w, -1.d
 	lib	254.w
-	scrn	@hud, 1.d, 3.d
-	anim	20005.d, 1017.d
-	msg	voice(0.b),
-		"But right now, I need you to look\n",
-		"at the top of the screen.",
-		wait(255.b)
-	color	-2.d, @modulate, 70.w, 70.w, 70.w, 100.w
-	color	20000.d, @modulate, 150.w, 150.w, 230.w, 100.w
-	color	20005.d, @modulate, 150.w, 150.w, 230.w, 100.w
 	lib	95.w
-	anim	20000.d, 93.d, 94.d
-	mdir	20000.d, @dir, 275.w, 30.w, -1.d
-	scrn	@hud, 1.d, 7.d
-	anim	20005.d, 1002.d
-	msg	voice(0.b),
-		"You'll see a sun symbol during the day\n",
-		"and the moon symbol at night. ",
-		wait(255.b)
-	msg	voice(0.b),
-		"The moon is out right now,\n",
-		"so that means it's nighttime.",
-		wait(255.b)
-	anim	20005.d, 1.d
-	color	-2.d, @modulate, 150.w, 150.w, 230.w, 100.w
-	color	86.d, @modulate, 255.w, 255.w, 255.w, 100.w
-	color	8.d, @modulate, 255.w, 255.w, 255.w, 100.w
-	color	420.d, @modulate, 255.w, 255.w, 255.w, 100.w
-	color	429.d, @modulate, 255.w, 255.w, 255.w, 100.w
-	color	430.d, @modulate, 255.w, 255.w, 255.w, 100.w
-	scrn	@hud, 1.d, 6.d
-	anim	20000.d, 95.d, 17.d
-	mdir	20000.d, @dir, 0.w, 30.w, -1.d
-	wait	@dir, 20000.d
 	pushbp
 	setsp	20005.d
 	setsp	1.w
 	lib	93.w
 	popbp
-	mdir	20005.d, @dir, 0.w, 40.w, -1.d
-	wait	@dir, 20005.d
-	msg	voice(0.b),
-		"Let's collect those Happy Points and try\n",
-		"to get to Super Chibi-Robo status!",
-		wait(3.b)
-	attach	15.d, *sub_1688
-	wait	@time, 16.w
 	pushbp
 	setsp	0.w
 	setsp	293.d

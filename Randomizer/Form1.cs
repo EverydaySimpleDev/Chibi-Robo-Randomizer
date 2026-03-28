@@ -479,15 +479,15 @@ namespace WindowsFormsApp1
                 return false;
             }
 
-            //if (apZipPath.Text != "<- Set Archipelago Data To Enable Integration")
-            //{
-            //    statusDialog.Text += "\nValidated AP Path";
-            //}
-            //else
-            //{
-            //    statusDialog.Text += "\n[ERROR] Invalid AP file path";
-            //    return false;
-            //}
+            if (apZipPath.Text != "<- Set Archipelago Data To Enable Integration")
+            {
+                statusDialog.Text += "\nValidated AP Path";
+            }
+            else
+            {
+                statusDialog.Text += "\n[ERROR] Invalid AP file path";
+                return false;
+            }
 
             if (logicSettings.SelectedItem != null)
             {
@@ -606,6 +606,10 @@ namespace WindowsFormsApp1
                             case "item_receipt":
                             case "item_army_photo":
                             case "item_spoon":
+                            case "item_kure_1":
+                            case "item_kure_3":
+                            case "item_kure_4":
+                            case "item_kure_5":
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("cull");
@@ -620,7 +624,7 @@ namespace WindowsFormsApp1
                                 break;
                             case "npc_hock_ship_114":
                                 drainObj.SelectToken("objects[10].object").Replace(objectName);
-                                break;
+                                break;                          
                             default:
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
@@ -665,7 +669,7 @@ namespace WindowsFormsApp1
 
                     //Console.WriteLine("Room ID: " + roomID);
 
-                    //Console.WriteLine(objectName + " Flag: " + apSpawnFlag);
+                    //Console.WriteLine("8037xxxx 0000 x -- " + locationName + " (Flag: " + apSpawnFlag + ")");
 
                     spoilerLog.Add(locationName, name);
 
@@ -1123,10 +1127,10 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
-            if (openDownstairs.Checked)
-            {
-                runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
-            }
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+
+            // Chibi House
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage05.us" + "\"");
 
             // Update Messages
             //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");

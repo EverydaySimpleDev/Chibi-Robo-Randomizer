@@ -227,6 +227,9 @@
     <None Include="Resources\globals.us">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\stage05.us">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\stage07.us">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
