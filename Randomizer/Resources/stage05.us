@@ -1,6 +1,21 @@
 	.stage	"stage05"
 
 
+loc_enable_radar:
+	set	atc(3.d), 1.w ; radar
+	return
+
+
+loc_enable_blaster:
+	set	atc(2.d), 1.w ; blaster
+	return
+
+
+loc_enable_copter:
+	set	atc(1.d), 1.w ; copter
+	return	
+
+	
 loc_654:
 	.db	"cb_robo_5.dat"
 
@@ -368,6 +383,10 @@ sub_576: ; first time loading into chibi house after birthday party
 	setsp	200.d
 	lib	154.w
 	popbp
+	set	flag(942.d), 1.d ; Jenny / Mort Stairs Flag?
+	set	flag(479.d), 1.d ; Sqaurter Flag
+	set	flag(941.d), 1.d ; Shoes flag
+	set     var(144.d), 3.d ; UFO pad flag
 	set	time(1.d), 0.d
 	set	var(75.d), 1.d
 	set	var(113.d), 12.d

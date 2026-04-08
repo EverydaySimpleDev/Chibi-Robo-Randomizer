@@ -1,6 +1,21 @@
 	.stage	"stage07"
 
 
+loc_enable_radar:
+	set	atc(3.d), 1.w ; radar
+	return
+
+
+loc_enable_blaster:
+	set	atc(2.d), 1.w ; blaster
+	return
+
+
+loc_enable_copter:
+	set	atc(1.d), 1.w ; copter
+	return	
+
+	
 loc_3246:
 	.db	"cb_robo_4.dat"
 
@@ -1367,105 +1382,6 @@ sub_243:
 	set	atc(1.d), 1.w ; radar
 	set	atc(2.d), 1.w ; blaster
 	set	atc(3.d), 1.w ; copter
-loc_245:
-	return
-
-
-	.interact  130.d, *evt_item_junk_unko_130
-evt_item_junk_unko_130:
-	lib	283.w
-	return
-
-
-	.interact  131.d, *evt_item_junk_unko_131
-evt_item_junk_unko_131:
-	lib	283.w
-	return
-
-
-	.interact  193.d, *evt_item_junk_unko_193
-evt_item_junk_unko_193:
-	lib	283.w
-	return
-
-
-	.interact  194.d, *evt_item_junk_unko_194
-evt_item_junk_unko_194:
-	lib	283.w
-	return
-
-
-	.interact  195.d, *evt_item_junk_unko_195
-evt_item_junk_unko_195:
-	lib	283.w
-	return
-
-
-	.interact  196.d, *evt_item_junk_unko_196
-evt_item_junk_unko_196:
-	lib	283.w
-	return
-
-
-	.interact  197.d, *evt_item_junk_unko_197
-evt_item_junk_unko_197:
-	lib	283.w
-	return
-
-
-	.interact  198.d, *evt_item_junk_unko_198
-evt_item_junk_unko_198:
-	lib	283.w
-	return
-
-
-	.interact  199.d, *evt_item_junk_unko_199
-evt_item_junk_unko_199:
-	lib	283.w
-	return
-
-
-	.interact  200.d, *evt_item_junk_unko_200
-evt_item_junk_unko_200:
-	lib	283.w
-	return
-
-
-	.interact  201.d, *evt_item_junk_unko_201
-evt_item_junk_unko_201:
-	lib	283.w
-	return
-
-
-	.interact  202.d, *evt_item_junk_unko_202
-evt_item_junk_unko_202:
-	lib	283.w
-	return
-
-
-	.interact  203.d, *evt_item_junk_unko_203
-evt_item_junk_unko_203:
-	lib	283.w
-	return
-
-
-	.interact  204.d, *evt_item_junk_unko_204
-evt_item_junk_unko_204:
-	lib	283.w
-	return
-
-
-	.interact  205.d, *evt_item_junk_unko_205
-evt_item_junk_unko_205:
-	lib	283.w
-	return
-
-
-	.interact  206.d, *evt_item_junk_unko_206
-evt_item_junk_unko_206:
-	lib	283.w
-	return
-
 
 sub_1030:
 	if	and(eq(flag(18.d), 1.d), eq(flag(19.d), 0.d)), else *loc_1032
@@ -11693,382 +11609,9 @@ sub_1686:
 	lib	55.w
 	lib	96.w
 	return
-
-
-	.interact  19.d, *evt_item_frog_ring_19
-evt_item_frog_ring_19:
-	pushbp
-	setsp	0.d
-	lib	77.w
-	popbp
-	set	var(71.d), add(var(71.d), 1.w)
-	set	var(147.d), add(var(147.d), 1.w)
-	return
-
-
-	.interact  20.d, *evt_item_frog_ring_20
-evt_item_frog_ring_20:
-	pushbp
-	setsp	0.d
-	lib	77.w
-	popbp
-	set	var(71.d), add(var(71.d), 1.w)
-	set	var(147.d), add(var(147.d), 1.w)
-	if	eq(flag(1091.d), 0.w), else *loc_2960
-	lib	38.w
-	lib	12.w
-	camera	@pos, -6050.d, 18122.w, -16837.d, 3.d, 0.w
-	camera	@unk227, -25954.d, 16179.w, -15027.d, 3.d, 0.w
-	camera	@unk229, 25.w, 3.d, 0.w
-	camera	@distance, 200.w, 3.d, 0.w
-	wait	@time, 30.w
-	wait	@cam
-	camera	@pos, -6050.d, 21268.w, -16837.d, 2.d, 200.w
-	camera	@unk227, -25954.d, 19325.w, -15027.d, 2.d, 200.w
-	wait	@time, 1.w
-	wait	@cam
-	camera	@pos, -19761.d, 22186.w, -30014.d, 2.d, 300.w
-	camera	@unk227, -32175.d, 20842.w, -14288.d, 2.d, 300.w
-	wait	@time, 1.w
-	wait	@cam
-	sfx	288.d, 1.d
-	camera	@pos, -8062.d, 17219.w, -36898.d, 2.d, 470.w
-	camera	@unk227, -27163.d, 16500.w, -30714.d, 2.d, 470.w
-	wait	@time, 1.w
-	wait	@cam
-	wait	@sfx, 288.d
-	lib	39.w
-	lib	96.w
-	camera	@unk230
-	set	flag(1091.d), 1.w
 loc_2960:
 	return
 
-
-	.interact  21.d, *evt_item_frog_ring_21
-evt_item_frog_ring_21:
-	pushbp
-	setsp	0.d
-	lib	77.w
-	popbp
-	set	var(71.d), add(var(71.d), 1.w)
-	set	var(147.d), add(var(147.d), 1.w)
-	return
-
-
-	.interact  115.d, *evt_item_kami_kuzu_115
-evt_item_kami_kuzu_115:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  116.d, *evt_item_kami_kuzu_116
-evt_item_kami_kuzu_116:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  117.d, *evt_item_kami_kuzu_117
-evt_item_kami_kuzu_117:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  118.d, *evt_item_kami_kuzu_118
-evt_item_kami_kuzu_118:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  257.d, *evt_item_kami_kuzu_257
-evt_item_kami_kuzu_257:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  258.d, *evt_item_kami_kuzu_258
-evt_item_kami_kuzu_258:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  259.d, *evt_item_kami_kuzu_259
-evt_item_kami_kuzu_259:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  260.d, *evt_item_kami_kuzu_260
-evt_item_kami_kuzu_260:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  261.d, *evt_item_kami_kuzu_261
-evt_item_kami_kuzu_261:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  319.d, *evt_item_kami_kuzu_319
-evt_item_kami_kuzu_319:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  320.d, *evt_item_kami_kuzu_320
-evt_item_kami_kuzu_320:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  321.d, *evt_item_kami_kuzu_321
-evt_item_kami_kuzu_321:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  367.d, *evt_item_kami_kuzu_367
-evt_item_kami_kuzu_367:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  368.d, *evt_item_kami_kuzu_368
-evt_item_kami_kuzu_368:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  119.d, *evt_item_cookie_kakera_119
-evt_item_cookie_kakera_119:
-	pushbp
-	setsp	19.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  120.d, *evt_item_cookie_kakera_120
-evt_item_cookie_kakera_120:
-	pushbp
-	setsp	19.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  322.d, *evt_item_cookie_kakera_322
-evt_item_cookie_kakera_322:
-	if	eq(obj(@unk235, 436.d), 1.d), else *loc_3300
-	detach	436.d
-loc_3300:
-	pushbp
-	setsp	19.d
-	lib	77.w
-	popbp
-	if	eq(obj(@unk235, 436.d), 1.d), else *loc_3299
-	attach	436.d, *sub_3301
-loc_3299:
-	return
-
-
-	.interact  323.d, *evt_item_cookie_kakera_323
-evt_item_cookie_kakera_323:
-	pushbp
-	setsp	19.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  253.d, *evt_item_tonpy_a_253
-evt_item_tonpy_a_253:
-	pushbp
-	setsp	35.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  254.d, *evt_item_tonpy_b_254
-evt_item_tonpy_b_254:
-	pushbp
-	setsp	36.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  324.d, *evt_leaf_324
-evt_leaf_324:
-	pushbp
-	setsp	91.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  325.d, *evt_leaf_325
-evt_leaf_325:
-	pushbp
-	setsp	91.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  326.d, *evt_leaf_326
-evt_leaf_326:
-	pushbp
-	setsp	91.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  437.d, *evt_item_candy_gomi_437
-evt_item_candy_gomi_437:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  438.d, *evt_item_candy_gomi_438
-evt_item_candy_gomi_438:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  439.d, *evt_item_candy_gomi_439
-evt_item_candy_gomi_439:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  440.d, *evt_item_candy_gomi_440
-evt_item_candy_gomi_440:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  441.d, *evt_item_candy_gomi_441
-evt_item_candy_gomi_441:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  442.d, *evt_item_candy_gomi_442
-evt_item_candy_gomi_442:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  443.d, *evt_item_candy_gomi_443
-evt_item_candy_gomi_443:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  444.d, *evt_item_candy_gomi_444
-evt_item_candy_gomi_444:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  445.d, *evt_item_okasi_gomi_1_445
-evt_item_okasi_gomi_1_445:
-	pushbp
-	setsp	137.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  446.d, *evt_item_okasi_gomi_2_446
-evt_item_okasi_gomi_2_446:
-	pushbp
-	setsp	138.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  447.d, *evt_item_okasi_gomi_2_447
-evt_item_okasi_gomi_2_447:
-	pushbp
-	setsp	138.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  302.d, *evt_item_receipt_302
 evt_item_receipt_302:
 	pushbp
 	setsp	55.d
@@ -12613,7 +12156,6 @@ loc_492: ; Telly Teaching You About The Hud
 	setsp	20005.d
 	setsp	1.w
 	lib	93.w
-	lib	254.w
 	lib	95.w
 	pushbp
 	setsp	20005.d
@@ -14269,13 +13811,13 @@ sub_2560:
 		anim(0.b, 20008.w, 1.d)
 	wait	@time, 1.w
 	pushbp
-	setsp	127.d
+	setsp	127.d ; screen animation @fade
 	lib	79.w
 	popbp
 	wait	@time, 1.w
-	lib	67.w
+	lib	67.w 
 	wait	@time, 1.w
-	lib	105.w
+	lib	105.w ; @anim
 	msg	voice(7.b),
 		anim(0.b, 20008.w, 1019.d),
 		"Shall I show you how to don it, friend?",
@@ -16914,8 +16456,6 @@ sub_1808:
 	sfx	65553.d, 1.d
 	return
 
-
-	.interact  274.d, *evt_living_cb_book_2_274
 evt_living_cb_book_2_274:
 	if	flag(420.d), else *loc_3268
 	lib	38.w
@@ -23613,6 +23153,7 @@ evt_living_trashbox_114:
 	lib	371.w
 	lib	39.w
 	return
+
 loc_3017:
 	set	var(0.d), obj(@pos_x, 69.d)
 	set	var(1.d), obj(@pos_y, 69.d)
@@ -23981,3 +23522,10 @@ sub_2118:
 	lib	96.w
 	attach	114.d, *sub_2113
 	return
+
+loc_245:
+	return
+
+
+	
+	

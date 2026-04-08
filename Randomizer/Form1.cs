@@ -98,7 +98,8 @@ namespace WindowsFormsApp1
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
                 dialog.ShowNewFolderButton = true;
-                if (dialog.ShowDialog() == DialogResult.OK)
+            
+                if (dialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                 {
                     destinationPath.Text = dialog.SelectedPath;
                 }
@@ -117,10 +118,12 @@ namespace WindowsFormsApp1
 
                     string fileName = Path.GetFileName(ofd.FileName);
 
+                    //string fileExtention = Path.GetExtension(ofd.FileName);
+
+                    apData = JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
+
                     // Get file name and remove .zip from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
-
-                    apData = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
 
                     string pjCheck = apData.SelectToken("free_pjs").ToString();
 
@@ -155,16 +158,16 @@ namespace WindowsFormsApp1
                         openUpstairs.Checked = false;
                     }
 
-                    string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
+                    //string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
 
-                    if (openDownStairsCheck == "1")
-                    {
-                        openDownstairs.Checked = true;
-                    }
-                    else
-                    {
-                        openDownstairs.Checked = false;
-                    }
+                    //if (openDownStairsCheck == "1")
+                    //{
+                    //    openDownstairs.Checked = true;
+                    //}
+                    //else
+                    //{
+                    //    openDownstairs.Checked = false;
+                    //}
 
                     string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
 
@@ -281,13 +284,13 @@ namespace WindowsFormsApp1
 
 
                 //Edits for Open Downstairs
-                if (openDownstairs.Checked)
-                {
-                    JToken unusedShopItem = shopObj.SelectToken("items[17]");
-                    unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
-                    unusedShopItem.SelectToken("price").Replace(10);
-                    unusedShopItem.SelectToken("limit").Replace(1);
-                }
+                //if (openDownstairs.Checked)
+                //{
+                //    JToken unusedShopItem = shopObj.SelectToken("items[17]");
+                //    unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
+                //    unusedShopItem.SelectToken("price").Replace(10);
+                //    unusedShopItem.SelectToken("limit").Replace(1);
+                //}
 
                 //Battery Drain Settings
                 if (walkingBatteryDrain.Checked)
@@ -547,6 +550,30 @@ namespace WindowsFormsApp1
                 // Get All Locations Of Json for AP
                 JObject locations = apData.SelectToken("Locations").ToObject<JObject>();
 
+                // Living Room
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage07.us", Directory.GetCurrentDirectory() + @"\stage07_Edited.us", true);
+
+                // Kitchen
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage01.us", Directory.GetCurrentDirectory() + @"\stage01_Edited.us", true);
+
+                // Sink Drain
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage11.us", Directory.GetCurrentDirectory() + @"\stage11_Edited.us", true);
+
+                // Foyer
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage02.us", Directory.GetCurrentDirectory() + @"\stage02_Edited.us", true);
+
+                // Basement
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage03.us", Directory.GetCurrentDirectory() + @"\stage03_Edited.us", true);
+
+                // Backyard
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage09.us", Directory.GetCurrentDirectory() + @"\stage09_Edited.us", true);
+
+                // Jenny's Room
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage04.us", Directory.GetCurrentDirectory() + @"\stage04_Edited.us", true);
+
+                // Bedroom
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage06.us", Directory.GetCurrentDirectory() + @"\stage06_Edited.us", true);
+
                 //int shopId = 0;
 
                 // Loop through each location josin
@@ -556,7 +583,9 @@ namespace WindowsFormsApp1
                     string locationName = location.Key;
                     string name = location.Value.SelectToken("name").ToString();
                     string objectName = location.Value.SelectToken("object").ToString();
-                    int locationID = location.Value.SelectToken("location_id").ToObject<int>(); 
+                    int locationID = location.Value.SelectToken("location_id").ToObject<int>();
+
+                    string playerID = location.Value.SelectToken("player").ToString();
 
                     var roomID = get_room_id_by_name(location.Key);
 
@@ -566,40 +595,34 @@ namespace WindowsFormsApp1
                     // new item down the road for new ingame text?
                     if (objectName.Contains("archipelago_item"))
                     {
-                        //objectName = "energyb";
-                        //objectName = "leaf";
-                        //objectName = "test_ring";
-                        //objectName = "flower_cookie";
                         objectName = "item_cookie_kakera";
+
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name);
+
+                    }
+                    else if (objectName.Contains("cb_radar"))
+                    {
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 3);
+                    }
+                    else if (objectName.Contains("cb_cannon_lv_2"))
+                    {
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 2);
+                    }
+                    else if (objectName.Contains("cb_propeller_lv_2"))
+                    {
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 1);
                     }
 
                     // shop items are not the same as normal items
                     if (roomID != 8)
                     {
+
                         // Add the object name into the location
                         roomObject.SelectToken("objects[" + locationID + "].object").Replace(objectName);
 
+
                         switch (objectName)
                         {
-                            case "coin_c":
-                            case "coin_s":
-                            case "coin_g":
-                            case "item_junk_a":
-                            case "item_junk_b":
-                            case "item_junk_c":
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("interact");
-
-                                break;
-                            case "living_happy_box":
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("explode");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("climb");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("clamber");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("fall");
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("grab");
-
-                                break;
                             case "item_chip_53":
                             case "item_chip_54":
                             case "item_hocyouki":
@@ -610,6 +633,9 @@ namespace WindowsFormsApp1
                             case "item_kure_3":
                             case "item_kure_4":
                             case "item_kure_5":
+                            case "cb_radar":
+                            case "cb_cannon_lv_2":
+                            case "cb_propeller_lv_2":
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("cull");
@@ -621,17 +647,18 @@ namespace WindowsFormsApp1
 
                                 roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
 
+                                roomObject.SelectToken("objects[" + locationID + "].rotation.x").Replace(0);
+                                roomObject.SelectToken("objects[" + locationID + "].rotation.y").Replace(0);
+                                roomObject.SelectToken("objects[" + locationID + "].rotation.z").Replace(0);
+
                                 break;
-                            case "npc_hock_ship_114":
-                                drainObj.SelectToken("objects[10].object").Replace(objectName);
-                                break;                          
                             default:
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("cull");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("lift");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("interact");
-                               
+
                                 break;
                         }
                     }
@@ -655,15 +682,10 @@ namespace WindowsFormsApp1
                     //Console.WriteLine(locationName);
                     //Console.WriteLine(roomID);
 
-                    JToken unusedShopItem1 = shopObj.SelectToken("items[15]");
-                    unusedShopItem1.SelectToken("item").Replace("chibi_blaster");
-                    unusedShopItem1.SelectToken("price").Replace(1100);
-                    unusedShopItem1.SelectToken("limit").Replace(1);
-
-                    JToken unusedShopItem2 = shopObj.SelectToken("items[16]");
-                    unusedShopItem2.SelectToken("item").Replace("chibi_radar");
-                    unusedShopItem2.SelectToken("price").Replace(1700);
-                    unusedShopItem2.SelectToken("limit").Replace(1);
+                    JToken unusedShopItem = shopObj.SelectToken("items[17]");
+                    unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
+                    unusedShopItem.SelectToken("price").Replace(10);
+                    unusedShopItem.SelectToken("limit").Replace(1);
 
                     roomObject.SelectToken("objects[" + locationID + "].spawnFlag").Replace(apSpawnFlag);
 
@@ -1127,7 +1149,29 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+            //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage07_Edited.us" + "\"");
+
+            // Kitchen
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage01_Edited.us" + "\"");
+
+            // Sink Drain
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage11_Edited.us" + "\"");
+
+            // Foyer
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage02_Edited.us" + "\"");
+
+            // Basement
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage03_Edited.us" + "\"");
+
+            // Backyard
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage09_Edited.us" + "\"");
+
+            // Jenny's Room
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage04_Edited.us" + "\"");
+
+            // Bedroom
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage06_Edited.us" + "\"");
 
             // Chibi House
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage05.us" + "\"");
@@ -1239,11 +1283,7 @@ namespace WindowsFormsApp1
         private int get_room_id_by_name(string location)
         {
 
-            //Console.WriteLine("Checked Location: " + location);
-
             string roomTempName = location.Substring(0, location.IndexOf("-") + 1).Trim(new Char[] { ' ', '-' });
-
-            //Console.WriteLine("apSpawnFlag: " + apSpawnFlag);
 
             if (roomTempName == "Living Room")
             {
@@ -1450,6 +1490,199 @@ namespace WindowsFormsApp1
 
 
         }
+
+        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0)
+        {
+            if (roomID == 0)
+            {
+
+                int[] skipLocations = { 133 };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if(atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName);
+
+                    } else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+
+            }
+            else if (roomID == 1)
+            {
+
+                int[] skipLocations = { 36, 37 };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 2)
+            {
+
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 3)
+            {
+
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 4)
+            {
+                int[] skipLocations = { 6, 121 };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 5)
+            {
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 6)
+            {
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+            else if (roomID == 7)
+            {
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
+        }
+
+        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName)
+        {
+            File.AppendAllText(
+            stagefile,
+            "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+            "ap_text_" + objectID + ":" + Environment.NewLine +
+            "\tmsg\tvoice(0.b)," + Environment.NewLine +
+            "\t\t\"This is player " + player + "\\n\"," + Environment.NewLine +
+            "\t\t\"" + newObjectName +"\"," + Environment.NewLine +
+            "\t\twait(254.b)" + Environment.NewLine +
+            "\treturn\n" + Environment.NewLine);
+        }
+
+        private void enableATCToolPickup(string stagefile, int objectID, string player, string newObjectName, int toolID)
+        {
+
+            if(toolID == 3)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\trun\t*loc_enable_radar" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 2)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\trun\t*loc_enable_blaster" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 1)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\trun\t*loc_enable_copter" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+
+        }
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

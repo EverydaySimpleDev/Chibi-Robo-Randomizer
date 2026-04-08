@@ -228,6 +228,7 @@
             this.openDownstairs.TabIndex = 17;
             this.openDownstairs.Text = "Open Downstairs";
             this.openDownstairs.UseVisualStyleBackColor = true;
+            this.openDownstairs.Visible = false;
             this.openDownstairs.CheckedChanged += new System.EventHandler(this.openDownstairs_CheckedChanged);
             // 
             // passwordRando
