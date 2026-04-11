@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -110,7 +111,7 @@ namespace WindowsFormsApp1
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.Filter = "(*.json)|*.json";
+                ofd.Filter = "(*.apcr)|*.apcr|(*.json)|*.json";
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
@@ -118,11 +119,11 @@ namespace WindowsFormsApp1
 
                     string fileName = Path.GetFileName(ofd.FileName);
 
-                    //string fileExtention = Path.GetExtension(ofd.FileName);
+                    string fileExtention = Path.GetExtension(ofd.FileName);
 
                     apData = JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
 
-                    // Get file name and remove .zip from the path
+                    //Get file name and remove file extention from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
 
                     string pjCheck = apData.SelectToken("free_pjs").ToString();
@@ -1149,7 +1150,6 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
-            //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage07.us" + "\"");
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage07_Edited.us" + "\"");
 
             // Kitchen
@@ -1443,52 +1443,6 @@ namespace WindowsFormsApp1
         private void itemLocationsButton_Click(object sender, EventArgs e)
         {
 
-            dataGridViewLocations.ColumnCount = 1; 
-
-            // Add columns
-            dataGridViewLocations.Columns[0].Name = "Location";
-
-            Stream stageDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemChecks.json");
-            StreamReader readStageData = new StreamReader(stageDataStream);
-            Stream itemPoolStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemPool.json");
-            StreamReader readItemPool = new StreamReader(itemPoolStream);
-
-            stageData = Newtonsoft.Json.JsonConvert.DeserializeObject<RootObject>(readStageData.ReadToEnd());
-
-            itemPool = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemPool>(readItemPool.ReadToEnd());
-
-            DataGridViewComboBoxColumn col = new DataGridViewComboBoxColumn();
-            col.DataPropertyName = "1";
-            dataGridViewLocations.Columns.Add(col);
-            dataGridViewLocations.Columns[1].Name = "Found Item";
-
-            ArrayList dataSorce = new ArrayList();
-
-            for ( var i = 0; i < itemPool.Items.Count; i++)
-            {
-                if(itemPool.Items[i].itemName != "")
-                {
-                    dataSorce.Add(itemPool.Items[i].itemName);
-                } else
-                {
-                    dataSorce.Add(itemPool.Items[i].objectName);
-                }
-                
-            }
-
-            col.DataSource = dataSorce;
-
-            for (int i = 0; i < stageData.rooms.Count; i++)
-            {
-                for (int j = 0; j < stageData.rooms[i].locations.Count(); j++)
-                {
-                    dataGridViewLocations.Rows.Add(stageData.rooms[i].locations[j].Description);
-                    //allLocations.Add(stageData.rooms[i].locations[j]);
-                    //occupiedChecks.Add(false);
-                }
-            }
-
-
         }
 
         private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0)
@@ -1635,7 +1589,7 @@ namespace WindowsFormsApp1
             "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
             "ap_text_" + objectID + ":" + Environment.NewLine +
             "\tmsg\tvoice(0.b)," + Environment.NewLine +
-            "\t\t\"This is player " + player + "\\n\"," + Environment.NewLine +
+            "\t\t\"You found Player " + player + "\'s\"," + Environment.NewLine +
             "\t\t\"" + newObjectName +"\"," + Environment.NewLine +
             "\t\twait(254.b)" + Environment.NewLine +
             "\treturn\n" + Environment.NewLine);

@@ -386,7 +386,9 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	flag(942.d), 1.d ; Jenny / Mort Stairs Flag?
 	set	flag(479.d), 1.d ; Sqaurter Flag
 	set	flag(941.d), 1.d ; Shoes flag
-	set     var(144.d), 3.d ; UFO pad flag
+	set var(144.d), 3.d ; UFO pad flag
+	set	flag(806.d), 1.d ; UFO pad flag
+	lib	38.w ; UFO pad flag
 	set	time(1.d), 0.d
 	set	var(75.d), 1.d
 	set	var(113.d), 12.d
