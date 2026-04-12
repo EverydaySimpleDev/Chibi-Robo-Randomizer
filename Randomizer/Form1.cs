@@ -86,7 +86,7 @@ namespace WindowsFormsApp1
             {
                 ofd.Filter = "ISO File (*.iso)|*.iso";
                 ofd.RestoreDirectory = true;
-                if (ofd.ShowDialog() == DialogResult.OK)
+                if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
                     isoFilePath.Text = ofd.FileName;
                 }
@@ -100,7 +100,7 @@ namespace WindowsFormsApp1
             {
                 dialog.ShowNewFolderButton = true;
             
-                if (dialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
+                if (dialog.ShowDialog(this) == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                 {
                     destinationPath.Text = dialog.SelectedPath;
                 }
@@ -113,7 +113,7 @@ namespace WindowsFormsApp1
             {
                 ofd.Filter = "(*.apcr)|*.apcr|(*.json)|*.json";
                 ofd.RestoreDirectory = true;
-                if (ofd.ShowDialog() == DialogResult.OK)
+                if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
                     apZipPath.Text = ofd.FileName;
 
@@ -385,8 +385,6 @@ namespace WindowsFormsApp1
 
             //runUnplugCommand("messages export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
-            //WriteXML("stage14:15:26", "Welcome To The Randomizer <br>");
-
 
             XmlDocument doc = new XmlDocument();
             doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
@@ -596,7 +594,17 @@ namespace WindowsFormsApp1
                     // new item down the road for new ingame text?
                     if (objectName.Contains("archipelago_item"))
                     {
-                        objectName = "item_cookie_kakera";
+
+                        string classification = location.Value.SelectToken("classification").ToString();
+
+                        if(classification == "progression" || classification == "usefull")
+                        {
+                            objectName = "item_cookie_kakera";
+
+                        } else
+                        {
+                            objectName = "item_kami_kuzu";
+                        }
 
                         roomCheckForInGameMessages(roomID, locationID, playerID, name);
 
@@ -677,6 +685,22 @@ namespace WindowsFormsApp1
                         //Console.WriteLine(objectName);
 
                         //shopId++;
+
+                    }
+
+                    // Fix some locations items positions
+
+                    // Bedroom
+                    if(roomID == 7)
+                    {
+                        // Bedroom - Wastepaper on Bed
+                        if (locationID == 286)
+                        {
+                            var posY = roomObject.SelectToken("objects[" + locationID + "].position.y");
+                            posY = ((float)posY) + 2.0f;
+
+                            roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
+                        }
 
                     }
 
