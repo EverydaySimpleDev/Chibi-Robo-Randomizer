@@ -10230,7 +10230,7 @@ loc_180:
 	wait	@time, 150.w
 	anim	20000.d, 1.d
 	run	*lib_96
-	set	adda(var(798.d), 1.w)
+	; set	adda(var(798.d), 1.w) ; incease number of times recharged
 	anim	20005.d, 1.d
 	if	eq(flag(963.d), 1.d), else *loc_169
 	set	flag(963.d), 0.d

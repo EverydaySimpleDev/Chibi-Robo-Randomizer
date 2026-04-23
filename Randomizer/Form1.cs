@@ -99,7 +99,7 @@ namespace WindowsFormsApp1
             using (FolderBrowserDialog dialog = new FolderBrowserDialog())
             {
                 dialog.ShowNewFolderButton = true;
-            
+
                 if (dialog.ShowDialog(this) == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.SelectedPath))
                 {
                     destinationPath.Text = dialog.SelectedPath;
@@ -294,26 +294,47 @@ namespace WindowsFormsApp1
                 //}
 
                 //Battery Drain Settings
-                if (walkingBatteryDrain.Checked)
-                {
-                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
+                JToken batteryGlobal = globals.SelectToken("batteryGlobals");
 
-                    batteryGlobal.SelectToken("walk").Replace(0);
+            
+                batteryGlobal.SelectToken("idle").Replace( apData.SelectToken("battery_drain_idle") );
+                batteryGlobal.SelectToken("walk").Replace(apData.SelectToken("battery_drain_walk"));
+                batteryGlobal.SelectToken("jog").Replace(apData.SelectToken("battery_drain_jog"));
+                batteryGlobal.SelectToken("run").Replace(apData.SelectToken("battery_drain_run"));
+                batteryGlobal.SelectToken("slide").Replace(apData.SelectToken("battery_drain_slide"));
+                batteryGlobal.SelectToken("equip").Replace(apData.SelectToken("battery_drain_equip"));
+                batteryGlobal.SelectToken("lift").Replace(apData.SelectToken("battery_drain_lift"));
+                batteryGlobal.SelectToken("drop").Replace(apData.SelectToken("battery_drain_drop"));
+                //batteryGlobal.SelectToken("leticker").Replace(apData.SelectToken("battery_drain_idle"));
+                batteryGlobal.SelectToken("ledgeClimb").Replace(apData.SelectToken("battery_drain_ledge_grab"));
+                batteryGlobal.SelectToken("ledgeSlide").Replace(apData.SelectToken("battery_drain_ledge_slide"));
+                batteryGlobal.SelectToken("ledgeDrop").Replace(apData.SelectToken("battery_drain_ledge_drop"));
+                batteryGlobal.SelectToken("ledgeTeeter").Replace(apData.SelectToken("battery_drain_ledge_teeter"));
+                batteryGlobal.SelectToken("jump").Replace(apData.SelectToken("battery_drain_jump"));
+                batteryGlobal.SelectToken("fall").Replace(apData.SelectToken("battery_drain_fall"));
+                batteryGlobal.SelectToken("ladderGrab").Replace(apData.SelectToken("battery_drain_ladder_grab"));
+                batteryGlobal.SelectToken("ladderAscend").Replace(apData.SelectToken("battery_drain_ladder_ascend"));
+                batteryGlobal.SelectToken("ladderDescend").Replace(apData.SelectToken("battery_drain_ladder_descend"));
+                batteryGlobal.SelectToken("ladderTop").Replace(apData.SelectToken("battery_drain_ladder_top"));
+                batteryGlobal.SelectToken("ladderBottom").Replace(apData.SelectToken("battery_drain_ladder_bottom"));
+                batteryGlobal.SelectToken("ropeGrab").Replace(apData.SelectToken("battery_drain_rope_grab"));
+                batteryGlobal.SelectToken("ropeAscend").Replace(apData.SelectToken("battery_drain_rope_ascend"));
+                batteryGlobal.SelectToken("ropeDescend").Replace(apData.SelectToken("battery_drain_rope_descend"));
+                batteryGlobal.SelectToken("ropeTop").Replace(apData.SelectToken("battery_drain_rope_top"));
+                batteryGlobal.SelectToken("ropeBottom").Replace(apData.SelectToken("battery_drain_rope_bottom"));
+                batteryGlobal.SelectToken("push").Replace(apData.SelectToken("battery_drain_push"));
+                batteryGlobal.SelectToken("copterHover").Replace(apData.SelectToken("battery_drain_copter_hover"));
+                batteryGlobal.SelectToken("copterDescend").Replace(apData.SelectToken("battery_drain_copter_descend"));
+                batteryGlobal.SelectToken("popperShoot").Replace(apData.SelectToken("battery_drain_popper_shoot"));
+                batteryGlobal.SelectToken("popperShootCharged").Replace(apData.SelectToken("battery_drain_pooper_shoot_charge"));
+                batteryGlobal.SelectToken("radarScan").Replace(apData.SelectToken("battery_drain_radar_scan"));
+                batteryGlobal.SelectToken("radarFollow").Replace(apData.SelectToken("battery_drain_radar_follow"));
+                batteryGlobal.SelectToken("brush").Replace(apData.SelectToken("battery_drain_brush"));
+                batteryGlobal.SelectToken("spoon").Replace(apData.SelectToken("battery_drain_spoon"));
+                batteryGlobal.SelectToken("mug").Replace(apData.SelectToken("battery_drain_mug"));
+                batteryGlobal.SelectToken("squirterSuck").Replace(apData.SelectToken("battery_drain_squirter_suck"));
+                batteryGlobal.SelectToken("squirterSpray").Replace(apData.SelectToken("battery_drain_squirter_spray"));
 
-
-                }
-
-                if (joggingBatteryDrain.Checked)
-                {
-                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                    batteryGlobal.SelectToken("jog").Replace(0);
-                }
-
-                if (runningDecreasesBattery.Checked)
-                {
-                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                    batteryGlobal.SelectToken("run").Replace(0);
-                }
 
                 //Edits for Open Upstairs setting
                 if (openUpstairs.Checked)
@@ -597,11 +618,12 @@ namespace WindowsFormsApp1
 
                         string classification = location.Value.SelectToken("classification").ToString();
 
-                        if(classification == "progression" || classification == "usefull")
+                        if (classification == "progression" || classification == "usefull")
                         {
                             objectName = "item_cookie_kakera";
 
-                        } else
+                        }
+                        else
                         {
                             objectName = "item_kami_kuzu";
                         }
@@ -609,18 +631,64 @@ namespace WindowsFormsApp1
                         roomCheckForInGameMessages(roomID, locationID, playerID, name);
 
                     }
-                    else if (objectName.Contains("cb_radar"))
-                    {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 3);
-                    }
-                    else if (objectName.Contains("cb_cannon_lv_2"))
-                    {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 2);
-                    }
-                    else if (objectName.Contains("cb_propeller_lv_2"))
-                    {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 1);
-                    }
+
+                    //else if (objectName.Contains("cb_radar"))
+                    //{
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 3);
+                    //}
+                    //else if (objectName.Contains("cb_cannon_lv_2"))
+                    //{
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 2);
+                    //}
+                    //else if (objectName.Contains("cb_propeller_lv_2"))
+                    //{
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 1);
+                    //}
+                    //else if (objectName.Contains("capsule_17")) // Battery (Giga) Charge Check
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 4);
+                    //}
+                    //else if (objectName.Contains("living_ladder"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 701);
+                    //}
+                    //else if (objectName.Contains("kitchen_ladder"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 702);
+                    //}
+                    //else if (objectName.Contains("foyer_teleport"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 703);
+                    //}
+                    //else if (objectName.Contains("foyer_ladder"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 704);
+                    //}
+                    //else if (objectName.Contains("living_bridge"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 705);
+                    //}
+                    //else if (objectName.Contains("kitchen_bridge"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 706);
+                    //}
+                    //else if (objectName.Contains("bedroom_bridge"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 707);
+                    //}
+                    //else if (objectName.Contains("basement_teleport"))
+                    //{
+                    //    objectName = "item_cookie_kakera";
+                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 708);
+                    //}
 
                     // shop items are not the same as normal items
                     if (roomID != 8)
@@ -691,7 +759,7 @@ namespace WindowsFormsApp1
                     // Fix some locations items positions
 
                     // Bedroom
-                    if(roomID == 7)
+                    if (roomID == 7)
                     {
                         // Bedroom - Wastepaper on Bed
                         if (locationID == 286)
@@ -706,11 +774,6 @@ namespace WindowsFormsApp1
 
                     //Console.WriteLine(locationName);
                     //Console.WriteLine(roomID);
-
-                    JToken unusedShopItem = shopObj.SelectToken("items[17]");
-                    unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
-                    unusedShopItem.SelectToken("price").Replace(10);
-                    unusedShopItem.SelectToken("limit").Replace(1);
 
                     roomObject.SelectToken("objects[" + locationID + "].spawnFlag").Replace(apSpawnFlag);
 
@@ -1055,7 +1118,7 @@ namespace WindowsFormsApp1
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
                 roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(null);
 
-            
+
                 //Setting the correct flags for the new object
                 int finalFlagIndex = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children().Count() - 1;
 
@@ -1109,7 +1172,7 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-                        
+
                         var posY = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position.y");
 
                         posY = ((float)posY) + 2.0f;
@@ -1197,7 +1260,7 @@ namespace WindowsFormsApp1
             // Bedroom
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage06_Edited.us" + "\"");
 
-            // Chibi House
+            //Chibi House
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage05.us" + "\"");
 
             // Update Messages
@@ -1446,7 +1509,7 @@ namespace WindowsFormsApp1
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-          
+
         }
 
         private void walkingBatteryDrain_CheckedChanged(object sender, EventArgs e)
@@ -1471,25 +1534,26 @@ namespace WindowsFormsApp1
 
         private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0)
         {
-            if (roomID == 0)
+            if (roomID == 0) // Living Room
             {
 
                 int[] skipLocations = { 133 };
 
                 if (!skipLocations.Contains(objectID))
                 {
-                    if(atc == false)
+                    if (atc == false)
                     {
                         addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName);
 
-                    } else
+                    }
+                    else
                     {
                         enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, atcID);
                     }
                 }
 
             }
-            else if (roomID == 1)
+            else if (roomID == 1) // Kitchen
             {
 
                 int[] skipLocations = { 36, 37 };
@@ -1506,7 +1570,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 2)
+            else if (roomID == 2) // Sink Drain
             {
 
                 int[] skipLocations = { };
@@ -1523,7 +1587,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 3)
+            else if (roomID == 3) // Foyer
             {
 
                 int[] skipLocations = { };
@@ -1540,7 +1604,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 4)
+            else if (roomID == 4) // Basement
             {
                 int[] skipLocations = { 6, 121 };
 
@@ -1556,7 +1620,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 5)
+            else if (roomID == 5) // Backyard
             {
                 int[] skipLocations = { };
 
@@ -1572,7 +1636,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 6)
+            else if (roomID == 6) // Jenny's Room
             {
                 int[] skipLocations = { };
 
@@ -1588,7 +1652,7 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-            else if (roomID == 7)
+            else if (roomID == 7) // Bedroom
             {
                 int[] skipLocations = { };
 
@@ -1613,16 +1677,125 @@ namespace WindowsFormsApp1
             "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
             "ap_text_" + objectID + ":" + Environment.NewLine +
             "\tmsg\tvoice(0.b)," + Environment.NewLine +
-            "\t\t\"You found Player " + player + "\'s\"," + Environment.NewLine +
-            "\t\t\"" + newObjectName +"\"," + Environment.NewLine +
+            "\t\t\"You found Player " + player + "\'s\", " + Environment.NewLine +
+            "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
             "\t\twait(254.b)" + Environment.NewLine +
             "\treturn\n" + Environment.NewLine);
         }
 
         private void enableATCToolPickup(string stagefile, int objectID, string player, string newObjectName, int toolID)
         {
-
-            if(toolID == 3)
+            if (toolID == 708)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Beasement Teleporter" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(708.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 707)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Bedroom Bridge" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(707.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 706)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Kitchen Bridge" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(706.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 705)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Living Room Bridge" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(705.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 704)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Foyer Teleport" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(704.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 703)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Foyer Ladder" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(703.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 702)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Kitchen Ladder" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(702.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 701)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Found Living Room Ladder" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(701.d), 2.d" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 4)
+            {
+                File.AppendAllText(
+                   stagefile,
+                   "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                   "ap_text_" + objectID + ":" + Environment.NewLine +
+                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\t\t\"" + "Increased Giga Charge" + "\"," + Environment.NewLine +
+                   "\t\twait(254.b)" + Environment.NewLine +
+                   "\tset\tvar(136.d),\tadd(var(136.d), 1000.w)" + Environment.NewLine +
+                   "\tif\tge(var(136.d), 9000.w), else *loc_empty" + Environment.NewLine +
+                   "\tset\tvar(136.d), 9000.w" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine);
+            }
+            else if (toolID == 3)
             {
                 File.AppendAllText(
                    stagefile,
@@ -1644,6 +1817,8 @@ namespace WindowsFormsApp1
                    "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\trun\t*loc_enable_blaster" + Environment.NewLine +
+                   "\tset\tflag(333.d), 1.w" + Environment.NewLine +
+                   "\tset\tflag(335.d), 1.w" + Environment.NewLine +
                    "\treturn\n" + Environment.NewLine);
             }
             else if (toolID == 1)

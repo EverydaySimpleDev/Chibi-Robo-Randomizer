@@ -2186,7 +2186,7 @@ loc_2984:
 	set	flag(969.d), 1.d
 loc_2983:
 	lib	54.w
-	if	eq(flag(358.d), 0.w), else *loc_2978
+	if	eq(flag(358.d), 0.w), else *loc_2978 
 	msg	voice(0.b),
 		"Chibi-Robo! Forget the other rooms for now.\n",
 		"Let's check out this room!",
@@ -13811,8 +13811,8 @@ sub_2560:
 		anim(0.b, 20008.w, 1.d)
 	wait	@time, 1.w
 	pushbp
-	setsp	127.d ; screen animation @fade
-	lib	79.w
+	setsp	24.d ; Set Item To Give (Drake Suit)
+	lib	79.w ; Give Set Item
 	popbp
 	wait	@time, 1.w
 	lib	67.w 
