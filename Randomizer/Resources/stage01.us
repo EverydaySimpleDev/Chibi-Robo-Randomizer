@@ -3133,7 +3133,7 @@ loc_583:
 	anim	20002.d, 1033.d
 	wait	@time, 30.w
 	msg	voice(4.b),
-		speed(4.b),
+		speed(0.b),
 		"Whew! That was close. You almost hurt yourself!",
 		anim(0.b, 20002.w, 1032.d),
 		wait(254.b)
@@ -4540,7 +4540,7 @@ loc_600:
 	anim	20003.d, 1024.d
 	wait	@time, 20.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"I've been cursed again. Tee hee!",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -4549,7 +4549,7 @@ loc_600:
 loc_604:
 	elif	eq(flag(450.d), 1.w), else *loc_610
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Those weird spider-thingies are gone!\n",
 		"Yay, Chibi-Robo!",
@@ -4559,7 +4559,7 @@ loc_604:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"And now Mom's all happy, too!",
 		anim(0.b, 20003.w, -1.d),
@@ -4965,7 +4965,7 @@ sub_1123:
 	msg	voice(3.b),
 		anim(0.b, 20001.w, 1017.d),
 		wait(5.b),
-		speed(6.b),
+		speed(0.b),
 		"Whaaaat?! Man, you're a jerk!",
 		anim(0.b, 20001.w, 1016.d),
 		wait(254.b)
@@ -5621,7 +5621,7 @@ loc_1152:
 	pushbp
 	setsp	item_name(124.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(18.b),
 		"It's too bad I lost my wedding ring...",
 		wait(254.b)
@@ -5968,7 +5968,7 @@ sub_1093:
 		anim(0.b, 20001.w, -1.d),
 		anim(0.b, 20001.w, 1016.d),
 		wait(254.b)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Primopuel!",
@@ -6830,7 +6830,7 @@ loc_648:
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 255.w, 200.w
 	if	sp(0.b), else *loc_700
 	anim	20001.d, 28.d
-	msg	speed(4.b),
+	msg	speed(0.b),
 		size(28.b),
 		sfx(79.d, 1.b),
 		"Honey! Jenny! DIIIII-NNER!",
@@ -6951,7 +6951,7 @@ sub_684:
 		"Thanks for waiting, Jenny.",
 		wait(254.b)
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Ribbit?",
 		anim(0.b, 20003.w, -1.d),
@@ -6966,7 +6966,7 @@ sub_684:
 		"Jenny's mom doesn't want any?",
 		wait(254.b)
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Rrrrrr-ibbit...",
 		anim(0.b, 20003.w, -1.d),
@@ -6982,7 +6982,7 @@ sub_684:
 		wait(254.b)
 	anim	347.d, 2.d
 	anim	20003.d, 1008.d
-	msg	speed(6.b),
+	msg	speed(0.b),
 		"...",
 		wait(254.b)
 	camera	@pos, -327.d, 11783.w, 9064.w, 3.d, 0.w
@@ -7054,7 +7054,7 @@ sub_684:
 	sfx	262181.d, 1.d
 	anim	20003.d, 1012.d
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		"Yummmm-ibbit!",
 		wait(7.b)
 	wait	@anim, 20003.d, 80.w
@@ -7240,7 +7240,7 @@ sub_654:
 		wait(254.b)
 	if	eq(flag(1521.d), 1.w), else *loc_682
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"All right!",
 		anim(0.b, 20003.w, -1.d),
@@ -7249,7 +7249,7 @@ sub_654:
 	endif	*loc_656
 loc_682:
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Ribbit.",
 		anim(0.b, 20003.w, -1.d),
@@ -7367,13 +7367,13 @@ loc_656:
 	anim	20003.d, 1012.d
 	if	eq(flag(1521.d), 1.w), else *loc_678
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Ahhh.",
 		wait(7.b)
 	endif	*loc_658
 loc_678:
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		"Ahhh-ribbit.",
 		wait(7.b)
 loc_658:
@@ -7390,7 +7390,7 @@ loc_658:
 	camera	@distance, 117.w, 3.d, 0.w
 	msg	voice(4.b),
 		anim(0.b, 20002.w, 27.d),
-		speed(10.b),
+		speed(0.b),
 		"Munch, munch...",
 		anim(0.b, 20002.w, 26.d),
 		wait(254.b)
@@ -7558,7 +7558,7 @@ sub_681:
 	msg	voice(3.b),
 		anim(0.b, 20001.w, 1017.d),
 		size(33.b),
-		speed(8.b),
+		speed(0.b),
 		"Let's eat.",
 		anim(0.b, 20001.w, -1.d),
 		wait(254.b)
@@ -7568,7 +7568,7 @@ sub_681:
 sub_666:
 	msg	voice(3.b),
 		anim(0.b, 20001.w, 1018.d),
-		speed(8.b),
+		speed(0.b),
 		"W-wait a minute. It's...",
 		anim(0.b, 20001.w, -1.d),
 		wait(254.b)
@@ -7600,7 +7600,7 @@ sub_667:
 	set	flag(1648.d), 1.w
 	msg	sfx(79.d, 1.b),
 		anim(0.b, 20001.w, 28.d),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Mmmrphoooyeaaaahh! Mmmmggooooddd!",
 		wait(12.b)
@@ -7609,7 +7609,7 @@ loc_670:
 	set	flag(1669.d), 1.w
 	msg	sfx(79.d, 1.b),
 		anim(0.b, 20001.w, 28.d),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Oh yeah! Delish!",
 		wait(12.b)
@@ -7640,7 +7640,7 @@ sub_673:
 	wait	@anim, 20001.d, -1.d
 	msg	sfx(79.d, 1.b),
 		anim(0.b, 20001.w, 28.d),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Oh yeeeecchhh! It's burnt to a cinder!",
 		wait(12.b)
@@ -7816,7 +7816,7 @@ loc_1148:
 	msg	voice(3.b),
 		anim(1.b, 20001.w, 51.d),
 		wait(5.b),
-		speed(6.b),
+		speed(0.b),
 		"WHAAAAATT?! Oh, you're cold!",
 		anim(1.b, 20001.w, 50.d),
 		wait(254.b)
@@ -8885,7 +8885,7 @@ sub_2295:
 	msg	voice(10.b),
 		anim(0.b, 20011.w, 15.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		"Fool! What are you doing?!\n",
 		"Never disturb me while I am training!",
 		anim(0.b, 20011.w, -1.d),
@@ -14783,7 +14783,7 @@ sub_2360:
 	if	ge(var(154.d), 3.w), else *loc_2367
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2365
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I don't know.",
@@ -14793,7 +14793,7 @@ sub_2360:
 	break	*loc_2363
 loc_2365:
 	case	eq(var(0.d), 1.w), else *loc_2363
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Who knows?",
@@ -14807,7 +14807,7 @@ loc_2367:
 	elif	ge(var(153.d), 41.w), else *loc_2373
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2371
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Lots of love.",
@@ -14817,7 +14817,7 @@ loc_2367:
 	break	*loc_2370
 loc_2371:
 	case	eq(var(0.d), 1.w), else *loc_2370
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Excellent!",
@@ -14839,7 +14839,7 @@ loc_2373:
 	elif	ge(var(153.d), 31.w), else *loc_2379
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2377
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Kind of cute.",
@@ -14849,7 +14849,7 @@ loc_2373:
 	break	*loc_2376
 loc_2377:
 	case	eq(var(0.d), 1.w), else *loc_2376
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Handshakes make me happy!",
@@ -14871,7 +14871,7 @@ loc_2379:
 	elif	ge(var(153.d), 21.w), else *loc_2385
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2383
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I'm in love.",
@@ -14881,7 +14881,7 @@ loc_2379:
 	break	*loc_2382
 loc_2383:
 	case	eq(var(0.d), 1.w), else *loc_2382
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Hey, that's mine!",
@@ -14903,7 +14903,7 @@ loc_2385:
 	elif	ge(var(153.d), 11.w), else *loc_2391
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2389
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Working hard, eh?",
@@ -14913,7 +14913,7 @@ loc_2385:
 	break	*loc_2388
 loc_2389:
 	case	eq(var(0.d), 1.w), else *loc_2388
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I'm impressed.",
@@ -14935,7 +14935,7 @@ loc_2391:
 	elif	ge(var(153.d), 6.w), else *loc_2397
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2395
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Howdy!",
@@ -14945,7 +14945,7 @@ loc_2391:
 	break	*loc_2394
 loc_2395:
 	case	eq(var(0.d), 1.w), else *loc_2394
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Yeah!",
@@ -14967,7 +14967,7 @@ loc_2397:
 	elif	ge(var(153.d), 0.w), else *loc_2364
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_2401
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Nice to meet you.",
@@ -14977,7 +14977,7 @@ loc_2397:
 	break	*loc_2400
 loc_2401:
 	case	eq(var(0.d), 1.w), else *loc_2403
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Let's be friends.",
@@ -14987,7 +14987,7 @@ loc_2401:
 	break	*loc_2400
 loc_2403:
 	case	eq(var(0.d), 2.w), else *loc_2400
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Tee hee.",
@@ -15012,7 +15012,7 @@ sub_2453:
 	if	ge(var(154.d), 3.w), else *loc_2460
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2458
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I'm not happy.",
@@ -15022,7 +15022,7 @@ sub_2453:
 	break	*loc_2456
 loc_2458:
 	case	eq(var(0.d), 1.w), else *loc_2456
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Whaaat?",
@@ -15036,7 +15036,7 @@ loc_2460:
 	elif	ge(var(153.d), 41.w), else *loc_2466
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2464
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Let's be together forever.",
@@ -15046,7 +15046,7 @@ loc_2460:
 	break	*loc_2463
 loc_2464:
 	case	eq(var(0.d), 1.w), else *loc_2463
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You can count on me more.",
@@ -15068,7 +15068,7 @@ loc_2466:
 	elif	ge(var(153.d), 31.w), else *loc_2472
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2470
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"We love each other.",
@@ -15078,7 +15078,7 @@ loc_2466:
 	break	*loc_2469
 loc_2470:
 	case	eq(var(0.d), 1.w), else *loc_2469
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Carry me.",
@@ -15100,7 +15100,7 @@ loc_2472:
 	elif	ge(var(153.d), 21.w), else *loc_2457
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2476
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I feel lots of love. Yeah!",
@@ -15110,7 +15110,7 @@ loc_2472:
 	break	*loc_2475
 loc_2476:
 	case	eq(var(0.d), 1.w), else *loc_2475
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I love kisses.",
@@ -15135,7 +15135,7 @@ sub_2407:
 	if	ge(var(154.d), 3.w), else *loc_2414
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2412
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You again?",
@@ -15145,7 +15145,7 @@ sub_2407:
 	break	*loc_2410
 loc_2412:
 	case	eq(var(0.d), 1.w), else *loc_2410
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"It doesn't hurt.",
@@ -15159,7 +15159,7 @@ loc_2414:
 	elif	ge(var(153.d), 41.w), else *loc_2420
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2418
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You like to be pinched?",
@@ -15169,7 +15169,7 @@ loc_2414:
 	break	*loc_2417
 loc_2418:
 	case	eq(var(0.d), 1.w), else *loc_2417
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Oh, goodie.",
@@ -15183,7 +15183,7 @@ loc_2420:
 	elif	ge(var(153.d), 31.w), else *loc_2426
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2424
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Gimme love.",
@@ -15193,7 +15193,7 @@ loc_2420:
 	break	*loc_2423
 loc_2424:
 	case	eq(var(0.d), 1.w), else *loc_2423
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Waaaa.",
@@ -15207,7 +15207,7 @@ loc_2426:
 	elif	ge(var(153.d), 21.w), else *loc_2432
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2430
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Uh-oh.",
@@ -15217,7 +15217,7 @@ loc_2426:
 	break	*loc_2429
 loc_2430:
 	case	eq(var(0.d), 1.w), else *loc_2429
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Ouch.",
@@ -15231,7 +15231,7 @@ loc_2432:
 	elif	ge(var(153.d), 11.w), else *loc_2438
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2436
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I'm edgy.",
@@ -15241,7 +15241,7 @@ loc_2432:
 	break	*loc_2435
 loc_2436:
 	case	eq(var(0.d), 1.w), else *loc_2435
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Taking it out on me?",
@@ -15255,7 +15255,7 @@ loc_2438:
 	elif	ge(var(153.d), 6.w), else *loc_2444
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2442
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"That hurts.",
@@ -15265,7 +15265,7 @@ loc_2438:
 	break	*loc_2441
 loc_2442:
 	case	eq(var(0.d), 1.w), else *loc_2441
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Why?",
@@ -15279,7 +15279,7 @@ loc_2444:
 	elif	ge(var(153.d), 0.w), else *loc_2411
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_2447
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Wow!",
@@ -15289,7 +15289,7 @@ loc_2444:
 	break	*loc_2411
 loc_2447:
 	case	eq(var(0.d), 1.w), else *loc_2449
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Huh? How come?",
@@ -15299,7 +15299,7 @@ loc_2447:
 	break	*loc_2411
 loc_2449:
 	case	eq(var(0.d), 2.w), else *loc_2411
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Say what?",
@@ -15314,7 +15314,7 @@ loc_2411:
 sub_2481:
 	if	ge(var(156.d), 3.w), else *loc_2490
 	if	ge(var(153.d), 41.w), else *loc_2486
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I was lonely.",
@@ -15324,7 +15324,7 @@ sub_2481:
 	endif	*loc_2484
 loc_2486:
 	elif	ge(var(153.d), 11.w), else *loc_2488
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"What? Leave me alone.",
@@ -15334,7 +15334,7 @@ loc_2486:
 	endif	*loc_2484
 loc_2488:
 	elif	ge(var(153.d), 0.w), else *loc_2484
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Who are you, again?",
@@ -15347,7 +15347,7 @@ loc_2490:
 	elif	or(eq(var(155.d), 7.w), eq(var(172.d), 7.w)), else *loc_2498
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_2494
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Stop touching me so much.",
@@ -15357,7 +15357,7 @@ loc_2490:
 	break	*loc_2493
 loc_2494:
 	case	eq(var(0.d), 1.w), else *loc_2496
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Just leave me alone a little more.",
@@ -15367,7 +15367,7 @@ loc_2494:
 	break	*loc_2493
 loc_2496:
 	case	eq(var(0.d), 2.w), else *loc_2493
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"That's enough!",
@@ -15381,7 +15381,7 @@ loc_2498:
 	elif	ge(var(154.d), 3.w), else *loc_2504
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2502
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"All alone...",
@@ -15391,7 +15391,7 @@ loc_2498:
 	break	*loc_2501
 loc_2502:
 	case	eq(var(0.d), 1.w), else *loc_2501
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Hey, there.",
@@ -15405,7 +15405,7 @@ loc_2504:
 	elif	ge(var(153.d), 41.w), else *loc_2510
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2508
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Hi, there.",
@@ -15415,7 +15415,7 @@ loc_2504:
 	break	*loc_2507
 loc_2508:
 	case	eq(var(0.d), 1.w), else *loc_2507
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Howdy, howdy.",
@@ -15429,7 +15429,7 @@ loc_2510:
 	elif	ge(var(153.d), 31.w), else *loc_2516
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2514
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Pet me.",
@@ -15439,7 +15439,7 @@ loc_2510:
 	break	*loc_2513
 loc_2514:
 	case	eq(var(0.d), 1.w), else *loc_2513
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Hey, honey.",
@@ -15453,7 +15453,7 @@ loc_2516:
 	elif	ge(var(153.d), 21.w), else *loc_2522
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2520
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Like it?",
@@ -15463,7 +15463,7 @@ loc_2516:
 	break	*loc_2519
 loc_2520:
 	case	eq(var(0.d), 1.w), else *loc_2519
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"My baby.",
@@ -15477,7 +15477,7 @@ loc_2522:
 	elif	ge(var(153.d), 11.w), else *loc_2528
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2526
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Tired lately?",
@@ -15487,7 +15487,7 @@ loc_2522:
 	break	*loc_2525
 loc_2526:
 	case	eq(var(0.d), 1.w), else *loc_2525
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"How're you doing lately?",
@@ -15501,7 +15501,7 @@ loc_2528:
 	elif	ge(var(153.d), 6.w), else *loc_2534
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2532
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Fine.",
@@ -15511,7 +15511,7 @@ loc_2528:
 	break	*loc_2531
 loc_2532:
 	case	eq(var(0.d), 1.w), else *loc_2531
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Let's play.",
@@ -15525,7 +15525,7 @@ loc_2534:
 	elif	ge(var(153.d), 0.w), else *loc_2485
 	set	var(0.d), rand(1.w)
 	case	eq(var(0.d), 0.w), else *loc_2537
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Um, excuse me.",
@@ -15535,7 +15535,7 @@ loc_2534:
 	break	*loc_2485
 loc_2537:
 	case	eq(var(0.d), 1.w), else *loc_2485
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Pardon me.",
@@ -15759,7 +15759,7 @@ loc_2354:
 sub_2568:
 	case	eq(cur_suit, 1.d), else *loc_2571
 	set	flag(1606.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 1536.d),
 		voice(15.b),
 		"You look cool, Chibi-Robo. Just like a hero!",
@@ -15770,7 +15770,7 @@ sub_2568:
 loc_2571:
 	case	eq(cur_suit, 2.d), else *loc_2573
 	set	flag(1608.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 1536.d),
 		voice(15.b),
 		"Hey, a frog! Too bad it's not raining.",
@@ -15783,7 +15783,7 @@ loc_2573:
 	set	flag(1611.d), 1.w
 	pushbp
 	setsp	actor_name(20004.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You look just like Tao. Don't bite me!",
@@ -15795,7 +15795,7 @@ loc_2573:
 loc_2575:
 	case	eq(cur_suit, 6.d), else *loc_2577
 	set	flag(1611.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"That doesn't scare me.",
@@ -15806,7 +15806,7 @@ loc_2575:
 loc_2577:
 	case	eq(cur_suit, 4.d), else *loc_2579
 	set	flag(1610.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Did you hurt yourself, Chibi-Robo?\n",
@@ -15818,7 +15818,7 @@ loc_2577:
 loc_2579:
 	case	eq(cur_suit, 7.d), else *loc_2581
 	set	flag(1609.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Going to sleep already,\n",
@@ -15830,7 +15830,7 @@ loc_2579:
 loc_2581:
 	case	eq(cur_suit, 8.d), else *loc_2570
 	set	flag(1605.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 1536.d),
 		voice(15.b),
 		"Chibi-Robo! You look a bit different today.",
@@ -15843,7 +15843,7 @@ loc_2570:
 
 
 sub_2590:
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"If you get me wet, I'll catch a cold.",
@@ -15855,7 +15855,7 @@ sub_2590:
 
 sub_2585:
 	case	eq(hit, add(3000.d, 0.d)), else *loc_2588
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 1536.d),
 		voice(15.b),
 		"That tickles!",
@@ -15979,7 +15979,7 @@ loc_2549:
 loc_2614:
 	if	not(flag(608.d)), else *loc_2562
 	set	flag(608.d), 1.w
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You let me out of the treasure chest, no?",
@@ -15988,7 +15988,7 @@ loc_2614:
 		wait(254.b)
 	lib	295.w
 	case	eq(result, 0.w), else *loc_2560
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(0.b, 249.w, 1013.d),
 		voice(15.b),
 		"I thought so! Thanks so much!\n",
@@ -16008,7 +16008,7 @@ loc_2614:
 	break	*loc_2554
 loc_2560:
 	case	eq(result, 1.w), else *loc_2554
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Oh, it wasn't you, huh? Well, \n",
@@ -16016,7 +16016,7 @@ loc_2560:
 		anim(0.b, 249.w, -1.d),
 		anim(1.b, 249.w, 56.d),
 		wait(254.b)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		anim(0.b, 249.w, -1.d),
@@ -16038,7 +16038,7 @@ loc_2562:
 	lib	86.w
 	popbp
 loc_2565:
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"You've got some unusual friends!",
@@ -16103,7 +16103,7 @@ sub_1992:
 		"Let me let you in on a secret, Primopuel!",
 		anim(0.b, 20012.w, 1053.d),
 		wait(255.b)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(0.b, 249.w, 1007.d),
 		voice(15.b),
 		"Oooh! What is it?",
@@ -16126,7 +16126,7 @@ sub_1992:
 	camera	@distance, 63.w, 3.d, 0.w
 	pushbp
 	setsp	actor_name(20012.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Well! Isn't that grand!",
@@ -16141,7 +16141,7 @@ loc_1995:
 	case	eq(var(0.d), 0.w), else *loc_1999
 	pushbp
 	setsp	actor_name(20012.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(0.b, 249.w, 1007.d),
 		voice(15.b),
 		"Did something nice happen, Sophie?",
@@ -16165,7 +16165,7 @@ loc_1999:
 		wait(255.b)
 	pushbp
 	setsp	actor_name(20012.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Me? Oh, there are so many... Really,\n",
@@ -16194,7 +16194,7 @@ loc_2001:
 		"Hm?",
 		anim(0.b, 20012.w, 26.d),
 		wait(255.b)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Me? A love note?\n",
@@ -16215,7 +16215,7 @@ loc_2003:
 	set	flag(609.d), 1.w
 	pushbp
 	setsp	actor_name(20012.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(0.b, 249.w, 1007.d),
 		voice(15.b),
 		"Nice to meet ya, Sophie.",
@@ -16263,7 +16263,7 @@ sub_2605:
 	if	and(eq(flag(558.d), 1.w), eq(flag(559.d), 0.w)), else *loc_2608
 	pushbp
 	setsp	actor_name(20012.d)
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"Poor Sophie. She thinks she's hiding,\n",
@@ -16277,7 +16277,7 @@ sub_2605:
 loc_2608:
 	set	var(0.d), rand(2.w)
 	case	eq(var(0.d), 0.w), else *loc_2610
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"I hope I can play with everyone!",
@@ -16287,7 +16287,7 @@ loc_2608:
 	break	*loc_2607
 loc_2610:
 	case	eq(var(0.d), 1.w), else *loc_2612
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(1.b, 249.w, 55.d),
 		voice(15.b),
 		"If we become friends while I'm in toy\n",
@@ -16298,7 +16298,7 @@ loc_2610:
 	break	*loc_2607
 loc_2612:
 	case	eq(var(0.d), 2.w), else *loc_2607
-	msg	speed(10.b),
+	msg	speed(0.b),
 		anim(0.b, 249.w, 1007.d),
 		voice(15.b),
 		"You can touch my tail only when I'm a toy.",

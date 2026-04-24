@@ -9294,7 +9294,7 @@ loc_2129:
 	set	flag(336.d), 1.d
 	while	1.d, else *loc_2133
 	msg	voice(0.b),
-		speed(8.b),
+		speed(0.b),
 		"Um...Chibi-Robo? Did you just hear\n",
 		"that totally weird sound?",
 		wait(254.b),
@@ -9654,7 +9654,7 @@ loc_3059:
 sub_2996:
 	msg	voice(0.b),
 		"I'll sing you a song! It's called\n",
-		speed(5.b),
+		speed(0.b),
 		"$Teriyaki Blues.$",
 		wait(255.b)
 	return
@@ -9663,7 +9663,7 @@ sub_2996:
 sub_2985:
 	msg	voice(0.b),
 		anim(0.b, 20005.w, 1002.d),
-		speed(10.b),
+		speed(0.b),
 		"Hey, check it out!",
 		anim(0.b, 20005.w, 1.d),
 		wait(255.b)
@@ -10063,7 +10063,7 @@ lib_22:
 	.lib	363.w, *lib_363
 lib_363:
 	msg	voice(0.b),
-		speed(6.b),
+		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		"The living room is upside down.",
 		anim(0.b, 20005.w, 1020.d),
@@ -10087,7 +10087,7 @@ loc_3935:
 	.lib	364.w, *lib_364
 lib_364:
 	msg	voice(0.b),
-		speed(6.b),
+		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		anim(0.b, 20005.w, 1021.d),
 		"I think we need to fight in order to\n",
@@ -13128,7 +13128,7 @@ sub_3761:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"It's sweet.",
 		anim(0.b, 20003.w, -1.d),
@@ -13183,7 +13183,7 @@ lib_296:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"You'll take good care of my squirter, right?",
 		anim(0.b, 20003.w, -1.d),
@@ -13214,7 +13214,7 @@ loc_3764:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"I'm not thirsty.",
 		anim(0.b, 20003.w, -1.d),
@@ -13232,7 +13232,7 @@ loc_3769:
 	case	eq(hit, add(3000.d, 5.d)), else *loc_3775
 	if	eq(cur_suit, 2.d), else *loc_3773
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Don't be a little jerk, Chibi-Robo.",
 		anim(0.b, 20003.w, -1.d),
@@ -13251,7 +13251,7 @@ loc_3775:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1072.d),
 		"I feel funkafied!",
 		anim(0.b, 20003.w, -1.d),
@@ -13307,7 +13307,7 @@ lib_257:
 	anim	20003.d, 1024.d
 	wait	@time, 20.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Oh!",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -13315,7 +13315,7 @@ lib_257:
 	anim	20003.d, 1024.d
 	wait	@time, 20.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Did the evil frog wizard put a\n",
 		"curse on you too, Chibi-Robo?",
 		anim(0.b, 20003.w, -1.d),
@@ -13329,7 +13329,7 @@ lib_257:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Yeah, that's what I thought. Just like me.",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -13340,7 +13340,7 @@ loc_3506:
 	anim	20003.d, 1024.d
 	wait	@time, 20.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"You don't know what I'm talking about?\n",
 		"It's a curse.",
 		anim(0.b, 20003.w, -1.d),
@@ -13351,7 +13351,7 @@ loc_3506:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"I think I'm under it.",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -13364,7 +13364,7 @@ loc_3505:
 	anim	20003.d, 1024.d
 	wait	@time, 20.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Well, it looks very good on you. Hee hee hee!",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -13379,7 +13379,7 @@ loc_3505:
 	run	*lib_210
 	popbp
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1072.d),
 		"I can only speak to other frogs.",
 		anim(0.b, 20003.w, -1.d),
@@ -13389,14 +13389,14 @@ loc_3505:
 	wait	@time, 20.w
 	anim	20003.d, 1031.d
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"So, how do you do, rabbit?",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
 		wait(254.b)
 	anim	20003.d, 1031.d
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"I mean, ribbit.",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
@@ -13411,7 +13411,7 @@ lib_321:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Say, um, it looks like you have\n",
 		"something there. Can I have it?",
@@ -13468,7 +13468,7 @@ loc_3873:
 	wait	@time, 1.w
 	if	eq(cur_suit, 2.d), else *loc_3877
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Oh, that's not what I meant.",
 		anim(0.b, 20003.w, -1.d),
@@ -13495,7 +13495,7 @@ loc_3879:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"You won't give it to me?",
 		anim(0.b, 20003.w, -1.d),
@@ -13526,7 +13526,7 @@ lib_276:
 	popbp
 	if	eq(cur_suit, 2.d), else *loc_3588
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"What a pretty flower.",
 		anim(0.b, 20003.w, -1.d),
@@ -13571,7 +13571,7 @@ loc_3580:
 	run	*lib_13
 	if	eq(cur_suit, 2.d), else *loc_3583
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"I'm going to put it on right now.",
 		anim(0.b, 20003.w, -1.d),
@@ -13593,7 +13593,7 @@ loc_3582:
 lib_322:
 	msg	anim(0.b, 20003.w, 1073.d),
 		voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Ribbbbiiiit! Please, no! Oh, evil frog wizard!",
 		anim(0.b, 20003.w, -1.d),
 		wait(254.b)
@@ -13603,7 +13603,7 @@ lib_322:
 	.lib	323.w, *lib_323
 lib_323:
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Chibi-Robo and I are under the\n",
 		"evil frog wizard's spell again.",
 		anim(0.b, 20003.w, -1.d),
@@ -13624,7 +13624,7 @@ lib_341:
 	.lib	324.w, *lib_324
 lib_324:
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"I have a feeling that the\n",
 		"curse is gonna come back.",
 		anim(0.b, 20003.w, 1008.d),
@@ -13642,7 +13642,7 @@ sub_3855:
 	wait	@time, 1.w
 	if	eq(cur_suit, 2.d), else *loc_3872
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1072.d),
 		"Thank you very much.",
 		anim(0.b, 20003.w, -1.d),
@@ -13693,7 +13693,7 @@ loc_3868:
 	pushbp
 	setsp	var(0.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"If you collect ",
 		format("%d"),
@@ -13795,7 +13795,7 @@ sub_3409:
 	camera	@unk229, 49.w, 3.d, 0.w
 	camera	@distance, 1.w, 3.d, 0.w
 	msg	voice(0.b),
-		speed(8.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"She's just a cute little girl underneath it all!",
 		anim(0.b, 20005.w, 1.d),
@@ -13900,7 +13900,7 @@ loc_3412:
 sub_3417:
 	if	eq(cur_suit, 2.d), else *loc_3420
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1073.d),
 		"You found them all?!",
 		anim(0.b, 20003.w, -1.d),
@@ -13920,7 +13920,7 @@ loc_3419:
 
 sub_3421:
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"The evil frog wizard put a nasty curse on me.",
 		anim(0.b, 20003.w, -1.d),
@@ -13929,7 +13929,7 @@ sub_3421:
 	pushbp
 	setsp	actor_name(20000.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1072.d),
 		"But, thanks to you, I've turned\n",
 		" back into a human! Yaaaay!",
@@ -13944,7 +13944,7 @@ sub_3422:
 	pushbp
 	setsp	actor_name(20000.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1031.d),
 		"Thank you for breaking\n",
 		"the curse, Chibi!",
@@ -13957,7 +13957,7 @@ sub_3422:
 
 sub_3415:
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"How do I look without the hat?",
 		anim(0.b, 20003.w, -1.d),
@@ -13969,7 +13969,7 @@ sub_3415:
 
 sub_3413:
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Oh...OK. Maybe I'll stay like this for a little bit.",
 		anim(0.b, 20003.w, -1.d),
@@ -14031,7 +14031,7 @@ sub_3424:
 	camera	@unk227, -10299.d, 10268.w, -10625.d, 2.d, 100.w
 	camera	@unk229, 30.w, 2.d, 100.w
 	wait	@cam
-	msg	speed(10.b),
+	msg	speed(0.b),
 		"What's this?",
 		wait(254.b)
 	call	20002.d, 1.d, 2.d, 20001.d, 6.w
@@ -14075,14 +14075,14 @@ sub_3424:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(4.b),
-		speed(10.b),
+		speed(0.b),
 		"Jenny...",
 		wait(254.b)
 	popbp
 	anim	20002.d, 26.d
 	call	20001.d, 1.d, 2.d, 20003.d, 3.w
 	msg	voice(3.b),
-		speed(8.b),
+		speed(0.b),
 		"Hmm?",
 		wait(255.b)
 	scrn	@zblur, 0.w, 96.w, 10.w, 10.w, 1.w
@@ -14099,7 +14099,7 @@ sub_3424:
 	wait	@cam
 	wait	@time, 50.w
 	msg	voice(3.b),
-		speed(10.b),
+		speed(0.b),
 		"What's this we have here?",
 		wait(255.b)
 	wait	@time, 60.w
@@ -14123,7 +14123,7 @@ sub_3424:
 	camera	@unk229, 78.w, 2.d, 600.w
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 255.w, 255.w, 255.w, 255.w, 600.w
 	wait	@time, 30.w
-	msg	speed(4.b),
+	msg	speed(0.b),
 		size(28.b),
 		sfx(79.d, 1.b),
 		"You took off the frog, uh, frog hat?",
@@ -15779,32 +15779,32 @@ lib_345:
 	.lib	346.w, *lib_346
 lib_346:
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114122.d, 1.b),
 		"One",
 		wait(2.b)
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114123.d, 1.b),
 		"For",
 		wait(2.b)
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114122.d, 1.b),
 		"All!",
 		wait(255.b)
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114122.d, 1.b),
 		"All",
 		wait(2.b)
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114123.d, 1.b),
 		"For",
 		wait(2.b)
 	msg	size(32.b),
-		speed(6.b),
+		speed(0.b),
 		sfx(1114122.d, 1.b),
 		"One!",
 		wait(255.b)
@@ -15824,7 +15824,7 @@ lib_347:
 	.lib	339.w, *lib_339
 lib_339:
 	msg	voice(1.b),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"Zzz...",
 		wait(255.b)
@@ -15834,7 +15834,7 @@ lib_339:
 	.lib	23.w, *lib_23
 lib_23:
 	msg	voice(17.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20045.w, 4.d),
 		"Thank you.",
 		anim(0.b, 20045.w, 1.d),
@@ -15845,7 +15845,7 @@ lib_23:
 	.lib	308.w, *lib_308
 lib_308:
 	msg	voice(17.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20045.w, 4.d),
 		"Thank you. Thank you.",
 		anim(0.b, 20045.w, 1.d),
@@ -15856,7 +15856,7 @@ lib_308:
 	.lib	309.w, *lib_309
 lib_309:
 	msg	voice(17.b),
-		speed(4.b),
+		speed(0.b),
 		"Don't leave me.",
 		wait(254.b)
 	return
@@ -15871,7 +15871,7 @@ lib_348:
 
 	.lib	349.w, *lib_349
 lib_349:
-	msg	speed(30.b),
+	msg	speed(0.b),
 		"...",
 		wait(254.b)
 	return

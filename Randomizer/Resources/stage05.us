@@ -2241,7 +2241,7 @@ loc_209:
 	set	var(303.d), var(302.d)
 	anim	20005.d, 1020.d
 	msg	voice(0.b),
-		speed(5.b),
+		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		sfx(196625.d, 1.b),
 		"Your Chibi-Ranking has gone from",
@@ -2747,7 +2747,7 @@ sub_174:
 	set	rank, var(300.d)
 	anim	20005.d, 1020.d
 	msg	voice(0.b),
-		speed(5.b),
+		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		sfx(196625.d, 1.b),
 		"Your Chibi-Ranking has gone from...",

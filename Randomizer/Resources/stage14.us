@@ -207,7 +207,7 @@ loc_15:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(4.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1051.d),
 		"Happy birthday, Jenny!",
 		anim(0.b, 20003.w, 1056.d),
@@ -328,7 +328,7 @@ loc_15:
 	pushbp
 	setsp	actor_name(20004.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Oh! Got a present for her too, do ya, Tao?",
 		anim(0.b, 20001.w, 6.d),
 		wait(255.b)
@@ -367,7 +367,7 @@ loc_15:
 	setsp	actor_name(20004.d)
 	msg	voice(3.b),
 		anim(0.b, 20001.w, -1.d),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 8.d),
 		"Wow! Good dog! ...How did you wrap it?",
 		anim(0.b, 20001.w, 1024.d),
@@ -407,7 +407,7 @@ loc_15:
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
 		anim(0.b, 20001.w, -1.d),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 1031.d),
 		"All right! Now, it's my turn!",
 		anim(0.b, 20003.w, 1057.d),
@@ -421,7 +421,7 @@ loc_15:
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
 		anim(0.b, 20001.w, -1.d),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 8.d),
 		"You're just gonna LOVE my gift, Jenny!",
 		anim(0.b, 20004.w, 1016.d),
@@ -524,7 +524,7 @@ loc_15:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"But Jenny said she wanted one.",
 		anim(0.b, 20001.w, 6.d),
 		wait(255.b)
@@ -544,7 +544,7 @@ loc_15:
 	anim	20001.d, 7.d
 	wait	@time, 20.w
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Now, now. Calm down!",
 		anim(0.b, 20001.w, 6.d),
 		wait(255.b)
@@ -559,7 +559,7 @@ loc_15:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"What do you think, Jenny? You love it, right?",
 		anim(0.b, 20001.w, 6.d),
 		wait(255.b)
@@ -711,7 +711,7 @@ loc_7:
 	call	20004.d, 1.d, 2.d, 57.d, 4.w
 	msg	voice(3.b),
 		anim(0.b, 20001.w, -1.d),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 8.d),
 		"Whaddya think? Should I flip the switch?",
 		anim(0.b, 20001.w, 1024.d),
@@ -755,7 +755,7 @@ loc_7:
 	anim	20001.d, 1033.d
 	wait	@time, 5.w
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"All right! Get ready to...",
 		anim(0.b, 20001.w, -1.d),
 		anim(0.b, 20001.w, 1034.d),
@@ -876,7 +876,7 @@ loc_7:
 	attach	66.d, *sub_71
 	msg	voice(3.b),
 		anim(0.b, 20001.w, 1025.d),
-		speed(4.b),
+		speed(0.b),
 		"Yaaaaay! Chibi-Robo!",
 		wait(255.b)
 	camera	@pos, -8189.d, 7577.w, 6405.w, 3.d, 0.w
@@ -924,7 +924,7 @@ loc_7:
 	wait	@cam
 	anim	20001.d, 1029.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Hello, there!",
 		anim(0.b, 20001.w, 6.d),
 		wait(255.b)
@@ -966,7 +966,7 @@ loc_7:
 	call	20004.d, 1.d, 2.d, 57.d, 4.w
 	msg	voice(3.b),
 		anim(0.b, 20001.w, -1.d),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 8.d),
 		"Amazing!",
 		anim(0.b, 20001.w, 1024.d),
@@ -1012,7 +1012,7 @@ loc_7:
 	wait	@cam
 	anim	20001.d, 1029.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"You got that right!",
 		anim(0.b, 20001.w, 6.d),
 		wait(254.b)
@@ -1119,10 +1119,10 @@ sub_31:
 	wait	@fade
 	wait	@time, 150.w
 	win	@pos, 320.w, 220.w
-	msg	speed(8.b),
+	msg	speed(0.b),
 		"And they kept on partying...",
 		wait(8.b)
-	msg	speed(8.b),
+	msg	speed(0.b),
 		"Until late into the night...",
 		wait(8.b)
 	lib	53.w
@@ -1152,7 +1152,7 @@ sub_46:
 	anim	20001.d, 1011.d
 	wait	@time, 30.w
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Hey, now!\n",
 		"Whaddya up to?",
 		anim(0.b, 20001.w, 6.d),
@@ -1591,7 +1591,7 @@ loc_30:
 	anim	20001.d, 7.d
 	wait	@time, 20.w
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Now that we've handed out presents, it's\n",
 		"time for Jenny to blow out the candles.",
 		anim(0.b, 20001.w, 6.d),
@@ -1830,7 +1830,7 @@ sub_75:
 	camera	@unk229, 18.w, 2.d, 15.w
 	sfx	-65475.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Hot!",
 		wait(8.b)
@@ -1847,7 +1847,7 @@ sub_75:
 	camera	@unk229, 18.w, 2.d, 15.w
 	sfx	-65474.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Diggity!",
 		wait(8.b)
@@ -1864,7 +1864,7 @@ sub_75:
 	camera	@unk229, 20.w, 2.d, 15.w
 	sfx	-65473.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Dog!",
 		wait(11.b)
@@ -1882,7 +1882,7 @@ sub_75:
 	camera	@unk229, 78.w, 2.d, 600.w
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 255.w, 255.w, 255.w, 255.w, 600.w
 	wait	@time, 30.w
-	msg	speed(4.b),
+	msg	speed(0.b),
 		size(28.b),
 		sfx(79.d, 1.b),
 		"That's awesome!",

@@ -2151,17 +2151,17 @@ sub_147:
 	popbp
 	wait	@time, 300.w
 	msg	voice(4.b),
-		speed(4.b),
+		speed(0.b),
 		"Sigh... What are we going to do?",
 		wait(5.b)
 	sfx	-65453.d, 1.d
 	wait	@time, 600.w
 	msg	voice(4.b),
-		speed(3.b),
+		speed(0.b),
 		"These bills are piling up.",
 		wait(255.b)
 	msg	voice(4.b),
-		speed(3.b),
+		speed(0.b),
 		"On top of that, the electric bill has skyrocketed!",
 		wait(255.b)
 	wait	@cam
@@ -2176,7 +2176,7 @@ sub_147:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(4.b),
-		speed(6.b),
+		speed(0.b),
 		"He's just hopeless...",
 		wait(255.b)
 	popbp
@@ -2725,7 +2725,7 @@ sub_1307:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Zzzzz...Chibi-Robo...",
 		wait(255.b)
@@ -2736,7 +2736,7 @@ sub_1307:
 
 sub_1287:
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"So...many...bills...zzzz...",
 		wait(255.b)
@@ -2766,7 +2766,7 @@ loc_1121:
 loc_1120:
 	printf	"【宇宙人】ママ夜の会話\n"
 	msg	voice(4.b),
-		speed(12.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Ummm...Cheebo? Your friends are...",
 		wait(255.b)
@@ -2826,7 +2826,7 @@ loc_1129:
 	wait	@cam
 loc_1128:
 	msg	voice(4.b),
-		speed(12.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"No, thank you...I can't...zzzzz...eat...any more...",
 		wait(255.b)
@@ -2922,7 +2922,7 @@ loc_1289:
 	lib	63.w
 	popbp
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Well, aren't these adorable?",
 		wait(255.b)
@@ -3426,7 +3426,7 @@ loc_1325:
 	lib	63.w
 	popbp
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Fantastic. More receipts...",
 		wait(255.b)
@@ -3954,7 +3954,7 @@ loc_1267:
 		anim(0.b, 20002.w, 1032.d),
 		wait(255.b)
 	msg	voice(4.b),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"I wish there was something I could do.",
 		wait(255.b)
@@ -3993,20 +3993,20 @@ loc_1267:
 	endif	*loc_1269
 loc_1271:
 	msg	voice(4.b),
-		speed(7.b),
+		speed(0.b),
 		anim(0.b, 20002.w, 1016.d),
 		"No...",
 		anim(0.b, 20002.w, 1015.d),
 		wait(255.b)
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		anim(0.b, 20002.w, 1016.d),
 		"I...can't do any...sewing...tonight...",
 		anim(0.b, 20002.w, 1015.d),
 		wait(255.b)
 	msg	voice(4.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		anim(0.b, 20002.w, 1016.d),
 		"Tomorrow, OK? Good night...zzz...",
@@ -4035,7 +4035,7 @@ loc_1277:
 	pushbp
 	setsp	actor_name(20063.d)
 	msg	voice(4.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20002.w, 1033.d),
 		"Cheebo!",
 		anim(0.b, 20002.w, 1032.d),
@@ -4104,7 +4104,7 @@ loc_1278:
 		anim(0.b, 20002.w, 1015.d),
 		wait(255.b)
 	msg	voice(4.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20002.w, 1033.d),
 		"But let me tell you something!",
 		anim(0.b, 20002.w, 1032.d),
@@ -4681,7 +4681,7 @@ sub_1235:
 	pushbp
 	setsp	actor_name(20063.d)
 	msg	voice(4.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20002.w, 1012.d),
 		"You know, Cheebo, for a little fellow,\n",
 		"you sure are a hard worker.",
@@ -5005,7 +5005,7 @@ loc_1395:
 		anim(0.b, 20014.w, 3.d),
 		size(28.b),
 		shake(19.b, 2.b, 2.b),
-		speed(8.b),
+		speed(0.b),
 		"Whaddya expect? My eyes are going,\n",
 		"and you was dressed all in green!",
 		anim(0.b, 20014.w, 1.d),
@@ -5121,20 +5121,20 @@ loc_1401:
 	endif	*loc_1402
 loc_1406:
 	msg	voice(24.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20014.w, 16.d),
 		size(28.b),
 		shake(19.b, 2.b, 2.b),
 		"Goodness gracious!",
 		wait(254.b)
 	msg	voice(24.b),
-		speed(3.b),
+		speed(0.b),
 		size(24.b),
 		"I can't be running 'round\n",
 		"without my teef! Ain't polite!",
 		wait(254.b)
 	msg	voice(24.b),
-		speed(3.b),
+		speed(0.b),
 		size(24.b),
 		"Hold on there, ya li'l varmint!\n",
 		"I need my teef!",
@@ -6445,7 +6445,7 @@ loc_2341:
 	msg	voice(18.b),
 		anim(0.b, 352.w, 3.d),
 		size(28.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"And let me introduce the most\n",
 		"funktastical flying cube in the galaxy!",
@@ -6676,7 +6676,7 @@ loc_1818:
 	wait	@time, 1.w
 	lib	105.w
 	wait	@time, 10.w
-	msg	speed(7.b),
+	msg	speed(0.b),
 		"There's no response.\n",
 		"Seems to be a regular toy...",
 		wait(254.b)
@@ -7063,7 +7063,7 @@ loc_1930:
 	lib	13.w
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"That old lady is bringing down my inner funk...",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -7092,7 +7092,7 @@ loc_1933:
 		wait(254.b)
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"But you know something?",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -7108,20 +7108,20 @@ loc_1933:
 	wait	@time, 50.w
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"Something's coolin' off my funk casserole!",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"It's that lady.",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	wait	@time, 30.w
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"Something's got her all wound up!",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -7729,7 +7729,7 @@ sub_1978:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(10.b),
+		speed(0.b),
 		shake(19.b, 3.b, 3.b),
 		"HEY!!!",
 		anim(0.b, 20014.w, 1.d),
@@ -7855,7 +7855,7 @@ sub_1414:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(5.b),
+		speed(0.b),
 		shake(35.b, 2.b, 2.b),
 		"Great tumblin' tumbleweeds!",
 		anim(0.b, 20014.w, 1.d),
@@ -8014,7 +8014,7 @@ sub_751:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"I got a mess o' respect for him!",
 		anim(0.b, 20014.w, 1.d),
@@ -8267,7 +8267,7 @@ sub_752:
 		wait(254.b)
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 1034.d),
-		speed(7.b),
+		speed(0.b),
 		"Gimme some funky fresh love or...",
 		anim(0.b, 20013.w, 33.d),
 		wait(254.b)
@@ -8379,7 +8379,7 @@ loc_756:
 	camera	@unk229, 30.w, 2.d, 3000.w
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 1034.d),
-		speed(5.b),
+		speed(0.b),
 		"Wait a minute. I'll give\n",
 		"it a little push...",
 		anim(0.b, 20013.w, 33.d),
@@ -8412,13 +8412,13 @@ loc_755:
 		wait(254.b)
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(5.b),
+		speed(0.b),
 		"You've gone and hurt",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(5.b),
+		speed(0.b),
 		"my funky feelings.",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -8830,7 +8830,7 @@ sub_1953:
 	anim	20013.d, 1.d
 	msg	voice(19.b),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		"Howdy, Funky!",
 		wait(5.b)
 	camera	@pos, -5646.d, 13426.w, -21806.d, 2.d, 300.w
@@ -8870,7 +8870,7 @@ sub_1953:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"As any fool can see, ",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -8923,7 +8923,7 @@ sub_1953:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(28.b),
-		speed(10.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"You handled them blinds like a pro!",
 		anim(0.b, 20014.w, 1.d),
@@ -9064,7 +9064,7 @@ sub_1953:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
-		speed(10.b),
+		speed(0.b),
 		"If worse comes to worse, I know a certain\n",
 		"dineysaur who'd bite the bullet and marry ya!",
 		anim(0.b, 20014.w, 1.d),
@@ -9088,7 +9088,7 @@ sub_1953:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		"Oh, stop yer wiltin', ya dang fool!",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -9131,7 +9131,7 @@ sub_1953:
 	wait	@time, 30.w
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"I got a riddle for ya! Do ya know what\n",
 		"kinda race a T-rex can never win?",
 		anim(0.b, 20014.w, 1.d),
@@ -9347,7 +9347,7 @@ sub_1954:
 	wait	@cam
 	msg	voice(19.b),
 		size(32.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 3.b, 3.b),
 		"FUNKY!",
 		wait(254.b)
@@ -9403,7 +9403,7 @@ sub_1954:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 3.b, 3.b),
 		"Darn tootin'!",
 		anim(0.b, 20014.w, 1.d),
@@ -9511,7 +9511,7 @@ loc_1956:
 	msg	voice(19.b),
 		size(28.b),
 		shake(19.b, 2.b, 2.b),
-		speed(5.b),
+		speed(0.b),
 		"Wh-why am I blushin'? It's only a seed!",
 		wait(254.b)
 	msg	voice(19.b),
@@ -9740,7 +9740,7 @@ loc_1940:
 	run	*sub_1912
 	msg	voice(18.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(5.b),
+		speed(0.b),
 		"All right, that's enough!",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -9831,19 +9831,19 @@ loc_1940:
 	lib	105.w
 	anim	20000.d, 1328.d
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
 		"What?",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
 		"I'm not their pappy.",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
 		"Funky Phil isn't even married!",
 		anim(0.b, 20013.w, 1.d),
@@ -9865,7 +9865,7 @@ loc_1940:
 	lib	63.w
 	popbp
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
 		size(28.b),
 		"WHAT?!?",
@@ -9883,7 +9883,7 @@ loc_1940:
 	lib	63.w
 	popbp
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
 		size(28.b),
 		"Why're you looking at me like that?",
@@ -9903,23 +9903,23 @@ loc_1940:
 	wait	@cam
 	lib	13.w
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(6.b),
+		speed(0.b),
 		"All right, how 'bout this...",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(6.b),
+		speed(0.b),
 		"I ain't yo' daddy, but I'll show",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
 	msg	voice(18.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20013.w, 3.d),
-		speed(6.b),
+		speed(0.b),
 		"y'all how to funk like a villain!",
 		anim(0.b, 20013.w, 1.d),
 		wait(254.b)
@@ -10020,7 +10020,7 @@ loc_1941:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 17.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		"They--",
 		wait(254.b)
 	wait	@time, 50.w
@@ -10307,7 +10307,7 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		"Oh, Funky Phil...",
 		anim(0.b, 20014.w, 1835009.d),
 		wait(254.b)
@@ -10315,7 +10315,7 @@ sub_792:
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
 		shake(19.b, 2.b, 2.b),
-		speed(5.b),
+		speed(0.b),
 		"The sprouts are somethin' to behold!",
 		anim(0.b, 20014.w, 1835009.d),
 		wait(254.b)
@@ -10332,7 +10332,7 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		"It's been dark and dreary since\n",
 		"you've been gone, but...",
 		anim(0.b, 20014.w, 1835009.d),
@@ -10340,7 +10340,7 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		"Sooner or later, we all gotta mosey on\n",
 		"to the great roundup in the sky!",
 		anim(0.b, 20014.w, 1835009.d),
@@ -10356,14 +10356,14 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		"And that's why...",
 		anim(0.b, 20014.w, 1835009.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"I...",
 		anim(0.b, 20014.w, 1835009.d),
 		wait(254.b)
@@ -10371,7 +10371,7 @@ sub_792:
 		anim(0.b, 20014.w, 1835011.d),
 		size(20.b),
 		shake(19.b, 2.b, 2.b),
-		speed(10.b),
+		speed(0.b),
 		"I'm done with all this mopin' about.",
 		anim(0.b, 20014.w, 1835009.d),
 		wait(254.b)
@@ -10387,7 +10387,7 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"And there's no need for you to worry none\n",
 		"about these young'uns, neither.",
@@ -10396,7 +10396,7 @@ sub_792:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835011.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"So mosey on and rest in peace.",
 		anim(0.b, 20014.w, 1835009.d),
@@ -11188,20 +11188,20 @@ loc_2138:
 	if	eq(cur_suit, 2.d), else *loc_2147
 	printf	"カエル【弾き飛ばされてる【日本語】】\n"
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"What happened? Ribbit!",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"I've gotta get back to Freida\n",
 		"on the double, ribbit.",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"Will you take me to the backyard, ribbit?",
 		anim(0.b, 20057.w, 3.d),
@@ -11210,13 +11210,13 @@ loc_2138:
 	case	eq(result, 0.w), else *loc_2144
 	set	flag(1075.d), 1.w
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"Really, truly? Ribbit!",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"I'm counting on you, ribbit!",
 		anim(0.b, 20057.w, 3.d),
@@ -11227,7 +11227,7 @@ loc_2138:
 loc_2144:
 	case	eq(result, 1.w), else *loc_2146
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"That's too bad, ribbit!",
 		anim(0.b, 20057.w, 3.d),
@@ -11240,7 +11240,7 @@ loc_2142:
 loc_2147:
 	printf	"カエル【弾き飛ばされてる【カエル語】】\n"
 	msg	voice(25.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20057.w, 8.d),
 		"Ribbit, ribbit, ribbit...",
 		anim(0.b, 20057.w, 3.d),
@@ -11298,13 +11298,13 @@ loc_2148:
 	camera	@distance, 78.w, 2.d, 1500.w
 	msg	voice(25.b),
 		anim(0.b, 20057.w, 8.d),
-		speed(15.b),
+		speed(0.b),
 		"Freida...",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
 	msg	voice(25.b),
 		anim(0.b, 20057.w, 8.d),
-		speed(15.b),
+		speed(0.b),
 		"Freida...",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
@@ -11312,7 +11312,7 @@ loc_2148:
 	msg	voice(25.b),
 		anim(0.b, 20057.w, 8.d),
 		size(32.b),
-		speed(1.b),
+		speed(0.b),
 		"Freidaaaaaaaa!",
 		anim(0.b, 20057.w, 3.d),
 		wait(3.b)
@@ -11324,14 +11324,14 @@ loc_2148:
 loc_2155:
 	lib	38.w
 	msg	voice(1.b),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		anim(0.b, 20057.w, 8.d),
 		"Ribbit...rrrrribbit...",
 		anim(0.b, 20057.w, 3.d),
 		wait(255.b)
 	msg	voice(1.b),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		anim(0.b, 20057.w, 8.d),
 		"Rrrrribbit.",
@@ -11638,7 +11638,7 @@ loc_2154:
 	msg	voice(0.b),
 		size(28.b),
 		anim(0.b, 20005.w, 1012.d),
-		speed(10.b),
+		speed(0.b),
 		"Ch-Ch-Ch-Chibi-Robo!",
 		wait(255.b)
 	sfx	-65505.d, 1.d
@@ -11871,13 +11871,13 @@ sub_813:
 	wait	@move, 20000.d
 	msg	voice(0.b),
 		anim(0.b, 20005.w, 1002.d),
-		speed(15.b),
+		speed(0.b),
 		"It looks like a frog, but...",
 		anim(0.b, 20005.w, 1.d),
 		wait(255.b)
 	msg	voice(0.b),
 		anim(0.b, 20005.w, 1002.d),
-		speed(5.b),
+		speed(0.b),
 		"How horrible!",
 		anim(0.b, 20005.w, 1.d),
 		wait(255.b)
@@ -11997,7 +11997,7 @@ loc_815:
 	lib	63.w
 	popbp
 	wait	@time, 100.w
-	msg	speed(8.b),
+	msg	speed(0.b),
 		"Huh?!",
 		wait(3.b)
 	msg	voice(0.b),
@@ -13173,35 +13173,35 @@ loc_1997:
 	lib	349.w
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"Funky Phil...",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		size(16.b),
 		"Funky Phil...",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"I keep callin', but I get no reply.",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"It's only now that he's gone that I realize how",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		size(20.b),
 		"much fun we had when he was around.",
 		anim(0.b, 178.w, 1.d),
@@ -13253,7 +13253,7 @@ loc_2002:
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		"I'm so tired.",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
@@ -13308,7 +13308,7 @@ loc_2002:
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"Ahh... I wonder if Funky Phil's gonna\n",
 		"watch the concert from somewhere.",
 		anim(0.b, 178.w, 1.d),
@@ -13316,14 +13316,14 @@ loc_2002:
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"We gotta do our best today, pardner.",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 178.w, 3.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"This ol' dino's gettin' all misty eyed.",
 		anim(0.b, 178.w, 1.d),
 		wait(254.b)
@@ -14414,14 +14414,14 @@ loc_1618:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835027.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"This ain't good.",
 		anim(0.b, 20014.w, 327698.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835027.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"Funky Phil wouldn't be pleased\n",
 		"to see me like this at all!",
 		anim(0.b, 20014.w, 327698.d),
@@ -14436,7 +14436,7 @@ loc_1618:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"For the sprouts...",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -14448,7 +14448,7 @@ loc_1618:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"For Funky Phil...",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -14471,7 +14471,7 @@ loc_1618:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(28.b),
-		speed(2.b),
+		speed(0.b),
 		"This ol' dino's gotta get\n",
 		" back in the saddle again!",
 		anim(0.b, 20014.w, 1.d),
@@ -14681,7 +14681,7 @@ loc_1690:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"How courageous!",
 		anim(0.b, 20014.w, 1.d),
@@ -14725,25 +14725,25 @@ loc_1701:
 	run	*sub_1407
 	msg	voice(19.b),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"They're cuter 'an a robot in pj's!",
 		wait(254.b)
 	msg	voice(19.b),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"They're so dang adorable!",
 		wait(254.b)
 	msg	voice(19.b),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Look at 'em dance!",
 		wait(254.b)
 	msg	voice(19.b),
 		size(32.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"They're really doin' their darndest!",
 		wait(254.b)
@@ -14757,27 +14757,27 @@ loc_1704:
 	case	eq(var(0.d), 0.w), else *loc_1710
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
-		speed(7.b),
+		speed(0.b),
 		"Look at these cowpokes in glasses...",
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 20.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"They're pretty darned funny!",
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(20.b),
-		speed(8.b),
+		speed(0.b),
 		"But I'm funnier...",
 		wait(254.b)
 	wait	@time, 40.w
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(16.b),
-		speed(8.b),
+		speed(0.b),
 		"It's true.",
 		wait(254.b)
 	break	*loc_1708
@@ -14786,14 +14786,14 @@ loc_1710:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 20.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"No! No! NO! Yer timing's all off!",
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 20.d),
 		size(28.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Ya blew the punch line, ya dang fool!",
 		wait(254.b)
@@ -14803,7 +14803,7 @@ loc_1710:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(20.b),
-		speed(8.b),
+		speed(0.b),
 		"What a surprise that was!",
 		wait(254.b)
 	break	*loc_1708
@@ -14818,7 +14818,7 @@ loc_1712:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
-		speed(7.b),
+		speed(0.b),
 		"This couple's on the edge of a cliff...",
 		wait(254.b)
 	msg	voice(19.b),
@@ -14840,7 +14840,7 @@ loc_1712:
 		anim(0.b, 20014.w, 20.d),
 		size(28.b),
 		shake(19.b, 2.b, 2.b),
-		speed(7.b),
+		speed(0.b),
 		"I saw that comin' weeks ago!",
 		wait(254.b)
 	lib	14.w
@@ -14900,7 +14900,7 @@ loc_1712:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
-		speed(5.b),
+		speed(0.b),
 		size(28.b),
 		"Don't ferget Funky's sweat, neither!",
 		anim(0.b, 20014.w, 18.d),
@@ -15020,7 +15020,7 @@ loc_1719:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"How sad...",
 		anim(0.b, 20014.w, 1.d),
@@ -15028,7 +15028,7 @@ loc_1719:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Isn't there anyone who can open them blinds?",
 		anim(0.b, 20014.w, 1.d),
@@ -15036,7 +15036,7 @@ loc_1719:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(24.b),
-		speed(5.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"I'm beginnin' to feel a bit blue!",
 		anim(0.b, 20014.w, 1.d),
@@ -15106,14 +15106,14 @@ loc_1721:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
-		speed(5.b),
+		speed(0.b),
 		"Look at how young and strong he is.",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(32.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"He's the picture o' gallantry!",
 		anim(0.b, 20014.w, 1.d),
@@ -15140,7 +15140,7 @@ loc_1721:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
-		speed(7.b),
+		speed(0.b),
 		"If I were prone to melodrama,",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -15161,7 +15161,7 @@ loc_1721:
 		anim(0.b, 20014.w, 3.d),
 		size(28.b),
 		shake(19.b, 2.b, 2.b),
-		speed(5.b),
+		speed(0.b),
 		"DUM DUM DUM DUUUUUUMMMMM!",
 		anim(0.b, 20014.w, 1.d),
 		wait(254.b)
@@ -15188,7 +15188,7 @@ loc_1721:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"Pretty sad, ain't it?",
 		anim(0.b, 20014.w, 1.d),
@@ -15196,7 +15196,7 @@ loc_1721:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 3.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"If only somebody could open 'em for him.",
 		anim(0.b, 20014.w, 1.d),
@@ -15348,14 +15348,14 @@ sub_1615:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835027.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"Phil's gone to the great chili cook-off in the sky!",
 		anim(0.b, 20014.w, 1835026.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 1835027.d),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		"Waaah haaa haa! Flowers, flowers...",
 		anim(0.b, 20014.w, 1835026.d),
 		wait(254.b)
@@ -16029,7 +16029,7 @@ loc_2169:
 	wait	@fade
 	sfx	-65475.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Huh?",
 		wait(8.b)
@@ -16044,7 +16044,7 @@ loc_2169:
 	wait	@fade
 	sfx	-65474.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"Eh?",
 		wait(8.b)
@@ -16060,7 +16060,7 @@ loc_2169:
 	wait	@fade
 	sfx	-65473.d, 1.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		"AH!",
 		wait(11.b)
@@ -16076,7 +16076,7 @@ loc_2169:
 	camera	@unk229, 78.w, 2.d, 600.w
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 255.w, 255.w, 255.w, 255.w, 600.w
 	wait	@time, 30.w
-	msg	speed(4.b),
+	msg	speed(0.b),
 		size(28.b),
 		sfx(79.d, 1.b),
 		"SWEET SPACE JUSTICE!",
@@ -18996,7 +18996,7 @@ sub_2276:
 	sfx	138.d, 1.d
 	wait	@sfx, 138.d
 	msg	voice(0.b),
-		speed(8.b),
+		speed(0.b),
 		"Funky seed?!",
 		wait(255.b)
 	lib	14.w
@@ -19010,7 +19010,7 @@ sub_2276:
 	camera	@unk227, 18500.w, 18086.w, -15947.d, 2.d, 2000.w
 	lib	13.w
 	msg	voice(0.b),
-		speed(5.b),
+		speed(0.b),
 		"If it's a seed...should you plant it?",
 		wait(255.b)
 	lib	14.w
@@ -19744,7 +19744,7 @@ sub_1051:
 	wait	@anim, 20005.d, -1.d
 	msg	voice(0.b),
 		anim(0.b, 20005.w, 1002.d),
-		speed(7.b),
+		speed(0.b),
 		"What's all the commotion about?",
 		wait(3.b)
 	anim	20005.d, 1.d
@@ -19853,7 +19853,7 @@ sub_1051:
 	wait	@time, 100.w
 	msg	voice(0.b),
 		anim(0.b, 20005.w, 1034.d),
-		speed(5.b),
+		speed(0.b),
 		"His heartbeat...",
 		anim(0.b, 20005.w, 1033.d),
 		wait(255.b)
@@ -19926,7 +19926,7 @@ sub_1051:
 	call	20005.d, 1.d, 1.d
 	msg	voice(0.b),
 		size(20.b),
-		speed(7.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1034.d),
 		"Chibi-Robo...",
 		anim(0.b, 20005.w, 1033.d),
@@ -20043,10 +20043,10 @@ sub_1051:
 	popbp
 	anim	20014.d, add(18.d, mul(28.d, 65536.d))
 	win	@pos, 320.w, 220.w
-	msg	speed(8.b),
+	msg	speed(0.b),
 		"And so the grieving period began",
 		wait(8.b)
-	msg	speed(8.b),
+	msg	speed(0.b),
 		"and continued into the night.",
 		wait(8.b)
 	lib	53.w
@@ -20729,7 +20729,7 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(28.b),
-		speed(7.b),
+		speed(0.b),
 		"A Funky Phil seed!",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
@@ -20740,7 +20740,7 @@ sub_2256:
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
-		speed(5.b),
+		speed(0.b),
 		"Pop...pop!",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
@@ -20752,14 +20752,14 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(24.b),
-		speed(8.b),
+		speed(0.b),
 		"up all over the place!",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(28.b),
-		speed(8.b),
+		speed(0.b),
 		"Little Funky Phils? Phillies?",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
@@ -20793,7 +20793,7 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(24.b),
-		speed(8.b),
+		speed(0.b),
 		"I'd plant a Funky seed myself, but...",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
@@ -20833,7 +20833,7 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(24.b),
-		speed(8.b),
+		speed(0.b),
 		"No, wait...",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)
@@ -20854,7 +20854,7 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(28.b),
-		speed(8.b),
+		speed(0.b),
 		shake(19.b, 2.b, 2.b),
 		"What should I do?",
 		anim(0.b, 20014.w, 18.d),
@@ -20868,7 +20868,7 @@ sub_2256:
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
 		size(24.b),
-		speed(7.b),
+		speed(0.b),
 		"Get too fancy on folks,\n",
 		"and ya lose 'em!",
 		anim(0.b, 20014.w, 18.d),
@@ -20905,7 +20905,7 @@ sub_2256:
 	wait	@cam
 	msg	voice(19.b),
 		anim(0.b, 20014.w, 19.d),
-		speed(7.b),
+		speed(0.b),
 		"Betcha somebody falls off a cliff again!",
 		anim(0.b, 20014.w, 18.d),
 		wait(254.b)

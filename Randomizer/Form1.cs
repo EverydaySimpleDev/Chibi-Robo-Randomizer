@@ -58,6 +58,8 @@ namespace WindowsFormsApp1
         int apHappyBoxFlagID = 1;
         int apCoinFlagID = 1;
 
+        int apItemVoice = 0;
+
         //List of all checks
         List<ItemLocation> allLocations = new List<ItemLocation>();
 
@@ -125,6 +127,10 @@ namespace WindowsFormsApp1
 
                     //Get file name and remove file extention from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
+
+                    apItemVoice = ((int)apData.SelectToken("favorite_character_voice"));
+
+                    Console.WriteLine(apItemVoice);
 
                     string pjCheck = apData.SelectToken("free_pjs").ToString();
 
@@ -577,7 +583,7 @@ namespace WindowsFormsApp1
                 File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage01.us", Directory.GetCurrentDirectory() + @"\stage01_Edited.us", true);
 
                 // Sink Drain
-                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage11.us", Directory.GetCurrentDirectory() + @"\stage11_Edited.us", true);
+                //File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage11.us", Directory.GetCurrentDirectory() + @"\stage11_Edited.us", true);
 
                 // Foyer
                 File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage02.us", Directory.GetCurrentDirectory() + @"\stage02_Edited.us", true);
@@ -771,6 +777,22 @@ namespace WindowsFormsApp1
                         }
 
                     }
+
+                    // Bedroom
+                    //if (roomID == 0)
+                    //{
+                    //    // Living Room - Frog Ring (Shelf)
+                    //    if (locationID == 21)
+                    //    {
+                    //        var posY = roomObject.SelectToken("objects[" + locationID + "].position.y");
+                    //        posY = ((float)posY) + 0.5f;
+
+                    //        roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
+
+                    //        roomObject.SelectToken("objects[" + locationID + "].position.z").Replace(0.5f);
+                    //    }
+
+                    //}
 
                     //Console.WriteLine(locationName);
                     //Console.WriteLine(roomID);
@@ -1199,9 +1221,6 @@ namespace WindowsFormsApp1
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
                         roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
 
-                        Console.WriteLine(objectName);
-                        Console.WriteLine(ItemFlagID);
-
                         ItemFlagID++;
 
                         if (ItemFlagID == 164)
@@ -1243,7 +1262,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage01_Edited.us" + "\"");
 
             // Sink Drain
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage11_Edited.us" + "\"");
+            //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage11_Edited.us" + "\"");
 
             // Foyer
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage02_Edited.us" + "\"");
@@ -1676,9 +1695,9 @@ namespace WindowsFormsApp1
             stagefile,
             "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
             "ap_text_" + objectID + ":" + Environment.NewLine +
-            "\tmsg\tvoice(0.b)," + Environment.NewLine +
+            "\tmsg\tvoice("+ apItemVoice + ".b)," + Environment.NewLine +
             "\t\t\"You found Player " + player + "\'s\", " + Environment.NewLine +
-            "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
+            "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
             "\t\twait(254.b)" + Environment.NewLine +
             "\treturn\n" + Environment.NewLine);
         }
@@ -1691,7 +1710,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Beasement Teleporter" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(708.d), 2.d" + Environment.NewLine +
@@ -1703,7 +1722,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Bedroom Bridge" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(707.d), 2.d" + Environment.NewLine +
@@ -1715,7 +1734,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Kitchen Bridge" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(706.d), 2.d" + Environment.NewLine +
@@ -1727,7 +1746,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Living Room Bridge" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(705.d), 2.d" + Environment.NewLine +
@@ -1739,7 +1758,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Foyer Teleport" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(704.d), 2.d" + Environment.NewLine +
@@ -1751,7 +1770,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Foyer Ladder" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(703.d), 2.d" + Environment.NewLine +
@@ -1763,7 +1782,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Kitchen Ladder" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(702.d), 2.d" + Environment.NewLine +
@@ -1775,7 +1794,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Found Living Room Ladder" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(701.d), 2.d" + Environment.NewLine +
@@ -1787,7 +1806,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + "Increased Giga Charge" + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\tset\tvar(136.d),\tadd(var(136.d), 1000.w)" + Environment.NewLine +
@@ -1801,7 +1820,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                  "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\trun\t*loc_enable_radar" + Environment.NewLine +
@@ -1813,7 +1832,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\trun\t*loc_enable_blaster" + Environment.NewLine +
@@ -1827,7 +1846,7 @@ namespace WindowsFormsApp1
                    stagefile,
                    "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                    "ap_text_" + objectID + ":" + Environment.NewLine +
-                   "\tmsg\tvoice(0.b)," + Environment.NewLine +
+                   "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                    "\t\t\"" + newObjectName + "\"," + Environment.NewLine +
                    "\t\twait(254.b)" + Environment.NewLine +
                    "\trun\t*loc_enable_copter" + Environment.NewLine +

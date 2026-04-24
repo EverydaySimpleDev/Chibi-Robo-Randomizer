@@ -1982,7 +1982,7 @@ sub_1089:
 	lib	63.w
 	popbp
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		"Teeheehee! Chibi-Robo got yelled at!",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1006.d),
@@ -2002,7 +2002,7 @@ sub_1089:
 		wait(255.b)
 	popbp
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		size(30.b),
 		"Awwwww! Hmph.",
@@ -2223,7 +2223,7 @@ loc_1114:
 	setsp	actor_name(20003.d)
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 1017.d),
 		"Dear dysfunctional family,",
 		anim(0.b, 20001.w, -1.d),
@@ -2244,7 +2244,7 @@ loc_1114:
 	pushbp
 	setsp	actor_name(20004.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Tao tracks mud all over the house!",
 		wait(10.b)
 	popbp
@@ -2264,7 +2264,7 @@ loc_1114:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"Jenny thinks she's a frog!",
 		wait(10.b)
 	popbp
@@ -2273,7 +2273,7 @@ loc_1114:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		"And the $man$ of the house...",
 		wait(6.b)
 	popbp
@@ -2286,7 +2286,7 @@ loc_1114:
 	detach	20004.d
 	anim	20004.d, 34.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(28.b),
 		anim(0.b, 20001.w, 1017.d),
 		"isn't man enough to find another job!",
@@ -2299,12 +2299,12 @@ loc_1114:
 	moveto	299.d, -10294.d, 41006.d, -43861.d, 80.w, -1.d, -1.d
 	wait	@move, 299.d
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(20.b),
 		"Well, I've had enough!",
 		wait(20.b)
 	msg	voice(3.b),
-		speed(4.b),
+		speed(0.b),
 		size(20.b),
 		anim(0.b, 20001.w, 1017.d),
 		"I'm sorry, but you've pushed me to the edge.",
@@ -2321,7 +2321,7 @@ loc_1114:
 	wait	@time, 130.w
 	sfx	-65517.d, 4.d, 400.w, 60.w
 	msg	voice(4.b),
-		speed(6.b),
+		speed(0.b),
 		"The only option I've got left is...divorce.",
 		wait(254.b)
 	sfx	-65517.d, 2.d, 300.w
@@ -2345,7 +2345,7 @@ loc_1114:
 	call	20004.d, 1.d, 2.d, 20001.d, 4.w
 	msg	voice(3.b),
 		size(28.b),
-		speed(7.b),
+		speed(0.b),
 		anim(0.b, 20001.w, 1018.d),
 		"Huh? Divorce?",
 		wait(10.b)
@@ -2355,7 +2355,7 @@ loc_1114:
 	camera	@unk229, 41.w, 3.d, 0.w
 	camera	@distance, 49.w, 3.d, 0.w
 	msg	voice(14.b),
-		speed(6.b),
+		speed(0.b),
 		size(18.b),
 		"Ribbit...?",
 		wait(7.b)
@@ -2371,7 +2371,7 @@ loc_1114:
 	camera	@unk229, 78.w, 2.d, 600.w
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 255.w, 255.w, 255.w, 255.w, 600.w
 	wait	@time, 30.w
-	msg	speed(4.b),
+	msg	speed(0.b),
 		size(28.b),
 		sfx(79.d, 1.b),
 		"NOOOOOoooOOoooOOoooOOoooOO!!!",
@@ -3058,26 +3058,26 @@ loc_3318:
 	wait	@time, 60.w
 	msg	voice(13.b),
 		size(30.b),
-		speed(8.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 22.d),
 		"Son of a battle tank!",
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
 	wait	@time, 30.w
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Well, I guess he didn't look like an enemy.",
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Come to think of it, he may be an ally!",
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 25.d),
 		"But still...my men were just pitiful!",
 		wait(255.b)
@@ -4612,14 +4612,14 @@ sub_2980:
 	if	eq(flag(450.d), 1.w), else *loc_2991
 	if	and(eq(var(75.d), 12.d), eq(time(0.d), 0.d)), else *loc_2985
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Uh-oh. This isn't good.",
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1008.d),
 		wait(254.b)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"She barricaded herself in there!",
 		anim(0.b, 20003.w, -1.d),
@@ -4632,7 +4632,7 @@ loc_2985:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"I can't sleep. I wish\n",
 		"everything was all better.",
@@ -4646,7 +4646,7 @@ loc_2988:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Mom is a grown-up, so how come\n",
 		"she still does childish things?",
@@ -4659,7 +4659,7 @@ loc_2990:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"Mom says we don't have much money,\n",
 		"so how come Dad is always buying toys?",
@@ -4670,7 +4670,7 @@ loc_2990:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1024.d),
 		"He never tells Mom about the toys\n",
 		"he buys. Then he gets in trouble.",
@@ -5318,20 +5318,20 @@ loc_1520:
 	case	eq(var(128.d), 5.d), else *loc_1522
 	sfx	-65496.d, 1.d
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 39.d),
 		"Seven of my guys have gone AWOL!",
 		anim(0.b, 20017.w, 38.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 39.d),
 		"Only reason I push 'em so hard is 'cause I don't\n",
 		"want 'em to crack in the middle of a battle!",
 		anim(0.b, 20017.w, 38.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 39.d),
 		"But I guess I was too hard on\n",
 		"my boys! I drove 'em away!",
@@ -5339,7 +5339,7 @@ loc_1520:
 		wait(254.b)
 	sfx	-65496.d, 2.d, 100.w
 	msg	voice(13.b),
-		speed(5.b),
+		speed(0.b),
 		size(16.b),
 		anim(0.b, 20017.w, 39.d),
 		"It's all my fault!",
@@ -5348,14 +5348,14 @@ loc_1520:
 	sfx	1114144.d, 1.d
 	wait	@time, 1.w
 	sfx	1114144.d, 2.d, 100.w
-	msg	speed(6.b),
+	msg	speed(0.b),
 		size(30.b),
 		anim(0.b, 20017.w, 39.d),
 		"Aughhhhhh!",
 		wait(5.b)
 	pushbp
 	setsp	actor_name(20017.d)
-	msg	speed(1.b),
+	msg	speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		voice(13.b),
 		"I'm not fit for duty!",
@@ -5381,20 +5381,20 @@ loc_1235:
 
 sub_332:
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"We gotta come up with a plan to save Memphis!",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Once we've drawn up our battle plan, we'll\n",
 		"be ready to take on the great hairy threat!",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"We'll need you when the time comes!",
 		anim(0.b, 20017.w, 1.d),
@@ -5425,7 +5425,7 @@ sub_1243:
 		wait(254.b)
 	wait	@time, 30.w
 	msg	voice(13.b),
-		speed(10.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Just don't let it go to your scrap-metal head.",
 		anim(0.b, 20017.w, 1.d),
@@ -5552,7 +5552,7 @@ loc_1274:
 		wait(254.b)
 	msg	voice(13.b),
 		size(30.b),
-		speed(8.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 22.d),
 		"We're still a man short!",
 		anim(0.b, 20017.w, 1.d),
@@ -5802,7 +5802,7 @@ sub_1174:
 		"My...uh...",
 		wait(5.b)
 	msg	size(30.b),
-		speed(1.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		voice(13.b),
 		"Oh, man... I'm so nervous!",
@@ -6176,7 +6176,7 @@ sub_1144:
 	wait	@time, 40.w
 	msg	voice(13.b),
 		anim(0.b, 20017.w, 20.d),
-		speed(4.b),
+		speed(0.b),
 		"So that means...",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
@@ -6232,7 +6232,7 @@ loc_1148:
 	anim	20017.d, 1.d
 	msg	voice(13.b),
 		anim(0.b, 20017.w, 25.d),
-		speed(8.b),
+		speed(0.b),
 		"Is that...some sort of disguise?",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b),
@@ -6247,7 +6247,7 @@ loc_1148:
 	anim	20046.d, 24.d
 	anim	20047.d, 24.d
 	msg	voice(17.b),
-		speed(4.b),
+		speed(0.b),
 		"All of our kind look like this. At all times.",
 		wait(255.b)
 	anim	20045.d, 1.d
@@ -6598,7 +6598,7 @@ loc_2621:
 	setsp	actor_name(20003.d)
 	msg	voice(9.b),
 		size(16.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20018.w, 20.d),
 		"We're all awfully fond of Jenny and General Sanderson.",
 		anim(0.b, 20018.w, 1.d),
@@ -6751,7 +6751,7 @@ loc_2647:
 loc_2667:
 	case	eq(var(128.d), 6.d), else *loc_2669
 	msg	voice(9.b),
-		speed(6.b),
+		speed(0.b),
 		anim(0.b, 20018.w, 20.d),
 		"Things just aren't working around here.",
 		anim(0.b, 20018.w, 1.d),
@@ -6950,7 +6950,7 @@ loc_2736:
 	case	eq(var(128.d), 1.d), else *loc_2738
 	msg	voice(9.b),
 		size(16.b),
-		speed(5.b),
+		speed(0.b),
 		anim(0.b, 20019.w, 20.d),
 		"We can't train when the family is around!",
 		anim(0.b, 20019.w, 1.d),
@@ -7080,7 +7080,7 @@ loc_2767:
 loc_2769:
 	case	eq(var(128.d), 6.d), else *loc_2771
 	msg	voice(9.b),
-		speed(6.b),
+		speed(0.b),
 		anim(0.b, 20019.w, 20.d),
 		"Things just aren't working around here...",
 		anim(0.b, 20019.w, 1.d),
@@ -7366,7 +7366,7 @@ loc_3422:
 	if	and(eq(var(114.d), 211.d), eq(time(0.d), 1.d)), else *loc_3404
 	msg	voice(9.b),
 		anim(0.b, 20022.w, 20.d),
-		speed(10.b),
+		speed(0.b),
 		"People must have been thinkin' of Tao when\n",
 		"they came up with the term $dogs of war$!",
 		anim(0.b, 20022.w, 1.d),
@@ -9693,7 +9693,7 @@ loc_3037:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Chibi! Thanks for checking\n",
 		"on Mom.",
@@ -9704,7 +9704,7 @@ loc_3037:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Looks like Dad's asleep.\n",
 		"He'll be up in the morning.",
@@ -9718,7 +9718,7 @@ loc_3030:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Mom's on strike,\n",
 		"huh, Chibi?",
@@ -9729,7 +9729,7 @@ loc_3030:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Jenny's worried. She wants to know",
 		anim(0.b, 20003.w, -1.d),
@@ -9737,7 +9737,7 @@ loc_3030:
 		wait(254.b)
 	popbp
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"what's going on with Mom.",
 		anim(0.b, 20003.w, -1.d),
@@ -9749,7 +9749,7 @@ loc_3032:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Mom locks the door at night.",
 		anim(0.b, 20003.w, -1.d),
@@ -9757,7 +9757,7 @@ loc_3032:
 		wait(254.b)
 	popbp
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"But she leaves the door open ALL day.",
 		anim(0.b, 20003.w, -1.d),
@@ -9767,7 +9767,7 @@ loc_3032:
 loc_3034:
 	set	flag(1512.d), 1.w
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Hello, Chibi.",
 		anim(0.b, 20003.w, -1.d),
@@ -9777,7 +9777,7 @@ loc_3034:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"You came all the way up here\n",
 		"because you heard Jenny crying, right?",
@@ -9788,7 +9788,7 @@ loc_3034:
 	pushbp
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Jenny says thank you.",
 		anim(0.b, 20003.w, -1.d),
@@ -9809,7 +9809,7 @@ loc_3036:
 	setsp	actor_name(20001.d)
 	setsp	actor_name(20003.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Jenny says she's upset because Mom\n",
 		"and Dad aren't getting along.",
@@ -9820,7 +9820,7 @@ loc_3036:
 	pushbp
 	setsp	actor_name(20001.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"Mom won't let Dad sleep in their bedroom.",
 		anim(0.b, 20003.w, -1.d),
@@ -9830,7 +9830,7 @@ loc_3036:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(2.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 1007.d),
 		"I wanna go into Mom's room, but I\n",
 		"can't move since I'm a stuffed animal.",
@@ -11024,7 +11024,7 @@ sub_4100:
 sub_4105:
 	msg	voice(9.b),
 		anim(0.b, 20044.w, 4.d),
-		speed(15.b),
+		speed(0.b),
 		"Hmmm...let's see how you did.",
 		wait(3.b)
 	return
@@ -11079,7 +11079,7 @@ loc_4103:
 		wait(254.b)
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"F",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -11096,7 +11096,7 @@ loc_4106:
 	sfx	-65531.d, 2.d, 200.w
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"D",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -11125,7 +11125,7 @@ loc_4108:
 	sfx	-65531.d, 2.d, 200.w
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"C",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -11155,7 +11155,7 @@ loc_4110:
 	sfx	-65531.d, 2.d, 200.w
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"B",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -11185,7 +11185,7 @@ loc_4112:
 	sfx	-65531.d, 2.d, 200.w
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"A",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -11215,7 +11215,7 @@ loc_4114:
 	sfx	-65531.d, 2.d, 200.w
 	run	*sub_4105
 	msg	voice(9.b),
-		speed(2.b),
+		speed(0.b),
 		"S",
 		sfx(4294901859.d, 1.b),
 		anim(0.b, 20044.w, 1.d),
@@ -12161,7 +12161,7 @@ sub_1739:
 	popbp
 	anim	20001.d, 1029.d
 	msg	voice(3.b),
-		speed(15.b),
+		speed(0.b),
 		"Can ya help me out?",
 		anim(0.b, 20001.w, -1.d),
 		anim(0.b, 20001.w, 6.d),
@@ -12489,7 +12489,7 @@ sub_449:
 	sfx	322.d, 1.d
 	msg	voice(3.b),
 		size(28.b),
-		speed(4.b),
+		speed(0.b),
 		"Hey!!!",
 		wait(255.b)
 	anim1	20001.d, 36.d
@@ -12693,7 +12693,7 @@ sub_1747:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	size(32.b),
-		speed(10.b),
+		speed(0.b),
 		"Yeah!",
 		wait(10.b)
 	return
@@ -13135,7 +13135,7 @@ sub_1839:
 	scrn	@shake, 0.w, 0.w, 50.w, 0.w, 0.w, 0.w, 100.w
 	sfx	1441808.d, 1.d
 	msg	size(30.b),
-		speed(10.b),
+		speed(0.b),
 		shake(35.b, 3.b, 2.b),
 		"Eeeeeeeeeeeeeeeek!",
 		wait(10.b)
@@ -13154,7 +13154,7 @@ sub_1839:
 	scrn	@shake, 0.w, 0.w, 50.w, 0.w, 0.w, 0.w, 100.w
 	sfx	1441806.d, 1.d
 	msg	size(30.b),
-		speed(10.b),
+		speed(0.b),
 		shake(35.b, 3.b, 2.b),
 		"Ack! Stop!",
 		wait(10.b)
@@ -13165,7 +13165,7 @@ sub_1839:
 	scrn	@shake, 0.w, 0.w, 50.w, 0.w, 0.w, 0.w, 100.w
 	sfx	1441810.d, 1.d
 	msg	size(30.b),
-		speed(10.b),
+		speed(0.b),
 		shake(35.b, 3.b, 2.b),
 		"Ribbit! Ribbit!",
 		wait(10.b)
@@ -14970,7 +14970,7 @@ sub_1550:
 	run	*sub_1554
 	wait	@time, 100.w
 	msg	voice(13.b),
-		speed(2.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 25.d),
 		"But it looks like everyone's here! So today's\n",
 		"your lucky day! No one suffers!",
@@ -15234,7 +15234,7 @@ sub_1552:
 
 sub_1252:
 	msg	voice(13.b),
-		speed(6.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Hey. Is that our photo?!",
 		anim(0.b, 20017.w, 1.d),
@@ -15286,12 +15286,12 @@ loc_1261:
 	wait	@time, 60.w
 	lib	12.w
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		"We were a full platoon then.",
 		wait(255.b)
 	wait	@time, 40.w
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		"That was before the incident...",
 		wait(255.b)
 	camera	@pos, -7428.d, 4314.w, -4811.d, 1.d, 1000.w
@@ -15324,7 +15324,7 @@ loc_1261:
 	wait	@time, 300.w
 	wait	@time, 100.w
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		"We were doing our daily\n",
 		"physical training routine...",
 		wait(10.b)
@@ -15381,7 +15381,7 @@ loc_1261:
 	wait	@time, 60.w
 	disp	20004.d, 1.d
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		size(28.b),
 		"That's when the enemy attacked!",
 		wait(6.b)
@@ -15718,7 +15718,7 @@ loc_1256:
 	pushbp
 	setsp	actor_name(20034.d)
 	msg	voice(13.b),
-		speed(3.b),
+		speed(0.b),
 		size(18.b),
 		"Meeeeeeeeemmmmphissssssssss!",
 		wait(255.b)
@@ -15730,13 +15730,13 @@ loc_1256:
 	anim	20017.d, 1.d
 	sfx	-65499.d, 1.d
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 25.d),
 		"I know what's gotta be done!",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"We have to train harder so that one day, we\n",
 		"will win the war against the great beast!",
@@ -15745,7 +15745,7 @@ loc_1256:
 	sfx	-65499.d, 2.d, 200.w
 	wait	@time, 30.w
 	msg	voice(13.b),
-		speed(6.b),
+		speed(0.b),
 		size(26.b),
 		anim(0.b, 20017.w, 25.d),
 		"We need to make sure we never\n",
@@ -15755,7 +15755,7 @@ loc_1256:
 	mdir	20017.d, @obj, 20000.d, 40.w, 2.d
 	wait	@dir, 20017.d
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Thank you, Chibi-Robo! You've helped me\n",
 		"remember my true purpose!",
@@ -16183,20 +16183,20 @@ sub_545:
 	lib	63.w
 	popbp
 	msg	voice(13.b),
-		speed(15.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Maybe it's all my fault?",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Sure, I was tough on 'em, but it was only 'cause\n",
 		"I didn't want to lose any more men!",
 		anim(0.b, 20017.w, 1.d),
 		wait(254.b)
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"But all that did was make\n",
 		"me lose 'em faster!",
@@ -16213,7 +16213,7 @@ sub_545:
 	anim	20017.d, 38.d
 	wait	@time, 50.w
 	msg	voice(13.b),
-		speed(5.b),
+		speed(0.b),
 		size(16.b),
 		anim(0.b, 20017.w, 39.d),
 		"Bunker busters! What have I done?!",
@@ -16222,7 +16222,7 @@ sub_545:
 	sfx	1114144.d, 1.d
 	wait	@time, 1.w
 	sfx	1114144.d, 2.d, 100.w
-	msg	speed(6.b),
+	msg	speed(0.b),
 		size(16.b),
 		anim(0.b, 20017.w, 39.d),
 		"I'm a disgrace! A soft-boiled, undercooked disgrace!",
@@ -16247,7 +16247,7 @@ sub_545:
 	anim	20017.d, 1042.d
 	wait	@time, 30.w
 	msg	voice(13.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Troops dismissed! You're a disgrace to the name\n",
 		"of Free Ranger! ...And I'm not worthy to lead you.",
@@ -16645,7 +16645,7 @@ sub_504:
 	camera	@distance, 145.w, 3.d, 0.w
 	wait	@time, 60.w
 	msg	voice(13.b),
-		speed(15.b),
+		speed(0.b),
 		anim(0.b, 20017.w, 20.d),
 		"Tears? On the battlefield?",
 		anim(0.b, 20017.w, 1.d),
@@ -17601,13 +17601,13 @@ loc_1438:
 	msg	voice(13.b),
 		size(26.b),
 		anim(0.b, 20017.w, 20.d),
-		speed(10.b),
+		speed(0.b),
 		"Whaddya think you're doing, soldier?!",
 		wait(5.b)
 	msg	voice(13.b),
 		size(26.b),
 		anim(0.b, 20017.w, 25.d),
-		speed(2.b),
+		speed(0.b),
 		"You don't even have a weapon!",
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
@@ -20451,7 +20451,7 @@ sub_2648:
 	wait	@time, 10.w
 	lib	13.w
 	msg	voice(9.b),
-		speed(6.b),
+		speed(0.b),
 		anim(0.b, 20024.w, 20.d),
 		"Hey! That's...",
 		anim(0.b, 20024.w, 1.d),
@@ -20470,7 +20470,7 @@ loc_2664:
 	anim	20024.d, 52.d, 53.d
 	msg	voice(9.b),
 		size(28.b),
-		speed(10.b),
+		speed(0.b),
 		"No...it can't be!",
 		wait(255.b)
 	msg	voice(9.b),
@@ -20500,7 +20500,7 @@ loc_2664:
 loc_2651:
 	msg	voice(9.b),
 		anim(0.b, 20025.w, 54.d),
-		speed(10.b),
+		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		"You infiltrated the great hairy monster's\n",
 		"LAIR?!",
@@ -20712,7 +20712,7 @@ loc_2654:
 		"I let you down.",
 		wait(255.b)
 	msg	voice(13.b),
-		speed(8.b),
+		speed(0.b),
 		"Forgive me, Memphis!",
 		wait(255.b)
 	wait	@anim, 20017.d, -1.d
@@ -20743,7 +20743,7 @@ loc_2654:
 	anim	20028.d, 1.d
 	msg	voice(9.b),
 		anim(0.b, 20028.w, 20.d),
-		speed(10.b),
+		speed(0.b),
 		size(18.b),
 		"We will never defeat the\n",
 		"great hairy beast alone.",
@@ -20755,7 +20755,7 @@ loc_2654:
 	anim	20025.d, 1.d
 	msg	voice(9.b),
 		anim(0.b, 20025.w, 20.d),
-		speed(8.b),
+		speed(0.b),
 		size(21.b),
 		"We gotta pull together, men!",
 		anim(0.b, 20025.w, 1.d),
@@ -20766,7 +20766,7 @@ loc_2654:
 	anim	20024.d, 1.d
 	msg	voice(9.b),
 		anim(0.b, 20024.w, 20.d),
-		speed(6.b),
+		speed(0.b),
 		size(24.b),
 		"YOU'RE FREE RANGERS!",
 		anim(0.b, 20024.w, 1.d),
@@ -20782,7 +20782,7 @@ loc_2654:
 	wait	@time, 30.w
 	msg	voice(13.b),
 		anim(0.b, 20017.w, 20.d),
-		speed(4.b),
+		speed(0.b),
 		size(27.b),
 		"YOU'RE HARD BOILED!",
 		anim(0.b, 20017.w, 1.d),
@@ -20810,7 +20810,7 @@ loc_2654:
 	anim	20017.d, 1.d
 	msg	voice(13.b),
 		anim(0.b, 20017.w, 20.d),
-		speed(10.b),
+		speed(0.b),
 		"You guys are the best!",
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
@@ -21429,7 +21429,7 @@ sub_1984:
 	lib	144.w
 	popbp
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		"Oh!",
 		wait(5.b)
 	anim	20003.d, 1059.d
@@ -21440,7 +21440,7 @@ sub_1984:
 	lib	105.w
 	wait	@time, 150.w
 	msg	voice(14.b),
-		speed(4.b),
+		speed(0.b),
 		anim(0.b, 20003.w, 67109923.d),
 		"Come here...ribbit!",
 		anim(0.b, 20003.w, -1.d),
@@ -21555,7 +21555,7 @@ loc_1991:
 		wait(254.b)
 	wait	@time, 30.w
 	msg	voice(0.b),
-		speed(20.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1.d),
 		"Aha!",
 		wait(254.b)
@@ -25003,7 +25003,7 @@ loc_3959:
 	lib	38.w
 	set	flag(519.d), 1.w
 	msg	voice(0.b),
-		speed(7.b),
+		speed(0.b),
 		"That's odd. These look like tire tracks.\n",
 		"But how did they get here?",
 		wait(254.b)
@@ -28032,7 +28032,7 @@ loc_4002:
 		wait(254.b)
 	anim2	20005.d, 1013.d, 0.w, 150.w, 1.d, 0.w, 100.w
 	msg	voice(0.b),
-		speed(5.b),
+		speed(0.b),
 		"If it's someone in the house...",
 		wait(254.b)
 	scrn	@zblur, 96.w, 0.w, 20.w, 20.w, 30.w
@@ -28080,7 +28080,7 @@ loc_4008:
 	pushbp
 	setsp	actor_name(20002.d)
 	msg	voice(0.b),
-		speed(4.b),
+		speed(0.b),
 		"But I don't know what all that\n",
 		"justice stuff was about.",
 		wait(254.b)
