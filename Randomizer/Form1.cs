@@ -289,6 +289,8 @@ namespace WindowsFormsApp1
                     unusedShopItem.SelectToken("limit").Replace(1);
                 }
 
+                // Disable Starting Copter
+                globals.SelectToken("defaultAtcs.copter").Replace(false);
 
                 //Edits for Open Downstairs
                 //if (openDownstairs.Checked)
@@ -301,8 +303,7 @@ namespace WindowsFormsApp1
 
                 //Battery Drain Settings
                 JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-
-            
+                
                 batteryGlobal.SelectToken("idle").Replace( apData.SelectToken("battery_drain_idle") );
                 batteryGlobal.SelectToken("walk").Replace(apData.SelectToken("battery_drain_walk"));
                 batteryGlobal.SelectToken("jog").Replace(apData.SelectToken("battery_drain_jog"));
@@ -794,8 +795,6 @@ namespace WindowsFormsApp1
 
                     //}
 
-                    //Console.WriteLine(locationName);
-                    //Console.WriteLine(roomID);
 
                     roomObject.SelectToken("objects[" + locationID + "].spawnFlag").Replace(apSpawnFlag);
 
