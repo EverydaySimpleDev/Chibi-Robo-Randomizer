@@ -260,6 +260,9 @@
     <None Include="Resources\stage14.us">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Resources\stage18.us">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\tex1_400x188_fdd08a7791cd4603_5.xcf" />
     <None Include="Resources\title_en_ap.tpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

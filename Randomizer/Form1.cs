@@ -48,7 +48,8 @@ namespace WindowsFormsApp1
         ItemPool itemPool;
         Random r;
         string newIsoPath;
-        int newPassword;
+        int newLeftFootPassword;
+        int newSuitCasePassword;
 
         int CoinFlagID = 1;
         int HappyBoxFlagID = 1;
@@ -113,7 +114,7 @@ namespace WindowsFormsApp1
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.Filter = "(*.apcr)|*.apcr|(*.json)|*.json";
+                ofd.Filter = "(*.apcr)|*.apcr";
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog(this) == DialogResult.OK)
                 {
@@ -130,8 +131,6 @@ namespace WindowsFormsApp1
 
                     apItemVoice = ((int)apData.SelectToken("favorite_character_voice"));
 
-                    Console.WriteLine(apItemVoice);
-
                     string pjCheck = apData.SelectToken("free_pjs").ToString();
 
                     if (pjCheck == "1")
@@ -141,17 +140,6 @@ namespace WindowsFormsApp1
                     else
                     {
                         freePJ.Checked = false;
-                    }
-
-                    string chargedGigaBatteryCheck = apData.SelectToken("charged_giga_battery").ToString();
-
-                    if (chargedGigaBatteryCheck == "1")
-                    {
-                        batteryCharge.Checked = true;
-                    }
-                    else
-                    {
-                        batteryCharge.Checked = false;
                     }
 
                     string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
@@ -165,17 +153,6 @@ namespace WindowsFormsApp1
                         openUpstairs.Checked = false;
                     }
 
-                    //string openDownStairsCheck = apData.SelectToken("open_downstairs").ToString();
-
-                    //if (openDownStairsCheck == "1")
-                    //{
-                    //    openDownstairs.Checked = true;
-                    //}
-                    //else
-                    //{
-                    //    openDownstairs.Checked = false;
-                    //}
-
                     string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
 
                     if (chibiVisionString == "1")
@@ -185,6 +162,17 @@ namespace WindowsFormsApp1
                     else
                     {
                         chibiVision.Checked = false;
+                    }
+
+                    string passwordRandoString = apData.SelectToken("password_rando").ToString();
+
+                    if (passwordRandoString == "1")
+                    {
+                        passwordRando.Checked = true;
+                    }
+                    else
+                    {
+                        passwordRando.Checked = false;
                     }
 
                     logicSettings.SelectedItem = "AP Logic";
@@ -235,7 +223,8 @@ namespace WindowsFormsApp1
                     randoSeed += (int)c;
                 }
 
-                newPassword = 200667;
+                newLeftFootPassword = 200667;
+                newSuitCasePassword = 2455;
 
                 newIsoPath = destinationPath.Text + "\\chibiRando_" + randoSeed + ".iso";
 
@@ -269,14 +258,15 @@ namespace WindowsFormsApp1
                     {
                         globals.SelectToken("items[" + i + "].flags.chibiVision").Replace(false);
                     }
-                }
+                } 
 
-                //Randomizes foot passcode, if enabled
+                //Randomizes left foot and suit case passcode, if enabled
                 if (passwordRando.Checked)
                 {
-                    newPassword = r.Next(100000, 999999);
-                    globals.SelectToken("stats[12].name").Replace("Password: " + newPassword);
-                    globals.SelectToken("items[124].description").Replace("The number \"" + newPassword + "\" is engraved\non the inside.");
+                    newLeftFootPassword = r.Next(100000, 999999);
+                    newSuitCasePassword = r.Next(1000, 9999);
+                    globals.SelectToken("stats[12].name").Replace("Password: " + newLeftFootPassword);
+                    globals.SelectToken("items[124].description").Replace("The number \"" + newLeftFootPassword + "\" is engraved\non the inside.");
                 }
 
 
@@ -291,15 +281,6 @@ namespace WindowsFormsApp1
 
                 // Disable Starting Copter
                 globals.SelectToken("defaultAtcs.copter").Replace(false);
-
-                //Edits for Open Downstairs
-                //if (openDownstairs.Checked)
-                //{
-                //    JToken unusedShopItem = shopObj.SelectToken("items[17]");
-                //    unusedShopItem.SelectToken("item").Replace("drake_redcrest_suit");
-                //    unusedShopItem.SelectToken("price").Replace(10);
-                //    unusedShopItem.SelectToken("limit").Replace(1);
-                //}
 
                 //Battery Drain Settings
                 JToken batteryGlobal = globals.SelectToken("batteryGlobals");
@@ -359,9 +340,10 @@ namespace WindowsFormsApp1
                     logOutput.WriteLine("******");
                     logOutput.WriteLine("Seed: " + seed.Text);
                     logOutput.WriteLine("Mode: " + logicSettings.Text);
-                    logOutput.WriteLine("Password:  " + newPassword);
+                    logOutput.WriteLine("Left Foot Password:  " + newLeftFootPassword);
+                    logOutput.WriteLine("Suit Case Password:  " + newSuitCasePassword);
                     logOutput.WriteLine("Open Upstairs: " + openUpstairs.Checked);
-                    logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
+                    //logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
                     logOutput.WriteLine("Free PJs: " + freePJ.Checked);
                     logOutput.WriteLine("Open Downstairs: " + openDownstairs.Checked);
                     logOutput.WriteLine("Randomize Password: " + passwordRando.Checked);
@@ -410,9 +392,6 @@ namespace WindowsFormsApp1
             runUnplugCommand("globals export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\globals.json");
 
             runUnplugCommand("shop export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
-
-            //runUnplugCommand("messages export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
-
 
             XmlDocument doc = new XmlDocument();
             doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
@@ -601,6 +580,9 @@ namespace WindowsFormsApp1
                 // Bedroom
                 File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage06.us", Directory.GetCurrentDirectory() + @"\stage06_Edited.us", true);
 
+                // Bedroom (Old)
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage18.us", Directory.GetCurrentDirectory() + @"\stage18_Edited.us", true);
+
                 //int shopId = 0;
 
                 // Loop through each location josin
@@ -628,7 +610,6 @@ namespace WindowsFormsApp1
                         if (classification == "progression" || classification == "usefull")
                         {
                             objectName = "item_cookie_kakera";
-
                         }
                         else
                         {
@@ -638,64 +619,6 @@ namespace WindowsFormsApp1
                         roomCheckForInGameMessages(roomID, locationID, playerID, name);
 
                     }
-
-                    //else if (objectName.Contains("cb_radar"))
-                    //{
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 3);
-                    //}
-                    //else if (objectName.Contains("cb_cannon_lv_2"))
-                    //{
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 2);
-                    //}
-                    //else if (objectName.Contains("cb_propeller_lv_2"))
-                    //{
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 1);
-                    //}
-                    //else if (objectName.Contains("capsule_17")) // Battery (Giga) Charge Check
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 4);
-                    //}
-                    //else if (objectName.Contains("living_ladder"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 701);
-                    //}
-                    //else if (objectName.Contains("kitchen_ladder"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 702);
-                    //}
-                    //else if (objectName.Contains("foyer_teleport"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 703);
-                    //}
-                    //else if (objectName.Contains("foyer_ladder"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 704);
-                    //}
-                    //else if (objectName.Contains("living_bridge"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 705);
-                    //}
-                    //else if (objectName.Contains("kitchen_bridge"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 706);
-                    //}
-                    //else if (objectName.Contains("bedroom_bridge"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 707);
-                    //}
-                    //else if (objectName.Contains("basement_teleport"))
-                    //{
-                    //    objectName = "item_cookie_kakera";
-                    //    roomCheckForInGameMessages(roomID, locationID, playerID, name, true, 708);
-                    //}
 
                     // shop items are not the same as normal items
                     if (roomID != 8)
@@ -779,28 +702,24 @@ namespace WindowsFormsApp1
 
                     }
 
-                    // Bedroom
-                    //if (roomID == 0)
-                    //{
-                    //    // Living Room - Frog Ring (Shelf)
-                    //    if (locationID == 21)
-                    //    {
-                    //        var posY = roomObject.SelectToken("objects[" + locationID + "].position.y");
-                    //        posY = ((float)posY) + 0.5f;
+                    // Living Room
+                    if (roomID == 0)
+                    {
+                        // Living Room - Frog Ring (Shelf)
+                        if (locationID == 21)
+                        {
+                            var posY = roomObject.SelectToken("objects[" + locationID + "].position.y");
+                            posY = ((float)posY) + 0.5f;
 
-                    //        roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
+                            roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
 
-                    //        roomObject.SelectToken("objects[" + locationID + "].position.z").Replace(0.5f);
-                    //    }
+                            roomObject.SelectToken("objects[" + locationID + "].rotation.y").Replace(0);
+                        }
 
-                    //}
+                    }
 
 
                     roomObject.SelectToken("objects[" + locationID + "].spawnFlag").Replace(apSpawnFlag);
-
-                    //Console.WriteLine("Room ID: " + roomID);
-
-                    //Console.WriteLine("8037xxxx 0000 x -- " + locationName + " (Flag: " + apSpawnFlag + ")");
 
                     spoilerLog.Add(locationName, name);
 
@@ -930,12 +849,6 @@ namespace WindowsFormsApp1
                 }
 
                 spoilerLog.Add("Red Shoe", allLocations[shuffleItem("item_peets_kutu", occupiedChecks, new string[] { "red shoe", "ladder", "bridge" }, allLocations)].Description);
-
-
-                if (batteryCharge.Checked)
-                {
-                    spoilerLog.Add("Charged Giga-Battery", allLocations[shuffleItem("item_deka_denchi_full", occupiedChecks, new string[] { }, allLocations)].Description);
-                }
 
                 #endregion
 
@@ -1267,6 +1180,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage02_Edited.us" + "\"");
 
             // Basement
+            updateLeftFootPassword(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", newLeftFootPassword);
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage03_Edited.us" + "\"");
 
             // Backyard
@@ -1276,7 +1190,12 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage04_Edited.us" + "\"");
 
             // Bedroom
+            updateSuitCasePassword(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", newSuitCasePassword);
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage06_Edited.us" + "\"");
+
+            // Bedroom (Old)
+            updateSuitCasePasswordText(Directory.GetCurrentDirectory() + @"\stage18_Edited.us", newSuitCasePassword);
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage18_Edited.us" + "\"");
 
             //Chibi House
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage05.us" + "\"");
@@ -1683,9 +1602,74 @@ namespace WindowsFormsApp1
                     else
                     {
                         enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, atcID);
-                    }
+                    }             
                 }
             }
+        }
+
+        private void updateSuitCasePassword(string stagefile, int newPass)
+        {
+            File.AppendAllText(
+            stagefile,
+            "loc_848:" +
+            "\r\n\telif\teq(flag(9.d), 1.w), else *loc_856" +
+            "\r\n\tsfx\t-65531.d, 4.d, 300.w, 0.w" +
+            "\r\n\tmsg\t\"Enter password\\n\"," +
+            "\r\n\t\tsize(24.b)," +
+            "\r\n\t\t\" \"," +
+            "\r\n\t\tinput(4.b, 4.b, 4.b)" +
+            "\r\n\tif\teq(result, " + newPass + "), else *loc_855" +
+            "\r\n\trun\t*sub_852" +
+            "\r\n\tendif\t*loc_851"
+            );
+
+        }
+
+        private void updateSuitCasePasswordText(string stagefile, int newPass)
+        {
+            File.AppendAllText(
+            stagefile,
+            "sub_49:" +
+            "\r\n\tlib\t38.w" +
+            "\r\n\tmsg\t\"Password: "+ newPass + "\"," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tset\tflag(9.d), 1.w" +
+            "\r\n\tlib\t39.w" +
+            "\r\n\treturn" +
+            "\r\n\r\n"
+            );
+
+        }
+
+        private void updateLeftFootPassword(string stagefile, int newPass)
+        {
+            File.AppendAllText(
+            stagefile,
+            "loc_617:\r\n" +
+            "\tlib\t38.w" +
+            "\r\n\tcall\t20007.d, 3.d, 1.d" +
+            "\r\n\twait\t@time, 40.w" +
+            "\r\n\tcamera\t@pos, 7478.w, 94.w, -4769.d, 3.d, 0.w" +
+            "\r\n\tcamera\t@unk227, 11745.w, 1260.w, -11974.d, 3.d, 0.w" +
+            "\r\n\tcamera\t@unk229, 39.w, 3.d, 0.w" +
+            "\r\n\tcamera\t@distance, 84.w, 3.d, 0.w" +
+            "\r\n\twait\t@time, 80.w" +
+            "\r\n\tif\teq(flag(27.d), 1.d), else *loc_616" +
+            "\r\n\tcall\t20000.d, -1.d" +
+            "\r\n\tset\tflag(1080.d), 1.d" +
+            "\r\n\trun\t*sub_610" +
+            "\r\n\tset\tvar(39.d), result" +
+            "\r\n\twait\t@time, 50.w" +
+            "\r\n\tcall\t20007.d, 3.d, 0.d" +
+            "\r\n\twait\t@time, 100.w" +
+            "\r\n\tif\teq(var(39.d), " + newPass + "), else *loc_604" +
+            "\r\n\tsfx\t327720.d, 1.d" +
+            "\r\n\twait\t@sfx, 327720.d" +
+            "\r\n\tif\teq(flag(28.d), 1.d), else *loc_603" +
+            "\r\n\trun\t*sub_539" +
+            "\r\n\tlib\t106.w" +
+            "\r\n\tendif\t*loc_536"
+            );
         }
 
         private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName)

@@ -132,9 +132,6 @@
             this.logicSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logicSettings.FormattingEnabled = true;
             this.logicSettings.Items.AddRange(new object[] {
-            "Glitchless",
-            "Glitched",
-            "No Logic",
             "AP Logic"});
             this.logicSettings.Location = new System.Drawing.Point(118, 198);
             this.logicSettings.Name = "logicSettings";
@@ -210,19 +207,20 @@
             // 
             this.batteryCharge.AutoSize = true;
             this.batteryCharge.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryCharge.Location = new System.Drawing.Point(960, 56);
+            this.batteryCharge.Location = new System.Drawing.Point(952, 97);
             this.batteryCharge.Name = "batteryCharge";
             this.batteryCharge.Size = new System.Drawing.Size(182, 24);
             this.batteryCharge.TabIndex = 16;
             this.batteryCharge.Text = "Charged Giga Battery";
             this.batteryCharge.UseVisualStyleBackColor = true;
+            this.batteryCharge.Visible = false;
             this.batteryCharge.CheckedChanged += new System.EventHandler(this.batteryCharge_CheckedChanged);
             // 
             // openDownstairs
             // 
             this.openDownstairs.AutoSize = true;
             this.openDownstairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openDownstairs.Location = new System.Drawing.Point(648, 97);
+            this.openDownstairs.Location = new System.Drawing.Point(804, 97);
             this.openDownstairs.Name = "openDownstairs";
             this.openDownstairs.Size = new System.Drawing.Size(150, 24);
             this.openDownstairs.TabIndex = 17;
@@ -235,11 +233,11 @@
             // 
             this.passwordRando.AutoSize = true;
             this.passwordRando.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passwordRando.Location = new System.Drawing.Point(960, 97);
+            this.passwordRando.Location = new System.Drawing.Point(952, 56);
             this.passwordRando.Name = "passwordRando";
-            this.passwordRando.Size = new System.Drawing.Size(182, 24);
+            this.passwordRando.Size = new System.Drawing.Size(190, 24);
             this.passwordRando.TabIndex = 18;
-            this.passwordRando.Text = "Randomize Password";
+            this.passwordRando.Text = "Randomize Passwords";
             this.passwordRando.UseVisualStyleBackColor = true;
             this.passwordRando.CheckedChanged += new System.EventHandler(this.passwordRando_CheckedChanged);
             // 
@@ -247,7 +245,7 @@
             // 
             this.chibiVision.AutoSize = true;
             this.chibiVision.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chibiVision.Location = new System.Drawing.Point(804, 97);
+            this.chibiVision.Location = new System.Drawing.Point(648, 97);
             this.chibiVision.Name = "chibiVision";
             this.chibiVision.Size = new System.Drawing.Size(137, 24);
             this.chibiVision.TabIndex = 19;
@@ -286,6 +284,7 @@
             this.walkingBatteryDrain.TabIndex = 25;
             this.walkingBatteryDrain.Text = "Walking Doesn\'t Decrease Battery";
             this.walkingBatteryDrain.UseVisualStyleBackColor = true;
+            this.walkingBatteryDrain.Visible = false;
             this.walkingBatteryDrain.CheckedChanged += new System.EventHandler(this.walkingBatteryDrain_CheckedChanged);
             // 
             // joggingBatteryDrain
@@ -298,6 +297,7 @@
             this.joggingBatteryDrain.TabIndex = 26;
             this.joggingBatteryDrain.Text = "Jogging Doesn\'t Decrease Battery";
             this.joggingBatteryDrain.UseVisualStyleBackColor = true;
+            this.joggingBatteryDrain.Visible = false;
             // 
             // runningDecreasesBattery
             // 
@@ -309,6 +309,7 @@
             this.runningDecreasesBattery.TabIndex = 27;
             this.runningDecreasesBattery.Text = "Running Doesn\'t Decrease Battery";
             this.runningDecreasesBattery.UseVisualStyleBackColor = true;
+            this.runningDecreasesBattery.Visible = false;
             // 
             // apZipPath
             // 

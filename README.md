@@ -15,30 +15,19 @@ You will need an NTSC-U (GGTE01) Chibi-Robo! Plug Into Adventure! ISO. Other ver
 - Browse
   - The randomizer will create a copy of the ISO file before applying the edits to the game files. Use the Browse button to select where this file will be saved.
 - Open AP
-  - This is a json file that the archipelago system will generate. This is required if you plan on connecting your game with the Archipelago multiworld rando https://github.com/EverydaySimpleDev/Archipelago.
-- Mode / Logic
-  - Select a game mode / logic setting from the dropdown. Currently, only Glitchless is supported, but make sure at least something is selected in this dropdown.
-- Seed
-  - The seed is a series of alphanumeric characters that correspond to how the items are randomized into the game. Given the same seed, the randomizer will put the items in the same locations. This way, two people can generate the same version of a randomized game for races / co-op runs. This will be filled in automatically by default
+  - This is a .apcr file that the archipelago system will generate. This is required if you plan on connecting your game with the Archipelago multiworld rando https://github.com/EverydaySimpleDev/Archipelago.
 - Free PJs
   - Checking this box will add the Pajamas as a bonus item to the Chibi-Shop for 10 Moolah, which can allow for more convenient access to areas / locations blocked by day/night-specific events.
-- Open Upsatirs
-  - Checking this box will insert a stack of books onto the 2nd stair in the Foyer, allowing immediate access upstairs without the need for the ladder. This will impact item shuffling logic.
-- Charged Battery
-  - Checking this will shuffle a fully-charged battery as a bonus item into the game (in addition to the default uncharged battery, which is needed to unlock scrap)
-- Open Downstairs
-  - (NOT FULLY IMPLEMENTED) Checking this will enable the entrances to the Foyer and Kitchen immediately from the start of the game without having to move Sophie from the Kitchen door. This will impact item shuffling logic. (For now, this will just add the Drake Redcrest Suit to the shop for 10 moolah)
+- Open Upstairs
+  - Checking this box will insert a stack of books onto the 2nd stair in the Foyer, allowing immediate access upstairs without the need for the ladder.
 - Chibi-Vision Off
   - Checking this will remove the item tag for key items that can be seen while Chibi-Vision is active, making it more difficult to sweep for key items immediately after visiting a room for the first time
 - Randomize Password
-  - Checking this will randomize the password required to turn on Giga-Robo to finish the game. This will require finding the engagement ring and reading the newly generated password from its item description, which will also be updated with the new random password.
+  - Checking this will randomize the both the left foot and suit case passwords. The left foot password is on dads wedding ring and the suit case password can be found while visiting the bedroom (old) stage.
 - Randomize
   - Click this button once finished with the above controls and the randomizer will create a new ISO at the file path you have specified with the Browse button!
 
 ## KNOWN ISSUES
 
 - The program will crash if any part of the file path where the program is extracted contains a space
-- Randomization for the Copter, Blaster, and Radar are planned but not supported
-- Duplicate items cannot be randomized to different slots in the shop (meaning frog rings cannot appear in the shop)
-- If a shop location doesn't have an item randomized to it, it will not appear as an option in the shop (this is a temporary fix for the above)
 - AP Worlds do not have the shop items included in the rando

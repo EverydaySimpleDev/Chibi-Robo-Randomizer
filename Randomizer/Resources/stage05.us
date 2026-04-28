@@ -383,8 +383,9 @@ sub_576: ; first time loading into chibi house after birthday party
 	setsp	200.d
 	lib	154.w
 	popbp
-	set	flag(942.d), 1.d ; Jenny / Mort Stairs Flag?
-	set	flag(479.d), 1.d ; Sqaurter Flag
+	set	flag(1231.d), 1.w ; Kitchen Planter Rope Flag
+	set	flag(942.d), 1.d ; Jenny / Mort Stairs Flag
+	set	flag(479.d), 0.d ; Sqaurter Flag
 	set	flag(941.d), 1.d ; Shoes flag
 	set var(144.d), 3.d ; UFO pad flag
 	set	flag(806.d), 1.d ; UFO pad flag
@@ -461,6 +462,7 @@ sub_289:
 	pushbp
 	setsp	var(300.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"For making it into the top ",
 		format("%'d"),
 		"...",
@@ -471,6 +473,7 @@ loc_292:
 	elif	le(var(302.d), 100.w), else *loc_294
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"For making it into the top 100...",
 		wait(255.b)
 	endif	*loc_291
@@ -478,6 +481,7 @@ loc_294:
 	elif	le(var(302.d), 1000.w), else *loc_296
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"For making it into the top 1,000...",
 		wait(255.b)
 	endif	*loc_291
@@ -485,6 +489,7 @@ loc_296:
 	elif	le(var(302.d), 10000.w), else *loc_298
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"For making it into the top 10,000...",
 		wait(255.b)
 	endif	*loc_291
@@ -492,6 +497,7 @@ loc_298:
 	elif	le(var(302.d), 100000.d), else *loc_291
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"For making it into the top 100,000...",
 		wait(255.b)
 loc_291:
@@ -522,6 +528,7 @@ loc_260:
 	attach	69.d, *sub_669
 	anim	20005.d, 1007.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Citrusoft has sent you a special gift:\n",
 		"a brand-new bonus battery!",
 		wait(254.b)
@@ -1015,6 +1022,7 @@ sub_303:
 	pushbp
 	setsp	var(0.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1007.d),
 		"Your battery power went up to ",
 		format("%d"),
@@ -1188,6 +1196,7 @@ sub_61:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"You know what that means? You can finally\n",
 		"recharge the Giga-Battery!",
@@ -1212,6 +1221,7 @@ loc_65:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"If you want to recharge that Giga-Battery,",
 		wait(254.b),
@@ -1220,6 +1230,7 @@ loc_65:
 	pushbp
 	setsp	item_name(48.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"you'll need to find a Giga-Charger. There's\n",
 		"got to be one around here somewhere, right?",
@@ -1233,6 +1244,7 @@ loc_75:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Chibi-Robo! We're missing the most\n",
 		"important part: the Giga-Battery!",
@@ -1262,6 +1274,7 @@ sub_84:
 	if	ge(item(8.d), 1.w), else *loc_86
 	anim	20005.d, 1006.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Whew... Well, that's done.",
 		wait(255.b)
 	camera	@pos, -891.d, 797.w, 1959.w, 3.d, 0.w
@@ -1273,6 +1286,7 @@ sub_84:
 	pushbp
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"So I guess it was Giga-Robo who was\n",
 		"making that noise we heard, huh?",
 		wait(255.b)
@@ -1280,11 +1294,13 @@ sub_84:
 	pushbp
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"You might not know, but Giga-Robo is",
 		wait(255.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"the brainchild of the legendary engineer\n",
 		"Dr. Joy Ebisu of Citrusoft. He made you, too.",
@@ -1292,19 +1308,23 @@ sub_84:
 	pushbp
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Even though he designed you both, Giga-Robo\n",
 		"is TEN TIMES bigger than you are!",
 		wait(255.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		size(28.b),
 		"And he's a hundred times heavier!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"And don't get me started about his battery!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		size(22.b),
 		anim(0.b, 20005.w, 1025.d),
 		"He uses 1,000 times more energy than you do!",
@@ -1312,12 +1332,14 @@ sub_84:
 		anim(0.b, 20005.w, 1.d),
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"There was an energy crisis a few years back,",
 		wait(255.b)
 	pushbp
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"and all at once, everyone just stopped\n",
 		"using their Giga-Robos altogether.",
 		wait(255.b)
@@ -1329,10 +1351,12 @@ sub_84:
 	anim	20005.d, 1016.d
 	wait	@time, 60.w
 	msg	voice(0.b),
+		speed(0.b),
 		"These days, you can't even pay someone\n",
 		"to take the poor guy off your hands.",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"It's sad to see something like this happen...\n",
 		"Tossed aside like so much trash... Poor guy.",
 		wait(255.b)
@@ -1345,12 +1369,14 @@ sub_84:
 	camera	@unk229, 40.w, 1.d, 50.w
 	camera	@distance, 51.w, 1.d, 50.w
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Well, enough moping around. We've got work\n",
 		"to do! Let's go earn us some Happy Points!",
 		wait(254.b)
 	anim	20005.d, 1007.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Hmmmm hmmm... La la la la...",
 		anim(0.b, 20005.w, -1.d),
 		wait(5.b)
@@ -1363,11 +1389,13 @@ loc_86:
 
 sub_64:
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Yes, that's it. Look at that! It's already\n",
 		"bigger than you are, Chibi-Robo!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"It's pretty heavy. Let's set it over there.",
 		wait(255.b),
 		anim(0.b, 20005.w, 1.d)
@@ -1381,6 +1409,7 @@ sub_55:
 	setsp	item_name(48.d)
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Now, just take out the Giga-Battery\n",
 		"and Giga-Charger you're carrying.",
@@ -1439,6 +1468,7 @@ loc_63:
 	popbp
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Yeah, that's the way.",
 		wait(255.b),
@@ -1495,6 +1525,7 @@ sub_67:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Now, just take out the Giga Battery\n",
 		"you're carrying with you.",
@@ -1575,6 +1606,7 @@ sub_77:
 	pushbp
 	setsp	item_name(48.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Now, just take out the Giga-Charger\n",
 		"you're carrying with you.",
@@ -1687,12 +1719,14 @@ sub_920:
 	wait	@time, 360.w
 	anim	20005.d, 1024.d, 1020.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Hm? Did you hear that?",
 		wait(254.b)
 	sfx	144.d, 1.d
 	wait	@time, 400.w
 	anim	20005.d, 1021.d
 	msg	voice(0.b),
+		speed(0.b),
 		"It came from outside...",
 		wait(254.b)
 	lib	95.w
@@ -1762,6 +1796,7 @@ loc_378:
 	if	lt(level, 13.d), else *loc_381
 	if	eq(var(109.d), 1.w), else *loc_382
 	msg	voice(0.b),
+		speed(0.b),
 		"In order to get the next bonus battery,\n",
 		"you need only 1 more Happy Point!",
 		wait(255.b)
@@ -1770,6 +1805,7 @@ loc_382:
 	pushbp
 	setsp	var(109.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"In order to get the next bonus battery,\n",
 		"you need ",
 		format("%d"),
@@ -1864,15 +1900,18 @@ loc_31:
 	camera	@unk229, 34.w, 3.d, 0.w
 	camera	@distance, 64.w, 3.d, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, Chibi-Robo! Look at the state you're in!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"And I'd thought maybe we could make it to\n",
 		"the top of the Chibi-Ranking together.",
 		wait(255.b)
 	endif	*loc_33
 loc_502:
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, Chibi-Robo...",
 		wait(255.b)
 loc_33:
@@ -1900,23 +1939,28 @@ loc_36:
 	set	flag(301.d), 1.d
 	lib	254.w
 	msg	voice(0.b),
+		speed(0.b),
 		"You're alive!",
 		wait(255.b)
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"I was worried sick!",
 		wait(255.b)
 	scrn	@hud, 0.d, 3.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Remember, you're a robot.",
 		wait(255.b)
 	color	-2.d, @modulate, 70.w, 70.w, 70.w, 60.w
 	scrn	@hud, 0.d, 7.d
 	msg	voice(0.b),
+		speed(0.b),
 		"If your energy ever drops down to zero, you'll\n",
 		"switch off, just like that! Watch your charge!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"And use an outlet if you have to recharge.",
 		wait(254.b)
 	anim	20005.d, 1.d
@@ -1930,17 +1974,20 @@ loc_498:
 	if	eq(flag(32.d), 1.w), else *loc_500
 	lib	254.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Hey, don't forget to recharge!",
 		wait(254.b)
 	endif	*loc_38
 loc_500:
 	msg	voice(0.b),
+		speed(0.b),
 		"Don't freak me out like that!",
 		wait(255.b)
 loc_38:
 	if	flag(33.d), else *loc_496
 	lib	254.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, uh... It looks like you lost some Moolah.\n",
 		"What!? Don't look at me!",
 		wait(254.b)
@@ -1991,6 +2038,7 @@ loc_42:
 
 sub_497:
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, and you should know, if you ever pass\n",
 		"out like that again, don't get too worried.",
 		wait(255.b)
@@ -1998,6 +2046,7 @@ sub_497:
 	pushbp
 	setsp	actor_name(20005.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Your faithful friend, Telly Vision (that's me!),\n",
 		"will carry you back to the Chibi-House!",
 		wait(255.b)
@@ -2006,12 +2055,14 @@ sub_497:
 	wait	@time, 30.w
 	anim	20005.d, 1002.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, and another thing!",
 		size(255.b),
 		wait(255.b)
 	menu	1001.d, -1.d, 5.w
 	menu	1000.d, 1.w
 	msg	voice(0.b),
+		speed(0.b),
 		"If you press ",
 		icon(8.b),
 		" and select $Remove,$\n",
@@ -2024,6 +2075,7 @@ sub_497:
 
 sub_43:
 	msg	voice(0.b),
+		speed(0.b),
 		"While you're here, Chibi-Robo,\n",
 		"would you like to save?",
 		wait(254.b),
@@ -2067,6 +2119,7 @@ loc_525:
 	anim	20000.d, 1.d
 	lib	254.w
 	msg	voice(0.b),
+		speed(0.b),
 		size(30.b),
 		"Good morning!",
 		wait(255.b)
@@ -2129,6 +2182,7 @@ sub_550:
 	anim	9.d, 0.w
 	anim	20000.d, 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		size(30.b),
 		"Great work out there!",
 		wait(255.b)
@@ -2181,6 +2235,7 @@ sub_659:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Whoa! Would you look at that!",
 		wait(3.b)
 	win	@unk209
@@ -2211,6 +2266,7 @@ loc_206:
 	pushbp
 	setsp	var(300.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Your Chibi-Ranking is still ",
 		format("%'d"),
 		".",
@@ -2230,6 +2286,7 @@ loc_209:
 	camera	@unk227, var(0.d), var(1.d), var(2.d), 1.d, 200.w
 	anim	20005.d, 1021.d
 	msg	voice(0.b),
+		speed(0.b),
 		size(24.b),
 		"Let's adjust your Happy Point total...",
 		wait(255.b)
@@ -2241,6 +2298,7 @@ loc_209:
 	set	var(303.d), var(302.d)
 	anim	20005.d, 1020.d
 	msg	voice(0.b),
+		speed(0.b),
 		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		sfx(196625.d, 1.b),
@@ -2268,6 +2326,7 @@ loc_209:
 	setsp	var(300.d)
 	setsp	var(301.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1012.d),
 		sfx(4294901810.d, 1.b),
 		format("%'d"),
@@ -2285,6 +2344,7 @@ loc_212:
 	setsp	var(300.d)
 	setsp	var(301.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1012.d),
 		sfx(4294901811.d, 1.b),
 		format("%'d"),
@@ -2324,6 +2384,7 @@ loc_482:
 	elif	le(var(0.d), 1.w), else *loc_388
 	if	eq(time(0.d), 0.d), else *loc_485
 	msg	voice(0.b),
+		speed(0.b),
 		"Get out there, and earn more Happy Points!\n",
 		"I know you'll make it to Super Chibi-Robo!",
 		wait(254.b)
@@ -2344,6 +2405,7 @@ loc_486:
 	if	eq(flag(53.d), 0.d), else *loc_488
 	set	flag(53.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"This is it... Your first day as Super Chibi-Robo!\n",
 		"Get out there, and make us all proud!",
 		wait(3.b)
@@ -2369,6 +2431,7 @@ loc_488:
 	if	le(var(0.d), 2.w), else *loc_389
 	if	eq(time(0.d), 0.d), else *loc_491
 	msg	voice(0.b),
+		speed(0.b),
 		"OK, Super Chibi-Robo! Get out there and make\n",
 		"everyone super happy! (See what I did there?)",
 		wait(3.b)
@@ -2389,6 +2452,7 @@ loc_389:
 
 sub_479:
 	msg	voice(0.b),
+		speed(0.b),
 		"If you ever reach the top of the rankings...",
 		wait(255.b)
 	return
@@ -2471,6 +2535,7 @@ sub_397:
 	wait	@anim, 16.d, -1.d
 	wait	@time, 120.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Well, maybe I'm speaking too soon. I don't\n",
 		"want to get your hopes up, but...",
 		wait(5.b)
@@ -2480,10 +2545,12 @@ sub_397:
 
 sub_398:
 	msg	voice(0.b),
+		speed(0.b),
 		"You'll be upgraded to the superluxurious\n",
 		"Super Chibi-Robo! Or...that's what I've heard.",
 		wait(10.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Once you earn that, the girl-bots\n",
 		"won't be able to leave you alone!",
 		wait(5.b)
@@ -2496,6 +2563,7 @@ sub_400:
 	wait	@anim, 16.d, -1.d
 	wait	@time, 120.w
 	msg	voice(0.b),
+		speed(0.b),
 		"How's that for super luxurious? Huh? HUH?",
 		wait(5.b)
 	run	*sub_398
@@ -2503,6 +2571,7 @@ sub_400:
 loc_402:
 	anim	20005.d, 1025.d, 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"If you're ever going to become Super Chibi-\n",
 		"Robo, you'll need some advice. Namely, mine!",
 		wait(254.b)
@@ -2511,18 +2580,21 @@ loc_402:
 	if	eq(flag(975.d), 0.d), else *loc_405
 	set	flag(975.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$Use ",
 		icon(9.b),
 		" to activate your Chibi-Vision\n",
 		"and scan your surroundings for items!$",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"$Use ",
 		icon(12.b),
 		" to open up a map of the room\n",
 		"and find yourself a nearby outlet!$",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"To celebrate opening my advice booth,\n",
 		"I'm handing out free advice!",
 		wait(254.b)
@@ -2531,9 +2603,11 @@ loc_405:
 	elif	and(eq(flag(976.d), 0.d), ge(atc(1.d), 1.w)), else *loc_407
 	set	flag(976.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$To cross small gaps, use the Chibi-Copter!$",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Really, all you have to do is press ",
 		icon(5.b),
 		". That\n",
@@ -2544,6 +2618,7 @@ loc_407:
 	elif	eq(flag(977.d), 0.d), else *loc_409
 	set	flag(977.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$To pull and push objects, I suggest you\n",
 		"hold down ",
 		icon(5.b),
@@ -2556,11 +2631,13 @@ loc_409:
 	pushbp
 	setsp	actor_name(20010.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$If you see a Sunshine sticker, I suggest\n",
 		"you pop it with your Chibi-Blaster!",
 		wait(254.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		"Try using your Chibi-Vision as a scope!$",
 		wait(254.b)
 	endif	*loc_404
@@ -2570,6 +2647,7 @@ loc_411:
 	pushbp
 	setsp	item_name(21.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$If you need to dig a hole in the planter,\n",
 		"perhaps a spoon might come in handy!$",
 		wait(254.b)
@@ -2581,6 +2659,7 @@ loc_413:
 	pushbp
 	setsp	item_name(32.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$If you need to get back to the Chibi-House\n",
 		"fast, put on the Trauma Suit and press ",
 		icon(10.b),
@@ -2594,6 +2673,7 @@ loc_415:
 	pushbp
 	setsp	item_name(30.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$Do you have a pair of pajamas? If so, you\n",
 		"can change day into night by posing with ",
 		icon(10.b),
@@ -2607,6 +2687,7 @@ loc_417:
 	pushbp
 	setsp	item_name(21.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$If your Chibi-Radar starts going crazy, grab\n",
 		"your spoon or blaster! Something's nearby!$",
 		wait(254.b)
@@ -2618,6 +2699,7 @@ loc_419:
 	pushbp
 	setsp	item_name(56.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"$Want to get rid of a stain on the wall? Pull\n",
 		"out your squirter and spray it clean off!$",
 		wait(254.b)
@@ -2627,6 +2709,7 @@ loc_421:
 	elif	eq(flag(984.d), 0.d), else *loc_423
 	set	flag(984.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$Don't just let your plug dangle on the ground!\n",
 		"Pick it up, and you'll run faster! Really!$",
 		wait(254.b)
@@ -2635,6 +2718,7 @@ loc_423:
 	elif	eq(flag(985.d), 0.d), else *loc_425
 	set	flag(985.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$You know those boxes with the Happy Points\n",
 		"inside? Try to break 'em before time runs out!$",
 		wait(254.b)
@@ -2643,6 +2727,7 @@ loc_425:
 	elif	eq(flag(986.d), 0.d), else *loc_427
 	set	flag(985.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$If you want to bring in the Moolah, be sure\n",
 		"to open every Chibi-Door you can find!$",
 		wait(254.b)
@@ -2651,6 +2736,7 @@ loc_427:
 	elif	eq(flag(987.d), 0.d), else *loc_404
 	set	flag(987.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"$Sometimes, a robot just needs to sit down on\n",
 		"a doorstop for a while and think about things!$",
 		wait(254.b)
@@ -2719,15 +2805,18 @@ loc_455:
 
 sub_174:
 	msg	voice(0.b),
+		speed(0.b),
 		"Let's adjust your Happy Point total...",
 		wait(255.b)
 	call	20000.d, 111.d, 768.d
 	anim	20000.d, 1310.d
 	wait	@time, 40.w
 	msg	voice(0.b),
+		speed(0.b),
 		"We're looking pretty good! At this rate,",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"making number 1 won't be any problem at all!\n",
 		"Just keep doin' what you're doin', Chibi-Robo!",
 		wait(255.b)
@@ -2735,6 +2824,7 @@ sub_174:
 	camera	@unk227, -507.d, 1499.w, 25.w, 1.d, 200.w
 	anim	20005.d, 1021.d
 	msg	voice(0.b),
+		speed(0.b),
 		size(32.b),
 		"Here are your results!",
 		wait(255.b)
@@ -2747,6 +2837,7 @@ sub_174:
 	set	rank, var(300.d)
 	anim	20005.d, 1020.d
 	msg	voice(0.b),
+		speed(0.b),
 		speed(0.b),
 		shake(35.b, 1.b, 1.b),
 		sfx(196625.d, 1.b),
@@ -2773,6 +2864,7 @@ sub_174:
 	setsp	var(300.d)
 	setsp	var(301.d)
 	msg	voice(0.b),
+		speed(0.b),
 		sfx(4294901810.d, 1.b),
 		anim(0.b, 20005.w, 1012.d),
 		format("%'d"),
@@ -2805,6 +2897,7 @@ sub_174:
 	pushbp
 	setsp	var(300.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"To celebrate your making number ",
 		format("%'d"),
 		"...",
@@ -2831,6 +2924,7 @@ sub_174:
 	pushbp
 	setsp	item_name(31.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Citrusoft has sent you a special gift:\n",
 		"a Super Chibi-Robo costume!!",
 		wait(254.b)
@@ -2921,6 +3015,7 @@ sub_174:
 	color	-2.d, @modulate, 255.w, 255.w, 255.w, 300.w
 	set	level, add(13.d, 1.w)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1007.d),
 		"Look at that! You finally made it!\n",
 		"Congratulations, Super Chibi-Robo!",
@@ -3460,6 +3555,7 @@ loc_741:
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	sfx	196608.d, 3.d, 200.w
 	msg	voice(0.b),
+		speed(0.b),
 		"You've upgraded! Keep it up, Chibi-Robo, and...",
 		wait(3.b)
 	attach	11.d, *sub_658
@@ -3611,13 +3707,16 @@ loc_163:
 	sfx	196611.d, 1.d
 	wait	@sfx, 196611.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Hmmm... What is this?",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Citrusoft has been secretly developing an\n",
 		"all-new brand of Chibi-Gear!?",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Isn't that exciting, Chibi-Robo?!",
 		wait(255.b)
 	anim	9.d, 0.w
@@ -3657,14 +3756,17 @@ loc_156:
 	wait	@sfx, 196611.d
 	lib	24.w
 	msg	voice(0.b),
+		speed(0.b),
 		"There's a new product available through\n",
 		"the online store.",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Let's see here... Ah, there! It's some new\n",
 		"Chibi-Gear. They call it...$Chibi-Radar$!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Oooo... With one of those, you'd be able to\n",
 		"find things NOT VISIBLE TO THE NAKED EYE!",
 		wait(255.b)
@@ -3673,6 +3775,7 @@ loc_156:
 	attach	2.d, *sub_660
 	wait	@time, 50.w
 	msg	voice(0.b),
+		speed(0.b),
 		"You have to buy it and see if it's true!",
 		wait(255.b)
 	lib	95.w
@@ -3706,6 +3809,7 @@ loc_574:
 
 sub_541:
 	msg	voice(0.b),
+		speed(0.b),
 		"I could hardly believe my eye-bolts when\n",
 		"I saw those aliens! Shocking! Simply shocking!",
 		wait(255.b)
@@ -3715,18 +3819,22 @@ sub_541:
 	lib	93.w
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		"I couldn't quite figure out what they were\n",
 		"saying... They were speaking so softly.",
 		wait(255.b)
 	wait	@time, 60.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh! I almost forgot!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"I think Citrusoft makes a chip that\n",
 		"would allow you to hear soft voices.",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"I'll contact them right away!",
 		wait(255.b)
 	call	20005.d, 1.d, 0.d
@@ -3741,6 +3849,7 @@ sub_541:
 	pushbp
 	setsp	item_name(62.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Yes! I knew they had something like this!\n",
 		"It's called an $alien ear chip$!",
 		wait(255.b)
@@ -3750,14 +3859,17 @@ sub_541:
 	call	20005.d, 1.d, 1.d
 	attach	2.d, *sub_660
 	msg	voice(0.b),
+		speed(0.b),
 		"I spoke to Citrusoft, and they've agreed\n",
 		"to carry it in their online store.",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"If you buy it, you'll be able to hear the\n",
 		"softest voice as clear as a bell!",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"You have to try it out! You just have to!",
 		wait(255.b)
 	set	flag(474.d), 1.d
@@ -3793,6 +3905,7 @@ loc_169:
 	wait	@sfx, 196611.d
 	lib	24.w
 	msg	voice(0.b),
+		speed(0.b),
 		"You can buy Chibi-Batteries from the online\n",
 		"shop now. They'll come in handy, I think.",
 		wait(255.b)
@@ -3800,10 +3913,12 @@ loc_169:
 	attach	2.d, *sub_660
 	wait	@time, 50.w
 	msg	voice(0.b),
+		speed(0.b),
 		"If you get one of these, you can recover just\n",
 		"enough energy to go and recharge yourself.",
 		wait(255.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Pick one up and try it out!",
 		wait(255.b)
 	lib	95.w
@@ -3815,11 +3930,13 @@ sub_538:
 	pushbp
 	setsp	actor_name(20054.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"You know, I saw something earlier... All the\n",
 		"Chibi-Doors' eyes opened up wide again!",
 		wait(255.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		"I wonder if you can find more Moolah inside...",
 		wait(255.b)
 	lib	275.w
@@ -3828,17 +3945,21 @@ sub_538:
 
 sub_89:
 	msg	voice(0.b),
+		speed(0.b),
 		"Hey! What's that? Whatcha got? Huh? Huh?\n",
 		"Is that... Is that what I think it is?",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Hey, yeah! That, Chibi-Robo, is Scrap!",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"If you get enough Scrap, you can build\n",
 		"a Utilibot with the Recyclotron.",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"Who woulda thought those Spydorz would be\n",
 		"so useful? I mean, once you smashed 'em.",
 		wait(254.b)
@@ -3871,6 +3992,7 @@ loc_810:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"That's a Giga-Battery.",
 		wait(255.b)
 	popbp
@@ -3878,11 +4000,13 @@ loc_810:
 	setsp	item_name(48.d)
 	setsp	actor_name(20009.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Captain Plankbeard said there should be a\n",
 		"Giga-Charger around here somewhere.",
 		wait(254.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		"Look at the size of that battery... That guy\n",
 		"must eat up a whole lot of energy.",
 		wait(254.b)
@@ -3906,6 +4030,7 @@ loc_906:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Chibi-Robo! We're missing the most\n",
 		"important part: the Giga-Battery!",
@@ -3920,6 +4045,7 @@ loc_838:
 	set	flag(658.d), 1.d
 	lib	254.w
 	msg	voice(0.b),
+		speed(0.b),
 		"I think you can probably charge it if\n",
 		"you're willing to shell out the Moolah.",
 		wait(255.b)
@@ -3929,6 +4055,7 @@ loc_905:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"It looks like the Giga-Battery doesn't\n",
 		"have any energy stored up at all.",
 		wait(255.b)
@@ -3938,16 +4065,19 @@ loc_905:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"I think it's gonna take a whole lotta juice to\n",
 		"charge that Giga-Battery up, Chibi-Robo.",
 		wait(255.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		"We can't charge it from the outlets in the\n",
 		"house. That would break the family's bank!",
 		wait(255.b)
 	wait	@time, 30.w
 	msg	voice(0.b),
+		speed(0.b),
 		"So what say we do our best to save up some\n",
 		"Moolah and pay for it from our own pockets?",
 		wait(255.b)
@@ -3957,6 +4087,7 @@ loc_902:
 	pushbp
 	setsp	var(136.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"Right now, the Giga-Battery has\n",
 		"about ",
 		format("%d"),
@@ -3965,6 +4096,7 @@ loc_902:
 	popbp
 loc_843:
 	msg	voice(0.b),
+		speed(0.b),
 		"Do you want to charge it?",
 		wait(255.b),
 		stay
@@ -3972,6 +4104,7 @@ loc_843:
 	if	eq(result, 0.w), else *loc_846
 loc_844:
 	msg	voice(0.b),
+		speed(0.b),
 		"1,000 kilowatts equals ",
 		icon(14.b),
 		"1,000.\n",
@@ -3991,12 +4124,14 @@ loc_844:
 	set	var(30.d), result
 	if	le(var(30.d), 0.w), else *loc_848
 	msg	voice(0.b),
+		speed(0.b),
 		"Zero watts!? That just won't do!",
 		wait(254.b)
 	endif	*loc_846
 loc_848:
 	elif	gt(add(var(136.d), var(30.d)), 10000.w), else *loc_850
 	msg	voice(0.b),
+		speed(0.b),
 		"That's too much.",
 		wait(254.b)
 	goto	*loc_844
@@ -4005,6 +4140,7 @@ loc_850:
 	pushbp
 	setsp	var(30.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"We'll give it ",
 		format("%d"),
 		" kilowatts!!",
@@ -4060,6 +4196,7 @@ loc_876:
 	pushbp
 	setsp	var(30.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"The Giga-Battery has charged ",
 		format("%d"),
 		" kilowatts!!",
@@ -4080,6 +4217,7 @@ loc_897:
 	pushbp
 	setsp	item_name(8.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"You've filled up the Giga-Battery! It's got\n",
 		"10,000 kilowatts, and it's ready to go!",
 		wait(254.b)
@@ -4102,6 +4240,7 @@ loc_897:
 	camera	@unk229, 40.w, 1.d, 300.w
 	camera	@distance, 54.w, 1.d, 300.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Congratulations, Chibi-Robo!\n",
 		"You've done a-- Hmm?",
 		wait(254.b)
@@ -4136,11 +4275,13 @@ loc_897:
 	lib	67.w
 	wait	@time, 1.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Wait a minute... According to my data files,",
 		wait(254.b)
 	pushbp
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"there should be a control panel\n",
 		"somewhere on Giga-Robo's body.",
 		wait(254.b)
@@ -4153,12 +4294,14 @@ loc_878:
 	endif	*loc_846
 loc_900:
 	msg	voice(0.b),
+		speed(0.b),
 		"You don't have enough Moolah.",
 		wait(254.b)
 loc_846:
 	endif	*loc_847
 loc_903:
 	msg	voice(0.b),
+		speed(0.b),
 		"You really did it, Chibi-Robo! You filled\n",
 		"that battery up to 10,000 kilowatts!",
 		wait(254.b)
@@ -4167,6 +4310,7 @@ loc_903:
 	setsp	item_name(8.d)
 	setsp	actor_name(20007.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"We'd better get this Giga-Battery over\n",
 		"to Giga-Robo pronto, don't you think?",
 		wait(254.b)
@@ -4291,6 +4435,7 @@ loc_857:
 
 sub_882:
 	msg	voice(0.b),
+		speed(0.b),
 		"Something seems a little off, but...",
 		wait(254.b)
 	return
@@ -4298,6 +4443,7 @@ sub_882:
 
 sub_883:
 	msg	voice(0.b),
+		speed(0.b),
 		"Oh, well. Never mind!",
 		wait(254.b)
 	return
@@ -4305,6 +4451,7 @@ sub_883:
 
 sub_888:
 	msg	voice(0.b),
+		speed(0.b),
 		"Something about it looked a little suspicious,\n",
 		"but as long as you think it'll be OK...",
 		wait(254.b)
@@ -4313,10 +4460,12 @@ sub_888:
 
 sub_893:
 	msg	voice(0.b),
+		speed(0.b),
 		"I've got a bad feeling about this.\n",
 		"A really bad feeling.",
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		"What's going to happen once\n",
 		"this thing is all filled up?",
 		wait(254.b)
@@ -4357,6 +4506,7 @@ loc_894:
 	endif	*loc_881
 loc_896:
 	msg	voice(0.b),
+		speed(0.b),
 		"More, Chibi-Robo! More!",
 		wait(254.b)
 loc_881:
@@ -4367,6 +4517,7 @@ sub_908:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Huh?",
 		wait(5.b)
 	win	@unk209
@@ -4377,6 +4528,7 @@ sub_909:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Hmm...?",
 		wait(5.b)
 	win	@unk209
@@ -4387,6 +4539,7 @@ sub_910:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Huh? Wait a minute.",
 		wait(5.b)
 	win	@unk209
@@ -4397,6 +4550,7 @@ sub_911:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		"Eh? Huh?",
 		wait(5.b)
 	win	@unk209
@@ -5340,6 +5494,7 @@ evt_chibi_house_gacha_10:
 	set	flag(934.d), 1.d
 	anim	20005.d, 1025.d, 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		size(32.b),
 		"Wow!",
 		wait(254.b)
@@ -5347,6 +5502,7 @@ evt_chibi_house_gacha_10:
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"This is where your Utilibots come from! They're\n",
 		"your backup buddies, your support bots!",
@@ -5354,12 +5510,14 @@ evt_chibi_house_gacha_10:
 		wait(254.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"If you have Scrap, we can make\n",
 		"some Utilibots with the Chibi-PC!",
 		anim(0.b, 20005.w, 1.d),
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Think there's any Scrap in this place?",
 		anim(0.b, 20005.w, 1.d),
@@ -5368,18 +5526,21 @@ evt_chibi_house_gacha_10:
 loc_801:
 	elif	and(flag(11.d), eq(flag(960.d), 0.w)), else *loc_803
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"You can't use the Recyclotron just yet.\n",
 		"Maybe in a little while, though.",
 		anim(0.b, 20005.w, 1.d),
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Now's a bad time. It's way too dangerous\n",
 		"to set up a Utilibot right now.",
 		anim(0.b, 20005.w, 1.d),
 		wait(254.b)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Tell you what: once the place is safe and\n",
 		"secure, I'll go and set it up for you.",
@@ -5391,6 +5552,7 @@ loc_803:
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"If I remember correctly, the Chibi-Manual\n",
 		"has something to say about Utilibots.",
@@ -5402,6 +5564,7 @@ loc_805:
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"This is where your Utilibots come from! They're\n",
 		"your backup buddies, your support bots!",
@@ -5409,6 +5572,7 @@ loc_805:
 		wait(254.b)
 	popbp
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"If you've got any spare Scrap, we could\n",
 		"build one with the Chibi-PC!",
@@ -5423,6 +5587,7 @@ sub_760:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Chibi-Robo! Put your Scrap\n",
 		"into the Recyclotron!",
@@ -5439,6 +5604,7 @@ sub_760:
 	if	eq(var(0.d), 701.d), else *loc_788
 	set	flag(934.d), 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Look! Something came out!",
 		wait(254.b)
 	endif	*loc_762
@@ -5446,6 +5612,7 @@ loc_788:
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		"It's a Utilibot!",
 		wait(254.b)
 	popbp
@@ -5467,6 +5634,7 @@ loc_764:
 
 sub_769:
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"I'll set it up out in the living room!",
 		anim(0.b, 20005.w, 1.d),
@@ -5476,6 +5644,7 @@ sub_769:
 
 sub_772:
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"I'll set it up out in the kitchen!",
 		anim(0.b, 20005.w, 1.d),
@@ -5485,6 +5654,7 @@ sub_772:
 
 sub_775:
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"I'll set it up out in the foyer!",
 		anim(0.b, 20005.w, 1.d),
@@ -5519,6 +5689,7 @@ loc_780:
 loc_782:
 	case	eq(sp(0.b), 707.d), else *loc_784
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"I'll set it up somewhere near\n",
 		"the master bedroom!",
@@ -5528,6 +5699,7 @@ loc_782:
 loc_784:
 	case	eq(sp(0.b), 708.d), else *loc_786
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"I'll set it up out in the basement!",
 		anim(0.b, 20005.w, 1.d),
@@ -5546,6 +5718,7 @@ sub_789:
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Congratulations! You've built all of the\n",
 		"Utilibots! That's no small task, y'know!",
@@ -5554,11 +5727,13 @@ sub_789:
 	popbp
 	anim	20005.d, 1025.d, 1.d
 	msg	voice(0.b),
+		speed(0.b),
 		"Mmm?",
 		wait(254.b)
 	pushbp
 	setsp	actor_name(20056.d)
 	msg	voice(0.b),
+		speed(0.b),
 		anim(0.b, 20005.w, 1002.d),
 		"Wow! The Utilibots sent you a gift! They\n",
 		"say it's a token of their appreciation!",
