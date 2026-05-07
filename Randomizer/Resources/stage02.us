@@ -2053,7 +2053,7 @@ sub_1089:
 	anim	4.d, 0.w
 	kill	299.d
 	kill	298.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	95.w
 	lib	39.w
 	return
@@ -2525,7 +2525,7 @@ loc_1106:
 	read	@anim, 20001.d, 0.d
 	read	@anim, 20003.d, 0.d
 	read	@anim, 20004.d, 0.d
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	pushbp
 	setsp	100.w
 	lib	103.w
@@ -2584,7 +2584,7 @@ loc_1118:
 	disp	285.d, 1.d
 	pos	20000.d, -9492.d, 26970.w, -31852.d
 	dir	20000.d, 270.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	lib	13.w
 	lib	39.w
 	read	@anim, 20001.d, 0.d
@@ -2883,14 +2883,14 @@ loc_534:
 	set	var(197.d), 0.w
 	pos	20000.d, -18490.d, 9600.w, 19943.w
 	dir	20000.d, 90.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 loc_536:
 	case	eq(var(197.d), 3.w), else *loc_507
 	set	var(197.d), 0.w
 	pos	20000.d, 12087.w, 26990.w, -33231.d
 	dir	20000.d, 90.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 loc_507:
 	attach	13.d, *sub_2267
@@ -2912,7 +2912,7 @@ loc_507:
 	lib	173.w
 	popbp
 	set	flag(31.d), 1.d
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	endif	*loc_509
 loc_510:
 	case	eq(map(1.d), 7.d), else *loc_512
@@ -5022,7 +5022,7 @@ loc_3208:
 	anim	20001.d, 36.d
 	lib	39.w
 	read	@anim, 20001.d, 0.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_3210:
 	endif	*loc_3202
@@ -5851,7 +5851,7 @@ loc_1493:
 		anim(0.b, 20017.w, 1.d),
 		wait(255.b)
 loc_1284:
-	win	@unk209
+	win	@reset
 	win	@color, 0.w, 0.w, 0.w, 255.w
 	win	@pos, 320.w, 260.w
 	select	"Spy Training\n",
@@ -6511,7 +6511,7 @@ loc_1544:
 
 
 sub_1153:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	if	or(or(eq(40.d, obj(@anim, sp(0.b))), eq(41.d, obj(@anim, sp(0.b)))), eq(42.d, obj(@anim, sp(0.b)))), else *loc_1155
 	return
 loc_1155:
@@ -10305,7 +10305,7 @@ loc_2903:
 loc_2836:
 	lib	38.w
 	lib	348.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	return
 loc_2837:
@@ -10675,7 +10675,7 @@ loc_2916:
 loc_2912:
 	lib	38.w
 	lib	348.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	return
 loc_2913:
@@ -11072,7 +11072,7 @@ sub_669:
 loc_682:
 	pushbp
 	setsp	var(796.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -11090,7 +11090,7 @@ loc_682:
 		wait(254.b)
 	popbp
 loc_671:
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -11101,7 +11101,7 @@ sub_672:
 	setsp	var(797.d)
 	setsp	var(1033.d)
 	setsp	var(1032.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -11132,7 +11132,7 @@ loc_675:
 	setsp	var(797.d)
 	setsp	var(1033.d)
 	setsp	var(1032.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -11163,7 +11163,7 @@ loc_677:
 	setsp	var(797.d)
 	setsp	var(1033.d)
 	setsp	var(1032.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -11194,7 +11194,7 @@ loc_679:
 	setsp	var(797.d)
 	setsp	var(1033.d)
 	setsp	var(1032.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -11224,7 +11224,7 @@ loc_681:
 	setsp	var(797.d)
 	setsp	var(1033.d)
 	setsp	var(1032.d)
-	msg	prop(0.b),
+	msg	layout(0.b),
 		center(0.b),
 		speed(0.b),
 		"------ Flight Training Results ------\n",
@@ -12763,7 +12763,7 @@ loc_1743:
 	lib	173.w
 	popbp
 	lib	96.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 
 
@@ -12792,7 +12792,7 @@ loc_1746:
 	lib	173.w
 	popbp
 	lib	96.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 
 
@@ -14665,7 +14665,7 @@ loc_582:
 loc_576:
 	call	20000.d, 700.d
 	disp	19.d, 1.d
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	read	@anim, 20017.d, 0.d
 	set	flag(347.d), 1.d
 	lib	39.w
@@ -15651,7 +15651,7 @@ sub_1550:
 	set	flag(460.d), 1.d
 	run	*sub_1262
 	read	@anim, 20017.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	pushbp
 	setsp	100.w
@@ -16372,7 +16372,7 @@ loc_1256:
 	disp	135.d, 1.d
 	disp	136.d, 1.d
 loc_1259:
-	camera	@unk209, 2.d, 200.w
+	camera	@reset, 2.d, 200.w
 	lib	96.w
 	endif	*loc_1258
 loc_1265:
@@ -17489,7 +17489,7 @@ loc_1460:
 	run	*sub_588
 	camera	@unk238, -2.d
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	attach	20017.d, *sub_1600
 	run	*sub_1461
 	return
@@ -17598,7 +17598,7 @@ sub_1599:
 		"Go! Go! Go!",
 		anim(0.b, 20017.w, 1.d),
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -17783,7 +17783,7 @@ loc_2729:
 	setsp	100.w
 	lib	103.w
 	popbp
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -18393,7 +18393,7 @@ loc_1430:
 	run	*sub_588
 	camera	@unk238, -2.d
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 200.w
+	camera	@reset, 2.d, 200.w
 	attach	20017.d, *sub_1649
 	attach	20019.d, *sub_1633
 	run	*sub_1431
@@ -18610,7 +18610,7 @@ sub_1929:
 		"Eliminate all of the enemy forces!",
 		anim(0.b, 20017.w, 1.d),
 		wait(10.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -18671,7 +18671,7 @@ loc_1646:
 		anim(0.b, 20017.w, 1.d),
 		wait(10.b)
 loc_1637:
-	win	@unk209
+	win	@reset
 loc_1647:
 	wait	@time, 1.w
 	goto	*sub_1633
@@ -18700,7 +18700,7 @@ loc_1921:
 	lib	103.w
 	popbp
 	read	@anim, 20017.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -19353,7 +19353,7 @@ sub_4038:
 		"All right! Get a move on to the drop point!",
 		anim(0.b, 20017.w, 1.d),
 		wait(10.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -19373,7 +19373,7 @@ sub_4055:
 		"You just got yourself a 5-second penalty!",
 		anim(0.b, 20017.w, 1.d),
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -19729,7 +19729,7 @@ loc_1399:
 	run	*sub_1320
 	anim	20017.d, 1024.d
 	run	*sub_588
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -19782,7 +19782,7 @@ sub_1936:
 		"Go! Go! Go!",
 		anim(0.b, 20017.w, 1.d),
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -19870,7 +19870,7 @@ sub_1975:
 		"All right! Now come back!",
 		anim(0.b, 20017.w, 1.d),
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -19979,7 +19979,7 @@ loc_1972:
 	lib	103.w
 	popbp
 	read	@anim, 20017.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -20645,7 +20645,7 @@ loc_1341:
 	call	-27.d, var(36.d), 17.d
 	call	-27.d, var(37.d), 17.d
 	attach	20017.d, *sub_1718
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	wait	@cam
 	return
 
@@ -21092,7 +21092,7 @@ loc_2605:
 	wait	@dir, var(36.d)
 	anim	var(35.d), 1.d
 	anim	var(36.d), 1.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	wait	@cam
 	lib	96.w
 	call	20000.d, 700.d
@@ -21646,7 +21646,7 @@ loc_2654:
 	disp	20028.d, 0.d
 	disp	20029.d, 0.d
 	run	*sub_333
-	camera	@unk209, 2.d, 50.w
+	camera	@reset, 2.d, 50.w
 	wait	@cam
 	read	@anim, 20017.d, 0.d
 	lib	96.w
@@ -22260,7 +22260,7 @@ sub_1984:
 		anim(0.b, 20003.w, -1.d),
 		anim(0.b, 20003.w, 1059.d),
 		wait(254.b)
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	wait	@cam
 	anim	20003.d, 58.d
 	call	20003.d, 1.d, 1.d
@@ -22428,7 +22428,7 @@ loc_1989:
 	moveto	20005.d, 7019.w, 7800.w, 763.w, 80.w, 1004.d, -1.d
 	wait	@move, 20005.d
 	disp	20005.d, 0.d
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	lib	39.w
 	read	@anim, 20003.d, 0.d
 	read	@anim, 20005.d, 0.d
@@ -26622,7 +26622,7 @@ sub_2141:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	347.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26635,7 +26635,7 @@ sub_2142:
 		"Yes, sir!",
 		sfx(1114124.d, 1.b),
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26644,7 +26644,7 @@ sub_1555:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	347.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26663,7 +26663,7 @@ sub_1734:
 		"Hoooorah!",
 		sfx(1114124.d, 1.b),
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26675,7 +26675,7 @@ sub_2144:
 	msg	size(30.b),
 		"Yes...sir?!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26702,7 +26702,7 @@ sub_1556:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	345.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -26716,7 +26716,7 @@ sub_3294:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	345.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -28029,7 +28029,7 @@ loc_2296:
 		anim(0.b, 20012.w, 26.d),
 		wait(254.b)
 	camera	@unk237, 3.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	camera	@unk230
 	mdir	20012.d, @dir, 75.w, 100.w, 32.d
 	wait	@dir, 20012.d
@@ -28149,7 +28149,7 @@ loc_2277:
 	pos	20012.d, -8262.d, 0.w, 70.w
 	dir	20012.d, -90.d
 	camera	@unk240, 5.d, 0.w, 3.d, 0.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	camera	@unk230
 	wait	@time, 1.w
 	camera	@pos, -13756.d, 2304.w, 106.w, 3.d, 0.w
@@ -28225,7 +28225,7 @@ loc_2283:
 	wait	@time, 1.w
 	lib	106.w
 	camera	@unk237, 3.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	camera	@unk230
 	read	@anim, 20012.d, 0.d
 	set	var(133.d), 20.d

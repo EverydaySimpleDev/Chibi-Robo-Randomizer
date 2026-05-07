@@ -214,6 +214,7 @@ namespace WindowsFormsApp1
             {
 
                 PBar.Value = 10;
+                this.Refresh();
 
                 //Takes each character of the string and casts it to an int, then adds each together to create a integer representation of the seed
                 int randoSeed = 0;
@@ -360,6 +361,7 @@ namespace WindowsFormsApp1
                 reimportStages();
 
                 PBar.Value = 100;
+                this.Refresh();
 
                 statusDialog.Text += "\nISO Rebuilding Complete :)";
             }
@@ -393,9 +395,9 @@ namespace WindowsFormsApp1
 
             runUnplugCommand("shop export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
 
-            XmlDocument doc = new XmlDocument();
-            doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
-            doc.Save(Directory.GetCurrentDirectory() + @"\messages.xml");
+            //XmlDocument doc = new XmlDocument();
+            //doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
+            //doc.Save(Directory.GetCurrentDirectory() + @"\messages.xml");
 
             globals = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("globals.json")) as JObject;
 
@@ -417,6 +419,11 @@ namespace WindowsFormsApp1
         {
             using (Process cmd = new Process())
             {
+
+                cmd.StartInfo.CreateNoWindow = true;
+                cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                cmd.StartInfo.UseShellExecute = false;
+
                 ////CD to swap to 
 
                 //ProcessStartInfo cdCommandInfo = new ProcessStartInfo();
@@ -433,7 +440,12 @@ namespace WindowsFormsApp1
                 //cmd.Start();
 
 
+
                 ProcessStartInfo unplugCommandInfo = new ProcessStartInfo();
+
+                unplugCommandInfo.CreateNoWindow = true;
+                unplugCommandInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                unplugCommandInfo.UseShellExecute = false;
 
                 //string fullCommand = Directory.GetCurrentDirectory() + "" + command;
                 string fullCommand = "" + Directory.GetCurrentDirectory() + "\\unplug.exe " + command;
@@ -600,8 +612,9 @@ namespace WindowsFormsApp1
 
                     var roomObject = get_room_object_id_by_name(location.Key);
 
-                    // Add the item as the multiworld item. Hopefully there is a way to add a
-                    // new item down the road for new ingame text?
+                    // Add the item as the multiworld item.
+                    // Hopefully there is a way to add a
+                    // new item down the road 
                     if (objectName.Contains("archipelago_item"))
                     {
 
@@ -1163,13 +1176,15 @@ namespace WindowsFormsApp1
             PBar.Value = 45;
 
             // Import custom scritping First
+            statusDialog.Text += "\nPatching Rooms";
+            this.Refresh();
 
             // Birthday Party Into
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage07_Edited.us" + "\"");
-
+           
             // Kitchen
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage01_Edited.us" + "\"");
 
@@ -1206,6 +1221,8 @@ namespace WindowsFormsApp1
             // Globals
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\globals.us" + "\"");
             runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
+            statusDialog.Text += "\nUpdating Globals";
+            this.Refresh();
 
             //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
@@ -1222,12 +1239,20 @@ namespace WindowsFormsApp1
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage06 \"" + Directory.GetCurrentDirectory() + @"\stage06.json" + "\"");
 
             PBar.Value = 50;
+            this.Refresh();
 
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage07 \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage09 \"" + Directory.GetCurrentDirectory() + @"\stage09.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage11 \"" + Directory.GetCurrentDirectory() + @"\stage11.json" + "\"");
 
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
+
+
+            runUnplugCommand(" --iso \"" + newIsoPath + "\" iso set maker EveryDaySimpleDev-" + seed.Text);
+            runUnplugCommand(" --iso \"" + newIsoPath + "\" iso set name \"Chibi-Robo!" + seed.Text + " \"");
+
+            statusDialog.Text += "\nImporting JSON data";
+            this.Refresh();
 
             if (apData != null)
             {
@@ -1241,6 +1266,7 @@ namespace WindowsFormsApp1
             }
 
             PBar.Value = 60;
+            this.Refresh();
 
             List<string> oldFiles = new List<string>();
             foreach (string f in Directory.GetFiles(Directory.GetCurrentDirectory()))
@@ -1664,6 +1690,7 @@ namespace WindowsFormsApp1
             "\r\n\twait\t@time, 100.w" +
             "\r\n\tif\teq(var(39.d), " + newPass + "), else *loc_604" +
             "\r\n\tsfx\t327720.d, 1.d" +
+            "\r\n\tset\tvar(672.d), 1.w" +
             "\r\n\twait\t@sfx, 327720.d" +
             "\r\n\tif\teq(flag(28.d), 1.d), else *loc_603" +
             "\r\n\trun\t*sub_539" +
@@ -1674,15 +1701,33 @@ namespace WindowsFormsApp1
 
         private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName)
         {
-            File.AppendAllText(
-            stagefile,
-            "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
-            "ap_text_" + objectID + ":" + Environment.NewLine +
-            "\tmsg\tvoice("+ apItemVoice + ".b)," + Environment.NewLine +
-            "\t\t\"You found Player " + player + "\'s\", " + Environment.NewLine +
-            "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
-            "\t\twait(254.b)" + Environment.NewLine +
-            "\treturn\n" + Environment.NewLine);
+            if(newObjectName.Contains("Frog Ring"))
+            {
+                File.AppendAllText(
+               stagefile,
+               "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+               "ap_text_" + objectID + ":" + Environment.NewLine +
+               "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
+               "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
+               "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
+               "\t\twait(254.b)" +
+               "\r\n\tset\tvar(71.d), add(var(71.d), 1.w)" +
+               "\r\n\tset\tvar(147.d), add(var(147.d), 1.w)" + Environment.NewLine +
+               "\treturn\n" + Environment.NewLine);
+
+            } else
+            {
+                File.AppendAllText(
+                stagefile,
+                "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+                "ap_text_" + objectID + ":" + Environment.NewLine +
+                "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
+                "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
+                "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
+                "\t\twait(254.b)" + Environment.NewLine +
+                "\treturn\n" + Environment.NewLine);
+            }
+                
         }
 
         private void enableATCToolPickup(string stagefile, int objectID, string player, string newObjectName, int toolID)

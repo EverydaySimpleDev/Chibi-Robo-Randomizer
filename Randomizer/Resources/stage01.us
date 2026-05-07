@@ -506,10 +506,10 @@ loc_534:
 	run	*sub_491
 	run	*sub_531
 	if	eq(flag(477.d), 1.w), else *loc_462
-	disp	36.d, 0.d
+	; disp	36.d, 0.d ; Disable cup spawn
 loc_462:
 	if	eq(flag(478.d), 1.w), else *loc_461
-	disp	37.d, 0.d
+	; disp	37.d, 0.d ; Disable spoon spawn
 loc_461:
 	if	not(flag(395.d)), else *loc_460
 	printf	"KIT: 汚れの説明 ON\n"
@@ -3220,7 +3220,7 @@ loc_581:
 	camera	@unk229, 45.w, 3.d, 0.w
 	camera	@distance, 60.w, 3.d, 0.w
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	56.w
 	read	@anim, 20002.d, 0.d
 	lib	39.w
@@ -6957,7 +6957,7 @@ loc_1294:
 loc_1296:
 	break	*loc_1249
 loc_1249:
-	win	@unk209
+	win	@reset
 	if	eq(var(47.d), 109.w), else *loc_1251
 	return
 loc_1251:
@@ -6988,7 +6988,7 @@ loc_716:
 loc_718:
 	break	*loc_634
 loc_634:
-	win	@unk209
+	win	@reset
 	endif	*loc_635
 loc_719:
 	set	var(47.d), 18.w
@@ -7002,7 +7002,7 @@ sub_1298:
 		speed(0.b),
 		"Let's stop.",
 		wait(10.b)
-	win	@unk209
+	win	@reset
 	pushbp
 	setsp	0.d
 	run	*sub_636
@@ -7133,7 +7133,7 @@ loc_653:
 	camera	@unk227, -23376.d, 8584.w, 2307.w, 3.d, 0.w
 	camera	@unk229, 25.w, 3.d, 0.w
 	camera	@distance, 143.w, 3.d, 0.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	155.w
 	call	20000.d, 800.d
 	scrn	@hud, 0.d, 3.d
@@ -10883,7 +10883,7 @@ sub_382:
 	pos	177.d, -7100.d, 3348.w, -13057.d
 	disp	175.d, 1.d
 	if	and(not(flag(547.d)), not(flag(548.d))), else *loc_384
-	born	10106.d, 1.d, -7216.d, 3304.w, -10214.d, 0.w, 3000.w, 500.w, 500.w, *sub_568
+	born	10106.d, 1.d, -7216.d, 3304.w, -10214.d, 0.w, 3000.w, 500.w, 500.w, *sub_568 ; Toa growling at you for climbing to the sink area
 loc_384:
 	return
 
@@ -11583,6 +11583,11 @@ evt_plug_dokodakadoor_40:
 	setsp	40.d
 	setsp	27.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 40",
+		wait(255.b)
 	popbp
 	return
 
@@ -11595,6 +11600,11 @@ evt_plug_dokodakadoor_41:
 	setsp	41.d
 	setsp	28.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 41",
+		wait(255.b)
 	popbp
 	return
 
@@ -11607,6 +11617,11 @@ evt_plug_dokodakadoor_42:
 	setsp	42.d
 	setsp	29.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 42",
+		wait(255.b)
 	popbp
 	return
 
@@ -11619,6 +11634,11 @@ evt_plug_dokodakadoor_43:
 	setsp	43.d
 	setsp	30.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 43",
+		wait(255.b)
 	popbp
 	return
 
@@ -11631,6 +11651,11 @@ evt_plug_dokodakadoor_44:
 	setsp	44.d
 	setsp	31.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 44",
+		wait(255.b)
 	popbp
 	return
 
@@ -11643,12 +11668,17 @@ evt_plug_dokodakadoor_45:
 	setsp	45.d
 	setsp	32.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 45",
+		wait(255.b)
 	popbp
 	return
 
 
 	.interact  46.d, *evt_plug_dokodakadoor_46
-evt_plug_dokodakadoor_46:
+evt_plug_dokodakadoor_46: ; Above the fridge
 	pushbp
 	setsp	10136.d
 	setsp	10116.d
@@ -11659,12 +11689,12 @@ evt_plug_dokodakadoor_46:
 	return
 
 
-	.interact  47.d, *evt_plug_dokodakadoor_47
+	.interact  47.d, *evt_plug_dokodakadoor_47 ; In front of the Living Room door
 evt_plug_dokodakadoor_47:
 	pushbp
-	setsp	10137.d
-	setsp	10117.d
-	setsp	47.d
+	setsp	10137.d ; Invisable Block?
+	setsp	10117.d ; Real Model?
+	setsp	47.d 
 	setsp	34.d
 	lib	72.w
 	popbp
@@ -11679,6 +11709,11 @@ evt_plug_dokodakadoor_48:
 	setsp	48.d
 	setsp	35.d
 	lib	72.w
+	msg	voice(0.b),
+		speed(0.b),
+		"Chibi Door\n",
+		" 48",
+		wait(255.b)
 	popbp
 	return
 
@@ -11712,7 +11747,7 @@ loc_786:
 	return
 
 
-sub_807:
+sub_807: ; get room number
 	pushbp
 	setsp	bp(0.b)
 	printf	"roomNo------ %d\n"
@@ -12249,7 +12284,7 @@ loc_855:
 	popbp
 	set	var(0.d), result
 	if	not(var(0.d)), else *loc_859
-	set	flag(718.d), 1.w
+	set	flag(718.d), 1.w ; kitchen door In front of the Living Room door
 	set	flag(1013.d), 1.w
 	endif	*loc_858
 loc_859:
@@ -13482,7 +13517,7 @@ sub_1335:
 	wait	@time, 1.w
 	wait	@cam
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 300.w
+	camera	@reset, 2.d, 300.w
 	wait	@time, 300.w
 	camera	@unk232, -1.d
 	if	flag(161.d), else *loc_1339
@@ -16069,7 +16104,7 @@ sub_2347:
 	lib	45.w
 	lib	13.w
 	lib	39.w
-	win	@unk209
+	win	@reset
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_2480:
 	if	or(eq(var(155.d), 7.w), eq(var(172.d), 7.w)), else *loc_2356
@@ -16391,13 +16426,13 @@ loc_2344:
 	elif	ne(hit, -1.d), else *loc_2346
 	return
 loc_2346:
-	win	@unk209
+	win	@reset
 	win	@color, 0.w, 0.w, 0.w, 255.w
 	lib	105.w
 	run	*sub_2347
 	lib	106.w
 	lib	45.w
-	win	@unk209
+	win	@reset
 	return
 loc_2539:
 	if	and(flag(608.d), eq(var(150.d), 2.d)), else *loc_2547

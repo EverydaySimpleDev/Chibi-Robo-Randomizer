@@ -234,7 +234,7 @@ loc_39:
 	kill	358.d
 loc_38:
 	if	eq(flag(479.d), 1.d), else *loc_37
-	kill	236.d
+	; kill	236.d
 loc_37:
 	if	or(eq(flag(499.d), 0.d), eq(flag(813.d), 1.d)), else *loc_36
 	kill	367.d
@@ -474,7 +474,7 @@ loc_79:
 	call	20000.d, 700.d
 	disp	12.d, 1.d
 	lib	55.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	break	*loc_78
 loc_81:
 	case	eq(map(1.d), 8.d), else *loc_83
@@ -483,17 +483,17 @@ loc_81:
 loc_83:
 	case	eq(map(1.d), 9.d), else *loc_85
 	lib	55.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	break	*loc_78
 loc_85:
 	case	eq(map(1.d), 15.d), else *loc_87
 	lib	55.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	break	*loc_78
 loc_87:
 	if	ge(var(198.d), 1.w), else *loc_89
 	lib	55.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	break	*loc_78
 loc_89:
 	call	20000.d, 701.d
@@ -503,7 +503,7 @@ loc_89:
 	call	20000.d, 700.d
 	disp	12.d, 1.d
 	lib	55.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	break	*loc_78
 loc_78:
 	set	flag(31.d), 0.d
@@ -1229,7 +1229,7 @@ loc_600:
 		"Justice never wavers!",
 		wait(254.b)
 	anim	20008.d, 47.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	39.w
 	return
@@ -1359,7 +1359,7 @@ loc_567:
 	anim	20008.d, 1.d
 loc_566:
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	88.w
 	lib	39.w
@@ -1571,7 +1571,7 @@ loc_552:
 	wait	@anim, 20008.d, -1.d
 	anim	20008.d, 52.d
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	return
 
@@ -1832,7 +1832,7 @@ sub_1461:
 	msg	voice(21.b),
 		speed(0.b),
 		anim(0.b, 20015.w, 3.d),
-		"This hardly seems an appropriate time for that.",
+		"This hardly seems an aplayoutriate time for that.",
 		anim(0.b, 20015.w, 1.d),
 		wait(255.b)
 	return
@@ -2194,7 +2194,7 @@ loc_1534:
 	sfx	-65465.d, 4.d, 200.w, 0.w
 loc_1434:
 	if	eq(var(131.d), 5.d), else *loc_1438
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 loc_1438:
 	if	eq(flag(816.d), 0.d), else *loc_1437
 	pushbp
@@ -2942,7 +2942,7 @@ loc_1660:
 	wait	@dir, 20016.d
 	lib	106.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1572:
 	run	*sub_1558
@@ -2980,7 +2980,7 @@ loc_1565:
 loc_1560:
 	lib	39.w
 	read	@anim, 20008.d, 0.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 
 
@@ -4707,7 +4707,7 @@ loc_1175:
 	wait	@dir, 20010.d
 	anim	20010.d, var(46.d)
 	lib	106.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	read	@anim, 20010.d, 0.d
 	lib	88.w
@@ -4765,7 +4765,7 @@ loc_1214:
 		size(30.b),
 		"A hee hee hee hee!",
 		wait(254.b)
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 loc_1216:
@@ -4851,7 +4851,7 @@ loc_1226:
 loc_1228:
 	anim	20010.d, var(46.d)
 loc_1224:
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	read	@anim, 20010.d, 0.d
 	lib	88.w
 	lib	39.w
@@ -5123,7 +5123,7 @@ loc_1265:
 	set	var(44.d), 2.d
 	set	var(45.d), 1.d
 	set	var(46.d), 13.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1268:
 	case	eq(hit, add(3000.d, 1.d)), else *loc_1270
@@ -5163,7 +5163,7 @@ loc_1268:
 	set	var(44.d), 2.d
 	set	var(45.d), 1.d
 	set	var(46.d), 13.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1270:
 	case	eq(hit, add(3000.d, 5.d)), else *loc_1272
@@ -6776,7 +6776,7 @@ loc_1899:
 	run	*sub_1900
 loc_1877:
 	lib	96.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 
@@ -7581,7 +7581,7 @@ loc_1920:
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 255.w, 255.w, 255.w, 255.w, 150.w
 	wait	@fade
 	if	eq(flag(941.d), 0.d), else *loc_1919
-	disp	181.d, 0.d
+	; disp	181.d, 0.d
 loc_1919:
 	read	@anim, 20016.d, *loc_393
 	scrn	@zblur, 0.w, 96.w, 20.w, 20.w, 1.w
@@ -7728,7 +7728,7 @@ loc_1916:
 		anim(0.b, 20015.w, 1.d),
 		wait(255.b)
 	popbp
-	disp	182.d, 0.d
+	; disp	182.d, 0.d
 	if	eq(flag(941.d), 0.d), else *loc_1915
 	disp	181.d, 1.d
 loc_1915:
@@ -8477,7 +8477,7 @@ loc_524:
 loc_519:
 	read	@anim, 20005.d, 0.d
 	read	@anim, 20008.d, 0.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	55.w
 	return
 
@@ -8613,7 +8613,7 @@ sub_1532:
 	sfx	524298.d, 1.d
 	run	*sub_100
 	wait	@time, 60.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 
@@ -9106,7 +9106,7 @@ sub_1569:
 	lib	106.w
 	anim	20016.d, 19.d, 21.d
 	run	*sub_102
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 
@@ -9877,7 +9877,7 @@ loc_2021:
 	set	var(148.d), var(107.d)
 	read	@anim, 20015.d, 0.d
 	read	@anim, 20010.d, 0.d
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	pushbp
 	setsp	1.d
 	lib	37.w
@@ -9927,7 +9927,7 @@ sub_2034:
 		speed(0.b),
 		"Oh man, you can't BUY entertainment like that...!",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	wait	@move, 20010.d
 	mdir	20010.d, @dir, 180.w, 80.w, 2.d
 	wait	@dir, 20010.d
@@ -10090,7 +10090,7 @@ sub_1650:
 		wait(255.b)
 	msg	voice(20.b),
 		speed(0.b),
-		"Introduce yourself properly!",
+		"Introduce yourself layouterly!",
 		anim(0.b, 20051.w, 1.d),
 		wait(255.b)
 	anim2	20050.d, 9.d, 0.w, 150.w
@@ -10178,7 +10178,7 @@ sub_1650:
 	setsp	100.w
 	lib	102.w
 	popbp
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	95.w
 	pos	20015.d, -4544.d, 1308.w, -33705.d
 	dir	20015.d, 40.w
@@ -10489,7 +10489,7 @@ loc_637:
 sub_633:
 	set	flag(527.d), 1.d
 	camera	@unk238, -2.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	attach	10.d, *sub_639
 	return
 
@@ -13577,7 +13577,7 @@ loc_778:
 	lib	39.w
 	read	@anim, 20000.d, 0.d
 	read	@anim, 20009.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	call	20000.d, 201.d
 	lib	96.w
 	if	and(and(and(eq(flag(939.d), 1.d), eq(flag(610.d), 1.w)), eq(flag(611.d), 1.d)), eq(flag(936.d), 1.d)), else *loc_777
@@ -13591,7 +13591,7 @@ sub_782:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	347.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -13796,7 +13796,7 @@ loc_2113:
 		wait(254.b)
 	popbp
 loc_2088:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	55.w
 	return
 
@@ -14196,7 +14196,7 @@ loc_1986:
 	wait	@time, 150.w
 	scrn	@wipe, 0.d, 1.d, 320.w, 240.w, 0.w, 0.w, 230.w, 210.w, 130.w, 255.w, 0.w, 0.w, 230.w, 210.w, 130.w, 255.w, 1.w
 loc_1979:
-	win	@unk209
+	win	@reset
 	run	*sub_1980
 	endif	*loc_1971
 loc_1987:
@@ -14231,7 +14231,7 @@ loc_1971:
 	camera	@unk229, 30.w, 3.d, 0.w
 	camera	@distance, 71.w, 3.d, 0.w
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	46.w
 	lib	55.w
 	return
@@ -15244,7 +15244,7 @@ loc_988:
 	attach	89.d, *sub_1010
 	wait	@time, 200.w
 	lib	96.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	endif	*loc_990
 loc_991:
 	elif	ge(result, 0.w), else *loc_990
@@ -15316,7 +15316,7 @@ loc_1028:
 	wait	@cam
 	wait	@time, 500.w
 	lib	96.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	endif	*loc_1030
 loc_1031:
 	elif	ge(result, 0.w), else *loc_1030
@@ -15388,7 +15388,7 @@ loc_1040:
 	attach	130.d, *sub_1045
 	wait	@time, 200.w
 	lib	96.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	endif	*loc_1042
 loc_1043:
 	elif	ge(result, 0.w), else *loc_1042
@@ -15786,7 +15786,7 @@ evt_jenny_heitai_2_178:
 	scrn	@shake, 10.w, 10.w, 10.w, 0.w, 0.w, 0.w, 100.w
 	sfx	524315.d, 1.d
 	wait	@time, 60.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 loc_1868:
 	return
 

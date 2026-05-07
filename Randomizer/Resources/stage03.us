@@ -1669,7 +1669,7 @@ loc_720:
 	attach	20009.d, *sub_323
 	set	flag(360.d), 1.w
 loc_719:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	88.w
 	lib	39.w
 	read	@anim, 20009.d, 0.d
@@ -2292,7 +2292,7 @@ loc_793:
 	wait	@move, 20005.d
 	anim	20005.d, 1.d
 	disp	20005.d, 0.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	95.w
 	disp	20005.d, 0.d
 	set	flag(932.d), 1.d
@@ -2312,7 +2312,7 @@ sub_1076:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	345.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -3183,7 +3183,7 @@ loc_68:
 	anim	20005.d, 1.d
 	disp	20005.d, 0.d
 	set	var(138.d), 3.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	95.w
 	read	@anim, 20005.d, 0.d
 	read	@anim, 20009.d, 0.d
@@ -3369,7 +3369,7 @@ loc_204:
 	disp	6.d, 1.d
 loc_203:
 	if	or(eq(flag(30.d), 1.d), ge(item(48.d), 1.w)), else *loc_202
-	disp	121.d, 0.d
+	; disp	121.d, 0.d ; Giga Charger
 loc_202:
 	disp	28.d, 0.d
 	disp	29.d, 0.d
@@ -3463,7 +3463,7 @@ loc_356:
 	lib	173.w
 	popbp
 	lib	96.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 
 
@@ -3492,7 +3492,7 @@ loc_359:
 	lib	173.w
 	popbp
 	lib	96.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	return
 
 
@@ -4371,7 +4371,7 @@ evt_item_deka_denchi_6:
 	set	flag(360.d), 1.w
 	read	@anim, 20005.d, 0.d
 	read	@anim, 20009.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	anim	20005.d, 1.d
 	disp	20005.d, 0.d
 	if	eq(flag(906.d), 0.d), else *loc_1146
@@ -4651,7 +4651,7 @@ loc_1227:
 		wait(255.b)
 	popbp
 loc_1222:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	55.w
 	read	@anim, 20009.d, 0.d
 	return
@@ -4834,10 +4834,10 @@ loc_383:
 	run	*sub_372
 	return
 loc_375:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	endif	*loc_376
 loc_377:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 loc_376:
 	lib	39.w
 	return
@@ -5480,7 +5480,7 @@ loc_1121:
 	disp	5.d, 0.d
 	anim	20005.d, 1.d
 	disp	20005.d, 0.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	wait	@cam
 	if	eq(flag(906.d), 0.d), else *loc_1123
 	disp	113.d, 1.d
@@ -8301,7 +8301,7 @@ loc_905:
 		wait(255.b)
 	read	@anim, 20011.d, 0.d
 	lib	106.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 loc_907:
@@ -8352,7 +8352,7 @@ loc_910:
 		wait(255.b)
 	read	@anim, 20011.d, 0.d
 	lib	106.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 loc_912:
@@ -8404,7 +8404,7 @@ loc_915:
 		wait(255.b)
 	read	@anim, 20011.d, 0.d
 	lib	106.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	39.w
 	return
 loc_917:
@@ -8501,7 +8501,7 @@ loc_1024:
 	sfx	327713.d, 2.d, 100.w
 	lib	39.w
 	sfx	327713.d, 0.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_922:
 	lib	14.w
@@ -9751,7 +9751,7 @@ loc_1324:
 	read	@anim, 20011.d, 0.d
 	lib	106.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 loc_1323:
 	return
 
@@ -9939,7 +9939,7 @@ loc_525:
 		speed(0.b),
 		anim(0.b, 20011.w, 1013.d),
 		"You fail because your soul\n",
-		"has not been properly cleansed.",
+		"has not been layouterly cleansed.",
 		anim(0.b, 20011.w, 9.d),
 		wait(255.b)
 	camera	@pos, -6753.d, 1811.w, 3114.w, 3.d, 0.w
@@ -10619,7 +10619,7 @@ loc_616:
 	popbp
 	call	20007.d, 3.d, 0.d
 loc_538:
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	return
 
@@ -11533,7 +11533,7 @@ loc_670:
 	wait	@time, 60.w
 loc_672:
 	lib	39.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -11658,7 +11658,7 @@ sub_665:
 	moveto	248.d, 7885.w, 12000.w, -8650.d, 300.w, -1.d, -1.d
 	wait	@time, 200.w
 	lib	39.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	disp	145.d, 0.d
 	disp	20009.d, 0.d
 	disp	20040.d, 0.d
@@ -11675,7 +11675,7 @@ sub_679:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	347.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -12662,7 +12662,7 @@ sub_622:
 		"By Grogbarrel's flamin' blade!",
 		anim(0.b, 20009.w, 1.d),
 		wait(10.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -12702,7 +12702,7 @@ sub_627:
 		speed(0.b),
 		"Wha-what're ye doin' to Chibi-Robo, matey?",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 

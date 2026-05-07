@@ -1413,14 +1413,14 @@ loc_1037:
 	if	and(and(and(and(eq(var(135.d), 5.d), eq(flag(612.d), 0.w)), eq(flag(473.d), 1.d)), eq(time(0.d), 1.d)), eq(flag(1642.d), 1.w)), else *loc_1057
 	born	10113.d, 1.d, -10841.d, 61.w, 2882.w, 0.w, 5000.w, 1000.w, 5000.w, *sub_1404
 loc_1057:
-	if	and(ge(var(701.d), 1.d), eq(flag(335.d), 0.w)), else *loc_1056
+	if	and(ge(var(701.d), 1.d), eq(flag(335.d), 0.w)), else *loc_1056 ; 701 ladder bot flag / saving family flag?
 	born	10151.d, 1.d, -5360.d, 0.w, -32300.d, 0.w, 300.w, 2000.w, 20000.w, *sub_1763
 	born	10152.d, 1.d, -3360.d, 0.w, -30000.d, 90.w, 300.w, 2000.w, 20000.w, *sub_1763
 	born	10153.d, 1.d, -700.d, 0.w, -32300.d, 180.w, 300.w, 2000.w, 20000.w, *sub_1763
 	born	10154.d, 1.d, -3360.d, 0.w, -32823.d, 90.w, 300.w, 100.w, 20000.w, *sub_1763
 	ptcl	165.d, @unk210
 loc_1056:
-	if	and(eq(flag(433.d), 1.d), eq(flag(350.d), 0.d)), else *loc_1055
+	if	and(eq(flag(433.d), 1.d), eq(flag(350.d), 0.d)), else *loc_1055 ; TV Turned On Flag / ; Drake intro played
 	if	eq(time(0.d), 1.d), else *loc_1055
 	disp	487.d, 1.d
 	anim	487.d, 1.w
@@ -1430,11 +1430,12 @@ loc_1056:
 	sfx	65549.d, 4.d, 0.w, 64.w
 	born	10155.d, 1.d, -13200.d, 0.w, 2636.w, 90.w, 8000.w, 1000.w, 7000.w, *sub_1689
 loc_1055:
-	if	and(flag(333.d), eq(flag(334.d), 0.d)), else *loc_1054
+	if	and(flag(333.d), eq(flag(334.d), 0.d)), else *loc_1054 ; Spider Spawn enabled / Can leave living room
 	born	10108.d, 1.d, -4217.d, 0.w, -25118.d, 45.w, 5000.w, 1000.w, 5000.w, *sub_1694
 loc_1054:
-	if	and(eq(flag(476.d), 0.d), eq(time(0.d), 1.d)), else *loc_1053
-	born	10106.d, 1.d, 4627.w, 52.w, 4270.w, 45.w, 8000.w, 1000.w, 8000.w, *sub_1686
+	if	and(eq(flag(476.d), 0.d), eq(time(0.d), 1.d)), else *loc_1053 ; touched tooth brush / time is night
+	; born	10106.d, 1.d, 4627.w, 52.w, 4270.w, 45.w, 8000.w, 1000.w, 8000.w, *sub_1686 ; control toothbrush zoom scene
+	born	10106.d, 1.d, 4627.w, 52.w, 4270.w, 45.w, 8000.w, 1000.w, 8000.w, *sub_1686 ; control toothbrush zoom scene
 loc_1053:
 	if	and(eq(flag(16.d), 1.w), eq(flag(17.d), 0.w)), else *loc_1052
 	born	10003.d, 1.d, 0.w, 0.w, 0.w, 0.w, 20000.w, 1000.w, 30000.w, *sub_1941
@@ -1442,12 +1443,12 @@ loc_1052:
 	if	eq(flag(335.d), 1.d), else *loc_1051
 	set	flag(448.d), 1.d
 loc_1051:
-	if	eq(flag(448.d), 0.d), else *loc_1050
-	born	10162.d, 1.d, 24308.w, 0.w, -20500.d, 270.w, 3000.w, 100.w, 6000.w, *sub_1685
+	if	eq(flag(448.d), 0.d), else *loc_1050 
+	born	10162.d, 1.d, 24308.w, 0.w, -20500.d, 270.w, 3000.w, 100.w, 6000.w, *sub_1685 ; If you saw the record player rope scene that you can climb it
 loc_1050:
 	born	10163.d, 1.d, -15803.d, 3000.w, 16898.w, 0.w, 20000.w, 100.w, 36000.d, *sub_2077
-	if	eq(flag(1650.d), 0.d), else *loc_1049
-	born	10164.d, 1.d, 31456.w, 0.w, 17857.w, 0.w, 8000.w, 100.w, 8000.w, *sub_1682
+	if	eq(flag(1650.d), 0.d), else *loc_1049 
+	born	10164.d, 1.d, 31456.w, 0.w, 17857.w, 0.w, 8000.w, 100.w, 8000.w, *sub_1682 ; If you saw the sticker on the backyard glass door
 loc_1049:
 	born	10007.d, 1.d, -13500.d, 0.w, 36607.d, 90.w, 2000.w, 19200.w, 100.w, *sub_1106
 	born	10008.d, 1.d, 13500.w, 0.w, 36511.d, 90.w, 2000.w, 19200.w, 100.w, *sub_1107
@@ -1752,7 +1753,7 @@ evt_time_cycle:
 	run	*sub_399
 loc_400:
 	if	flag(162.d), else *loc_398
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 loc_398:
 	lib	73.w
 	if	eq(time(0.d), 1.d), else *loc_395
@@ -1879,8 +1880,8 @@ loc_960:
 	if	and(eq(item(55.d), 0.w), eq(var(111.d), 31.d)), else *loc_1029
 	disp	302.d, 1.d
 loc_1029:
-	if	or(flag(476.d), eq(time(0.d), 0.d)), else *loc_1028
-	disp	133.d, 0.d
+	if	eq(time(0.d), 0.d), else *loc_1028
+	disp	133.d, 0.d ; disable tooth brush spawn at night
 loc_1028:
 	if	or(flag(350.d), eq(time(0.d), 0.d)), else *loc_1027
 	disp	407.d, 0.d
@@ -2274,7 +2275,7 @@ sub_1678:
 
 
 sub_3001:
-	if	and(lt(0.w, sp(0.b)), lt(sp(0.b), add(1500.w, 800.w))), else *loc_3003
+	if	and(lt(0.w, sp(0.b)), lt(sp(0.b), add(1500.w, 800.w))), else *loc_3003 ; Living room check for wash pan drop?
 	pushbp
 	setsp	bp(0.b)
 	printf	"dist=%d\n"
@@ -3200,7 +3201,7 @@ loc_463:
 	ptcl	39.d, @unk210
 	endif	*loc_443
 loc_465:
-	elif	eq(var(112.d), 40.d), else *loc_443
+	elif	eq(var(112.d), 40.d), else *loc_443 ; main story flag?
 	disp	20001.d, 1.d
 	pos	20001.d, 10706.w, 3964.w, 1043.w
 	dir	20001.d, 270.w
@@ -4128,7 +4129,7 @@ loc_2303:
 	camera	@unk229, 77.w, 3.d, 0.w
 	camera	@distance, 194.w, 3.d, 0.w
 	disp	128.d, 1.d
-	born	10105.d, 1.d, -10297.d, 0.w, 14553.w, 200.w, 500.w, 1000.w, 500.w, *sub_1399
+	born	10105.d, 1.d, -10297.d, 0.w, 14553.w, 200.w, 500.w, 1000.w, 500.w, *sub_1399 ; Jenny NPC?
 	wait	@cam
 	lib	13.w
 	wait	@time, 50.w
@@ -4599,7 +4600,7 @@ sub_2161:
 		"Ribbit! Ribbit!",
 		wait(254.b)
 	wait	@time, 100.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	55.w
 	set	var(280.d), 1024.d
 	set	var(281.d), 39.d
@@ -8011,7 +8012,7 @@ loc_2511:
 	run	*sub_637
 loc_2510:
 	set	flag(1684.d), 1.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	return
 
 
@@ -8106,7 +8107,7 @@ loc_2712:
 	disp	20008.d, 0.d
 	set	var(135.d), 4.d
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	88.w
 	lib	39.w
@@ -8139,7 +8140,7 @@ loc_2459:
 		"...Enough. Leave me be, friend.",
 		wait(255.b)
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	88.w
 	lib	39.w
@@ -8307,7 +8308,7 @@ loc_1414:
 	msg	voice(12.b),
 		speed(0.b),
 		"power demand will outstrip supply and send the\n",
-		"region into a panic of unfathomable proportions!",
+		"region into a panic of unfathomable layoutortions!",
 		wait(15.b)
 	msg	voice(12.b),
 		speed(0.b),
@@ -8507,7 +8508,7 @@ loc_1420:
 	set	var(135.d), 8.d
 loc_1422:
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	88.w
 	lib	39.w
@@ -8547,7 +8548,7 @@ loc_2467:
 	wait	@dir, 20008.d
 	anim	20008.d, 36.d
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20008.d, 0.d
 	lib	39.w
 	return
@@ -8595,7 +8596,7 @@ loc_2472:
 	wait	@dir, 20008.d
 	anim	20008.d, 36.d
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	88.w
 	read	@anim, 20008.d, 0.d
 	lib	39.w
@@ -8986,7 +8987,7 @@ loc_1406:
 	disp	20047.d, 0.d
 	anim	20008.d, 36.d
 	lib	106.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	88.w
 	read	@anim, 20008.d, 0.d
 	lib	39.w
@@ -9140,7 +9141,7 @@ loc_2790:
 	elif	ne(hit, -1.d), else *loc_2789
 loc_2789:
 	lib	348.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	39.w
 	printf	"ギッチョおもちゃモデル\n" ; Gitcho Toy Model
 	return
@@ -11252,7 +11253,7 @@ loc_3199:
 	set	var(873.d), 0.w
 	set	flag(453.d), 0.w
 	set	var(10.d), rand(2.w)
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	return
 loc_3171:
@@ -11362,7 +11363,7 @@ sub_3214:
 	set	flag(453.d), 0.w
 	run	*sub_3203
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	return
 
@@ -11451,7 +11452,7 @@ sub_3202:
 	disp	20006.d, 0.d
 	run	*sub_3203
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	return
 
@@ -12048,20 +12049,8 @@ loc_1684:
 	return
 
 
-sub_1685:
+sub_1685: ; rope script
 	set	flag(448.d), 1.d
-	disp	10162.d, 0.d
-	lib	12.w
-	lib	54.w
-	msg	voice(0.b),
-		speed(0.b),
-		"Say, I think you can climb up that cord.",
-		wait(254.b)
-	wait	@time, 30.w
-	camera	@unk237, 3.w
-	anim	20000.d, 95.d, 17.d
-	lib	55.w
-	lib	96.w
 	return
 
 
@@ -12081,6 +12070,17 @@ loc_3083:
 	popbp
 	; lib	254.w
 	lib	39.w
+
+	
+	; set	level, add(level, 1.w)
+	; set	var(166.d), level
+	; set	battery(1.d), add(2000, battery(1.d))
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	anim(0.b, 20005.w, 1007.d),
+	; 	"Your battery increased!",
+	; 	wait(255.b)
+
 	return
 
 
@@ -12684,6 +12684,7 @@ loc_492: ; Telly Teaching You About The Hud
 	setsp	60.w
 	lib	145.w
 	popbp
+	scrn	@hud, 0.d, 2.d
 	return
 
 
@@ -12691,7 +12692,7 @@ sub_1688:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	373.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -13005,7 +13006,7 @@ sub_1689:
 		wait(255.b)
 	wait	@time, 60.w
 	anim	121.d, 5.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	96.w
 	lib	106.w
 	read	@anim, 20008.d, 0.d
@@ -13576,7 +13577,7 @@ sub_2878:
 		size(30.b),
 		"JUSTICE!",
 		wait(1.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -14846,7 +14847,7 @@ sub_2901:
 		speed(0.b),
 		"The living room is slightly peaceful!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -14856,7 +14857,7 @@ sub_2902:
 		speed(0.b),
 		"The living room is quite peaceful!!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -14866,7 +14867,7 @@ sub_2903:
 		speed(0.b),
 		"The living room is terribly, terribly peaceful!!!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -15636,7 +15637,7 @@ loc_1700:
 	call	20005.d, 1.d, 1.d
 	disp	16.d, 1.d
 	camera	@unk238, -2.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	read	@anim, 20005.d, 0.d
 	anim	20005.d, 1.d
 	call	20000.d, 700.d
@@ -16167,7 +16168,7 @@ sub_1761:
 		icon(5.b),
 		"!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -16957,7 +16958,7 @@ sub_1803:
 		speed(0.b),
 		"Yaaaaaa!!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -16970,7 +16971,7 @@ sub_1804:
 		speed(255.b),
 		"Gyaaaaaaahahahaaaaaa!!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -23051,7 +23052,7 @@ loc_2085:
 	camera	@unk229, 45.w, 3.d, 0.w
 	camera	@distance, 60.w, 3.d, 0.w
 	wait	@time, 1.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	56.w
 	read	@anim, 20003.d, 0.d
 	lib	39.w
@@ -23143,7 +23144,7 @@ sub_300:
 	msg	voice(12.b),
 		speed(0.b),
 		"power demand will outstrip supply and send the\n",
-		"region into a panic of unfathomable proportions!",
+		"region into a panic of unfathomable layoutortions!",
 		wait(15.b)
 	msg	voice(12.b),
 		speed(0.b),
@@ -23672,7 +23673,7 @@ evt_item_tamagotti_377:
 	read	@anim, 20005.d, 0.d
 loc_3427:
 	read	@anim, 20000.d, *loc_3428
-	win	@unk209
+	win	@reset
 	win	@color, 0.w, 0.w, 0.w, 255.w
 	lib	14.w
 	pushbp
@@ -23922,7 +23923,7 @@ loc_3348:
 	setsp	0.w
 	lib	145.w
 	popbp
-	win	@unk209
+	win	@reset
 	if	lt(var(159.d), 3.w), else *loc_3352
 	set	var(159.d), 0.w
 loc_3352:

@@ -7,6 +7,8 @@ lib_73:
 	run	*sub_8
 	call	20000.d, 901.d, 0.w
 	set	flag(35.d), 1.w
+	set	var(671.d), 0.w ; custom variable setup for custom pan drop
+	set	var(672.d), 0.w ; custom variable checking left leg password
 	if	eq(time(0.d), 0.d), else *loc_1538
 	run	*sub_1498
 	printf	"夜です\n" ;It's night
@@ -1163,16 +1165,22 @@ loc_3298:
 
 
 	.lib	114.w, *lib_114
-lib_114:
+lib_114: 
 	set	var(877.d), obj(@pos_x, sp(1.b))
 	set	var(878.d), obj(@pos_y, sp(1.b))
 	set	var(879.d), obj(@pos_z, sp(1.b))
-	pos	sp(1.b), var(877.d), sub(var(878.d), 2000.w), var(879.d)
+	pos	sp(1.b), var(877.d), sub(var(878.d), 2000.w), var(879.d) ; Close Animation
 	disp	sp(0.b), 0.d
 	run	*sub_2496
 	set	var(640.d), result
 	run	*lib_216
 	set	var(641.d), result
+	setsp	var(641.d)
+	msg	voice(0.b),
+		speed(0.b),
+		"Total Doors Opened: ",
+		format("%d"),
+		wait(254.b)
 	if	and(ge(map(0.d), 0.w), lt(map(0.d), 10.w)), else *loc_2495
 	pushbp
 	setsp	map(0.d)
@@ -3083,7 +3091,7 @@ lib_306:
 	.lib	77.w, *lib_77
 lib_77:
 	wait	@anim, 20000.d, -1.d
-	; if	ge(item(hold), 10.d), else *loc_2018 ; If Player has 10 (Default Max) of a item
+	; if	ge(item(hold), 10.d), else *loc_2018 ; If Player has 10 (Default Max) of a item?
 	if	ge(item(hold), 99.d), else *loc_2018
 	run	*sub_2017 ; Don't let them pick it up 
 	return
@@ -3126,7 +3134,7 @@ loc_2033:
 	wait	@time, 1.w
 loc_2024:
 	run	*lib_67
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -3457,13 +3465,13 @@ lib_15:
 
 	.lib	16.w, *lib_16
 lib_16:
-	win	@unk209
+	win	@reset
 	return
 
 
 	.lib	45.w, *lib_45
 lib_45:
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	wait	@cam
 	return
 
@@ -3968,7 +3976,7 @@ lib_39:
 	run	*lib_37
 	popbp
 loc_1001:
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_1000
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_1000:
@@ -4007,7 +4015,7 @@ loc_163:
 	run	*lib_37
 	popbp
 loc_162:
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_153
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_153:
@@ -4057,7 +4065,7 @@ lib_55:
 	setsp	1.d
 	run	*lib_37
 	popbp
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_1057
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_1057:
@@ -4086,7 +4094,7 @@ lib_90:
 	setsp	1.d
 	run	*lib_37
 	popbp
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_2100
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_2100:
@@ -4109,7 +4117,7 @@ lib_110:
 lib_111:
 	scrn	@letterbox, 0.d, 0.w, 0.w, 0.w, 255.w, 0.w, 0.w, 0.w, 0.w, 60.w
 	wait	@letterbox
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_1082
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_1082:
@@ -4131,7 +4139,7 @@ lib_138:
 	.lib	139.w, *lib_139
 lib_139:
 	scrn	@letterbox, 0.d, 0.w, 0.w, 0.w, 255.w, 0.w, 0.w, 0.w, 0.w, 30.w
-	win	@unk209
+	win	@reset
 	if	eq(map(0.d), 5.w), else *loc_2722
 	win	@color, 0.w, 0.w, 0.w, 255.w
 loc_2722:
@@ -4167,7 +4175,7 @@ lib_143:
 
 	.lib	52.w, *lib_52
 lib_52:
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -4300,7 +4308,7 @@ lib_204:
 	pos	20000.d, -69990.d, 0.w, 50910.d
 	dir	20000.d, 180.w
 	run	*lib_12
-	light	1.w, @pos, -70000.d, 10000.w, 50000.d
+	light	1.w, @pos, -70000.d, 10000.w, 50000.d ; Make screen go white before entering chibi door?
 	wait	@time, 1.w
 	wait	@cam
 	sfx	-65525.d, 1.d
@@ -4712,47 +4720,104 @@ loc_2587:
 	set	result, var(0.d)
 	return
 
-
+; Kitchen Door Checks
 sub_2302:
 	set	var(0.d), 0.w
 	case	eq(sp(0.b), 1.d), else *loc_2329
 	if	flag(711.d), else *loc_2328
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 711\n",
+	; 	"Check",
+	; 	wait(255.b)
 	set	adda(var(0.d), 1.w)
 loc_2328:
 	if	flag(712.d), else *loc_2327
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 712\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2327:
 	if	flag(713.d), else *loc_2326
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 713\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2326:
 	if	flag(714.d), else *loc_2325
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 714\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2325:
 	if	flag(715.d), else *loc_2324
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 715\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2324:
 	if	flag(716.d), else *loc_2323
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 716\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2323:
 	if	flag(717.d), else *loc_2322
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 717\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2322:
-	if	flag(718.d), else *loc_2321
+	if	flag(718.d), else *loc_2321 ; kitchen door In front of the Living Room door
 	set	adda(var(0.d), 1.w)
 loc_2321:
 	if	flag(719.d), else *loc_2320
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 719\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2320:
 	if	flag(720.d), else *loc_2319
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 720\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2319:
 	if	flag(721.d), else *loc_2318
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 721\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2318:
 	if	flag(722.d), else *loc_2317
 	set	adda(var(0.d), 1.w)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Flag 722\n",
+	; 	"Check",
+	; 	wait(255.b)
 loc_2317:
 	break	*loc_2316
+
+; Foyer Door Checks
 loc_2329:
 	case	eq(sp(0.b), 2.d), else *loc_2363
 	if	flag(730.d), else *loc_2362
@@ -4804,6 +4869,8 @@ loc_2348:
 	set	adda(var(0.d), 1.w)
 loc_2347:
 	break	*loc_2316
+
+; Basement Door Checks
 loc_2363:
 	case	eq(sp(0.b), 3.d), else *loc_2385
 	if	flag(746.d), else *loc_2384
@@ -4837,6 +4904,8 @@ loc_2376:
 	set	adda(var(0.d), 1.w)
 loc_2375:
 	break	*loc_2316
+
+; Jenny Room Door Checks
 loc_2385:
 	case	eq(sp(0.b), 4.d), else *loc_2407
 	if	flag(756.d), else *loc_2406
@@ -4870,6 +4939,8 @@ loc_2398:
 	set	adda(var(0.d), 1.w)
 loc_2397:
 	break	*loc_2316
+
+; Bedroom Door Checks
 loc_2407:
 	case	eq(sp(0.b), 6.d), else *loc_2451
 	if	flag(766.d), else *loc_2450
@@ -4936,6 +5007,8 @@ loc_2431:
 	set	adda(var(0.d), 1.w)
 loc_2430:
 	break	*loc_2316
+
+; Living Room Door Checks	
 loc_2451:
 	case	eq(sp(0.b), 7.d), else *loc_2473
 	if	flag(701.d), else *loc_2472
@@ -4969,6 +5042,8 @@ loc_2464:
 	set	adda(var(0.d), 1.w)
 loc_2463:
 	break	*loc_2316
+
+; Backyard Door Checks
 loc_2473:
 	case	eq(sp(0.b), 9.d), else *loc_2316
 	if	flag(787.d), else *loc_2494
@@ -9801,7 +9876,7 @@ sub_3084:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	run	*lib_373
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -10464,7 +10539,7 @@ loc_180:
 	wait	@time, 150.w
 	anim	20000.d, 1.d
 	run	*lib_96
-	; set	adda(var(798.d), 1.w) ; increase number of times recharged
+	; set	adda(var(798.d), 1.w) ; increase total number of times recharged
 	anim	20005.d, 1.d
 	if	eq(flag(963.d), 1.d), else *loc_169
 	set	flag(963.d), 0.d
@@ -10566,7 +10641,7 @@ lib_36:
 	setsp	bp(0.b)
 	run	*sub_42
 	popbp
-	endif	*loc_987
+	endif	*loc_987	
 loc_988:
 	call	20000.d, 100.d
 	if	result, else *loc_987
@@ -10574,12 +10649,12 @@ loc_988:
 	set	var(900.d), add(var(900.d), 1.w)
 	pushbp
 	setsp	var(900.d)
-	printf	"タライチャージ %d\n" ; Tarai Charge %d
+	printf	"タライチャージ %d\n"
 	popbp
 	endif	*loc_991
 loc_992:
-	elif	ge(rand(9.w), 7.w), else *loc_991 ; Wash Pan Logic
-	printf	"タライチャージ達成\n" ; Tarai Charge Achieved 
+	elif	ge(rand(9.w), 7.w), else *loc_991
+	printf	"タライチャージ達成\n"
 	read	@anim, 20000.d, *loc_1003
 	wait	@read, 20000.d
 	set	var(670.d), add(var(670.d), 1.w)
@@ -10617,16 +10692,14 @@ loc_992:
 	sfx	70.d, 1.d
 	wait	@anim, sp(1.b), -1.d
 	wait	@time, 80.w
-	if	eq(var(902.d), 0.w), else *loc_1002 ; Wash Pan Dialog
+	if	eq(var(902.d), 0.w), else *loc_1002
 	wait	@time, 100.w
 	run	*lib_38
 	run	*lib_254
 	msg	voice(0.b),
-		speed(0.b),
 		"A-are you OK?!",
 		wait(255.b)
 	msg	voice(0.b),
-		speed(0.b),
 		size(24.b),
 		"Where in the world did THAT come from?!",
 		wait(255.b)
@@ -10637,13 +10710,11 @@ loc_1002:
 	wait	@time, 100.w
 	run	*lib_38
 	msg	voice(0.b),
-		speed(0.b),
 		"A-are you OK?!!",
 		wait(255.b)
 	pushbp
 	setsp	var(670.d)
 	msg	voice(0.b),
-		speed(0.b),
 		"That's happened ",
 		format("%d"),
 		" times!!",
@@ -10745,7 +10816,7 @@ loc_2679:
 	detach	20005.d
 	scrn	@letterbox, 0.d, 0.w, 0.w, 0.w, 255.w, 0.w, 0.w, 0.w, 0.w, 60.w
 	wait	@letterbox
-	win	@unk209
+	win	@reset
 loc_2682:
 	return
 
@@ -10795,7 +10866,7 @@ loc_3265:
 	detach	20005.d
 	scrn	@letterbox, 0.d, 0.w, 0.w, 0.w, 255.w, 0.w, 0.w, 0.w, 0.w, 60.w
 	wait	@letterbox
-	win	@unk209
+	win	@reset
 loc_3266:
 	return
 
@@ -11304,7 +11375,7 @@ sub_2025:
 	setsp	actor_name(20000.d)
 	msg	voice(0.b),
 		speed(0.b),
-		"Always put refuse in a proper receptacle!",
+		"Always put refuse in a layouter receptacle!",
 		wait(255.b)
 	popbp
 	return
@@ -11317,7 +11388,7 @@ sub_1511:
 	endif	*loc_1513
 loc_1533:
 	elif	eq(time(0.d), 0.d), else *loc_1513
-	win	@unk209
+	win	@reset
 loc_1513:
 	anim	20005.d, 1.d
 	if	le(var(107.d), 1.w), else *loc_1523
@@ -11375,7 +11446,7 @@ loc_1532:
 loc_1531:
 	break	*loc_1517
 loc_1517:
-	win	@unk209
+	win	@reset
 	set	var(0.d), obj(@anim, 20000.d)
 	if	eq(var(0.d), 94.d), else *loc_1519
 	anim	20000.d, 1310.d, 94.d
@@ -11955,7 +12026,7 @@ lib_141:
 	if	eq(flag(451.d), 0.d), else *loc_2729
 	set	flag(451.d), 1.d
 	wait	@time, 100.w
-	win	@unk209
+	win	@reset
 	win	@pos, 320.w, 80.w
 	anim	20005.d, 1.d
 	run	*lib_367
@@ -11964,7 +12035,7 @@ lib_141:
 		"If your body starts to flash red,\n",
 		"plug into an outlet, quick!",
 		wait(20.b)
-	win	@unk209
+	win	@reset
 loc_2729:
 	wait	@time, 1.w
 	goto	*lib_141
@@ -12087,7 +12158,7 @@ loc_3739:
 		"Chibi-Robo! There are still Spydorz left!",
 		wait(10.b)
 	popbp
-	win	@unk209
+	win	@reset
 	break	*loc_3742
 loc_3743:
 	goto	*loc_3739
@@ -12570,34 +12641,58 @@ lib_361:
 loc_3953:
 	.db	"Switch Time Of Day"
 
-custom_debug_menu_blaster:
-	.db "Enable Blaster"
-
-custom_debug_menu_blaster_func:
-	set	atc(2.d), 1.w ; blaster
-	return
-
-custom_debug_menu_radar:
-	.db "Enable Radar"
-
-custom_debug_menu_radar_func:
-	set	atc(3.d), 1.w ; radar
-	return
-
-custom_debug_menu_copter:
-	.db "Enable Copter"
-
-custom_debug_menu_copter_func:
-	set	atc(1.d), 1.w ; copter
-	return
-
 	.lib	375.w, *lib_375
 lib_375:
-	call	-200.d, *loc_3953, *sub_3954
-	call	-200.d, *custom_debug_menu_blaster, *custom_debug_menu_blaster_func
-	call	-200.d, *custom_debug_menu_radar, *custom_debug_menu_radar_func
-	call	-200.d, *custom_debug_menu_copter, *custom_debug_menu_copter_func
+	if	ge(var(671.d), 1.w), else *loc_987
+	set	var(671.d), sub(var(671.d), 1.w)
+	printf	"タライチャージ達成\n" ; Tarai Charge Achieved 
+	read	@anim, 20000.d, *loc_1003
+	wait	@read, 20000.d
+	set	var(670.d), add(var(670.d), 1.w)
+	set	var(0.d), obj(@dir, sp(2.b))
+	set	var(1.d), obj(@pos_x, sp(2.b))
+	set	var(2.d), obj(@pos_y, sp(2.b))
+	set	var(3.d), obj(@pos_z, sp(2.b))
+	dir	sp(1.b), var(0.d)
+	pos	sp(1.b), var(1.d), var(2.d), var(3.d)
+	set	var(3.d), obj(@dir, -1.d)
+	mdir	20000.d, @dir, add(var(3.d), 180.w), 20.w, -1.d
+	wait	@dir, 20000.d
+	anim	20000.d, 4.d
+	sfx	237.d, 1.d
+	wait	@time, 30.w
+	anim	sp(2.b), 1153.d
+	wait	@anim, sp(2.b), -1.d
+	wait	@time, 45.w
+	anim	sp(1.b), 1.w
+	anim	sp(2.b), 1167.d
+	wait	@time, 24.w
+	pushbp
+	setsp	2.w
+	run	*lib_259
+	popbp
+	sfx	236.d, 1.d
+	wait	@time, 1.w
+	anim	20000.d, 53.d
+	wait	@time, 15.w
+	sfx	237.d, 1.d
+	wait	@anim, 20000.d, -1.d
+	anim	20000.d, 54.d
+	ptcl	5.d, @obj, sp(2.b), 0.w, 1000.w, 0.w, 100.w, 100.w, 100.w, 0.w
+	wait	@time, 50.w
+	sfx	70.d, 1.d
+	wait	@anim, sp(1.b), -1.d
+	wait	@time, 80.w
+	if	eq(var(902.d), 0.w), else *loc_1002 ; Wash Pan Dialog
+	wait	@time, 100.w
+	run	*lib_38
+	run	*lib_254
+
+	set	var(902.d), 1.w
+	run	*lib_39
+	endif	*loc_995
 	return
+	
 
 sub_3954:
 	run	*lib_73
@@ -14112,7 +14207,7 @@ loc_3857:
 	popbp
 	anim	20003.d, 1008.d
 	wait	@time, 30.w
-	if	eq(var(71.d), 10.w), else *loc_3868
+	if	eq(var(71.d), 10.w), else *loc_3868 ; total frog ring count?
 	if	eq(map(0.d), 1.d), else *loc_3866
 	read	@anim, 20001.d, *loc_3886
 	read	@anim, 20002.d, *loc_3887

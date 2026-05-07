@@ -144,7 +144,7 @@ sub_2:
 	if	or(eq(flag(312.d), 1.w), eq(flag(313.d), 1.w)), else *skip_intro_window
 	goto	*loc_4
 skip_intro_window:
-	win	@unk209
+	win	@reset
 	win	@color, 0.w, 0.w, 0.w, 255.w
 	win	@pos, 320.w, 260.w
 	select	"Skip Intro\n",
@@ -1793,7 +1793,7 @@ loc_40:
 		anim(0.b, 20003.w, 38.d),
 		wait(255.b)
 	call	20005.d, 1.d, 1.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	111.w
 	return
 loc_37:
@@ -1801,7 +1801,7 @@ loc_37:
 	anim	20003.d, 1042.d
 	wait	@anim, 20003.d, -1.d
 	anim	20003.d, 1043.d
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	111.w
 	return
 
@@ -1882,7 +1882,7 @@ sub_74:
 		"Ribbit!",
 		anim(0.b, 20003.w, 38.d),
 		wait(255.b)
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	call	20003.d, 1.d, 1.d
 	call	20004.d, 1.d, 1.d
 	mdir	20003.d, @dir, 270.w, 50.w, -1.d
@@ -1996,7 +1996,7 @@ sub_75:
 		wait(254.b)
 	run	*sub_76
 	sfx	-65526.d, 4.d, 0.w, 230.w
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	mdir	20003.d, @dir, 270.w, 50.w, -1.d
 	anim	20002.d, 1034.d
 	anim	20003.d, 1043.d

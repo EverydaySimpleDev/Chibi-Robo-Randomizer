@@ -385,7 +385,7 @@ sub_576: ; first time loading into chibi house after birthday party
 	popbp
 	set	flag(1231.d), 1.w ; Kitchen Planter Rope Flag
 	set	flag(942.d), 1.d ; Jenny / Mort Stairs Flag
-	set	flag(479.d), 0.d ; Sqaurter Flag
+	; set	flag(479.d), 0.d ; Sqaurter Flag
 	set	flag(941.d), 1.d ; Shoes flag
 	set var(144.d), 3.d ; UFO pad flag
 	set	flag(806.d), 1.d ; UFO pad flag
@@ -523,16 +523,16 @@ loc_259:
 	popbp
 	goto	*loc_259
 loc_260:
-	run	*sub_261
-	run	*sub_289
+	; run	*sub_261
+	; run	*sub_289
 	attach	69.d, *sub_669
 	anim	20005.d, 1007.d
-	msg	voice(0.b),
-		speed(0.b),
-		"Citrusoft has sent you a special gift:\n",
-		"a brand-new bonus battery!",
-		wait(254.b)
-	run	*sub_300
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"Citrusoft has sent you a special gift:\n",
+	; 	"a brand-new bonus battery!",
+	; 	wait(254.b)
+	; run	*sub_300
 	sfx	196608.d, 3.d, 100.w
 	detach	69.d
 	mdir	20000.d, @obj, 20005.d, 20.w, 3.d
@@ -560,7 +560,7 @@ loc_546:
 	return
 
 
-sub_261:
+sub_261: ; level / battery check
 	pushbp
 	setsp	var(166.d)
 	setsp	level
@@ -991,7 +991,7 @@ loc_251:
 	return
 
 
-sub_303:
+sub_303: ; max battery upgraded
 	scrn	@hud, 0.d, 3.d
 	wait	@time, 1.w
 	scrn	@hud, 0.d, 5.d
@@ -1004,39 +1004,39 @@ sub_303:
 	setsp	24.d
 	setsp	23.d
 	lib	132.w
-	popbp
-	pushbp
-	setsp	bp(0.b)
-	printf	"前バッテリー[%d]\n"
-	popbp
-	pushbp
-	setsp	var(170.d)
-	printf	"＋バッテリー[%d]\n"
-	popbp
-	pushbp
-	setsp	battery(1.d)
-	printf	"後バッテリー[%d]\n"
-	popbp
-	set	var(1.d), add(sp(0.b), var(170.d))
-	set	var(0.d), div(var(1.d), 100.w)
-	pushbp
-	setsp	var(0.d)
-	msg	voice(0.b),
-		speed(0.b),
-		anim(0.b, 20005.w, 1007.d),
-		"Your battery power went up to ",
-		format("%d"),
-		"!!",
-		wait(255.b)
-	popbp
-	sfx	59.d, 1.d
-	set	battery(1.d), add(sp(0.b), var(170.d))
-	set	battery(0.d), battery(1.d)
-	wait	@real, 1.d
-	sfx	59.d, 0.d
-	wait	@time, 7.w
-	sfx	179.d, 1.d
-	wait	@sfx, 179.d
+	; popbp
+	; pushbp
+	; setsp	bp(0.b)
+	; printf	"前バッテリー[%d]\n"
+	; popbp
+	; pushbp
+	; setsp	var(170.d)
+	; printf	"＋バッテリー[%d]\n"
+	; popbp
+	; pushbp
+	; setsp	battery(1.d)
+	; printf	"後バッテリー[%d]\n"
+	; popbp
+	; set	var(1.d), add(sp(0.b), var(170.d))
+	; set	var(0.d), div(var(1.d), 100.w)
+	; pushbp
+	; setsp	var(0.d)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	anim(0.b, 20005.w, 1007.d),
+	; 	"Your battery power went up to ",
+	; 	format("%d"),
+	; 	"!!",
+	; 	wait(255.b)
+	; popbp
+	; sfx	59.d, 1.d
+	; set	battery(1.d), add(sp(0.b), var(170.d))
+	; set	battery(0.d), battery(1.d)
+	; wait	@real, 1.d
+	; sfx	59.d, 0.d
+	; wait	@time, 7.w
+	; sfx	179.d, 1.d
+	; wait	@sfx, 179.d
 	scrn	@hud, 0.d, 2.d
 	return
 
@@ -1804,13 +1804,13 @@ loc_378:
 loc_382:
 	pushbp
 	setsp	var(109.d)
-	msg	voice(0.b),
-		speed(0.b),
-		"In order to get the next bonus battery,\n",
-		"you need ",
-		format("%d"),
-		" more Happy Points!",
-		wait(255.b)
+	; msg	voice(0.b),
+	; 	speed(0.b),
+	; 	"In order to get the next bonus battery,\n",
+	; 	"you need ",
+	; 	format("%d"),
+	; 	" more Happy Points!",
+	; 	wait(255.b)
 	popbp
 loc_381:
 	return
@@ -1826,8 +1826,8 @@ loc_516:
 	if	ge(item(22.d), 1.w), else *loc_515
 	set	flag(477.d), 1.d
 loc_515:
-	if	ge(item(56.d), 1.w), else *loc_514
-	set	flag(479.d), 1.d
+	if	ge(item(56.d), 1.w), else *loc_514 ;if you have the squirter
+	; set	flag(479.d), 1.d
 loc_514:
 	return
 
@@ -1999,7 +1999,7 @@ loc_495:
 	setsp	100.w
 	run	*sub_51
 	popbp
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	run	*sub_171
 	run	*sub_252
 	run	*sub_376
@@ -2227,7 +2227,7 @@ sub_658:
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
 	lib	373.w
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -2238,7 +2238,7 @@ sub_659:
 		speed(0.b),
 		"Whoa! Would you look at that!",
 		wait(3.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -2354,7 +2354,7 @@ loc_212:
 		wait(255.b)
 	popbp
 	sfx	196608.d, 3.d, 100.w
-	camera	@unk209, 1.d, 200.w
+	camera	@reset, 1.d, 200.w
 loc_211:
 	anim	20005.d, 1.d
 loc_208:
@@ -3320,7 +3320,7 @@ loc_717:
 	setsp	100.w
 	run	*sub_51
 	popbp
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	55.w
 	call	10.d, 2.d, 1.d
 	call	20000.d, 700.d
@@ -3335,7 +3335,7 @@ loc_794:
 	setsp	100.w
 	run	*sub_51
 	popbp
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	lib	55.w
 	call	10.d, 2.d, 1.d
 	call	20000.d, 700.d
@@ -3360,7 +3360,7 @@ loc_722:
 	sfx	331.d, 0.d
 	anim	9.d, 0.w
 	sfx	389.d, 1.d
-	win	@unk209
+	win	@reset
 	run	*sub_588
 	return
 
@@ -3549,7 +3549,7 @@ loc_741:
 	setsp	100.w
 	run	*sub_51
 	popbp
-	camera	@unk209, 2.d, 100.w
+	camera	@reset, 2.d, 100.w
 	wait	@cam
 	win	@letterbox
 	win	@color, 255.w, 255.w, 255.w, 0.w
@@ -4520,7 +4520,7 @@ sub_908:
 		speed(0.b),
 		"Huh?",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -4531,7 +4531,7 @@ sub_909:
 		speed(0.b),
 		"Hmm...?",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -4542,7 +4542,7 @@ sub_910:
 		speed(0.b),
 		"Huh? Wait a minute.",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -4553,7 +4553,7 @@ sub_911:
 		speed(0.b),
 		"Eh? Huh?",
 		wait(5.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -5625,7 +5625,7 @@ loc_762:
 	run	*sub_766
 	popbp
 	run	*sub_787
-	win	@unk209
+	win	@reset
 	if	and(ge(var(703.d), 1.d), eq(var(135.d), 2.d)), else *loc_764
 	set	var(135.d), 3.d
 loc_764:

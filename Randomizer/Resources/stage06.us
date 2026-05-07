@@ -344,7 +344,7 @@ loc_4:
 loc_95:
 	if	eq(flag(504.d), 1.w), else *loc_94
 	printf	"トイレックスの歯をkill\n"
-	kill	163.d
+	; kill	163.d ; Dino Teeth
 loc_94:
 	if	eq(flag(1656.d), 1.w), else *loc_93
 	printf	"パジャマの生地をkill\n"
@@ -955,14 +955,14 @@ loc_628:
 
 
 sub_585:
-	printf	"BORN_PAMA_DOOR_OPCL\n"
+	printf	"born_PAMA_DOOR_OPCL\n"
 	born	10002.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 8000.w, 5000.w, 200.w, *sub_702
 	if	eq(flag(1662.d), 0.w), else *loc_606
-	printf	"BORN_DOOR_BELL\n"
+	printf	"born_DOOR_BELL\n"
 	born	10000.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 500.w, 300.w, 500.w, *sub_694
 loc_606:
 	if	eq(flag(50.d), 0.w), else *loc_605
-	printf	"BORN_DOOR_SWITCH\n"
+	printf	"born_DOOR_SWITCH\n"
 	born	10001.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 100.w, 100.w, 100.w, *sub_698
 loc_605:
 	if	flag(11.d), else *loc_602
@@ -4589,7 +4589,7 @@ loc_1189:
 	dir	20002.d, -179.d
 	camera	@unk237, 3.w
 	disp	20000.d, 1.d
-	disp	193.d, 0.d
+	; disp	193.d, 0.d
 	pushbp
 	setsp	50.w
 	lib	63.w
@@ -4983,7 +4983,7 @@ loc_1239:
 	wait	@time, 50.w
 	lib	96.w
 	lib	13.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	read	@anim, 20002.d, 0.d
 	read	@anim, 20000.d, 0.d
 	return
@@ -5345,7 +5345,7 @@ loc_240:
 	anim	355.d, 4.d
 	anim	356.d, 4.d
 	anim	357.d, 4.d
-	printf	"BORN_FF_FREE_CLL_STOPを発生\n"
+	printf	"born_FF_FREE_CLL_STOPを発生\n"
 	born	10036.d, 3.d, -16803.d, 10849.w, -24826.d, 0.w, 7000.w, 20000.w, 1200.w, 0.w
 	endif	*loc_243
 loc_245:
@@ -5783,7 +5783,7 @@ loc_296:
 	anim	356.d, 1.d
 	wait	@time, 2.w
 	anim	357.d, 1.d
-	printf	"BORN_FF_FREE_CLL_STOPを発生\n"
+	printf	"born_FF_FREE_CLL_STOPを発生\n"
 	born	10036.d, 3.d, -16803.d, 10849.w, -24826.d, 0.w, 7000.w, 20000.w, 1200.w, 0.w
 	endif	*loc_244
 loc_298:
@@ -6750,7 +6750,7 @@ loc_2334:
 loc_2336:
 	set	flag(578.d), 0.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 
 
@@ -6844,7 +6844,7 @@ loc_1818:
 		wait(254.b)
 	lib	106.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1819:
 	elif	and(eq(flag(472.d), 1.d), eq(flag(473.d), 0.d)), else *loc_1825
@@ -6879,7 +6879,7 @@ loc_1823:
 	wait	@time, 10.w
 	lib	106.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1825:
 	elif	or(eq(var(125.d), 10.d), eq(var(124.d), 100.d)), else *loc_1830
@@ -6908,7 +6908,7 @@ loc_1828:
 	wait	@time, 10.w
 	lib	106.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1830:
 	lib	38.w
@@ -7545,7 +7545,7 @@ loc_1851:
 	printf	"いらんとこ来てるよ！\n"
 loc_1836:
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	set	flag(578.d), 0.w
 	return
 
@@ -7611,7 +7611,7 @@ sub_709:
 	anim	20013.d, 1.d
 	lib	39.w
 	lib	106.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 
 
@@ -8049,7 +8049,7 @@ sub_750:
 	wait	@dir, 20014.d
 	anim	20014.d, 1.d
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	106.w
 	return
 
@@ -10453,7 +10453,7 @@ loc_1941:
 	pos	20014.d, -22476.d, 9667.w, -20960.d
 	dir	20014.d, 170.w
 	anim	20014.d, 17.d
-	printf	"BORN_REX_CLL_STOPを発生\n"
+	printf	"born_REX_CLL_STOPを発生\n"
 	born	10035.d, 3.d, -22501.d, 9667.w, -21893.d, 0.w, 1000.w, 2400.w, 500.w, 0.w
 	read	@anim, 20000.d, 0.d
 	read	@anim, 20014.d, 0.d
@@ -10466,7 +10466,7 @@ loc_1941:
 	timer	3.w, *sub_2052
 	lib	96.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	106.w
 	return
 
@@ -10627,7 +10627,7 @@ sub_1911:
 	timer	3.w, *sub_2053
 	lib	96.w
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	106.w
 	return
 
@@ -11799,7 +11799,7 @@ sub_2158:
 		sfx(422.d, 1.b),
 		"Ohmygoshlookatthesizeofthatthing!",
 		wait(30.b)
-	win	@unk209
+	win	@reset
 	return
 
 
@@ -12199,7 +12199,7 @@ loc_2153:
 	camera	@unk229, 26.w, 3.d, 0.w
 	camera	@distance, 77.w, 3.d, 0.w
 	wait	@time, 1.w
-	camera	@unk209, 3.d, 0.w
+	camera	@reset, 3.d, 0.w
 	camera	@unk230
 	pushbp
 	setsp	30.w
@@ -12814,7 +12814,7 @@ loc_419:
 	pos	20014.d, -22476.d, 9667.w, -20960.d
 	dir	20014.d, 170.w
 	anim	20014.d, 17.d
-	printf	"BORN_REX_CLL_STOPを発生\n"
+	printf	"born_REX_CLL_STOPを発生\n"
 	born	10035.d, 3.d, -22501.d, 9667.w, -21893.d, 0.w, 1000.w, 2400.w, 500.w, 0.w
 	set	flag(165.d), 0.w
 	if	flag(160.d), else *loc_422
@@ -14439,7 +14439,7 @@ loc_1412:
 	wait	@dir, 20014.d
 	anim	20014.d, 1.d
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	return
 loc_1415:
 	if	or(eq(var(127.d), 32.d), eq(var(126.d), 132.d)), else *loc_1744
@@ -15909,7 +15909,7 @@ loc_1442:
 	set	var(127.d), 25.d
 	set	var(126.d), 125.d
 loc_1445:
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	endif	*loc_1434
 loc_1446:
 	elif	and(eq(var(127.d), 20.d), eq(time(0.d), 0.d)), else *loc_1448
@@ -15928,7 +15928,7 @@ loc_1448:
 	popbp
 	wait	@dir, 20014.d
 	anim	20014.d, 1.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	endif	*loc_1434
 loc_1450:
 	elif	or(eq(var(127.d), 16.d), eq(var(126.d), 106.d)), else *loc_1452
@@ -15940,19 +15940,19 @@ loc_1450:
 loc_1452:
 	elif	or(eq(var(127.d), 15.d), eq(var(126.d), 105.d)), else *loc_1454
 	anim	20014.d, 17.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	endif	*loc_1434
 loc_1454:
 	elif	or(eq(var(127.d), 14.d), eq(var(126.d), 104.d)), else *loc_1459
 	if	eq(flag(1191.d), 1.w), else *loc_1458
 	anim	20014.d, 19.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	endif	*loc_1457
 loc_1458:
 	anim	20014.d, 18.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 loc_1457:
 	endif	*loc_1434
@@ -15966,7 +15966,7 @@ loc_1459:
 	popbp
 	wait	@dir, 20014.d
 	anim	20014.d, 1.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 	lib	96.w
 	endif	*loc_1434
 loc_1461:
@@ -15978,7 +15978,7 @@ loc_1461:
 	popbp
 	wait	@dir, 20014.d
 	anim	20014.d, 1.d
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 loc_1434:
 	lib	106.w
 	lib	39.w
@@ -19957,7 +19957,7 @@ loc_1979:
 	call	20000.d, 700.d
 	timer	3.w, *sub_2056
 	lib	39.w
-	camera	@unk209, 1.d, 100.w
+	camera	@reset, 1.d, 100.w
 loc_1981:
 	return
 
@@ -20103,7 +20103,7 @@ sub_1051:
 	read	@anim, 20005.d, *loc_819
 	wait	@read, 20005.d
 	disp	10027.d, 0.d
-	printf	"BORN_FF_SHINDEMO_OYAHAOYA ヒット!!\n"
+	printf	"born_FF_SHINDEMO_OYAHAOYA ヒット!!\n"
 	pushbp
 	setsp	1.d
 	setsp	1.d
