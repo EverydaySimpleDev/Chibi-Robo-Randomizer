@@ -21813,67 +21813,6 @@ sub_1479:
 	return
 
 
-sub_1480:
-	if	eq(item(25.d), 0.w), else *loc_1483
-	msg	voice(13.b),
-		speed(0.b),
-		anim(0.b, 20017.w, 20.d),
-		"With you on our side, we'll have some serious\n",
-		"manpower! Errr...I mean robopower!",
-		anim(0.b, 20017.w, 1.d),
-		wait(255.b)
-	msg	voice(13.b),
-		speed(0.b),
-		anim(0.b, 20017.w, 20.d),
-		"Here...put this on!",
-		anim(0.b, 20017.w, 1.d),
-		wait(255.b)
-	pushbp
-	setsp	25.d
-	lib	79.w
-	popbp
-	wait	@time, 1.w
-	lib	67.w
-	wait	@time, 1.w
-	set	cur_suit, 3.d
-	wait	@time, 120.w
-	sfx	1114148.d, 1.d
-	anim	20018.d, 49.d, 50.d
-	anim	20019.d, 49.d, 50.d
-	mdir	20018.d, @obj, 20000.d, 30.w, -1.d
-	mdir	20019.d, @obj, 20000.d, 30.w, -1.d
-	wait	@dir, 20018.d
-	msg	voice(13.b),
-		speed(0.b),
-		anim(0.b, 20017.w, 20.d),
-		"Hmmmm...",
-		anim(0.b, 20017.w, 1.d),
-		wait(255.b)
-	msg	voice(13.b),
-		speed(0.b),
-		anim(0.b, 20017.w, 20.d),
-		"WELL, SLAP ME WITH A BATTLESHIP!",
-		anim(0.b, 20017.w, 1.d),
-		wait(255.b)
-	anim	20018.d, 56.d
-	anim	20019.d, 56.d
-	sfx	1114147.d, 1.d
-	wait	@sfx, 1114147.d
-	anim	20018.d, 1.d
-	anim	20019.d, 1.d
-	anim2	20018.d, 21.d, 0.w, 200.w, 1.d, 0.w, 100.w
-	wait	@time, 10.w
-	msg	voice(9.b),
-		speed(0.b),
-		"You're even more hideous than the real Tao!",
-		wait(255.b)
-	anim2	20019.d, 21.d, 0.w, 200.w, 1.d, 0.w, 100.w
-	wait	@time, 10.w
-	msg	voice(9.b),
-		speed(0.b),
-		"The other boys will crack when they see you!",
-		wait(255.b)
-	endif	*loc_1482
 loc_1483:
 	if	ne(cur_suit, 3.d), else *loc_1482
 	set	cur_suit, 3.d

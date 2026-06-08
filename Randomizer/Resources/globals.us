@@ -9,12 +9,19 @@ lib_73:
 	set	flag(35.d), 1.w
 	set	var(671.d), 0.w ; custom variable setup for custom pan drop
 	set	var(672.d), 0.w ; custom variable checking left leg password
+	set	var(673.d), 0.w ; custom variable drake suit
+	set	var(674.d), 0.w ; custom variable frog suit
+	set	var(675.d), 0.w ; custom variable pajamas suit
+	set	var(676.d), 0.w ; custom variable trauma suit
+	set	var(677.d), 0.w ; custom variable ghost suit
+	set	var(678.d), 0.w ; custom variable tao suit
 	if	eq(time(0.d), 0.d), else *loc_1538
 	run	*sub_1498
 	printf	"夜です\n" ;It's night
 	set	time(0.d), 1.d
 	if	ne(map(0.d), 5.d), else *loc_1497
 	color	-2.d, @modulate, 100.w, 100.w, 150.w, 0.w
+
 loc_1497:
 	endif	*loc_1234
 loc_1538:

@@ -2139,56 +2139,6 @@ loc_1589:
 	setsp	20002.d
 	lib	86.w
 	popbp
-loc_1631:
-	set	flag(1644.d), 1.w
-	anim	20002.d, var(280.d)
-	pushbp
-	setsp	actor_name(20063.d)
-	msg	voice(4.b),
-		speed(0.b),
-		"You were outstanding, Cheebo!",
-		anim(1.b, 20002.w, 281.d),
-		wait(255.b)
-	popbp
-	anim	20002.d, var(280.d)
-	pushbp
-	setsp	actor_name(20063.d)
-	setsp	actor_name(20002.d)
-	msg	voice(4.b),
-		speed(0.b),
-		"Since you've been working so hard,\n",
-		"I have a present for you.",
-		anim(1.b, 20002.w, 281.d),
-		wait(255.b)
-	popbp
-	pushbp
-	setsp	30.d
-	lib	79.w
-	popbp
-	wait	@time, 1.w
-	lib	67.w
-	wait	@time, 1.w
-	anim	20002.d, var(280.d)
-	msg	voice(4.b),
-		speed(0.b),
-		"Put it on and let me see how it looks.",
-		anim(1.b, 20002.w, 281.d),
-		wait(255.b)
-	set	cur_suit, 7.d
-	wait	@time, 300.w
-	anim	20002.d, var(280.d)
-	msg	voice(4.b),
-		speed(0.b),
-		"Oh, that is CUTE! I was worried about the size.",
-		anim(1.b, 20002.w, 281.d),
-		wait(255.b)
-	anim	20002.d, var(280.d)
-	msg	voice(4.b),
-		speed(0.b),
-		"If you get tired, make sure to get some sleep!",
-		anim(1.b, 20002.w, 281.d),
-		wait(255.b)
-	endif	*loc_1592
 loc_1632:
 	elif	and(eq(var(111.d), 31.d), ge(item(55.d), 1.w)), else *loc_1667
 	anim	20002.d, var(280.d)

@@ -3719,47 +3719,7 @@ loc_1221:
 		anim(0.b, 20002.w, 1015.d),
 		wait(255.b)
 	endif	*loc_1137
-loc_1223:
-	elif	ge(var(76.d), 44.d), else *loc_1228
-	if	lt(var(685.d), var(107.d)), else *loc_1227
-	set	flag(1657.d), 1.w
-	pushbp
-	setsp	actor_name(20063.d)
-	msg	voice(4.b),
-		speed(0.b),
-		anim(0.b, 20002.w, 1016.d),
-		"Oh, Cheebo! I finished making your pj's!",
-		anim(0.b, 20002.w, 1015.d),
-		wait(255.b)
-	popbp
-	msg	voice(4.b),
-		speed(0.b),
-		anim(0.b, 20002.w, 1016.d),
-		"Try them on for me. I want to see how they look!",
-		anim(0.b, 20002.w, 1015.d),
-		wait(255.b)
-	pushbp
-	setsp	30.d
-	lib	79.w
-	popbp
-	wait	@time, 1.w
-	lib	67.w
-	wait	@time, 1.w
-	set	cur_suit, 7.d
-	wait	@time, 210.w
-	msg	voice(4.b),
-		speed(0.b),
-		anim(0.b, 20002.w, 1016.d),
-		"Awwww...you are just TOO CUTE!",
-		anim(0.b, 20002.w, 1015.d),
-		wait(255.b)
-	msg	voice(4.b),
-		speed(0.b),
-		anim(0.b, 20002.w, 1016.d),
-		"When you're tired, make sure to get some sleep!",
-		anim(0.b, 20002.w, 1015.d),
-		wait(255.b)
-	endif	*loc_1226
+
 loc_1227:
 	pushbp
 	setsp	actor_name(20063.d)

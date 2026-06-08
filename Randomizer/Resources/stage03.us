@@ -9044,8 +9044,8 @@ loc_940:
 	sfx	327715.d, 1.d
 	camera	@unk229, 23.w, 1.d, 300.w
 	wait	@cam
-	set	var(30.d), rand(1200.w)
-	wait	@time, add(500.w, var(30.d))
+	; set	var(30.d), rand(1200.w)
+	; wait	@time, add(500.w, var(30.d))
 	sfx	327715.d, 0.d
 	set	var(1089.d), rand(1.w)
 	pushbp

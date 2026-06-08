@@ -1832,21 +1832,6 @@ loc_514:
 	return
 
 
-sub_27:
-	set	flag(963.d), 0.d
-	call	20000.d, -1.d
-	run	*sub_509
-	if	and(eq(flag(32.d), 1.w), eq(flag(301.d), 0.d)), else *loc_504
-	set	item(32.d), 1.w
-	set	cur_suit, 4.d
-	set	flag(add(1700.d, 32.d)), 1.w
-	endif	*loc_29
-loc_504:
-	elif	and(eq(item(34.d), 0.w), flag(661.d)), else *loc_506
-	set	item(34.d), 1.w
-	set	cur_suit, 6.d
-	set	flag(add(1700.d, 34.d)), 1.w
-	endif	*loc_29
 loc_506:
 	elif	ge(item(31.d), 1.w), else *loc_508
 	set	cur_suit, 8.d
@@ -2035,42 +2020,6 @@ loc_42:
 	read	@anim, 20005.d, 0.d
 	return
 
-
-sub_497:
-	msg	voice(0.b),
-		speed(0.b),
-		"Oh, and you should know, if you ever pass\n",
-		"out like that again, don't get too worried.",
-		wait(255.b)
-	anim	20005.d, 1007.d
-	pushbp
-	setsp	actor_name(20005.d)
-	msg	voice(0.b),
-		speed(0.b),
-		"Your faithful friend, Telly Vision (that's me!),\n",
-		"will carry you back to the Chibi-House!",
-		wait(255.b)
-	popbp
-	anim	20005.d, 1.d
-	wait	@time, 30.w
-	anim	20005.d, 1002.d
-	msg	voice(0.b),
-		speed(0.b),
-		"Oh, and another thing!",
-		size(255.b),
-		wait(255.b)
-	menu	1001.d, -1.d, 5.w
-	menu	1000.d, 1.w
-	msg	voice(0.b),
-		speed(0.b),
-		"If you press ",
-		icon(8.b),
-		" and select $Remove,$\n",
-		"you'll change out of your Trauma Suit.",
-		wait(254.b)
-	anim	20005.d, 1.d
-	menu	1000.d, -1.d
-	return
 
 
 sub_43:

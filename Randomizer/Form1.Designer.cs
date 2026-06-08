@@ -30,331 +30,264 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.isoFilePath = new System.Windows.Forms.TextBox();
-            this.title = new System.Windows.Forms.Label();
-            this.openISO = new System.Windows.Forms.Button();
-            this.openDestination = new System.Windows.Forms.Button();
-            this.destinationPath = new System.Windows.Forms.TextBox();
-            this.settingsLabel = new System.Windows.Forms.Label();
-            this.logicSettings = new System.Windows.Forms.ComboBox();
-            this.freePJ = new System.Windows.Forms.CheckBox();
-            this.openUpstairs = new System.Windows.Forms.CheckBox();
-            this.seedLabel = new System.Windows.Forms.Label();
-            this.seed = new System.Windows.Forms.TextBox();
-            this.statusDialog = new System.Windows.Forms.RichTextBox();
-            this.randomizeButton = new System.Windows.Forms.Button();
-            this.batteryCharge = new System.Windows.Forms.CheckBox();
-            this.openDownstairs = new System.Windows.Forms.CheckBox();
-            this.passwordRando = new System.Windows.Forms.CheckBox();
-            this.chibiVision = new System.Windows.Forms.CheckBox();
-            this.Chibi_Robo_Icon = new System.Windows.Forms.PictureBox();
-            this.PBar = new System.Windows.Forms.ProgressBar();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.walkingBatteryDrain = new System.Windows.Forms.CheckBox();
-            this.joggingBatteryDrain = new System.Windows.Forms.CheckBox();
-            this.runningDecreasesBattery = new System.Windows.Forms.CheckBox();
-            this.apZipPath = new System.Windows.Forms.TextBox();
-            this.openAPZip = new System.Windows.Forms.Button();
-            this.itemLocationsButton = new System.Windows.Forms.Button();
-            this.dataGridViewLocations = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLocations)).BeginInit();
+            this.logicSettings = new WindowsFormsApp1.FlatComboBox();
+            this.settingsLabel = new System.Windows.Forms.Label();
+            this.seedLabel = new System.Windows.Forms.Label();
+            this.sectionPanel4 = new WindowsFormsApp1.SectionPanel();
+            this.openAPZip = new WindowsFormsApp1.FlatButton();
+            this.openDestination = new WindowsFormsApp1.FlatButton();
+            this.openISO = new WindowsFormsApp1.FlatButton();
+            this.sectionPanel2 = new WindowsFormsApp1.SectionPanel();
+            this.optionsButton = new WindowsFormsApp1.FlatButton();
+            this.PBar = new WindowsFormsApp1.FlatProgressBar();
+            this.randomizeButton = new WindowsFormsApp1.FlatButton();
+            this.statusDialog = new WindowsFormsApp1.LogBox();
+            this.isoFilePath = new WindowsFormsApp1.FlatTextBox();
+            this.destinationPath = new WindowsFormsApp1.FlatTextBox();
+            this.apZipPath = new WindowsFormsApp1.FlatTextBox();
+            this.seed = new WindowsFormsApp1.FlatTextBox();
+            this.sectionPanel4.SuspendLayout();
+            this.sectionPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // isoFilePath
-            // 
-            this.isoFilePath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.isoFilePath.Location = new System.Drawing.Point(123, 60);
-            this.isoFilePath.Name = "isoFilePath";
-            this.isoFilePath.ReadOnly = true;
-            this.isoFilePath.Size = new System.Drawing.Size(490, 26);
-            this.isoFilePath.TabIndex = 0;
-            this.isoFilePath.Text = "<- Select path to Chibi-Robo NTSC-U ISO";
-            this.isoFilePath.TextChanged += new System.EventHandler(this.isoFilePath_TextChanged);
-            // 
-            // title
-            // 
-            this.title.AutoSize = true;
-            this.title.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.title.Location = new System.Drawing.Point(17, 9);
-            this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(238, 26);
-            this.title.TabIndex = 2;
-            this.title.Text = "Chibi-Robo: Unplugged";
-            this.title.Click += new System.EventHandler(this.title_Click);
-            // 
-            // openISO
-            // 
-            this.openISO.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openISO.Location = new System.Drawing.Point(17, 56);
-            this.openISO.Name = "openISO";
-            this.openISO.Size = new System.Drawing.Size(100, 35);
-            this.openISO.TabIndex = 3;
-            this.openISO.Text = "Open ISO";
-            this.openISO.UseVisualStyleBackColor = true;
-            this.openISO.Click += new System.EventHandler(this.openISO_Click);
-            // 
-            // openDestination
-            // 
-            this.openDestination.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openDestination.Location = new System.Drawing.Point(17, 97);
-            this.openDestination.Name = "openDestination";
-            this.openDestination.Size = new System.Drawing.Size(100, 35);
-            this.openDestination.TabIndex = 4;
-            this.openDestination.Text = "Browse";
-            this.openDestination.UseVisualStyleBackColor = true;
-            this.openDestination.Click += new System.EventHandler(this.openDestination_Click);
-            // 
-            // destinationPath
-            // 
-            this.destinationPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.destinationPath.Location = new System.Drawing.Point(123, 101);
-            this.destinationPath.Name = "destinationPath";
-            this.destinationPath.ReadOnly = true;
-            this.destinationPath.Size = new System.Drawing.Size(490, 26);
-            this.destinationPath.TabIndex = 5;
-            this.destinationPath.Text = "<- Set destination path";
-            // 
-            // settingsLabel
-            // 
-            this.settingsLabel.AutoSize = true;
-            this.settingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.settingsLabel.Location = new System.Drawing.Point(13, 201);
-            this.settingsLabel.Name = "settingsLabel";
-            this.settingsLabel.Size = new System.Drawing.Size(107, 20);
-            this.settingsLabel.TabIndex = 7;
-            this.settingsLabel.Text = "Mode / Logic: ";
-            this.settingsLabel.Click += new System.EventHandler(this.settingsLabel_Click);
-            // 
-            // logicSettings
-            // 
-            this.logicSettings.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.logicSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logicSettings.FormattingEnabled = true;
-            this.logicSettings.Items.AddRange(new object[] {
-            "AP Logic"});
-            this.logicSettings.Location = new System.Drawing.Point(118, 198);
-            this.logicSettings.Name = "logicSettings";
-            this.logicSettings.Size = new System.Drawing.Size(121, 28);
-            this.logicSettings.TabIndex = 8;
-            this.logicSettings.SelectedIndexChanged += new System.EventHandler(this.logicSettings_SelectedIndexChanged);
-            // 
-            // freePJ
-            // 
-            this.freePJ.AutoSize = true;
-            this.freePJ.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.freePJ.Location = new System.Drawing.Point(648, 56);
-            this.freePJ.Name = "freePJ";
-            this.freePJ.Size = new System.Drawing.Size(91, 24);
-            this.freePJ.TabIndex = 10;
-            this.freePJ.Text = "Free PJs";
-            this.freePJ.UseVisualStyleBackColor = true;
-            this.freePJ.CheckedChanged += new System.EventHandler(this.freePJ_CheckedChanged);
-            // 
-            // openUpstairs
-            // 
-            this.openUpstairs.AutoSize = true;
-            this.openUpstairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openUpstairs.Location = new System.Drawing.Point(804, 56);
-            this.openUpstairs.Name = "openUpstairs";
-            this.openUpstairs.Size = new System.Drawing.Size(130, 24);
-            this.openUpstairs.TabIndex = 11;
-            this.openUpstairs.Text = "Open Upstairs";
-            this.openUpstairs.UseVisualStyleBackColor = true;
-            this.openUpstairs.CheckedChanged += new System.EventHandler(this.openUpstairs_CheckedChanged);
-            // 
-            // seedLabel
-            // 
-            this.seedLabel.AutoSize = true;
-            this.seedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seedLabel.Location = new System.Drawing.Point(259, 198);
-            this.seedLabel.Name = "seedLabel";
-            this.seedLabel.Size = new System.Drawing.Size(51, 20);
-            this.seedLabel.TabIndex = 12;
-            this.seedLabel.Text = "Seed:";
-            this.seedLabel.Click += new System.EventHandler(this.seed_Click);
-            // 
-            // seed
-            // 
-            this.seed.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.seed.Location = new System.Drawing.Point(316, 198);
-            this.seed.Name = "seed";
-            this.seed.Size = new System.Drawing.Size(121, 26);
-            this.seed.TabIndex = 13;
-            // 
-            // statusDialog
-            // 
-            this.statusDialog.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.statusDialog.Location = new System.Drawing.Point(12, 384);
-            this.statusDialog.Name = "statusDialog";
-            this.statusDialog.ReadOnly = true;
-            this.statusDialog.Size = new System.Drawing.Size(1130, 155);
-            this.statusDialog.TabIndex = 14;
-            this.statusDialog.Text = "";
-            // 
-            // randomizeButton
-            // 
-            this.randomizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.randomizeButton.Location = new System.Drawing.Point(12, 329);
-            this.randomizeButton.Name = "randomizeButton";
-            this.randomizeButton.Size = new System.Drawing.Size(161, 49);
-            this.randomizeButton.TabIndex = 15;
-            this.randomizeButton.Text = "Randomize";
-            this.randomizeButton.UseVisualStyleBackColor = true;
-            this.randomizeButton.Click += new System.EventHandler(this.randomizeButton_Click);
-            // 
-            // batteryCharge
-            // 
-            this.batteryCharge.AutoSize = true;
-            this.batteryCharge.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.batteryCharge.Location = new System.Drawing.Point(952, 97);
-            this.batteryCharge.Name = "batteryCharge";
-            this.batteryCharge.Size = new System.Drawing.Size(182, 24);
-            this.batteryCharge.TabIndex = 16;
-            this.batteryCharge.Text = "Charged Giga Battery";
-            this.batteryCharge.UseVisualStyleBackColor = true;
-            this.batteryCharge.Visible = false;
-            this.batteryCharge.CheckedChanged += new System.EventHandler(this.batteryCharge_CheckedChanged);
-            // 
-            // openDownstairs
-            // 
-            this.openDownstairs.AutoSize = true;
-            this.openDownstairs.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openDownstairs.Location = new System.Drawing.Point(804, 97);
-            this.openDownstairs.Name = "openDownstairs";
-            this.openDownstairs.Size = new System.Drawing.Size(150, 24);
-            this.openDownstairs.TabIndex = 17;
-            this.openDownstairs.Text = "Open Downstairs";
-            this.openDownstairs.UseVisualStyleBackColor = true;
-            this.openDownstairs.Visible = false;
-            this.openDownstairs.CheckedChanged += new System.EventHandler(this.openDownstairs_CheckedChanged);
-            // 
-            // passwordRando
-            // 
-            this.passwordRando.AutoSize = true;
-            this.passwordRando.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.passwordRando.Location = new System.Drawing.Point(952, 56);
-            this.passwordRando.Name = "passwordRando";
-            this.passwordRando.Size = new System.Drawing.Size(190, 24);
-            this.passwordRando.TabIndex = 18;
-            this.passwordRando.Text = "Randomize Passwords";
-            this.passwordRando.UseVisualStyleBackColor = true;
-            this.passwordRando.CheckedChanged += new System.EventHandler(this.passwordRando_CheckedChanged);
-            // 
-            // chibiVision
-            // 
-            this.chibiVision.AutoSize = true;
-            this.chibiVision.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chibiVision.Location = new System.Drawing.Point(648, 97);
-            this.chibiVision.Name = "chibiVision";
-            this.chibiVision.Size = new System.Drawing.Size(137, 24);
-            this.chibiVision.TabIndex = 19;
-            this.chibiVision.Text = "Chibi-Vision Off";
-            this.chibiVision.UseVisualStyleBackColor = true;
-            // 
-            // Chibi_Robo_Icon
-            // 
-            this.Chibi_Robo_Icon.Image = global::ChibiRoboRando.Properties.Resources.chibi_body_icon;
-            this.Chibi_Robo_Icon.Location = new System.Drawing.Point(285, 4);
-            this.Chibi_Robo_Icon.Name = "Chibi_Robo_Icon";
-            this.Chibi_Robo_Icon.Size = new System.Drawing.Size(100, 50);
-            this.Chibi_Robo_Icon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.Chibi_Robo_Icon.TabIndex = 20;
-            this.Chibi_Robo_Icon.TabStop = false;
-            this.Chibi_Robo_Icon.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
-            // PBar
-            // 
-            this.PBar.Location = new System.Drawing.Point(182, 343);
-            this.PBar.Name = "PBar";
-            this.PBar.Size = new System.Drawing.Size(960, 23);
-            this.PBar.TabIndex = 21;
             // 
             // timer1
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // walkingBatteryDrain
+            // logicSettings
             // 
-            this.walkingBatteryDrain.AutoSize = true;
-            this.walkingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.walkingBatteryDrain.Location = new System.Drawing.Point(648, 140);
-            this.walkingBatteryDrain.Name = "walkingBatteryDrain";
-            this.walkingBatteryDrain.Size = new System.Drawing.Size(271, 24);
-            this.walkingBatteryDrain.TabIndex = 25;
-            this.walkingBatteryDrain.Text = "Walking Doesn\'t Decrease Battery";
-            this.walkingBatteryDrain.UseVisualStyleBackColor = true;
-            this.walkingBatteryDrain.Visible = false;
-            this.walkingBatteryDrain.CheckedChanged += new System.EventHandler(this.walkingBatteryDrain_CheckedChanged);
+            this.logicSettings.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
+            this.logicSettings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(246)))), ((int)(((byte)(246)))), ((int)(((byte)(246)))));
+            this.logicSettings.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(208)))), ((int)(((byte)(208)))), ((int)(((byte)(208)))));
+            this.logicSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.logicSettings.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.logicSettings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.logicSettings.FormattingEnabled = true;
+            this.logicSettings.Items.AddRange(new object[] {
+            "AP Logic"});
+            this.logicSettings.Location = new System.Drawing.Point(149, 54);
+            this.logicSettings.Name = "logicSettings";
+            this.logicSettings.Size = new System.Drawing.Size(121, 23);
+            this.logicSettings.TabIndex = 14;
             // 
-            // joggingBatteryDrain
+            // settingsLabel
             // 
-            this.joggingBatteryDrain.AutoSize = true;
-            this.joggingBatteryDrain.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.joggingBatteryDrain.Location = new System.Drawing.Point(648, 170);
-            this.joggingBatteryDrain.Name = "joggingBatteryDrain";
-            this.joggingBatteryDrain.Size = new System.Drawing.Size(271, 24);
-            this.joggingBatteryDrain.TabIndex = 26;
-            this.joggingBatteryDrain.Text = "Jogging Doesn\'t Decrease Battery";
-            this.joggingBatteryDrain.UseVisualStyleBackColor = true;
-            this.joggingBatteryDrain.Visible = false;
+            this.settingsLabel.AutoSize = true;
+            this.settingsLabel.BackColor = System.Drawing.Color.Transparent;
+            this.settingsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.settingsLabel.Location = new System.Drawing.Point(13, 52);
+            this.settingsLabel.Name = "settingsLabel";
+            this.settingsLabel.Size = new System.Drawing.Size(99, 20);
+            this.settingsLabel.TabIndex = 7;
+            this.settingsLabel.Text = "Mode / Logic";
+            this.settingsLabel.Click += new System.EventHandler(this.settingsLabel_Click);
             // 
-            // runningDecreasesBattery
+            // seedLabel
             // 
-            this.runningDecreasesBattery.AutoSize = true;
-            this.runningDecreasesBattery.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.runningDecreasesBattery.Location = new System.Drawing.Point(648, 200);
-            this.runningDecreasesBattery.Name = "runningDecreasesBattery";
-            this.runningDecreasesBattery.Size = new System.Drawing.Size(275, 24);
-            this.runningDecreasesBattery.TabIndex = 27;
-            this.runningDecreasesBattery.Text = "Running Doesn\'t Decrease Battery";
-            this.runningDecreasesBattery.UseVisualStyleBackColor = true;
-            this.runningDecreasesBattery.Visible = false;
+            this.seedLabel.AutoSize = true;
+            this.seedLabel.BackColor = System.Drawing.Color.Transparent;
+            this.seedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.seedLabel.Location = new System.Drawing.Point(17, 93);
+            this.seedLabel.Name = "seedLabel";
+            this.seedLabel.Size = new System.Drawing.Size(47, 20);
+            this.seedLabel.TabIndex = 12;
+            this.seedLabel.Text = "Seed";
+            this.seedLabel.Click += new System.EventHandler(this.seed_Click);
             // 
-            // apZipPath
+            // sectionPanel4
             // 
-            this.apZipPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.apZipPath.Location = new System.Drawing.Point(123, 142);
-            this.apZipPath.Name = "apZipPath";
-            this.apZipPath.ReadOnly = true;
-            this.apZipPath.Size = new System.Drawing.Size(490, 26);
-            this.apZipPath.TabIndex = 31;
-            this.apZipPath.Text = "<- Set Archipelago Data To Enable Integration";
+            this.sectionPanel4.BackColor = System.Drawing.Color.White;
+            this.sectionPanel4.Controls.Add(this.apZipPath);
+            this.sectionPanel4.Controls.Add(this.destinationPath);
+            this.sectionPanel4.Controls.Add(this.isoFilePath);
+            this.sectionPanel4.Controls.Add(this.openAPZip);
+            this.sectionPanel4.Controls.Add(this.openDestination);
+            this.sectionPanel4.Controls.Add(this.openISO);
+            this.sectionPanel4.Header = "Game files";
+            this.sectionPanel4.Location = new System.Drawing.Point(18, 14);
+            this.sectionPanel4.Name = "sectionPanel4";
+            this.sectionPanel4.Padding = new System.Windows.Forms.Padding(14, 32, 14, 14);
+            this.sectionPanel4.Size = new System.Drawing.Size(831, 211);
+            this.sectionPanel4.TabIndex = 40;
             // 
             // openAPZip
             // 
-            this.openAPZip.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openAPZip.Location = new System.Drawing.Point(17, 138);
+            this.openAPZip.BackColor = System.Drawing.Color.Transparent;
+            this.openAPZip.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.openAPZip.FlatAppearance.BorderSize = 0;
+            this.openAPZip.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openAPZip.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.openAPZip.Location = new System.Drawing.Point(21, 129);
             this.openAPZip.Name = "openAPZip";
-            this.openAPZip.Size = new System.Drawing.Size(100, 35);
-            this.openAPZip.TabIndex = 30;
+            this.openAPZip.Primary = false;
+            this.openAPZip.Radius = 8;
+            this.openAPZip.Size = new System.Drawing.Size(91, 38);
+            this.openAPZip.TabIndex = 34;
             this.openAPZip.Text = "Open AP";
-            this.openAPZip.UseVisualStyleBackColor = true;
+            this.openAPZip.UseVisualStyleBackColor = false;
             this.openAPZip.Click += new System.EventHandler(this.openAPZip_Click);
             // 
-            // itemLocationsButton
+            // openDestination
             // 
-            this.itemLocationsButton.Enabled = false;
-            this.itemLocationsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.itemLocationsButton.Location = new System.Drawing.Point(17, 241);
-            this.itemLocationsButton.Name = "itemLocationsButton";
-            this.itemLocationsButton.Size = new System.Drawing.Size(146, 34);
-            this.itemLocationsButton.TabIndex = 32;
-            this.itemLocationsButton.Text = "Location Data";
-            this.itemLocationsButton.UseVisualStyleBackColor = true;
-            this.itemLocationsButton.Visible = false;
-            this.itemLocationsButton.Click += new System.EventHandler(this.itemLocationsButton_Click);
+            this.openDestination.BackColor = System.Drawing.Color.Transparent;
+            this.openDestination.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.openDestination.FlatAppearance.BorderSize = 0;
+            this.openDestination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openDestination.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.openDestination.Location = new System.Drawing.Point(21, 89);
+            this.openDestination.Name = "openDestination";
+            this.openDestination.Primary = false;
+            this.openDestination.Radius = 8;
+            this.openDestination.Size = new System.Drawing.Size(91, 38);
+            this.openDestination.TabIndex = 33;
+            this.openDestination.Text = "Browse";
+            this.openDestination.UseVisualStyleBackColor = false;
+            this.openDestination.Click += new System.EventHandler(this.openDestination_Click);
             // 
-            // dataGridViewLocations
+            // openISO
             // 
-            this.dataGridViewLocations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewLocations.Enabled = false;
-            this.dataGridViewLocations.Location = new System.Drawing.Point(182, 241);
-            this.dataGridViewLocations.Name = "dataGridViewLocations";
-            this.dataGridViewLocations.Size = new System.Drawing.Size(960, 96);
-            this.dataGridViewLocations.TabIndex = 33;
-            this.dataGridViewLocations.Visible = false;
-            this.dataGridViewLocations.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.openISO.BackColor = System.Drawing.Color.Transparent;
+            this.openISO.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.openISO.FlatAppearance.BorderSize = 0;
+            this.openISO.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.openISO.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.openISO.Location = new System.Drawing.Point(21, 48);
+            this.openISO.Name = "openISO";
+            this.openISO.Primary = false;
+            this.openISO.Radius = 8;
+            this.openISO.Size = new System.Drawing.Size(91, 38);
+            this.openISO.TabIndex = 32;
+            this.openISO.Text = "Open ISO";
+            this.openISO.UseVisualStyleBackColor = false;
+            this.openISO.Click += new System.EventHandler(this.openISO_Click);
+            // 
+            // sectionPanel2
+            // 
+            this.sectionPanel2.BackColor = System.Drawing.Color.White;
+            this.sectionPanel2.Controls.Add(this.seed);
+            this.sectionPanel2.Controls.Add(this.optionsButton);
+            this.sectionPanel2.Controls.Add(this.seedLabel);
+            this.sectionPanel2.Controls.Add(this.logicSettings);
+            this.sectionPanel2.Controls.Add(this.settingsLabel);
+            this.sectionPanel2.Header = "Generation";
+            this.sectionPanel2.Location = new System.Drawing.Point(855, 12);
+            this.sectionPanel2.Name = "sectionPanel2";
+            this.sectionPanel2.Padding = new System.Windows.Forms.Padding(14, 32, 14, 14);
+            this.sectionPanel2.Size = new System.Drawing.Size(287, 213);
+            this.sectionPanel2.TabIndex = 41;
+            // 
+            // optionsButton
+            // 
+            this.optionsButton.BackColor = System.Drawing.Color.Transparent;
+            this.optionsButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.optionsButton.FlatAppearance.BorderSize = 0;
+            this.optionsButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.optionsButton.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.optionsButton.Location = new System.Drawing.Point(17, 173);
+            this.optionsButton.Name = "optionsButton";
+            this.optionsButton.Primary = false;
+            this.optionsButton.Radius = 8;
+            this.optionsButton.Size = new System.Drawing.Size(75, 23);
+            this.optionsButton.TabIndex = 43;
+            this.optionsButton.Text = "Options";
+            this.optionsButton.UseVisualStyleBackColor = false;
+            this.optionsButton.Click += new System.EventHandler(this.optionsButton_Click);
+            // 
+            // PBar
+            // 
+            this.PBar.Animate = true;
+            this.PBar.FillColor = System.Drawing.Color.Transparent;
+            this.PBar.Location = new System.Drawing.Point(164, 463);
+            this.PBar.Maximum = 100;
+            this.PBar.Minimum = 0;
+            this.PBar.Name = "PBar";
+            this.PBar.Size = new System.Drawing.Size(978, 76);
+            this.PBar.StripeColor = System.Drawing.Color.FromArgb(((int)(((byte)(168)))), ((int)(((byte)(214)))), ((int)(((byte)(102)))));
+            this.PBar.StripeWidth = 10;
+            this.PBar.TabIndex = 42;
+            this.PBar.Text = "PBar";
+            this.PBar.TrackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(236)))), ((int)(((byte)(236)))));
+            this.PBar.TrackHeight = 14;
+            this.PBar.Value = 0;
+            this.PBar.WalkerFrames = 1;
+            this.PBar.WalkerImage = null;
+            this.PBar.WalkerScale = 1F;
+            this.PBar.WalkerTicksPerFrame = 5;
+            // 
+            // randomizeButton
+            // 
+            this.randomizeButton.BackColor = System.Drawing.Color.Transparent;
+            this.randomizeButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.randomizeButton.FlatAppearance.BorderSize = 0;
+            this.randomizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.randomizeButton.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.randomizeButton.Location = new System.Drawing.Point(18, 490);
+            this.randomizeButton.Name = "randomizeButton";
+            this.randomizeButton.Primary = true;
+            this.randomizeButton.Radius = 8;
+            this.randomizeButton.Size = new System.Drawing.Size(140, 49);
+            this.randomizeButton.TabIndex = 43;
+            this.randomizeButton.Text = "Randomize";
+            this.randomizeButton.UseVisualStyleBackColor = false;
+            this.randomizeButton.Click += new System.EventHandler(this.randomizeButton_Click);
+            // 
+            // statusDialog
+            // 
+            this.statusDialog.BackColor = System.Drawing.Color.White;
+            this.statusDialog.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.statusDialog.Font = new System.Drawing.Font("Consolas", 9F);
+            this.statusDialog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
+            this.statusDialog.Location = new System.Drawing.Point(18, 231);
+            this.statusDialog.Name = "statusDialog";
+            this.statusDialog.ReadOnly = true;
+            this.statusDialog.Size = new System.Drawing.Size(1124, 226);
+            this.statusDialog.TabIndex = 44;
+            this.statusDialog.TabStop = false;
+            this.statusDialog.Text = "";
+            // 
+            // isoFilePath
+            // 
+            this.isoFilePath.BackColor = System.Drawing.Color.Transparent;
+            this.isoFilePath.Location = new System.Drawing.Point(123, 52);
+            this.isoFilePath.Name = "isoFilePath";
+            this.isoFilePath.Padding = new System.Windows.Forms.Padding(10);
+            this.isoFilePath.Radius = 6;
+            this.isoFilePath.Size = new System.Drawing.Size(681, 30);
+            this.isoFilePath.TabIndex = 35;
+            this.isoFilePath.Text = "<- Select path to Chibi-Robo NTSC-U ISO";
+            // 
+            // destinationPath
+            // 
+            this.destinationPath.BackColor = System.Drawing.Color.White;
+            this.destinationPath.Location = new System.Drawing.Point(123, 91);
+            this.destinationPath.Name = "destinationPath";
+            this.destinationPath.Padding = new System.Windows.Forms.Padding(10);
+            this.destinationPath.Radius = 6;
+            this.destinationPath.Size = new System.Drawing.Size(681, 28);
+            this.destinationPath.TabIndex = 36;
+            this.destinationPath.Text = "<- Set destination path";
+            // 
+            // apZipPath
+            // 
+            this.apZipPath.BackColor = System.Drawing.Color.White;
+            this.apZipPath.Location = new System.Drawing.Point(123, 130);
+            this.apZipPath.Name = "apZipPath";
+            this.apZipPath.Padding = new System.Windows.Forms.Padding(10);
+            this.apZipPath.Radius = 6;
+            this.apZipPath.Size = new System.Drawing.Size(681, 28);
+            this.apZipPath.TabIndex = 37;
+            this.apZipPath.Text = "<- Set Archipelago Data To Enable Integration";
+            // 
+            // seed
+            // 
+            this.seed.BackColor = System.Drawing.Color.White;
+            this.seed.Location = new System.Drawing.Point(70, 91);
+            this.seed.Name = "seed";
+            this.seed.Padding = new System.Windows.Forms.Padding(10);
+            this.seed.Radius = 6;
+            this.seed.Size = new System.Drawing.Size(200, 28);
+            this.seed.TabIndex = 44;
             // 
             // Form1
             // 
@@ -362,71 +295,39 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.ClientSize = new System.Drawing.Size(1154, 551);
-            this.Controls.Add(this.dataGridViewLocations);
-            this.Controls.Add(this.itemLocationsButton);
-            this.Controls.Add(this.apZipPath);
-            this.Controls.Add(this.openAPZip);
-            this.Controls.Add(this.runningDecreasesBattery);
-            this.Controls.Add(this.joggingBatteryDrain);
-            this.Controls.Add(this.walkingBatteryDrain);
-            this.Controls.Add(this.PBar);
-            this.Controls.Add(this.Chibi_Robo_Icon);
-            this.Controls.Add(this.chibiVision);
-            this.Controls.Add(this.passwordRando);
-            this.Controls.Add(this.openDownstairs);
-            this.Controls.Add(this.batteryCharge);
-            this.Controls.Add(this.randomizeButton);
             this.Controls.Add(this.statusDialog);
-            this.Controls.Add(this.seed);
-            this.Controls.Add(this.seedLabel);
-            this.Controls.Add(this.openUpstairs);
-            this.Controls.Add(this.freePJ);
-            this.Controls.Add(this.logicSettings);
-            this.Controls.Add(this.settingsLabel);
-            this.Controls.Add(this.destinationPath);
-            this.Controls.Add(this.openDestination);
-            this.Controls.Add(this.openISO);
-            this.Controls.Add(this.title);
-            this.Controls.Add(this.isoFilePath);
+            this.Controls.Add(this.randomizeButton);
+            this.Controls.Add(this.PBar);
+            this.Controls.Add(this.sectionPanel2);
+            this.Controls.Add(this.sectionPanel4);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Chibi-Robo: Unplugged";
-            ((System.ComponentModel.ISupportInitialize)(this.Chibi_Robo_Icon)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewLocations)).EndInit();
+            this.sectionPanel4.ResumeLayout(false);
+            this.sectionPanel2.ResumeLayout(false);
+            this.sectionPanel2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox isoFilePath;
-        private System.Windows.Forms.Label title;
-        private System.Windows.Forms.Button openISO;
-        private System.Windows.Forms.Button openDestination;
-        private System.Windows.Forms.TextBox destinationPath;
         private System.Windows.Forms.Label settingsLabel;
-        private System.Windows.Forms.ComboBox logicSettings;
-        private System.Windows.Forms.CheckBox freePJ;
-        private System.Windows.Forms.CheckBox openUpstairs;
         private System.Windows.Forms.Label seedLabel;
-        private System.Windows.Forms.TextBox seed;
-        private System.Windows.Forms.RichTextBox statusDialog;
-        private System.Windows.Forms.Button randomizeButton;
-        private System.Windows.Forms.CheckBox batteryCharge;
-        private System.Windows.Forms.CheckBox openDownstairs;
-        private System.Windows.Forms.CheckBox passwordRando;
-        private System.Windows.Forms.CheckBox chibiVision;
-        private System.Windows.Forms.PictureBox Chibi_Robo_Icon;
-        private System.Windows.Forms.ProgressBar PBar;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.CheckBox walkingBatteryDrain;
-        private System.Windows.Forms.CheckBox joggingBatteryDrain;
-        private System.Windows.Forms.CheckBox runningDecreasesBattery;
-        private System.Windows.Forms.TextBox apZipPath;
-        private System.Windows.Forms.Button openAPZip;
-        private System.Windows.Forms.Button itemLocationsButton;
-        private System.Windows.Forms.DataGridView dataGridViewLocations;
+        private FlatComboBox logicSettings;
+        private SectionPanel sectionPanel4;
+        private SectionPanel sectionPanel2;
+        private FlatProgressBar PBar;
+        private FlatButton optionsButton;
+        private FlatButton openISO;
+        private FlatButton openDestination;
+        private FlatButton openAPZip;
+        private FlatButton randomizeButton;
+        private LogBox statusDialog;
+        private FlatTextBox isoFilePath;
+        private FlatTextBox apZipPath;
+        private FlatTextBox destinationPath;
+        private FlatTextBox seed;
     }
 }
 

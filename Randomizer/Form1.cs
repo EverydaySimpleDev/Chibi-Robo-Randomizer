@@ -7,11 +7,14 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Numerics;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -51,15 +54,14 @@ namespace WindowsFormsApp1
         int newLeftFootPassword;
         int newSuitCasePassword;
 
-        int CoinFlagID = 1;
-        int HappyBoxFlagID = 1;
-        int ItemFlagID = 1;
-
         int apSpawnFlag = 1;
-        int apHappyBoxFlagID = 1;
-        int apCoinFlagID = 1;
 
         int apItemVoice = 0;
+        string supportedAPVersion = "1.2.1";
+
+        bool optOpenUpstairs;
+        bool optChibiVisionOff;
+        bool optRandomizePasswords;
 
         //List of all checks
         List<ItemLocation> allLocations = new List<ItemLocation>();
@@ -73,6 +75,23 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+
+            Theme.Apply(this);       // base bg/font + auto-styles standard controls
+
+            // Wrap the log console in a themed card so it matches the other sections.
+            var consoleCard = new SectionPanel { Header = "Output" };
+            consoleCard.Bounds = statusDialog.Bounds;   // take over the console's current spot
+            statusDialog.Parent = consoleCard;          // move the log into the card
+            statusDialog.Dock = DockStyle.Fill;         // fill the card (respects its padding)
+            this.Controls.Add(consoleCard);
+
+            PBar.WalkerImage = Image.FromFile(Path.Combine(Directory.GetCurrentDirectory() + @"\Resources\chibiWalk.png"));
+            PBar.Height = 76;
+
+            PBar.WalkerFrames = 4;
+            PBar.WalkerTicksPerFrame = 4;   // step speed — lower = faster walk
+
+            Theme.StylePrimaryButton(randomizeButton);
 
             Random r = new Random();
             for (int i = 0; i < 10; i++)
@@ -110,6 +129,26 @@ namespace WindowsFormsApp1
             }
         }
 
+        // Opens the modal Options dialog, seeding it with the current option
+        // state and reading the user's choices back out if they click OK.
+        private void optionsButton_Click(object sender, EventArgs e)
+        {
+            using (var dlg = new OptionsForm
+            {
+                OpenUpstairs = optOpenUpstairs,
+                ChibiVisionOff = optChibiVisionOff,
+                RandomizePasswords = optRandomizePasswords
+            })
+            {
+                if (dlg.ShowDialog(this) == DialogResult.OK)
+                {
+                    optOpenUpstairs = dlg.OpenUpstairs;
+                    optChibiVisionOff = dlg.ChibiVisionOff;
+                    optRandomizePasswords = dlg.RandomizePasswords;
+                }
+            }
+        }
+
         private void openAPZip_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog())
@@ -131,51 +170,31 @@ namespace WindowsFormsApp1
 
                     apItemVoice = ((int)apData.SelectToken("favorite_character_voice"));
 
-                    string pjCheck = apData.SelectToken("free_pjs").ToString();
-
-                    if (pjCheck == "1")
-                    {
-                        freePJ.Checked = true;
-                    }
-                    else
-                    {
-                        freePJ.Checked = false;
-                    }
-
                     string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
-
-                    if (openUpstairsCheck == "1")
-                    {
-                        openUpstairs.Checked = true;
-                    }
-                    else
-                    {
-                        openUpstairs.Checked = false;
-                    }
+                    optOpenUpstairs = (openUpstairsCheck == "1");
 
                     string chibiVisionString = apData.SelectToken("chibi_vision_off").ToString();
-
-                    if (chibiVisionString == "1")
-                    {
-                        chibiVision.Checked = true;
-                    }
-                    else
-                    {
-                        chibiVision.Checked = false;
-                    }
+                    optChibiVisionOff = (chibiVisionString == "1");
 
                     string passwordRandoString = apData.SelectToken("password_rando").ToString();
-
-                    if (passwordRandoString == "1")
-                    {
-                        passwordRando.Checked = true;
-                    }
-                    else
-                    {
-                        passwordRando.Checked = false;
-                    }
+                    optRandomizePasswords = (passwordRandoString == "1");
 
                     logicSettings.SelectedItem = "AP Logic";
+
+                    JToken apVersion = apData.SelectToken("Version");
+
+                    string apFileVersion = apVersion[0].ToString() + "." + apVersion[1].ToString() + "." + apVersion[2].ToString();
+
+                    if (apVersion == null)
+                    {
+                        AppendStatus("[ERROR] Can't Validate AP Version");
+                    }
+
+                    if (supportedAPVersion != apFileVersion)
+                    {
+                        AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
+                    }
+
 
                 }
             }
@@ -185,15 +204,6 @@ namespace WindowsFormsApp1
 
 
         private void isoFilePath_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
@@ -207,165 +217,195 @@ namespace WindowsFormsApp1
         }
 
         //This is where the magic happens!
-        private void randomizeButton_Click(object sender, EventArgs e)
+        private async void randomizeButton_Click(object sender, EventArgs e)
         {
+            if (!validInput())
+                return;
 
-            if (validInput())
+            // --- Read every UI value on the UI thread, BEFORE going to the background. ---
+            string seedText = seed.Text;
+            string destPath = destinationPath.Text;
+            string isoPath = isoFilePath.Text;
+            string logicText = logicSettings.Text;
+            bool chibiVisionChecked = optChibiVisionOff;
+            bool passwordRandoChecked = optRandomizePasswords;
+            bool openUpstairsChecked = optOpenUpstairs;
+
+            randomizeButton.Enabled = false;   // prevent re-entry while running
+            PBar.Value = 0;
+
+            try
             {
-
-                PBar.Value = 10;
-                this.Refresh();
-
-                //Takes each character of the string and casts it to an int, then adds each together to create a integer representation of the seed
-                int randoSeed = 0;
-
-                foreach (char c in seed.Text)
+                await Task.Run(() =>
                 {
-                    randoSeed += (int)c;
-                }
+                    // Build an integer seed from the string.
+                    int randoSeed = 0;
+                    foreach (char c in seedText)
+                        randoSeed += (int)c;
 
-                newLeftFootPassword = 200667;
-                newSuitCasePassword = 2455;
+                    newLeftFootPassword = 200667;
+                    newSuitCasePassword = 2455;
 
-                newIsoPath = destinationPath.Text + "\\chibiRando_" + randoSeed + ".iso";
+                    newIsoPath = destPath + "\\chibiRando_" + randoSeed + ".iso";
 
-                File.Copy(isoFilePath.Text, newIsoPath, true);
+                    File.Copy(isoPath, newIsoPath, true);
+                    PBar.Value = 20;
 
-                initializeStages();
+                    initializeStages();
+                    PBar.Value = 35;
 
+                    // Any code that handles stage editing / randomization goes here!
 
-                //Any code that handles stage editing / randomization goes here!
+                    Stream stageDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemChecks.json");
+                    StreamReader readStageData = new StreamReader(stageDataStream);
+                    Stream itemPoolStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemPool.json");
+                    StreamReader readItemPool = new StreamReader(itemPoolStream);
 
+                    stageData = Newtonsoft.Json.JsonConvert.DeserializeObject<RootObject>(readStageData.ReadToEnd());
+                    itemPool = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemPool>(readItemPool.ReadToEnd());
+                    PBar.Value = 40;
 
-                Stream stageDataStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemChecks.json");
-                StreamReader readStageData = new StreamReader(stageDataStream);
-                Stream itemPoolStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.itemPool.json");
-                StreamReader readItemPool = new StreamReader(itemPoolStream);
+                    r = new Random(randoSeed);
 
-                stageData = Newtonsoft.Json.JsonConvert.DeserializeObject<RootObject>(readStageData.ReadToEnd());
-                itemPool = Newtonsoft.Json.JsonConvert.DeserializeObject<ItemPool>(readItemPool.ReadToEnd());
+                    // Performs the randomization based on the settings
+                    Dictionary<string, string> newSpoilerLog = shuffleItemsGlitchless();
+                    PBar.Value = 50;
 
-                r = new Random(randoSeed);
+                    // --- Settings involving edits to globals ---
 
-                //Performs the randomization based on the settings
-                Dictionary<string, string> newSpoilerLog = shuffleItemsGlitchless();
+                    // Waste Paper Item Updates
+                    globals.SelectToken("items[18].name").Replace("Filler AP Item");
+                    globals.SelectToken("items[18].description").Replace("Filler AP Item");
+                    globals.SelectToken("items[18].flags.chibiVision").Replace(true);
 
-                //Settings involving edits to globals
+                    // Cookie Crumb Item Updates
+                    globals.SelectToken("items[19].name").Replace("AP Item");
+                    globals.SelectToken("items[19].description").Replace("AP Item");
+                    globals.SelectToken("items[19].flags.chibiVision").Replace(true);
 
-                //Turns off Chibi Vision for all objects if enabled
-                if (chibiVision.Checked)
-                {
-                    for (int i = 0; i < 159; i++)
+                    // Turns off Chibi Vision for all objects if enabled
+                    if (chibiVisionChecked)
                     {
-                        globals.SelectToken("items[" + i + "].flags.chibiVision").Replace(false);
-                    }
-                } 
-
-                //Randomizes left foot and suit case passcode, if enabled
-                if (passwordRando.Checked)
-                {
-                    newLeftFootPassword = r.Next(100000, 999999);
-                    newSuitCasePassword = r.Next(1000, 9999);
-                    globals.SelectToken("stats[12].name").Replace("Password: " + newLeftFootPassword);
-                    globals.SelectToken("items[124].description").Replace("The number \"" + newLeftFootPassword + "\" is engraved\non the inside.");
-                }
-
-
-                //Add PJs to Shop if enabled
-                if (freePJ.Checked)
-                {
-                    JToken unusedShopItem = shopObj.SelectToken("items[16]");
-                    unusedShopItem.SelectToken("item").Replace("pajamas");
-                    unusedShopItem.SelectToken("price").Replace(10);
-                    unusedShopItem.SelectToken("limit").Replace(1);
-                }
-
-                // Disable Starting Copter
-                globals.SelectToken("defaultAtcs.copter").Replace(false);
-
-                //Battery Drain Settings
-                JToken batteryGlobal = globals.SelectToken("batteryGlobals");
-                
-                batteryGlobal.SelectToken("idle").Replace( apData.SelectToken("battery_drain_idle") );
-                batteryGlobal.SelectToken("walk").Replace(apData.SelectToken("battery_drain_walk"));
-                batteryGlobal.SelectToken("jog").Replace(apData.SelectToken("battery_drain_jog"));
-                batteryGlobal.SelectToken("run").Replace(apData.SelectToken("battery_drain_run"));
-                batteryGlobal.SelectToken("slide").Replace(apData.SelectToken("battery_drain_slide"));
-                batteryGlobal.SelectToken("equip").Replace(apData.SelectToken("battery_drain_equip"));
-                batteryGlobal.SelectToken("lift").Replace(apData.SelectToken("battery_drain_lift"));
-                batteryGlobal.SelectToken("drop").Replace(apData.SelectToken("battery_drain_drop"));
-                //batteryGlobal.SelectToken("leticker").Replace(apData.SelectToken("battery_drain_idle"));
-                batteryGlobal.SelectToken("ledgeClimb").Replace(apData.SelectToken("battery_drain_ledge_grab"));
-                batteryGlobal.SelectToken("ledgeSlide").Replace(apData.SelectToken("battery_drain_ledge_slide"));
-                batteryGlobal.SelectToken("ledgeDrop").Replace(apData.SelectToken("battery_drain_ledge_drop"));
-                batteryGlobal.SelectToken("ledgeTeeter").Replace(apData.SelectToken("battery_drain_ledge_teeter"));
-                batteryGlobal.SelectToken("jump").Replace(apData.SelectToken("battery_drain_jump"));
-                batteryGlobal.SelectToken("fall").Replace(apData.SelectToken("battery_drain_fall"));
-                batteryGlobal.SelectToken("ladderGrab").Replace(apData.SelectToken("battery_drain_ladder_grab"));
-                batteryGlobal.SelectToken("ladderAscend").Replace(apData.SelectToken("battery_drain_ladder_ascend"));
-                batteryGlobal.SelectToken("ladderDescend").Replace(apData.SelectToken("battery_drain_ladder_descend"));
-                batteryGlobal.SelectToken("ladderTop").Replace(apData.SelectToken("battery_drain_ladder_top"));
-                batteryGlobal.SelectToken("ladderBottom").Replace(apData.SelectToken("battery_drain_ladder_bottom"));
-                batteryGlobal.SelectToken("ropeGrab").Replace(apData.SelectToken("battery_drain_rope_grab"));
-                batteryGlobal.SelectToken("ropeAscend").Replace(apData.SelectToken("battery_drain_rope_ascend"));
-                batteryGlobal.SelectToken("ropeDescend").Replace(apData.SelectToken("battery_drain_rope_descend"));
-                batteryGlobal.SelectToken("ropeTop").Replace(apData.SelectToken("battery_drain_rope_top"));
-                batteryGlobal.SelectToken("ropeBottom").Replace(apData.SelectToken("battery_drain_rope_bottom"));
-                batteryGlobal.SelectToken("push").Replace(apData.SelectToken("battery_drain_push"));
-                batteryGlobal.SelectToken("copterHover").Replace(apData.SelectToken("battery_drain_copter_hover"));
-                batteryGlobal.SelectToken("copterDescend").Replace(apData.SelectToken("battery_drain_copter_descend"));
-                batteryGlobal.SelectToken("popperShoot").Replace(apData.SelectToken("battery_drain_popper_shoot"));
-                batteryGlobal.SelectToken("popperShootCharged").Replace(apData.SelectToken("battery_drain_pooper_shoot_charge"));
-                batteryGlobal.SelectToken("radarScan").Replace(apData.SelectToken("battery_drain_radar_scan"));
-                batteryGlobal.SelectToken("radarFollow").Replace(apData.SelectToken("battery_drain_radar_follow"));
-                batteryGlobal.SelectToken("brush").Replace(apData.SelectToken("battery_drain_brush"));
-                batteryGlobal.SelectToken("spoon").Replace(apData.SelectToken("battery_drain_spoon"));
-                batteryGlobal.SelectToken("mug").Replace(apData.SelectToken("battery_drain_mug"));
-                batteryGlobal.SelectToken("squirterSuck").Replace(apData.SelectToken("battery_drain_squirter_suck"));
-                batteryGlobal.SelectToken("squirterSpray").Replace(apData.SelectToken("battery_drain_squirter_spray"));
-
-
-                //Edits for Open Upstairs setting
-                if (openUpstairs.Checked)
-                {
-                    JToken latestToken = foyerObj.SelectToken("objects[512]");
-
-                    Stream openUpstairsStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.openUpstairs.json");
-                    StreamReader readOpenUpstairs = new StreamReader(openUpstairsStream);
-                    latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
-                }
-
-                //Spoiler log output
-                using (StreamWriter logOutput = new StreamWriter(File.OpenWrite(destinationPath.Text + "\\Spoiler Log " + randoSeed + ".txt")))
-                {
-                    logOutput.WriteLine("******");
-                    logOutput.WriteLine("Seed: " + seed.Text);
-                    logOutput.WriteLine("Mode: " + logicSettings.Text);
-                    logOutput.WriteLine("Left Foot Password:  " + newLeftFootPassword);
-                    logOutput.WriteLine("Suit Case Password:  " + newSuitCasePassword);
-                    logOutput.WriteLine("Open Upstairs: " + openUpstairs.Checked);
-                    //logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
-                    logOutput.WriteLine("Free PJs: " + freePJ.Checked);
-                    logOutput.WriteLine("Open Downstairs: " + openDownstairs.Checked);
-                    logOutput.WriteLine("Randomize Password: " + passwordRando.Checked);
-                    logOutput.WriteLine("Chibi-Vision Off: " + chibiVision.Checked);
-                    logOutput.WriteLine("******\n");
-
-                    foreach (string key in newSpoilerLog.Keys)
-                    {
-                        logOutput.WriteLine(key + ": " + newSpoilerLog[key]);
+                        for (int i = 0; i < 159; i++)
+                        {
+                            globals.SelectToken("items[" + i + "].flags.chibiVision").Replace(false);
+                        }
                     }
 
-                }
+                    // Randomizes left foot and suit case passcode, if enabled
+                    if (passwordRandoChecked)
+                    {
+                        newLeftFootPassword = r.Next(100000, 999999);
+                        newSuitCasePassword = r.Next(1000, 9999);
+                        globals.SelectToken("stats[12].name").Replace("Password: " + newLeftFootPassword);
+                        globals.SelectToken("items[124].description").Replace("The number \"" + newLeftFootPassword + "\" is engraved\non the inside.");
+                    }
 
-                reimportStages();
+                    // Disable Starting Copter
+                    globals.SelectToken("defaultAtcs.copter").Replace(false);
 
-                PBar.Value = 100;
-                this.Refresh();
+                    // Battery Drain Settings
+                    JToken batteryGlobal = globals.SelectToken("batteryGlobals");
 
-                statusDialog.Text += "\nISO Rebuilding Complete :)";
+                    batteryGlobal.SelectToken("idle").Replace(apData.SelectToken("battery_drain_idle"));
+                    batteryGlobal.SelectToken("walk").Replace(apData.SelectToken("battery_drain_walk"));
+                    batteryGlobal.SelectToken("jog").Replace(apData.SelectToken("battery_drain_jog"));
+                    batteryGlobal.SelectToken("run").Replace(apData.SelectToken("battery_drain_run"));
+                    batteryGlobal.SelectToken("slide").Replace(apData.SelectToken("battery_drain_slide"));
+                    batteryGlobal.SelectToken("equip").Replace(apData.SelectToken("battery_drain_equip"));
+                    batteryGlobal.SelectToken("lift").Replace(apData.SelectToken("battery_drain_lift"));
+                    batteryGlobal.SelectToken("drop").Replace(apData.SelectToken("battery_drain_drop"));
+                    //batteryGlobal.SelectToken("leticker").Replace(apData.SelectToken("battery_drain_idle"));
+                    batteryGlobal.SelectToken("ledgeClimb").Replace(apData.SelectToken("battery_drain_ledge_grab"));
+                    batteryGlobal.SelectToken("ledgeSlide").Replace(apData.SelectToken("battery_drain_ledge_slide"));
+                    batteryGlobal.SelectToken("ledgeDrop").Replace(apData.SelectToken("battery_drain_ledge_drop"));
+                    batteryGlobal.SelectToken("ledgeTeeter").Replace(apData.SelectToken("battery_drain_ledge_teeter"));
+                    batteryGlobal.SelectToken("jump").Replace(apData.SelectToken("battery_drain_jump"));
+                    batteryGlobal.SelectToken("fall").Replace(apData.SelectToken("battery_drain_fall"));
+                    batteryGlobal.SelectToken("ladderGrab").Replace(apData.SelectToken("battery_drain_ladder_grab"));
+                    batteryGlobal.SelectToken("ladderAscend").Replace(apData.SelectToken("battery_drain_ladder_ascend"));
+                    batteryGlobal.SelectToken("ladderDescend").Replace(apData.SelectToken("battery_drain_ladder_descend"));
+                    batteryGlobal.SelectToken("ladderTop").Replace(apData.SelectToken("battery_drain_ladder_top"));
+                    batteryGlobal.SelectToken("ladderBottom").Replace(apData.SelectToken("battery_drain_ladder_bottom"));
+                    batteryGlobal.SelectToken("ropeGrab").Replace(apData.SelectToken("battery_drain_rope_grab"));
+                    batteryGlobal.SelectToken("ropeAscend").Replace(apData.SelectToken("battery_drain_rope_ascend"));
+                    batteryGlobal.SelectToken("ropeDescend").Replace(apData.SelectToken("battery_drain_rope_descend"));
+                    batteryGlobal.SelectToken("ropeTop").Replace(apData.SelectToken("battery_drain_rope_top"));
+                    batteryGlobal.SelectToken("ropeBottom").Replace(apData.SelectToken("battery_drain_rope_bottom"));
+                    batteryGlobal.SelectToken("push").Replace(apData.SelectToken("battery_drain_push"));
+                    batteryGlobal.SelectToken("copterHover").Replace(apData.SelectToken("battery_drain_copter_hover"));
+                    batteryGlobal.SelectToken("copterDescend").Replace(apData.SelectToken("battery_drain_copter_descend"));
+                    batteryGlobal.SelectToken("popperShoot").Replace(apData.SelectToken("battery_drain_popper_shoot"));
+                    batteryGlobal.SelectToken("popperShootCharged").Replace(apData.SelectToken("battery_drain_pooper_shoot_charge"));
+                    batteryGlobal.SelectToken("radarScan").Replace(apData.SelectToken("battery_drain_radar_scan"));
+                    batteryGlobal.SelectToken("radarFollow").Replace(apData.SelectToken("battery_drain_radar_follow"));
+                    batteryGlobal.SelectToken("brush").Replace(apData.SelectToken("battery_drain_brush"));
+                    batteryGlobal.SelectToken("spoon").Replace(apData.SelectToken("battery_drain_spoon"));
+                    batteryGlobal.SelectToken("mug").Replace(apData.SelectToken("battery_drain_mug"));
+                    batteryGlobal.SelectToken("squirterSuck").Replace(apData.SelectToken("battery_drain_squirter_suck"));
+                    batteryGlobal.SelectToken("squirterSpray").Replace(apData.SelectToken("battery_drain_squirter_spray"));
+
+
+                    
+
+                    // Edits for Open Upstairs setting
+                    if (openUpstairsChecked)
+                    {
+                        JToken latestToken = foyerObj.SelectToken("objects[512]");
+
+                        Stream openUpstairsStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ChibiRoboRando.openUpstairs.json");
+                        StreamReader readOpenUpstairs = new StreamReader(openUpstairsStream);
+                        latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
+                    }
+                    PBar.Value = 65;
+
+                    // Spoiler log output (note: uses the captured locals, not the controls)
+                    using (StreamWriter logOutput = new StreamWriter(File.OpenWrite(destPath + "\\Spoiler Log " + randoSeed + ".txt")))
+                    {
+                        logOutput.WriteLine("******");
+                        logOutput.WriteLine("Seed: " + seedText);
+                        logOutput.WriteLine("Mode: " + logicText);
+                        logOutput.WriteLine("Left Foot Password:  " + newLeftFootPassword);
+                        logOutput.WriteLine("Suit Case Password:  " + newSuitCasePassword);
+                        logOutput.WriteLine("Open Upstairs: " + openUpstairsChecked);
+                        //logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
+                        logOutput.WriteLine("Randomize Password: " + passwordRandoChecked);
+                        logOutput.WriteLine("Chibi-Vision Off: " + chibiVisionChecked);
+                        logOutput.WriteLine("******\n");
+
+                        foreach (string key in newSpoilerLog.Keys)
+                        {
+                            logOutput.WriteLine(key + ": " + newSpoilerLog[key]);
+                        }
+                    }
+
+                    reimportStages();
+                    PBar.Value = 100;
+
+                    AppendStatus("\nISO Rebuilding Complete :)");
+                });
+            }
+            catch (Exception ex)
+            {
+                AppendStatus("\nError: " + ex.Message);
+                PBar.Value = 0;
+            }
+            finally
+            {
+                randomizeButton.Enabled = true;
             }
         }
+
+        // Add this helper to the same class. It lets background-thread code append to
+        // the status console safely by marshaling the update back to the UI thread.
+        private void AppendStatus(string text)
+        {
+            if (statusDialog.InvokeRequired)
+                statusDialog.Invoke((Action)(() => statusDialog.Text += text));
+            else
+                statusDialog.Text += text;
+        }
+
 
         private void initializeStages()
         {
@@ -424,49 +464,29 @@ namespace WindowsFormsApp1
                 cmd.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 cmd.StartInfo.UseShellExecute = false;
 
-                ////CD to swap to 
-
-                //ProcessStartInfo cdCommandInfo = new ProcessStartInfo();
-
-                //cdCommandInfo.UseShellExecute = false;
-                //cdCommandInfo.WorkingDirectory = @"C:\Windows\System32";
-
-                //cdCommandInfo.FileName = "cmd.exe";
-                //cdCommandInfo.Verb = "runas";
-                //cdCommandInfo.Arguments = "/C cd \"" + Directory.GetCurrentDirectory() + "\""; ;
-                //cdCommandInfo.WindowStyle = ProcessWindowStyle.Minimized;
-                //cdCommandInfo.RedirectStandardOutput = true;
-                //cmd.StartInfo = cdCommandInfo;
-                //cmd.Start();
-
-
-
                 ProcessStartInfo unplugCommandInfo = new ProcessStartInfo();
-
                 unplugCommandInfo.CreateNoWindow = true;
                 unplugCommandInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 unplugCommandInfo.UseShellExecute = false;
 
-                //string fullCommand = Directory.GetCurrentDirectory() + "" + command;
-                string fullCommand = "" + Directory.GetCurrentDirectory() + "\\unplug.exe " + command;
+                // Quote the exe path so cmd.exe treats it as a single token even with spaces.
+                string exePath = Path.Combine(Directory.GetCurrentDirectory(), "unplug.exe");
+                string fullCommand = "\"" + exePath + "\" " + command;
 
-                unplugCommandInfo.UseShellExecute = false;
                 unplugCommandInfo.WorkingDirectory = @"C:\Windows\System32";
-
                 unplugCommandInfo.FileName = "cmd.exe";
                 unplugCommandInfo.Verb = "runas";
-                unplugCommandInfo.Arguments = "/C " + fullCommand;
+                // Outer quotes wrap the whole command; cmd /C strips this outer pair,
+                // leaving the inner-quoted path intact.
+                unplugCommandInfo.Arguments = "/C \"" + fullCommand + "\"";
                 unplugCommandInfo.WindowStyle = ProcessWindowStyle.Minimized;
                 unplugCommandInfo.RedirectStandardOutput = true;
+
                 cmd.StartInfo = unplugCommandInfo;
                 cmd.Start();
 
-                //statusDialog.Text += "\nFull Command: " + fullCommand;
-                //statusDialog.Text += "\nArguments put into CMD: " + unplugCommandInfo.Arguments;
-
                 StreamReader sr = cmd.StandardOutput;
-                string test = sr.ReadToEnd();
-                //statusDialog.Text += "\n" + sr.ReadToEnd();
+                string test = sr.ReadToEnd();   // read fully BEFORE WaitForExit to avoid deadlock
                 cmd.WaitForExit();
             }
         }
@@ -474,49 +494,62 @@ namespace WindowsFormsApp1
 
         private bool validInput()
         {
-            statusDialog.Text = "";
             //Input Validation
             string isoValidation = isoFilePath.Text;
             isoValidation = isoValidation.Substring(isoValidation.Length - 4);
 
             if (isoValidation.ToLower() == ".iso")
             {
-                statusDialog.Text += "Validated ISO";
+                AppendStatus("Validated ISO");
 
             }
             else
             {
-                statusDialog.Text += "[ERROR] Invalid file path to Chibi-Robo ISO";
+                AppendStatus("[ERROR] Invalid file path to Chibi-Robo ISO");
                 return false;
             }
 
             if (destinationPath.Text != "<- Set destination path")
             {
-                statusDialog.Text += "\nValidated file path";
+                AppendStatus("\nValidated file path");
             }
             else
             {
-                statusDialog.Text += "\n[ERROR] Invalid destination file path";
+                AppendStatus("\n[ERROR] Invalid destination file path");
                 return false;
             }
 
             if (apZipPath.Text != "<- Set Archipelago Data To Enable Integration")
             {
-                statusDialog.Text += "\nValidated AP Path";
+                AppendStatus("\nValidated AP Path");
             }
             else
             {
-                statusDialog.Text += "\n[ERROR] Invalid AP file path";
+                AppendStatus("\n[ERROR] Invalid AP file path");
                 return false;
+            }
+
+            JToken apVersion = apData.SelectToken("Version");
+
+            string apFileVersion = apVersion[0].ToString() + "." + apVersion[1].ToString() + "." + apVersion[2].ToString();
+
+            if (apVersion == null)
+            {
+                AppendStatus("[ERROR] Can't Validate AP Version");
+            }
+
+            if (supportedAPVersion != apFileVersion)
+            {
+                AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
             }
 
             if (logicSettings.SelectedItem != null)
             {
-                statusDialog.Text += "\nValidation complete";
+                AppendStatus("\nValidation complete");
             }
             else
             {
-                statusDialog.Text += "\n[ERROR] Please select a game mode from the dropdown menu.";
+                AppendStatus("\n[ERROR] Please select a game mode from the dropdown menu.");
                 return false;
             }
 
@@ -567,6 +600,9 @@ namespace WindowsFormsApp1
 
                 // Get All Locations Of Json for AP
                 JObject locations = apData.SelectToken("Locations").ToObject<JObject>();
+
+                // Chibi House
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage05.us", Directory.GetCurrentDirectory() + @"\stage05_Edited.us", true);
 
                 // Living Room
                 File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage07.us", Directory.GetCurrentDirectory() + @"\stage07_Edited.us", true);
@@ -629,8 +665,47 @@ namespace WindowsFormsApp1
                             objectName = "item_kami_kuzu";
                         }
 
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name);
+                    }
 
+                    if (locationName == "Living Room - Drake Redcrest Suit")
+                    {
+                        updateDrakeSuitLoc(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectName, playerID, name);
+                        continue;
+
+                    }
+                    else if (locationName == "Backyard - Frog Suit")
+                    {
+                        updateFrogSuitLoc(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectName, playerID, name);
+                        continue;
+
+                    }
+                    else if (locationName == "Chibi House - Trauma Suit")
+                    {
+                        updateTraumaSuitLoc(Directory.GetCurrentDirectory() + @"\stage05_Edited.us", objectName, playerID, name);
+                        continue;
+
+                    }
+                    else if (locationName == "Chibi House - Ghost Suit")
+                    {
+                        updateGhostSuitLoc(Directory.GetCurrentDirectory() + @"\stage05_Edited.us", objectName, playerID, name);
+                        continue;
+                    }
+                    else if (locationName == "Bedroom - Pajama Suit")
+                    {
+                        updatePajamaSuitLoc(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectName, playerID, name);
+                        updatePajamaSuitKitchenLoc(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectName, playerID, name);
+                        continue;
+                    }
+                    else if (locationName == "Foyer - Toa Suit")
+                    {
+                        updateToaSuitLoc(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectName, playerID, name);
+                        continue;
+                    }
+
+                    // if locations isn't a suit and is a AP item, add a in game message of what the player pickedup
+                    if (objectName.Contains("item_kami_kuzu") || objectName.Contains("item_cookie_kakera") || objectName.Contains("item_cos_obake") || objectName.Contains("item_capsule_"))
+                    {
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name);
                     }
 
                     // shop items are not the same as normal items
@@ -644,6 +719,7 @@ namespace WindowsFormsApp1
                         switch (objectName)
                         {
                             case "item_chip_53":
+                            case "item_ticket":
                             case "item_chip_54":
                             case "item_hocyouki":
                             case "item_receipt":
@@ -654,6 +730,7 @@ namespace WindowsFormsApp1
                             case "item_kure_4":
                             case "item_kure_5":
                             case "cb_radar":
+                            case "chibi_battery":
                             case "cb_cannon_lv_2":
                             case "cb_propeller_lv_2":
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
@@ -746,417 +823,8 @@ namespace WindowsFormsApp1
                 }
 
             }
-            else
-            {
-
-                spoilerLog.Add("Locations: ", "");
-
-                #region Junk Items
-
-                for (int i = 0; i < 28; i++)
-                {
-                    spoilerLog.Add("10M Coin " + (i + 1), allLocations[shuffleItem("coin_c", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-                }
-
-                for (int i = 0; i < 7; i++)
-                {
-                    spoilerLog.Add("50M Coin " + (i + 1), allLocations[shuffleItem("coin_s", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-                }
-
-                for (int i = 0; i < 4; i++)
-                {
-                    spoilerLog.Add("100M Coin " + (i + 1), allLocations[shuffleItem("coin_g", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-                }
-
-                for (int i = 0; i < 15; i++)
-                {
-                    spoilerLog.Add("Happy Block " + (i + 1), allLocations[shuffleItem("living_happy_box", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-                }
-                #endregion
-
-                #region Key Item Important Checks
-                //Shuffles Charger
-                int chargerCheck;
-                if (openUpstairs.Checked)
-                    chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "divorce" }, allLocations);
-                else
-                    chargerCheck = shuffleItem("item_chibi_house_denti_2", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
-
-                spoilerLog.Add("Giga-Charger", allLocations[chargerCheck].Description);
-                chargerLocation = allLocations[chargerCheck];
-
-
-                //Shuffles Uncharged Battery
-
-                int uBatteryCheck;
-                if (openUpstairs.Checked)
-                    uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "divorce" }, allLocations);
-                else
-                    uBatteryCheck = shuffleItem("item_deka_denchi", occupiedChecks, new string[] { "ladder", "bridge", "divorce" }, allLocations);
-
-                spoilerLog.Add("Giga-Battery", allLocations[uBatteryCheck].Description);
-                batteryLocation = allLocations[uBatteryCheck];
-
-                if (batteryLocation.Prereqs.Contains("toothbrush") || chargerLocation.Prereqs.Contains("toothbrush"))
-                {
-                    spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "ladder", "bridge", "toothbrush" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Toothbrush", allLocations[shuffleItem("item_brush", occupiedChecks, new string[] { "toothbrush" }, allLocations)].Description);
-                }
-
-                if (batteryLocation.Prereqs.Contains("squirter") || batteryLocation.Prereqs.Contains("frog suit") || chargerLocation.Prereqs.Contains("squirter") || chargerLocation.Prereqs.Contains("frog suit"))
-                {
-                    spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit", "ladder", "bridge" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Squirter", allLocations[shuffleItem("item_tyuusyaki", occupiedChecks, new string[] { "squirter", "frog suit" }, allLocations)].Description);
-                }
-
-                if (batteryLocation.Prereqs.Contains("blaster") || chargerLocation.Prereqs.Contains("blaster"))
-                {
-                    spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "ladder", "bridge", "blaster" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Chibi-Blaster", allLocations[shuffleItem("cb_cannon_lv_2", occupiedChecks, new string[] { "blaster" }, allLocations)].Description);
-                }
-
-                if (batteryLocation.Prereqs.Contains("radar") || chargerLocation.Prereqs.Contains("radar"))
-                {
-                    spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "ladder", "bridge", "radar" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Chibi-Radar", allLocations[shuffleItem("cb_radar", occupiedChecks, new string[] { "radar" }, allLocations)].Description);
-                }
-
-
-                if (batteryLocation.Prereqs.Contains("mug") || chargerLocation.Prereqs.Contains("mug"))
-                {
-                    spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "ladder", "bridge", "mug" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Mug", allLocations[shuffleItem("item_mag_cup", occupiedChecks, new string[] { "mug" }, allLocations)].Description);
-                }
-
-                if (batteryLocation.Prereqs.Contains("spoon") || chargerLocation.Prereqs.Contains("spoon"))
-                {
-                    spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon", "ladder", "bridge" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Spoon", allLocations[shuffleItem("item_spoon", occupiedChecks, new string[] { "spoon" }, allLocations)].Description);
-                }
-
-                if (batteryLocation.Prereqs.Contains("charge chip") || chargerLocation.Prereqs.Contains("charge chip"))
-                {
-                    spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip", "ladder", "bridge" }, allLocations)].Description);
-                }
-                else
-                {
-                    spoilerLog.Add("Charge Chip", allLocations[shuffleItem("item_chip_53", occupiedChecks, new string[] { "charge chip" }, allLocations)].Description);
-                }
-
-                spoilerLog.Add("Red Shoe", allLocations[shuffleItem("item_peets_kutu", occupiedChecks, new string[] { "red shoe", "ladder", "bridge" }, allLocations)].Description);
-
-                #endregion
-
-                //Checks that are Key Items but don't lock progression or check access
-                #region Key Item (Misc.) Checks
-
-                spoilerLog.Add("Toy Receipt", allLocations[shuffleItem("item_receipt", occupiedChecks, new string[] { "divorce" }, allLocations)].Description);
-
-                spoilerLog.Add("Range Chip", allLocations[shuffleItem("item_chip_54", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Alien Ear Chip", allLocations[shuffleItem("item_hocyouki", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Chibi-Battery", allLocations[shuffleItem("item_c_denchi", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Free Rangers Photo", allLocations[shuffleItem("item_army_photo", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Red Block", allLocations[shuffleItem("item_t_block_6", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Green Block", allLocations[shuffleItem("item_t_block_4", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("White Block", allLocations[shuffleItem("item_t_block_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Red Crayon", allLocations[shuffleItem("item_kure_1", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Yellow Crayon", allLocations[shuffleItem("item_kure_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Green Crayon", allLocations[shuffleItem("item_kure_4", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Purple Crayon", allLocations[shuffleItem("item_kure_5", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Dog Tags", allLocations[shuffleItem("item_tug", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Bandage", allLocations[shuffleItem("item_houtai", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Ticket Stub", allLocations[shuffleItem("item_ticket", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Gunpowder", allLocations[shuffleItem("item_kayaku", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Hot Rod", allLocations[shuffleItem("item_car_item", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Space Scrambler", allLocations[shuffleItem("item_nwing_item", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Scurvy Splinter", allLocations[shuffleItem("npc_hock_ship_114", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Passed-Out Frog", allLocations[shuffleItem("item_frog", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Dinahs Teeth", allLocations[shuffleItem("item_rex_tooth", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Snorkel", allLocations[shuffleItem("item_goggle", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("AA Battery", allLocations[shuffleItem("item_denchi_3", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("C Battery", allLocations[shuffleItem("item_denchi_2", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("D Battery", allLocations[shuffleItem("item_denchi_1", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                spoilerLog.Add("Wedding Ring", allLocations[shuffleItem("item_papa_yubiwa", occupiedChecks, new string[] { }, allLocations)].Description);
-
-                // 10 Frog Rings
-
-                for (int i = 0; i < 10; i++)
-                {
-                    spoilerLog.Add("Frog Ring " + (i + 1), allLocations[shuffleItem("item_frog_ring", occupiedChecks, new string[] { "shop" }, allLocations)].Description);
-                }
-                #endregion
-
-                int legCheck;
-                legCheck = shuffleItem("item_left_foot", occupiedChecks, new string[] { }, allLocations);
-
-                spoilerLog.Add("Giga-Robo's Left Leg", allLocations[legCheck].Description);
-                legLocation = allLocations[legCheck];
-
-            }
-
 
             return spoilerLog;
-        }
-
-
-        //Randomizes the location of the given item
-        private int shuffleItem(string objectName, List<bool> occupiedLocations, string[] prerequisites, List<ItemLocation> allChecks)
-        {
-            while (true)
-            {
-                int nextCheck = r.Next(0, allChecks.Count() - 1);
-
-                if (occupiedLocations[nextCheck] == true || !validLocation(nextCheck, prerequisites, allChecks))
-                {
-
-                }
-                else
-                {
-                    occupiedLocations[nextCheck] = true;
-
-                    //Determine the room we are editing
-                    int relativeCheck = 0;
-                    JToken roomToEdit;
-                    int roomIndex;
-
-                    switch (nextCheck)
-                    {
-                        case int n when n < stageData.rooms[0].locations.Count():
-                            relativeCheck = nextCheck;
-                            roomToEdit = livingRoomObj;
-                            roomIndex = 0;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count():
-                            relativeCheck = nextCheck - stageData.rooms[0].locations.Count();
-                            roomToEdit = kitchenObj;
-                            roomIndex = 1;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count());
-                            roomToEdit = drainObj;
-                            roomIndex = 2;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count());
-                            roomToEdit = foyerObj;
-                            roomIndex = 3;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count());
-                            roomToEdit = basementObj;
-                            roomIndex = 4;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count());
-                            roomToEdit = backyardObj;
-                            roomIndex = 5;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count() + stageData.rooms[6].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count());
-                            roomToEdit = jennyRoomObj;
-                            roomIndex = 6;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count() + stageData.rooms[6].locations.Count() + stageData.rooms[7].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count() + stageData.rooms[6].locations.Count());
-                            roomToEdit = bedroomObj;
-                            roomIndex = 7;
-                            break;
-                        case int n when n < stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count() + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count() + stageData.rooms[6].locations.Count() + stageData.rooms[7].locations.Count() + stageData.rooms[8].locations.Count():
-                            relativeCheck = nextCheck - (stageData.rooms[0].locations.Count() + stageData.rooms[1].locations.Count + stageData.rooms[2].locations.Count() + stageData.rooms[3].locations.Count() + stageData.rooms[4].locations.Count() + stageData.rooms[5].locations.Count() + stageData.rooms[6].locations.Count() + stageData.rooms[7].locations.Count());
-                            roomToEdit = shopObj;
-                            roomIndex = 8;
-                            break;
-                        default:
-                            statusDialog.Text += "\nSomething has TERRIBLY fucked up in shuffleItem() trying to determine a item check's room location";
-                            roomToEdit = null;
-                            roomIndex = -1;
-                            break;
-                    }
-
-                    insertItem(objectName, relativeCheck, roomToEdit, roomIndex);
-                    return nextCheck;
-                }
-            }
-
-        }
-
-        //Determines if a location is a valid position for an object given the prerequisites
-        private bool validLocation(int location, string[] prerequisites, List<ItemLocation> allChecks)
-        {
-            foreach (string p in prerequisites)
-            {
-                if (allChecks[location].Prereqs.Contains(p) || allChecks[location].Prereqs.Contains("suitcase"))
-                    return false;
-            }
-            return true;
-        }
-
-
-        //Inserts objectName at given location, assuming location is pulled from allLocations
-        private void insertItem(string objectName, int relativeLocation, JToken roomObject, int roomIndex)
-        {
-
-            Console.WriteLine(stageData.rooms[roomIndex].locations[relativeLocation].Description);
-            Console.WriteLine(stageData.rooms[roomIndex].locations[relativeLocation].ID);
-
-            //Standard rooms
-            if (roomIndex == 8)
-            {
-                //Shop checks take an item name rather than an object name. Using the supplied object name, we can get the item name of the matching object in itemPool.json
-                string itemName = "";
-                foreach (Item i in itemPool.Items)
-                {
-                    if (i.objectName == objectName)
-                    {
-                        itemName = i.itemName;
-                    }
-                }
-                roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].item").Replace(itemName);
-
-                if (itemName != "item_frog_ring" || itemName != "frog_ring")
-                {
-                    roomObject.SelectToken("items[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].limit").Replace(1);
-                }
-            }
-            else
-            {
-                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].object").Replace(objectName);
-                roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(null);
-
-
-                //Setting the correct flags for the new object
-                int finalFlagIndex = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children().Count() - 1;
-
-                List<JToken> oldFlags = new List<JToken>();
-
-                foreach (JToken flag in roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags").Children())
-                {
-                    oldFlags.Add(flag);
-                }
-
-                for (int i = 1; i < oldFlags.Count; i++)
-                {
-                    oldFlags[i].Remove();
-                }
-
-                switch (objectName)
-                {
-                    case "coin_c":
-                    case "coin_s":
-                    case "coin_g":
-                    case "item_junk_a":
-                    case "item_junk_b":
-                    case "item_junk_c":
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(CoinFlagID);
-                        CoinFlagID++;
-
-                        if (CoinFlagID == 90)
-                        {
-                            CoinFlagID = 1;
-                        }
-                        break;
-
-                    case "living_happy_box":
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("explode");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("climb");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("clamber");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("fall");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("grab");
-                        //roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(HappyBoxFlagID);
-                        //HappyBoxFlagID++;
-                        break;
-                    case "item_chip_53":
-                    case "item_chip_54":
-                    case "item_hocyouki":
-                    case "item_receipt":
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("flash");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-
-                        var posY = roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position.y");
-
-                        posY = ((float)posY) + 2.0f;
-
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].position.y").Replace(posY);
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
-
-                        Console.WriteLine(objectName);
-                        Console.WriteLine(ItemFlagID);
-
-                        ItemFlagID++;
-
-                        if (ItemFlagID == 164)
-                        {
-                            ItemFlagID = 1;
-                        }
-
-                        break;
-                    default:
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("spawn");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("flash");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("cull");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("lift");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].flags[0]").AddAfterSelf("interact");
-                        roomObject.SelectToken("objects[" + stageData.rooms[roomIndex].locations[relativeLocation].ID + "].spawnFlag").Replace(ItemFlagID);
-
-                        ItemFlagID++;
-
-                        if (ItemFlagID == 164)
-                        {
-                            ItemFlagID = 1;
-                        }
-
-                        break;
-                }
-
-            }
         }
 
         //Reimports the JSON stage and shop data into the ISO
@@ -1173,18 +841,17 @@ namespace WindowsFormsApp1
             File.WriteAllText("stage11.json", drainObj.ToString());
             File.WriteAllText("globals.json", globals.ToString());
 
-            PBar.Value = 45;
+            PBar.Value = 70;
 
             // Import custom scritping First
-            statusDialog.Text += "\nPatching Rooms";
-            this.Refresh();
+            AppendStatus("\nPatching Rooms");
 
             // Birthday Party Into
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage14.us" + "\"");
 
             // Living Room
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage07_Edited.us" + "\"");
-           
+
             // Kitchen
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage01_Edited.us" + "\"");
 
@@ -1213,7 +880,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage18_Edited.us" + "\"");
 
             //Chibi House
-            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\stage05.us" + "\"");
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage05_Edited.us" + "\"");
 
             // Update Messages
             //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
@@ -1221,8 +888,7 @@ namespace WindowsFormsApp1
             // Globals
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\globals.us" + "\"");
             runUnplugCommand("globals import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\globals.json" + "\"");
-            statusDialog.Text += "\nUpdating Globals";
-            this.Refresh();
+            AppendStatus("\nUpdating Globals");
 
             //System.Diagnostics.Debug.WriteLine(Directory.GetCurrentDirectory() + @"\messages.xml" + "\"");
 
@@ -1238,8 +904,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage04 \"" + Directory.GetCurrentDirectory() + @"\stage04.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage06 \"" + Directory.GetCurrentDirectory() + @"\stage06.json" + "\"");
 
-            PBar.Value = 50;
-            this.Refresh();
+            PBar.Value = 80;
 
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage07 \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage09 \"" + Directory.GetCurrentDirectory() + @"\stage09.json" + "\"");
@@ -1251,22 +916,24 @@ namespace WindowsFormsApp1
             runUnplugCommand(" --iso \"" + newIsoPath + "\" iso set maker EveryDaySimpleDev-" + seed.Text);
             runUnplugCommand(" --iso \"" + newIsoPath + "\" iso set name \"Chibi-Robo!" + seed.Text + " \"");
 
-            statusDialog.Text += "\nImporting JSON data";
-            this.Refresh();
+            AppendStatus("\nImporting JSON data");
 
             if (apData != null)
             {
-                runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_ap.tpl" + "\"");
+                runUnplugCommand(" --iso \"" + newIsoPath + "\" qp replace tpl\\title_en.tpl \"" + Directory.GetCurrentDirectory() + @"\Resources\title_en_ap.tpl" + "\"");
 
+                runUnplugCommand(" --iso \"" + newIsoPath + "\" qp replace tpl\\misc.tpl \"" + Directory.GetCurrentDirectory() + @"\Resources\misc_edited.tpl" + "\"");
+
+                runUnplugCommand(" --iso \"" + newIsoPath + "\" qp replace Item\\kami_kuzu.dat \"" + Directory.GetCurrentDirectory() + @"\Resources\kami_kuzu_edited.dat" + "\"");
+
+                runUnplugCommand(" --iso \"" + newIsoPath + "\" qp replace Item\\cookie_kakera.dat \"" + Directory.GetCurrentDirectory() + @"\Resources\cookie_kakera_edited.dat" + "\"");
             }
             else
             {
-                runUnplugCommand(" --iso " + newIsoPath + " qp replace " + "tpl\\title_en.tpl" + " " + Directory.GetCurrentDirectory() + @"\Resources\title_en_rando.tpl" + "\"");
-
+                runUnplugCommand(" --iso \"" + newIsoPath + "\" qp replace tpl\\title_en.tpl \"" + Directory.GetCurrentDirectory() + @"\Resources\title_en_rando.tpl" + "\"");
             }
 
-            PBar.Value = 60;
-            this.Refresh();
+            PBar.Value = 85;
 
             List<string> oldFiles = new List<string>();
             foreach (string f in Directory.GetFiles(Directory.GetCurrentDirectory()))
@@ -1455,17 +1122,7 @@ namespace WindowsFormsApp1
 
         }
 
-        private void openDownstairs_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
         {
 
         }
@@ -1485,11 +1142,6 @@ namespace WindowsFormsApp1
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void itemLocationsButton_Click(object sender, EventArgs e)
         {
 
@@ -1500,7 +1152,7 @@ namespace WindowsFormsApp1
             if (roomID == 0) // Living Room
             {
 
-                int[] skipLocations = { 133 };
+                int[] skipLocations = { };
 
                 if (!skipLocations.Contains(objectID))
                 {
@@ -1628,9 +1280,814 @@ namespace WindowsFormsApp1
                     else
                     {
                         enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, atcID);
-                    }             
+                    }
                 }
             }
+        }
+        private string objectNameToGameID(string objectName)
+        {
+            int objectID;
+
+            switch (objectName)
+            {
+                case "item_frog_ring":
+                    objectID = 0;
+                    break;
+                case "item_deka_denchi":
+                    objectID = 8;
+                    break;
+                case "item_snack_bone":
+                    objectID = 14;
+                    break;
+                case "item_brush":
+                    objectID = 16;
+                    break;
+                case "capsule_17":
+                    objectID = 17;
+                    break;
+                case "item_kami_kuzu":
+                    objectID = 18;
+                    break;
+                case "item_cookie_kakera":
+                    objectID = 19;
+                    break;
+                case "item_spoon":
+                    objectID = 21;
+                    break;
+                case "item_mag_cup":
+                    objectID = 22;
+                    break;
+                case "item_capsule_24":
+                    objectID = 24;
+                    break;
+                case "item_capsule_25":
+                    objectID = 25;
+                    break;
+                case "item_capsule_26":
+                    objectID = 26;
+                    break;
+                case "capsule_27":
+                    objectID = 27;
+                    break;
+                case "capsule_28":
+                    objectID = 28;
+                    break;
+                case "capsule_29":
+                    objectID = 29;
+                    break;
+                case "item_capsule_30":
+                    objectID = 30;
+                    break;
+                case "super_chibi_robo_suit":
+                    objectID = 31;
+                    break;
+                case "item_capsule_32":
+                    objectID = 32;
+                    break;
+                case "item_cos_obake":
+                    objectID = 34;
+                    break;
+                case "cookie":
+                    objectID = 45;
+                    break;
+                case "item_chibi_house_denti_2":
+                    objectID = 48;
+                    break;
+                case "popper_trash":
+                    objectID = 49;
+                    break;
+                case "empty_bottle":
+                    objectID = 50;
+                    break;
+                case "broken_bottle_a":
+                    objectID = 51;
+                    break;
+                case "broken_bottle_b":
+                    objectID = 52;
+                    break;
+                case "item_chip_53":
+                    objectID = 53;
+                    break;
+                case "item_chip_54":
+                    objectID = 54;
+                    break;
+                case "item_receipt":
+                    objectID = 55;
+                    break;
+                case "item_tyuusyaki":
+                    objectID = 56;
+                    break;
+                case "moms_letter":
+                    objectID = 57;
+                    break;
+                case "item_denchi_1":
+                    objectID = 58;
+                    break;
+                case "item_denchi_2":
+                    objectID = 59;
+                    break;
+                case "item_denchi_3":
+                    objectID = 60;
+                    break;
+                case "item_peets_kutu":
+                    objectID = 61;
+                    break;
+                case "item_hocyouki":
+                    objectID = 62;
+                    break;
+                case "item_rex_tooth":
+                    objectID = 88;
+                    break;
+                case "twig":
+                    objectID = 91;
+                    break;
+                case "item_kayaku":
+                    objectID = 98;
+                    break;
+                case "item_goggle":
+                    objectID = 99;
+                    break;
+                case "love_letter":
+                    objectID = 100;
+                    break;
+                case "item_tug":
+                    objectID = 101;
+                    break;
+                case "item_ticket":
+                    objectID = 102;
+                    break;
+                case "item_houtai":
+                    objectID = 103;
+                    break;
+                case "drake_redcrest_album":
+                    objectID = 105;
+                    break;
+                case "item_nwing_item":
+                    objectID = 107;
+                    break;
+                case "item_army_photo":
+                    objectID = 108;
+                    break;
+                case "giga_robos_left_leg":
+                    objectID = 109;
+                    break;
+                case "circuit_schematic":
+                    objectID = 110;
+                    break;
+                case "giga_battery_full":
+                    objectID = 111;
+                    break;
+                case "small_handkerchief":
+                    objectID = 112;
+                    break;
+                case "pink_flower":
+                    objectID = 113;
+                    break;
+                case "the_scurvy_splinter":
+                    objectID = 114;
+                    break;
+                case "old_boxers":
+                    objectID = 115;
+                    break;
+                case "outdated_scarf":
+                    objectID = 116;
+                    break;
+                case "item_t_block_1":
+                    objectID = 117;
+                    break;
+                case "item_t_block_2":
+                    objectID = 118;
+                    break;
+                case "item_t_block_3":
+                    objectID = 119;
+                    break;
+                case "item_t_block_4":
+                    objectID = 120;
+                    break;
+                case "item_t_block_5":
+                    objectID = 121;
+                    break;
+                case "item_t_block_6":
+                    objectID = 122;
+                    break;
+                case "item_car_item":
+                    objectID = 123;
+                    break;
+                case "item_papa_yubiwa":
+                    objectID = 124;
+                    break;
+                case "weeds":
+                    objectID = 125;
+                    break;
+                case "block_layout":
+                    objectID = 126;
+                    break;
+                case "item_frog":
+                    objectID = 127;
+                    break;
+                case "rouka_tao_bag":
+                    objectID = 130;
+                    break;
+                case "cb_cannon_lv_2":
+                    objectID = 131;
+                    break;
+                case "cb_radar":
+                    objectID = 132;
+                    break;
+                case "tamagotchi":
+                    objectID = 133;
+                    break;
+                case "primopuel":
+                    objectID = 134;
+                    break;
+                case "empty_can":
+                    objectID = 135;
+                    break;
+                case "item_candy_gomi":
+                    objectID = 136;
+                    break;
+                case "item_okasi_gomi_1":
+                    objectID = 137;
+                    break;
+                case "item_okasi_gomi_2":
+                    objectID = 138;
+                    break;
+                case "super_eggplant":
+                    objectID = 139;
+                    break;
+                case "item_kure_1":
+                    objectID = 147;
+                    break;
+                case "blue_crayon":
+                    objectID = 148;
+                    break;
+                case "item_kure_3":
+                    objectID = 149;
+                    break;
+                case "item_kure_4":
+                    objectID = 150;
+                    break;
+                case "item_kure_5":
+                    objectID = 151;
+                    break;
+                case "item_c_denchi":
+                    objectID = 158;
+                    break;
+
+                default:
+                    objectID = 139;
+                    break;
+            }
+
+            return objectID.ToString();
+
+        }
+
+        private void updateDrakeSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "sub_2560:" +
+            "\r\n\tlib\t247.w" +
+            "\r\n\tlib\t12.w" +
+            "\r\n\tanim\t20008.d, 4.d" +
+            "\r\n\twait\t@time, 16.w" +
+            "\r\n\tsfx\t851978.d, 1.d" +
+            "\r\n\twait\t@time, 61.w" +
+            "\r\n\tsfx\t325.d, 1.d" +
+            "\r\n\twait\t@anim, 20008.d, -1.d" +
+            "\r\n\tanim\t20008.d, 5.d" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t3.w" +
+            "\r\n\tlib\t259.w" +
+            "\r\n\tpopbp\r\n\tsfx\t295.d, 1.d" +
+            "\r\n\tset\tvar(0.d), sub(obj(@dir, 20008.d), 180.w)" +
+            "\r\n\tset\tvar(1.d), add(obj(@pos_x, 20008.d), mul(sin(mul(var(0.d), 100.w)), 20.w))" +
+            "\r\n\tset\tvar(2.d), obj(@pos_y, 20008.d)" +
+            "\r\n\tset\tvar(3.d), add(obj(@pos_z, 20008.d), mul(cos(mul(var(0.d), 100.w)), 20.w))" +
+            "\r\n\tptcl\t35.d, @pos, var(1.d), var(2.d), var(3.d), 150.w, 150.w, 150.w, add(var(0.d), 180.w)" +
+            "\r\n\tlib\t96.w" +
+            //"\r\n\tanim\t20008.d, 6.d" +
+            //"\r\n\twait\t@anim, 20008.d, -1.d" +
+            "\r\n\tanim\t20008.d, 1020.d" +
+            "\r\n\tmsg\tvoice(7.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20008.w, 1019.d)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Take this special gift! It's just for you!\"," +
+            "\r\n\t\twait(10.b)" +
+            "\r\n\tmsg\tvoice(7.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20008.w, 1021.d)," +
+            "\r\n\t\t\"HA HA HA HAAAAAAAAAA!!!\"," +
+            "\r\n\t\tanim(0.b, 20008.w, -1.d)," +
+            "\r\n\t\tanim(0.b, 20008.w, 1.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t" + objectID + ".d" +
+            "\r\n\tset\tvar(673.d), 1.w" +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w " +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t105.w ; @anim" +
+            "\r\n\tmsg\tvoice(7.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20008.w, 1019.d)," +
+            "\r\n\t\t\"Shall I show you how to don it, friend?\"," +
+            "\r\n\t\tanim(0.b, 20008.w, 1020.d)," +
+            "\r\n\t\twait(255.b)," +
+            "\r\n\t\tstay" +
+            "\r\n\trun\t*sub_2564" +
+            "\r\n\tif\tne(cur_suit, 1.d), else *loc_2563" +
+            "\r\n\tmsg\tvoice(7.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20008.w, 1019.d)," +
+            "\r\n\t\t\"Put it on! Do not keep Drake Redcrest waiting!\\n\"," +
+            "\r\n\t\t\"Show me how it looks on you!\"," +
+            "\r\n\t\tanim(0.b, 20008.w, 1020.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tendif\t*loc_2562\r\n"
+            );
+
+        }
+
+        private void updateFrogSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "sub_2560:" +
+            "loc_1857:" +
+            "\r\n\tcase\teq(var(31.d), 2.w), else *loc_1853" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t1.w" +
+            "\r\n\tlib\t259.w" +
+            "\r\n\tpopbp" +
+            "\r\n\tanim\t20057.d, 8.d" +
+            "\r\n\twait\t@anim, 20057.d, -1.d" +
+            "\r\n\tanim\t20057.d, 3.d" +
+            "\r\n\tpos\t20000.d, 49993.d, 0.w, -21088.d" +
+            "\r\n\tdir\t20000.d, 5.w" +
+            "\r\n\tdir\t20057.d, 180.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t1.w" +
+            "\r\n\tlib\t259.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t20057.d" +
+            "\r\n\tsetsp\t0.d" +
+            "\r\n\tsetsp\t0.w" +
+            "\r\n\tsetsp\t13.d" +
+            "\r\n\tsetsp\t0.w" +
+            "\r\n\tlib\t210.w" +
+            "\r\n\tpopbp" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\tanim\t20057.d, 16.d" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t" + objectID +
+            "\r\n\tset\tvar(674.d), 1.w" +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tanim\t20057.d, 1.d" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tcamera\t@pos, 47359.d, 919.w, -25067.d, 3.d, 0.w" +
+            "\r\n\tcamera\t@unk227, 51412.d, 127.w, -17758.d, 3.d, 0.w" +
+            "\r\n\tcamera\t@unk229, 26.w, 3.d, 0.w" +
+            "\r\n\tcamera\t@distance, 83.w, 3.d, 0.w" +
+            "\r\n\twait\t@time, 200.w" +
+            "\r\n\twait\t@cam" +
+            "\r\n\tmsg\tvoice(26.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20057.w, 2.d)," +
+            "\r\n\t\t\"Could you please find my lost boyfriend, ribbit?!\"," +
+            "\r\n\t\tanim(0.b, 20057.w, 1.d)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tmdir\t20057.d, @dir, 0.w, 50.w, -1.d" +
+            "\r\n\twait\t@dir, 20057.d" +
+            "\r\n\tmoveto\t20057.d, 50500.d, 0.w, -15060.d, 200.w, 7.d, -2.d" +
+            "\r\n\twait\t@move, 20057.d" +
+            "\r\n\tanim\t20057.d, 5.d" +
+            "\r\n\twait\t@anim, 20057.d, -1.d" +
+            "\r\n\tsfx\t393226.d, 1.d" +
+            "\r\n\tanim\t251.d, 1.w, 0.w" +
+            "\r\n\tdisp\t20057.d, 0.d" +
+            "\r\n\twait\t@time, 100.w" +
+            "\r\n\tcamera\t@unk230" +
+            "\r\n\tlib\t88.w" +
+            "\r\n\tset\tvar(31.d), add(var(31.d), 1.w)" +
+            "\r\n\tbreak\t*loc_1853\r\n"
+            );
+
+        }
+
+        private void updateTraumaSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "sub_27:" +
+            "\r\n\tset\tflag(963.d), 0.d" +
+            "\r\n\tcall\t20000.d, -1.d" +
+            "\r\n\trun\t*sub_509" +
+            "\r\n\tif\tand(eq(flag(32.d), 1.w), eq(flag(301.d), 0.d)), else *loc_504" +
+            "\r\n\tset\tflag(add(1700.d, 32.d)), 1.w" +
+            "\r\n\tendif\t*loc_29\r\n"
+            );
+
+            File.AppendAllText(
+            stagefile,
+            "sub_497:" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Oh, and you should know, if you ever pass\\n\"," +
+            "\r\n\t\t\"out like that again, don't get too worried.\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tanim\t20005.d, 1007.d" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\tactor_name(20005.d)" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Your faithful friend, Telly Vision (that's me!),\\n\"," +
+            "\r\n\t\t\"will carry you back to the Chibi-House!\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tanim\t20005.d, 1.d" +
+            "\r\n\twait\t@time, 30.w" +
+            "\r\n\tanim\t20005.d, 1002.d" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Oh, and another thing!\"," +
+            "\r\n\t\tsize(255.b)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tmenu\t1001.d, -1.d, 5.w" +
+            "\r\n\tmenu\t1000.d, 1.w" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"If you press \"," +
+            "\r\n\t\ticon(8.b)," +
+            "\r\n\t\t\" and select $Remove,$\\n\"," +
+            "\r\n\t\t\"you'll change out of your Trauma Suit.\"," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tanim\t20005.d, 1.d" +
+            "\r\n\tmenu\t1000.d, -1.d" +
+            "\r\n\tset\tvar(676.d), 1.w" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\t" + objectID + ".d" +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w " +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t105.w ; @anim" +
+            "\r\n\treturn\r\n"
+            );
+
+        }
+
+        private void updateGhostSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "loc_504:" +
+            "\r\n\telif\tand(eq(item(34.d), 0.w), flag(661.d)), else *loc_506" +
+            "\r\n\tsetsp\t" + objectID +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+
+
+            "\r\n\tset\tvar(677.d), 1.w" +
+            "\r\n\tset\tflag(add(1700.d, 34.d)), 1.w" +
+            "\r\n\tendif\t*loc_29\r\n"
+            );
+
+        }
+
+        private void updatePajamaSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "loc_1223:" +
+            "\r\n\telif\tge(var(76.d), 44.d), else *loc_1228" +
+            "\r\n\tif\tlt(var(685.d), var(107.d)), else *loc_1227" +
+            "\r\n\tset\tflag(1657.d), 1.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\tactor_name(20063.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20002.w, 1016.d)," +
+            "\r\n\t\t\"Oh, Cheebo! I finished making your pj's!\"," +
+            "\r\n\t\tanim(0.b, 20002.w, 1015.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20002.w, 1016.d)," +
+            "\r\n\t\t\"Try them on for me. I want to see how they look!\"," +
+            "\r\n\t\tanim(0.b, 20002.w, 1015.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpushbp" +
+
+            "\r\n\tsetsp\t" + objectID +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+            "\r\n\tset\tvar(675.d), 1.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\twait\t@time, 1.w" +
+            //"\r\n\tset\tcur_suit, 7.d" +
+            "\r\n\twait\t@time, 210.w" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20002.w, 1016.d)," +
+            "\r\n\t\t\"Awwww...you are just TOO CUTE!\"," +
+            "\r\n\t\tanim(0.b, 20002.w, 1015.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20002.w, 1016.d)," +
+            "\r\n\t\t\"When you're tired, make sure to get some sleep!\"," +
+            "\r\n\t\tanim(0.b, 20002.w, 1015.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tendif\t*loc_1226\r\n"
+
+            );
+
+        }
+
+        private void updatePajamaSuitKitchenLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "loc_1631:" +
+            "\r\n\tset\tflag(1644.d), 1.w" +
+            "\r\n\tanim\t20002.d, var(280.d)" +
+            "\r\n\tpushbp" +
+            "\r\n\tsetsp\tactor_name(20063.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"You were outstanding, Cheebo!\"," +
+            "\r\n\t\tanim(1.b, 20002.w, 281.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tanim\t20002.d, var(280.d)" +
+            "\r\n\tpushbp\r\n\tsetsp\tactor_name(20063.d)" +
+            "\r\n\tsetsp\tactor_name(20002.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Since you've been working so hard,\\n\"," +
+            "\r\n\t\t\"I have a present for you.\"," +
+            "\r\n\t\tanim(1.b, 20002.w, 281.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tpushbp" +
+
+            "\r\n\tsetsp\t" + objectID +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+            "\r\n\tset\tvar(675.d), 1.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tanim\t20002.d, var(280.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Put it on and let me see how it looks.\"," +
+            "\r\n\t\tanim(1.b, 20002.w, 281.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tset\tcur_suit, 7.d" +
+            "\r\n\twait\t@time, 300.w" +
+            "\r\n\tanim\t20002.d, var(280.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"Oh, that is CUTE! I was worried about the size.\"," +
+            "\r\n\t\tanim(1.b, 20002.w, 281.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tanim\t20002.d, var(280.d)" +
+            "\r\n\tmsg\tvoice(4.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"If you get tired, make sure to get some sleep!\"," +
+            "\r\n\t\tanim(1.b, 20002.w, 281.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tendif\t*loc_1592\r\n"
+
+
+            );
+
+        }
+
+        private void updateToaSuitLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+            stagefile,
+            "sub_1480:" +
+            "\r\n\tif\teq(item(25.d), 0.w), else *loc_1483" +
+            "\r\n\tmsg\tvoice(13.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20017.w, 20.d)," +
+            "\r\n\t\t\"With you on our side, we'll have some serious\\n\"," +
+            "\r\n\t\t\"manpower! Errr...I mean robopower!\"," +
+            "\r\n\t\tanim(0.b, 20017.w, 1.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tmsg\tvoice(13.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20017.w, 20.d)," +
+            "\r\n\t\t\"Here...put this on!\"," +
+            "\r\n\t\tanim(0.b, 20017.w, 1.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tpushbp" +
+
+            "\r\n\tsetsp\t" + objectID +
+            //"\r\n\tlib\t79.w ; Give Set Item" +
+
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\twait\t@anim, 20000.d, 20.w" +
+            "\r\n\tsfx\t419.d, 1.d" +
+            "\r\n\tlib\t305.w" +
+            "\r\n\tset\tvar(62.d), sp(0.b)" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tset\tvar(90.d), 0.w" +
+            "\r\n\tset\tvar(96.d), 0.w" +
+            "\r\n\tset\tvar(678.d), 1.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\twait\t@time, 1.w" +
+            //"\r\n\tset\tcur_suit, 3.d" +
+            "\r\n\twait\t@time, 120.w" +
+            "\r\n\tsfx\t1114148.d, 1.d" +
+            "\r\n\tanim\t20018.d, 49.d, 50.d" +
+            "\r\n\tanim\t20019.d, 49.d, 50.d" +
+            "\r\n\tmdir\t20018.d, @obj, 20000.d, 30.w, -1.d" +
+            "\r\n\tmdir\t20019.d, @obj, 20000.d, 30.w, -1.d" +
+            "\r\n\twait\t@dir, 20018.d" +
+            "\r\n\tmsg\tvoice(13.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20017.w, 20.d)," +
+            "\r\n\t\t\"Hmmmm...\"," +
+            "\r\n\t\tanim(0.b, 20017.w, 1.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tmsg\tvoice(13.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tanim(0.b, 20017.w, 20.d)," +
+            "\r\n\t\t\"WELL, SLAP ME WITH A BATTLESHIP!\"," +
+            "\r\n\t\tanim(0.b, 20017.w, 1.d)," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tanim\t20018.d, 56.d" +
+            "\r\n\tanim\t20019.d, 56.d" +
+            "\r\n\tsfx\t1114147.d, 1.d" +
+            "\r\n\twait\t@sfx, 1114147.d" +
+            "\r\n\tanim\t20018.d, 1.d" +
+            "\r\n\tanim\t20019.d, 1.d" +
+            "\r\n\tanim2\t20018.d, 21.d, 0.w, 200.w, 1.d, 0.w, 100.w" +
+            "\r\n\twait\t@time, 10.w" +
+            "\r\n\tmsg\tvoice(9.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"You're even more hideous than the real Tao!\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tanim2\t20019.d, 21.d, 0.w, 200.w, 1.d, 0.w, 100.w" +
+            "\r\n\twait\t@time, 10.w" +
+            "\r\n\tmsg\tvoice(9.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"The other boys will crack when they see you!\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tendif\t*loc_1482\r\n"
+
+
+            );
+
         }
 
         private void updateSuitCasePassword(string stagefile, int newPass)
@@ -1657,7 +2114,7 @@ namespace WindowsFormsApp1
             stagefile,
             "sub_49:" +
             "\r\n\tlib\t38.w" +
-            "\r\n\tmsg\t\"Password: "+ newPass + "\"," +
+            "\r\n\tmsg\t\"Password: " + newPass + "\"," +
             "\r\n\t\twait(254.b)" +
             "\r\n\tset\tflag(9.d), 1.w" +
             "\r\n\tlib\t39.w" +
@@ -1701,7 +2158,7 @@ namespace WindowsFormsApp1
 
         private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName)
         {
-            if(newObjectName.Contains("Frog Ring"))
+            if (newObjectName.Contains("Frog Ring"))
             {
                 File.AppendAllText(
                stagefile,
@@ -1715,7 +2172,8 @@ namespace WindowsFormsApp1
                "\r\n\tset\tvar(147.d), add(var(147.d), 1.w)" + Environment.NewLine +
                "\treturn\n" + Environment.NewLine);
 
-            } else
+            }
+            else
             {
                 File.AppendAllText(
                 stagefile,
@@ -1727,7 +2185,7 @@ namespace WindowsFormsApp1
                 "\t\twait(254.b)" + Environment.NewLine +
                 "\treturn\n" + Environment.NewLine);
             }
-                
+
         }
 
         private void enableATCToolPickup(string stagefile, int objectID, string player, string newObjectName, int toolID)
@@ -1889,16 +2347,633 @@ namespace WindowsFormsApp1
 
         }
 
-        private void logicSettings_SelectedIndexChanged(object sender, EventArgs e)
+        private void openUpstairs_CheckedChanged_1(object sender, EventArgs e)
         {
-            // Custom
-            if (logicSettings.SelectedIndex == 4)
-            {
-                itemLocationsButton.Enabled = true;
-                itemLocationsButton.Visible = true;
 
-                dataGridViewLocations.Enabled = true;
-                dataGridViewLocations.Visible = true;
+        }
+    }
+
+    public static class Theme
+    {
+        // ---- Palette ----
+        public static readonly Color Background = Color.FromArgb(210, 210, 210); // window background
+        public static readonly Color Surface = Color.White;                   // panels / cards
+        public static readonly Color InputFill = Color.FromArgb(246, 246, 246); // text boxes, combos
+        public static readonly Color Border = Color.FromArgb(225, 225, 225);
+        public static readonly Color BorderStrong = Color.FromArgb(208, 208, 208);
+        public static readonly Color TextPrimary = Color.FromArgb(26, 26, 26);
+        public static readonly Color TextMuted = Color.FromArgb(136, 136, 136);
+        public static readonly Color Accent = Color.FromArgb(216, 90, 48); // Chibi-Robo coral
+        public static readonly Color AccentHover = Color.FromArgb(193, 74, 36);
+        public static readonly Color AccentText = Color.White;
+
+        // ---- Fonts ----
+        public static readonly Font TitleFont = new Font("Segoe UI", 14F, FontStyle.Regular);
+        public static readonly Font SectionFont = new Font("Segoe UI", 8.25F, FontStyle.Bold);
+        public static readonly Font BodyFont = new Font("Segoe UI", 9F, FontStyle.Regular);
+        public static readonly Font ButtonFont = new Font("Segoe UI", 9.5F, FontStyle.Regular);
+        public static readonly Font MonoFont = new Font("Consolas", 9F, FontStyle.Regular);
+
+        public static void Apply(Form form)
+        {
+            form.BackColor = Background;
+            form.ForeColor = TextPrimary;
+            form.Font = BodyFont;
+            StyleChildren(form);
+        }
+
+        private static void StyleChildren(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                switch (c)
+                {
+                    // Skip our own custom controls — they paint themselves.
+                    case FlatButton _:
+                    case FlatProgressBar _:
+                    case SectionPanel _:
+                    case FlatComboBox _:
+                    case FlatCheckBox _:
+                        break;
+                    case Button b: StyleSecondaryButton(b); break;
+                    case TextBox t: StyleInput(t); break;
+                    case ComboBox cb: StyleCombo(cb); break;
+                    case CheckBox ck: StyleCheck(ck); break;
+                    case Label lb: lb.ForeColor = TextPrimary; lb.Font = BodyFont; break;
+                }
+
+                // FlatTextBox owns its inner TextBox's styling — do NOT recurse into it,
+                // or the inner box gets a FixedSingle border applied over its borderless setup.
+                if (c is FlatTextBox) continue;
+
+                if (c.HasChildren) StyleChildren(c);
+            }
+        }
+
+        // ---- Stock-control stylers (use these if you don't swap in the custom controls) ----
+
+        public static void StyleSecondaryButton(Button b)
+        {
+            b.FlatStyle = FlatStyle.Flat;
+            b.FlatAppearance.BorderColor = BorderStrong;
+            b.FlatAppearance.BorderSize = 1;
+            b.FlatAppearance.MouseOverBackColor = InputFill;
+            b.BackColor = Surface;
+            b.ForeColor = TextPrimary;
+            b.Font = ButtonFont;
+            b.Cursor = Cursors.Hand;
+        }
+
+        public static void StylePrimaryButton(Button b)
+        {
+            b.FlatStyle = FlatStyle.Flat;
+            b.FlatAppearance.BorderSize = 0;
+            b.FlatAppearance.MouseOverBackColor = AccentHover;
+            b.BackColor = Accent;
+            b.ForeColor = AccentText;
+            b.Font = new Font("Segoe UI", 11F);
+            b.Cursor = Cursors.Hand;
+        }
+
+        public static void StyleInput(TextBox t)
+        {
+            t.BorderStyle = BorderStyle.FixedSingle;
+            t.BackColor = InputFill;
+            t.ForeColor = TextPrimary;
+            t.Font = BodyFont;
+        }
+
+        public static void StyleCombo(ComboBox cb)
+        {
+            cb.FlatStyle = FlatStyle.Flat;
+            cb.BackColor = InputFill;
+            cb.ForeColor = TextPrimary;
+            cb.Font = BodyFont;
+        }
+
+        public static void StyleCheck(CheckBox ck)
+        {
+            ck.Font = BodyFont;
+            ck.ForeColor = TextPrimary;
+        }
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        private static extern IntPtr SendMessage(IntPtr hWnd, int msg, IntPtr wParam, string lParam);
+
+        private const int EM_SETCUEBANNER = 0x1501;
+
+        /// <summary>
+        /// Show grey placeholder text inside a TextBox until the user types.
+        /// Clears any existing Text first (placeholders only show when empty).
+        /// Note: does not work on multiline TextBoxes — Win32 limitation.
+        /// </summary>
+        public static void SetPlaceholder(TextBox t, string text)
+        {
+            t.Text = string.Empty;
+            // wParam = 1 keeps the cue visible even when focused, until the user types.
+            SendMessage(t.Handle, EM_SETCUEBANNER, (IntPtr)1, text);
+        }
+
+        /// <summary>Build a rounded-rectangle path. Shared by the custom controls.</summary>
+        public static GraphicsPath RoundedRect(Rectangle r, int radius)
+        {
+            int d = Math.Max(1, radius * 2);
+            var path = new GraphicsPath();
+            path.AddArc(r.X, r.Y, d, d, 180, 90);
+            path.AddArc(r.Right - d, r.Y, d, d, 270, 90);
+            path.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
+            path.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+    }
+
+    // ---- Custom-painted flat button (anti-aliased rounded corners) ----
+    public class FlatButton : Button
+    {
+        public bool Primary { get; set; } = false;
+        public int Radius { get; set; } = 8;
+        private bool _hover;
+
+        public FlatButton()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint
+                   | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            BackColor = Color.Transparent;
+            Cursor = Cursors.Hand;
+            Font = Theme.ButtonFont;
+        }
+
+        protected override void OnMouseEnter(EventArgs e) { _hover = true; Invalidate(); base.OnMouseEnter(e); }
+        protected override void OnMouseLeave(EventArgs e) { _hover = false; Invalidate(); base.OnMouseLeave(e); }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.Clear(Parent?.BackColor ?? Theme.Background);
+
+            var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+            Color text;
+            using (var path = Theme.RoundedRect(rect, Radius))
+            {
+                if (Primary)
+                {
+                    using (var b = new SolidBrush(_hover ? Theme.AccentHover : Theme.Accent))
+                        g.FillPath(b, path);
+                    text = Theme.AccentText;
+                }
+                else
+                {
+                    using (var b = new SolidBrush(_hover ? Theme.InputFill : Theme.Surface))
+                        g.FillPath(b, path);
+                    using (var pen = new Pen(Theme.BorderStrong, 1))
+                        g.DrawPath(pen, path);
+                    text = Theme.TextPrimary;
+                }
+            }
+
+            TextRenderer.DrawText(g, Text, Font, rect, text,
+                TextFormatFlags.HorizontalCenter | TextFormatFlags.VerticalCenter);
+        }
+    }
+
+    public class FlatProgressBar : Control
+    {
+        private int _value;
+        private float _offset;          // current scroll position of the stripes
+        private int _frame;             // current walker animation frame
+        private int _frameTick;         // counts timer ticks between frame advances
+        private readonly Timer _timer;
+
+        public int Minimum { get; set; } = 0;
+        public int Maximum { get; set; } = 100;
+        public Color TrackColor { get; set; } = Color.FromArgb(120, 120, 120); // mid gray track
+        public Color FillColor { get; set; } = Color.FromArgb(124, 179, 66); // base green
+        public Color StripeColor { get; set; } = Color.FromArgb(168, 214, 102); // lighter green stripes
+        public int StripeWidth { get; set; } = 10;  // px per light+dark stripe pair
+        public bool Animate { get; set; } = true;
+        public int TrackHeight { get; set; } = 14;  // bar thickness; rest of Height is walker space
+
+        // ---- Walker sprite ----
+        public Image WalkerImage { get; set; }       // sprite or sprite sheet (null = no walker)
+        public int WalkerFrames { get; set; } = 1;  // frames in a horizontal sprite sheet
+        public int WalkerTicksPerFrame { get; set; } = 5; // animation speed (higher = slower)
+        public float WalkerScale { get; set; } = 1.0f; // >1 enlarges the sprite (needs taller control)
+
+        public int Value
+        {
+            get => _value;
+            set
+            {
+                // Self-marshal so callers can set Value from a background thread.
+                if (InvokeRequired)
+                {
+                    try { BeginInvoke((Action)(() => Value = value)); } catch { }
+                    return;
+                }
+                _value = Math.Max(Minimum, Math.Min(Maximum, value));
+                Invalidate();
+            }
+        }
+
+        public FlatProgressBar()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint
+                   | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            Height = 48; // room for a walker above a 14px track
+            _timer = new Timer { Interval = 40 }; // ~25 fps
+            _timer.Tick += (s, e) =>
+            {
+                if (!Animate) return;
+                _offset += 1.2f; // stripes travel to the right
+                if (_offset >= StripeWidth * 2) _offset = 0;
+
+                if (WalkerImage != null && WalkerFrames > 1 && _value > Minimum)
+                {
+                    if (++_frameTick >= WalkerTicksPerFrame)
+                    {
+                        _frameTick = 0;
+                        _frame = (_frame + 1) % WalkerFrames;
+                    }
+                }
+                if (_value > Minimum) Invalidate();
+            };
+            _timer.Start();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) _timer?.Dispose();
+            base.Dispose(disposing);
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.Clear(Parent?.BackColor ?? Theme.Background);
+
+            int th = Math.Min(TrackHeight, Height);
+            int trackTop = Height - th;          // track sits at the bottom; walker space above
+            int r = th / 2;
+            var full = new Rectangle(0, trackTop, Width - 1, th - 1);
+
+            // Track.
+            using (var path = Theme.RoundedRect(full, r))
+            using (var b = new SolidBrush(TrackColor))
+                g.FillPath(b, path);
+
+            double frac = Maximum > Minimum ? (double)(_value - Minimum) / (Maximum - Minimum) : 0;
+            int w = (int)(frac * (Width - 1));
+
+            // Filled portion (clipped to a rounded rect so it stays inside the track).
+            if (w >= 1)
+            {
+                int fillW = Math.Max(w, Math.Min(th, Width - 1)); // keep a rounded cap visible
+                var fillRect = new Rectangle(0, trackTop, fillW, th - 1);
+
+                using (var clip = Theme.RoundedRect(fillRect, r))
+                {
+                    var oldClip = g.Clip;
+                    g.SetClip(clip, CombineMode.Replace);
+
+                    using (var b = new SolidBrush(FillColor))
+                        g.FillRectangle(b, fillRect);
+
+                    using (var pen = new Pen(StripeColor, StripeWidth * 0.6f))
+                    {
+                        float step = StripeWidth * 2f;
+                        for (float x = _offset - th; x < fillW + th; x += step)
+                            g.DrawLine(pen, x, trackTop + th, x + th, trackTop);
+                    }
+
+                    g.Clip = oldClip;
+                }
+            }
+
+            // Walker sprite: rests on top of the track, horizontally at the fill edge.
+            DrawWalker(g, w, trackTop);
+        }
+
+        private void DrawWalker(Graphics g, int fillW, int trackTop)
+        {
+            if (WalkerImage == null) return;
+            if (_value <= Minimum || _value >= Maximum) return; // hide at empty/full
+
+            int frames = Math.Max(1, WalkerFrames);
+            int srcW = WalkerImage.Width / frames;
+            int srcH = WalkerImage.Height;
+            if (srcW <= 0 || srcH <= 0) return;
+
+            int walkerSpace = trackTop;                 // available height above the track
+            if (walkerSpace < 4) return;
+
+            // Scale the sprite to fit the space above the bar (keep aspect ratio),
+            // then apply the optional WalkerScale multiplier.
+            float scale = (float)walkerSpace / srcH * (WalkerScale <= 0 ? 1f : WalkerScale);
+            int destW = Math.Max(1, (int)(srcW * scale));
+            int destH = Math.Max(1, (int)(srcH * scale));
+
+            // Center the walker on the fill edge, clamped to the control bounds.
+            int x = fillW - destW / 2;
+            if (x < 0) x = 0;
+            if (x > Width - destW) x = Width - destW;
+            int y = trackTop - destH;                   // bottom of sprite touches top of track
+
+            var srcFrame = new Rectangle(_frame * srcW, 0, srcW, srcH);
+            var dest = new Rectangle(x, y, destW, destH);
+
+            var oldInterp = g.InterpolationMode;
+            g.InterpolationMode = InterpolationMode.NearestNeighbor; // crisp for pixel sprites
+            g.DrawImage(WalkerImage, dest, srcFrame, GraphicsUnit.Pixel);
+            g.InterpolationMode = oldInterp;
+        }
+    }
+
+    // ---- Bordered card with a small header label (the "GroupBox" replacement) ----
+    public class SectionPanel : Panel
+    {
+        public string Header { get; set; } = "";
+
+        public SectionPanel()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint
+                   | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            BackColor = Theme.Surface; // so child controls (checkboxes, buttons) clear against white
+            Padding = new Padding(14, 32, 14, 14); // leave room at top for the header
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.Clear(Parent?.BackColor ?? Theme.Background);
+
+            var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+            using (var path = Theme.RoundedRect(rect, 8))
+            {
+                using (var b = new SolidBrush(Theme.Surface))
+                    g.FillPath(b, path);
+                using (var pen = new Pen(Theme.Border, 1))
+                    g.DrawPath(pen, path);
+            }
+
+            if (!string.IsNullOrEmpty(Header))
+                TextRenderer.DrawText(g, Header, Theme.SectionFont,
+                    new Point(14, 11), Theme.TextMuted);
+        }
+    }
+
+    // ---- Flat combo box: paints over the system dropdown button with a
+    //      matching fill + chevron, plus a 1px flat border. Works for both
+    //      DropDown and DropDownList styles. ----
+    public class FlatComboBox : ComboBox
+    {
+        public Color BorderColor { get; set; } = Theme.BorderStrong;
+        public Color ArrowColor { get; set; } = Theme.TextMuted;
+        public int Radius { get; set; } = 6;
+
+        private const int WM_PAINT = 0x000F;
+        private const int ButtonWidth = 22;
+
+        public FlatComboBox()
+        {
+            FlatStyle = FlatStyle.Flat;
+            BackColor = Theme.InputFill;
+            ForeColor = Theme.TextPrimary;
+            Font = Theme.BodyFont;
+        }
+
+        protected override void OnHandleCreated(EventArgs e)
+        {
+            base.OnHandleCreated(e);
+            ApplyRoundedRegion();
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            ApplyRoundedRegion();
+        }
+
+        private void ApplyRoundedRegion()
+        {
+            using (var path = Theme.RoundedRect(new Rectangle(0, 0, Width, Height), Radius))
+                Region = new Region(path);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+
+            if (m.Msg == WM_PAINT)
+            {
+                using (var g = Graphics.FromHwnd(Handle))
+                {
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                    // Cover the system arrow button with our fill colour.
+                    var btn = new Rectangle(Width - ButtonWidth, 1, ButtonWidth - 2, Height - 2);
+                    using (var b = new SolidBrush(BackColor))
+                        g.FillRectangle(b, btn);
+
+                    // Flat chevron.
+                    int cx = Width - ButtonWidth / 2 - 2;
+                    int cy = Height / 2;
+                    using (var pen = new Pen(ArrowColor, 1.6f))
+                    {
+                        g.DrawLine(pen, cx - 4, cy - 2, cx, cy + 2);
+                        g.DrawLine(pen, cx, cy + 2, cx + 4, cy - 2);
+                    }
+
+                    // Rounded border to match the text boxes.
+                    var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+                    using (var path = Theme.RoundedRect(rect, Radius))
+                    using (var pen = new Pen(BorderColor))
+                        g.DrawPath(pen, path);
+                }
+            }
+        }
+    }
+
+    // ---- Flat check box: white box with a coral tick when checked. ----
+    public class FlatCheckBox : CheckBox
+    {
+        public Color BoxFill { get; set; } = Theme.Surface;
+        public Color BoxBorder { get; set; } = Theme.BorderStrong;
+        public Color CheckColor { get; set; } = Theme.Accent;
+        public int BoxSize { get; set; } = 16;
+
+        public FlatCheckBox()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint
+                   | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+            Appearance = Appearance.Normal;
+            Font = Theme.BodyFont;
+            ForeColor = Theme.TextPrimary;
+            Cursor = Cursors.Hand;
+            AutoSize = false;            // we size ourselves via FitWidth()
+            Height = 22;
+            FitWidth();
+        }
+
+        // Width the label actually needs: box + gap + measured text + padding.
+        private void FitWidth()
+        {
+            int textW = TextRenderer.MeasureText(Text ?? string.Empty, Font).Width;
+            Width = BoxSize + 8 + textW + 6;
+        }
+
+        protected override void OnTextChanged(EventArgs e)
+        {
+            base.OnTextChanged(e);
+            FitWidth();
+            Invalidate();
+        }
+
+        protected override void OnFontChanged(EventArgs e)
+        {
+            base.OnFontChanged(e);
+            FitWidth();
+            Invalidate();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.Clear(Parent?.BackColor ?? Theme.Surface);
+
+            int box = BoxSize;
+            int top = (Height - box) / 2;
+            var rect = new Rectangle(0, top, box, box);
+
+            // White box with a border (border picks up the accent when checked).
+            using (var path = Theme.RoundedRect(rect, 3))
+            {
+                using (var b = new SolidBrush(BoxFill))
+                    g.FillPath(b, path);
+                using (var pen = new Pen(Checked ? CheckColor : BoxBorder, 1))
+                    g.DrawPath(pen, path);
+            }
+
+            // Coral tick.
+            if (Checked)
+            {
+                using (var pen = new Pen(CheckColor, 2f)
+                {
+                    StartCap = LineCap.Round,
+                    EndCap = LineCap.Round,
+                    LineJoin = LineJoin.Round
+                })
+                {
+                    float x = rect.X, y = rect.Y;
+                    g.DrawLines(pen, new[]
+                    {
+                     new PointF(x + box * 0.24f, y + box * 0.52f),
+                     new PointF(x + box * 0.43f, y + box * 0.70f),
+                     new PointF(x + box * 0.76f, y + box * 0.30f)
+                 });
+                }
+            }
+
+            // Label.
+            var textRect = new Rectangle(box + 8, 0, Width - box - 8, Height);
+            TextRenderer.DrawText(g, Text, Font, textRect, ForeColor,
+                TextFormatFlags.Left | TextFormatFlags.VerticalCenter | TextFormatFlags.EndEllipsis);
+        }
+    }
+
+    // ---- Read-only log console: a RichTextBox that never shows the caret,
+    //      so it reads as an output panel rather than an editable field. ----
+    public class LogBox : RichTextBox
+    {
+        [DllImport("user32.dll")]
+        private static extern bool HideCaret(IntPtr hWnd);
+
+        public LogBox()
+        {
+            ReadOnly = true;
+            TabStop = false;
+            BorderStyle = BorderStyle.None;
+            BackColor = Theme.Surface;
+            ForeColor = Theme.TextPrimary;
+            Font = Theme.MonoFont;
+        }
+
+        protected override void OnGotFocus(EventArgs e)
+        {
+            base.OnGotFocus(e);
+            HideCaret(Handle);
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            HideCaret(Handle); // re-assert after every message so it never flickers back
+        }
+    }
+
+    // ---- Flat rounded text box: a borderless TextBox hosted inside a
+    //      custom-painted rounded container, matching the card styling. ----
+    public class FlatTextBox : Panel
+    {
+        public TextBox Inner { get; }
+        public int Radius { get; set; } = 6;
+
+        // Passthroughs so existing code that uses .Text keeps working.
+        public override string Text
+        {
+            get => Inner.Text;
+            set => Inner.Text = value;
+        }
+
+        public FlatTextBox()
+        {
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint
+                   | ControlStyles.OptimizedDoubleBuffer | ControlStyles.ResizeRedraw, true);
+
+            Inner = new TextBox
+            {
+                BorderStyle = BorderStyle.None,
+                BackColor = Theme.InputFill,
+                ForeColor = Theme.TextPrimary,
+                Font = Theme.BodyFont,
+                Dock = DockStyle.Fill
+            };
+            Controls.Add(Inner);
+
+            BackColor = Theme.Surface;
+            Padding = new Padding(10, 10, 10, 10);
+            Height = 28;   // any resize this triggers now finds Inner already set
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (Inner == null) return;
+            Inner.Left = Padding.Left;
+            Inner.Width = Width - Padding.Left - Padding.Right;
+            Inner.Top = (Height - Inner.Height) / 2;   // now respected — no Dock fighting it
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.Clear(Parent?.BackColor ?? Theme.Surface);
+
+            var rect = new Rectangle(0, 0, Width - 1, Height - 1);
+            using (var path = Theme.RoundedRect(rect, Radius))
+            {
+                using (var b = new SolidBrush(Inner.BackColor))   // exact same fill as the textbox
+                    g.FillPath(b, path);
+                using (var pen = new Pen(Theme.BorderStrong, 1))
+                    g.DrawPath(pen, path);
             }
         }
     }

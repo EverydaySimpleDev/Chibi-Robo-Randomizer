@@ -2050,17 +2050,20 @@ loc_526:
 loc_565:
 	disp	113.d, 0.d
 loc_528:
-	if	eq(item(26.d), 0.w), else *loc_564
+	; if	eq(item(26.d), 0.w), else *loc_564
+	if	eq(var(674.d), 0.w), else *loc_564
 	if	eq(flag(907.d), 0.d), else *loc_564
 	disp	307.d, 1.d
 	disp	20057.d, 0.d
 	disp	40.d, 0.d
 loc_564:
-	if	and(eq(item(127.d), 1.w), eq(item(26.d), 1.w)), else *loc_563
+	; if	and(eq(item(127.d), 1.w), eq(item(26.d), 1.w)), else *loc_563
+	if	and(eq(item(127.d), 1.w), eq(var(674.d), 1.w)), else *loc_563
 	disp	20057.d, 1.d
 	anim	20057.d, 1.d
 loc_563:
-	if	and(eq(flag(1077.d), 1.w), eq(item(26.d), 1.w)), else *loc_534
+	; if	and(eq(flag(1077.d), 1.w), eq(item(26.d), 1.w)), else *loc_534
+	if	and(eq(flag(1077.d), 1.w), eq(var(674.d), 1.w)), else *loc_534
 	if	and(eq(var(77.d), 25.d), eq(time(0.d), 0.d)), else *loc_560
 	disp	20057.d, 0.d
 	disp	40.d, 0.d
@@ -5958,7 +5961,8 @@ loc_1791:
 	return
 loc_1849:
 	case	eq(hit, add(3000.d, 3.d)), else *loc_1860
-	if	eq(item(26.d), 0.w), else *loc_1859
+	; if	eq(item(26.d), 0.w), else *loc_1859
+	if	eq(var(674.d), 0.w), else *loc_1859
 	case	eq(var(31.d), 0.w), else *loc_1855
 	anim	307.d, 1.w
 	pushbp
@@ -6005,178 +6009,7 @@ loc_1855:
 	set	var(31.d), add(var(31.d), 1.w)
 	camera	@unk230
 	break	*loc_1853
-loc_1857:
-	case	eq(var(31.d), 2.w), else *loc_1853
-	pushbp
-	setsp	1.w
-	lib	259.w
-	popbp
-	msg	voice(1.b),
-		speed(0.b),
-		size(28.b),
-		anim(0.b, 20057.w, 8.d),
-		"Ribbit, ribbit, ribbit!!",
-		anim(0.b, 20057.w, -1.d),
-		anim(0.b, 20057.w, 3.d)
-	wait	@time, 1.w
-	anim	20057.d, 8.d
-	wait	@anim, 20057.d, -1.d
-	anim	20057.d, 3.d
-	pos	20000.d, 49993.d, 0.w, -21088.d
-	dir	20000.d, 5.w
-	dir	20057.d, 180.w
-	camera	@pos, 49393.d, 325.w, -20709.d, 3.d, 0.w
-	camera	@unk227, 52539.d, -115.d, -12937.d, 3.d, 0.w
-	camera	@unk229, 39.w, 3.d, 0.w
-	camera	@distance, 83.w, 3.d, 0.w
-	wait	@cam
-	camera	@pos, 49393.d, 325.w, -20709.d, 1.d, 100.w
-	camera	@unk227, 53101.d, 386.w, -13176.d, 1.d, 100.w
-	camera	@unk229, 39.w, 1.d, 100.w
-	camera	@distance, 83.w, 1.d, 100.w
-	pushbp
-	setsp	1.w
-	lib	259.w
-	popbp
-	msg	voice(1.b),
-		speed(0.b),
-		size(28.b),
-		anim(0.b, 20057.w, 4.d),
-		"Ribbiiiiiiit!!!!",
-		anim(0.b, 20057.w, -1.d),
-		anim(0.b, 20057.w, 1.d)
-	camera	@pos, 48307.d, 154.w, -16054.d, 3.d, 0.w
-	camera	@unk227, 52048.d, 759.w, -23546.d, 3.d, 0.w
-	camera	@unk229, 26.w, 3.d, 0.w
-	camera	@distance, 83.w, 3.d, 0.w
-	pushbp
-	setsp	20057.d
-	setsp	0.d
-	setsp	0.w
-	setsp	13.d
-	setsp	0.w
-	lib	210.w
-	popbp
-	lib	67.w
-	msg	voice(0.b),
-		speed(0.b),
-		"Nice work! Way to go, Chibi-Robo!",
-		wait(255.b)
-	wait	@time, 30.w
-	camera	@pos, 47359.d, 919.w, -25067.d, 3.d, 0.w
-	camera	@unk227, 51412.d, 127.w, -17758.d, 3.d, 0.w
-	camera	@unk229, 26.w, 3.d, 0.w
-	camera	@distance, 83.w, 3.d, 0.w
-	msg	anim(0.b, 20057.w, 2.d),
-		voice(1.b),
-		speed(0.b),
-		"Ribbit! Ribbit, ribbit!!",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(0.b),
-		speed(0.b),
-		speed(0.b),
-		"The frog seems to be saying something.\n",
-		"I don't understand this strange language.",
-		wait(255.b)
-	msg	anim(0.b, 20057.w, 2.d),
-		voice(1.b),
-		speed(0.b),
-		"Ribbiiiiit!!",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	camera	@pos, 48307.d, 154.w, -16054.d, 3.d, 0.w
-	camera	@unk227, 52048.d, 759.w, -23546.d, 3.d, 0.w
-	camera	@unk229, 26.w, 3.d, 0.w
-	camera	@distance, 83.w, 3.d, 0.w
-	anim	20057.d, 16.d
-	pushbp
-	setsp	26.d
-	lib	79.w
-	popbp
-	wait	@time, 1.w
-	anim	20057.d, 1.d
-	lib	67.w
-	wait	@time, 1.w
-	set	cur_suit, 2.d
-	camera	@pos, 47359.d, 919.w, -25067.d, 3.d, 0.w
-	camera	@unk227, 51412.d, 127.w, -17758.d, 3.d, 0.w
-	camera	@unk229, 26.w, 3.d, 0.w
-	camera	@distance, 83.w, 3.d, 0.w
-	wait	@time, 200.w
-	wait	@cam
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"Thank you, ribbit! I'm fine now, thanks to you!",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"My boyfriend's lost in that house, and\n",
-		"I'm tired of waiting around, ribbit.",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"Now that you're one of us,\n",
-		"you can speak Ribbitese, too.",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"Cool, huh? Isn't it just the greatest? Ribbit?",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"Now that we can communicate,\n",
-		"I have to ask you a favor.",
-		anim(0.b, 20057.w, 1.d),
-		wait(255.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"Could you please find my lost boyfriend, ribbit?!",
-		anim(0.b, 20057.w, 1.d),
-		wait(254.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"He's probably collapsed somewhere,\n",
-		"all alone without even a fly to eat, ribbit!",
-		anim(0.b, 20057.w, 1.d),
-		wait(254.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"If you find him, I want you to bring him here!",
-		anim(0.b, 20057.w, 1.d),
-		wait(254.b)
-	msg	voice(26.b),
-		speed(0.b),
-		anim(0.b, 20057.w, 2.d),
-		"I'm counting on you! Ribbit!",
-		anim(0.b, 20057.w, 1.d),
-		wait(254.b)
-	mdir	20057.d, @dir, 0.w, 50.w, -1.d
-	wait	@dir, 20057.d
-	moveto	20057.d, 50500.d, 0.w, -15060.d, 200.w, 7.d, -2.d
-	wait	@move, 20057.d
-	anim	20057.d, 5.d
-	wait	@anim, 20057.d, -1.d
-	sfx	393226.d, 1.d
-	anim	251.d, 1.w, 0.w
-	disp	20057.d, 0.d
-	wait	@time, 100.w
-	camera	@unk230
-	lib	88.w
-	set	var(31.d), add(var(31.d), 1.w)
-	break	*loc_1853
+
 loc_1853:
 	endif	*loc_1854
 loc_1859:
@@ -6239,7 +6072,8 @@ loc_1874:
 loc_1876:
 	break	*loc_1877
 loc_1877:
-	if	eq(item(26.d), 0.w), else *loc_1883
+	; if	eq(item(26.d), 0.w), else *loc_1883
+	if	eq(var(674.d), 0.w), else *loc_1883
 	if	eq(var(31.d), 0.w), else *loc_1882
 	set	flag(1566.d), 1.w
 	mdir	20000.d, @obj, 307.d, 30.w, 3.d

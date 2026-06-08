@@ -15,7 +15,32 @@ loc_enable_copter:
 	set	atc(1.d), 1.w ; copter
 	return	
 
+wash_pan_drop:
+
+	sfx	236.d, 1.d
+	wait	@time, 1.w
+	anim	20000.d, 53.d ; Fall Down
+	wait	@time, 15.w
+	sfx	237.d, 1.d
+	wait	@anim, 20000.d, -1.d
+	anim	20000.d, 54.d
+	ptcl	5.d, @obj, sp(2.b), 0.w, 1000.w, 0.w, 100.w, 100.w, 100.w, 0.w ; partical around chibi head
+	wait	@time, 50.w
+	sfx	70.d, 1.d
+	wait	@anim, sp(1.b), -1.d
+	wait	@time, 80.w
+
+	anim	20000.d, 55.d ; Get Up
+	wait	@anim, 20000.d, -1.d
+	anim	sp(1.b), 0.w
+	anim	sp(2.b), 1.d
+	read	@anim, 20000.d, 0.d
+
+	return
 	
+loc_return:
+	return
+
 loc_3246:
 	.db	"cb_robo_4.dat"
 
@@ -12054,36 +12079,6 @@ sub_1685: ; rope script
 	return
 
 
-	.interact  133.d, *evt_item_brush_133
-evt_item_brush_133:
-	lib	38.w
-	set	flag(476.d), 1.d
-	set	var(108.d), var(107.d)
-	;if	flag(395.d), else *loc_3083
-	set	flag(395.d), 0.w
-	run	*sub_880
-loc_3083:
-; Toothbrush event 
-	pushbp
-	setsp	item_name(16.d)
-	pushbp
-	popbp
-	; lib	254.w
-	lib	39.w
-
-	
-	; set	level, add(level, 1.w)
-	; set	var(166.d), level
-	; set	battery(1.d), add(2000, battery(1.d))
-	; msg	voice(0.b),
-	; 	speed(0.b),
-	; 	anim(0.b, 20005.w, 1007.d),
-	; 	"Your battery increased!",
-	; 	wait(255.b)
-
-	return
-
-
 sub_1686:
 	disp	10106.d, 0.d
 	lib	12.w
@@ -12685,8 +12680,13 @@ loc_492: ; Telly Teaching You About The Hud
 	lib	145.w
 	popbp
 	scrn	@hud, 0.d, 2.d
-	return
+	scrn	@hud, 1.d, 3.d
+	scrn	@hud, 1.d, 7.d
+	scrn	@hud, 1.d, 6.d
 
+	; run *wash_pan_drop
+
+	return
 
 sub_1688:
 	win	@letterbox
@@ -14277,126 +14277,6 @@ loc_1638:
 	return
 
 
-sub_2560:
-	lib	247.w
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		size(30.b),
-		"Good morning, Chibi-Robo.",
-		wait(255.b),
-		anim(0.b, 20008.w, 1020.d)
-	wait	@time, 80.w
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"What's this? No answer, eh? ",
-		wait(255.b),
-		anim(0.b, 20008.w, 1020.d)
-	lib	12.w
-	anim	20008.d, 4.d
-	wait	@time, 16.w
-	sfx	851978.d, 1.d
-	wait	@time, 61.w
-	sfx	325.d, 1.d
-	wait	@anim, 20008.d, -1.d
-	anim	20008.d, 5.d
-	pushbp
-	setsp	3.w
-	lib	259.w
-	popbp
-	sfx	295.d, 1.d
-	set	var(0.d), sub(obj(@dir, 20008.d), 180.w)
-	set	var(1.d), add(obj(@pos_x, 20008.d), mul(sin(mul(var(0.d), 100.w)), 20.w))
-	set	var(2.d), obj(@pos_y, 20008.d)
-	set	var(3.d), add(obj(@pos_z, 20008.d), mul(cos(mul(var(0.d), 100.w)), 20.w))
-	ptcl	35.d, @pos, var(1.d), var(2.d), var(3.d), 150.w, 150.w, 150.w, add(var(0.d), 180.w)
-	msg	voice(7.b),
-		speed(0.b),
-		size(28.b),
-		"Space Hunter Code, Part One:\n",
-		"Greet everyone by yelling!",
-		wait(255.b)
-	wait	@time, 60.w
-	lib	96.w
-	anim	20008.d, 6.d
-	wait	@anim, 20008.d, -1.d
-	anim	20008.d, 1020.d
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"Mmm... Perhaps you have been shocked into\n",
-		"silence by the sight of toys moving?",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"Do not be afraid, friend! The toys in this house\n",
-		"move and speak when humans aren't around.",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		size(28.b),
-		"Enough talk! It bores Drake Redcrest!\n",
-		"Let us be friends, O diminutive one!",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	wait	@time, 50.w
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"As a friend, it is my duty to inform you that\n",
-		"your life appears to need more justice.",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"But Drake Redcrest can solve that problem!",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		speed(0.b),
-		"Take this special gift! It's just for you!",
-		wait(10.b)
-	msg	voice(7.b),
-		speed(0.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1021.d),
-		"HA HA HA HAAAAAAAAAA!!!",
-		anim(0.b, 20008.w, -1.d),
-		anim(0.b, 20008.w, 1.d)
-	wait	@time, 1.w
-	pushbp
-	setsp	24.d ; Set Item To Give (Drake Suit)
-	lib	79.w ; Give Set Item
-	popbp
-	wait	@time, 1.w
-	lib	67.w 
-	wait	@time, 1.w
-	lib	105.w ; @anim
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"Shall I show you how to don it, friend?",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b),
-		stay
-	run	*sub_2564
-	if	ne(cur_suit, 1.d), else *loc_2563
-	msg	voice(7.b),
-		speed(0.b),
-		anim(0.b, 20008.w, 1019.d),
-		"Put it on! Do not keep Drake Redcrest waiting!\n",
-		"Show me how it looks on you!",
-		anim(0.b, 20008.w, 1020.d),
-		wait(255.b)
-	endif	*loc_2562
 loc_2563:
 	msg	voice(7.b),
 		speed(0.b),

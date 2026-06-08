@@ -197,6 +197,10 @@
     <Compile Include="ItemPool.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\OptionsForm.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,7 +228,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\cookie_kakera_edited.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\globals.us">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\kami_kuzu_edited.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Resources\misc_edited.tpl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\stage01.us">
@@ -277,8 +290,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chibi_body_icon.ico" />
+    <Content Include="interfaceIMG-Old.PNG" />
+    <Content Include="interfaceIMG.PNG" />
     <Content Include="Newtonsoft.Json.dll" />
     <None Include="Resources\chibi_body_icon.png" />
+    <Content Include="Resources\chibiWalk.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\chibi_body_icon.ico" />
     <Content Include="Resources\Icon-Card_Mug.png" />
     <Content Include="Resources\Icon-Card_Spoon.png" />
@@ -287,6 +305,8 @@
     <Content Include="Resources\Icon-Chibi-Copter.png" />
     <Content Include="Resources\Icon-Chibi-Radar.png" />
     <Content Include="Resources\Icon-Toothbrush.png" />
+    <Content Include="Resources\interfaceIMG-Old.PNG" />
+    <Content Include="Resources\interfaceIMG.png" />
     <Content Include="Resources\tex1_400x188_fdd08a7791cd4603_5.png" />
     <Content Include="Resources\title_en_rando.png" />
     <Content Include="unplug.exe">
