@@ -14202,6 +14202,8 @@ loc_3872:
 	run	*lib_320
 loc_3857:
 	anim	20003.d, 1032.d
+	; --- AP: rings given this visit = inventory stack item(0) + the one held in hand ---
+	set	var(147.d), add(item(0.d), 1.w)
 	set	var(1.d), mul(33.d, var(147.d))
 	set	var(2.d), mul(50.d, var(147.d))
 	pushbp
@@ -14214,7 +14216,9 @@ loc_3857:
 	popbp
 	anim	20003.d, 1008.d
 	wait	@time, 30.w
-	if	eq(var(71.d), 10.w), else *loc_3868 ; total frog ring count?
+	set	var(71.d), add(var(71.d), var(147.d))
+	set	item(0.d), 0.w
+	if	ge(var(71.d), 10.w), else *loc_3868 ; total frog ring count
 	if	eq(map(0.d), 1.d), else *loc_3866
 	read	@anim, 20001.d, *loc_3886
 	read	@anim, 20002.d, *loc_3887

@@ -57,7 +57,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.1";
+        string supportedAPVersion = "1.2.2";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -2168,8 +2168,13 @@ namespace WindowsFormsApp1
                "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                "\t\twait(254.b)" +
-               "\r\n\tset\tvar(71.d), add(var(71.d), 1.w)" +
-               "\r\n\tset\tvar(147.d), add(var(147.d), 1.w)" + Environment.NewLine +
+               // Add the frog ring to inventory (item(0)) so it can be carried to Jenny.
+               // Counting is handled entirely by Jenny's turn-in (item(0)+1 -> var(71)),
+               // so do NOT bump var(71)/var(147) here or rings get double-counted.
+               "\r\n\tpushbp" +
+               "\r\n\tsetsp\t0.d" +
+               "\r\n\tlib\t77.w" +
+               "\r\n\tpopbp" + Environment.NewLine +
                "\treturn\n" + Environment.NewLine);
 
             }
