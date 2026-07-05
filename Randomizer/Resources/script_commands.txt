@@ -1,0 +1,330 @@
+================================================================================
+ CHIBI-ROBO (.us) SCRIPT COMMAND REFERENCE
+================================================================================
+ The .us files are the disassembled stage/globals scripts for the unplug
+ toolchain (https://github.com/adierking/unplug). Each stage has a script plus
+ an object list (the stageNN.json). This document explains the SCRIPT commands.
+
+ Examples below are drawn from this project's own files (mostly the door work in
+ stage02.us / stage01.us) so they match what you're editing.
+
+
+--------------------------------------------------------------------------------
+ 0. HOW A LINE IS STRUCTURED
+--------------------------------------------------------------------------------
+ A statement is:   <command>  <arg>, <arg>, ...
+ Indented by a tab. Labels sit at column 0 and end with ':' :
+
+     sub_480:                       <- a label (a jump/call target)
+         anim   49.d, 1.w           <- a command with two args
+         return
+
+ - Comments start with ';'  ->   set flag(718.d), 1.w ; kitchen door
+ - Labels are referenced with a leading '*' :  run *sub_480 ,  else *loc_859
+ - "obj 20000" is always Chibi-Robo.  Other numbers are object IDs from the
+   stage's JSON object list (matching the "id" field).
+
+
+--------------------------------------------------------------------------------
+ 1. NUMBER SUFFIXES  (.b / .w / .d)
+--------------------------------------------------------------------------------
+ Every literal has a size suffix; it only sets how many bytes the value uses and
+ does NOT change the value:
+     .b = 8-bit byte      1.b
+     .w = 16-bit word     1000.w
+     .d = 32-bit dword    250000.d
+ Use .d for large or negative numbers (e.g. -19660.d). When in doubt, .d is safe.
+
+
+--------------------------------------------------------------------------------
+ 2. EXPRESSIONS  (used inside command arguments and `if`)
+--------------------------------------------------------------------------------
+ State accessors (read a game value):
+     flag(N)     global on/off bit N (persists in the save).  flag(718)
+     var(N)      script variable N (scratch / state, not a saved flag). var(881)
+     item(N)     quantity of inventory item N
+     atc(N)      attachment unlocked: 1=copter, 2=blaster, 3=radar
+     time(0)     time of day (0/1 = day/night-ish)
+     map(0)      current room id
+     battery(N)  battery values (0=current, 1=max)
+     obj(@field, OBJ)   read an object field, e.g. obj(@pos_x, 20000)
+     hold        ID of the item Chibi-Robo is holding
+     cur_suit    currently worn suit ;  cur_atc  currently equipped attachment
+     result      return value of the last `run` / `lib` / system call
+     sp(i) / bp(i)   stack / parent-stack slots (subroutine args - see sec 4)
+     rand(N)     random number 0..N-1
+
+ Comparisons (return 0/1):
+     eq(a,b)  equal        ne(a,b)  not equal
+     lt / le / gt / ge     less / less-or-equal / greater / greater-or-equal
+ Logic:
+     and(a,b)  or(a,b)  not(a)
+     A bare value is "true" if non-zero:   if flag(11.d), else *loc  (true when flag 11 != 0)
+ Math:
+     add(a,b) sub(a,b) mul(a,b) div(a,b) mod(a,b)
+ Compound-assign forms used with `set` (one-arg form):
+     adda(t,v) suba(t,v) mula(t,v) diva(t,v) moda(t,v) ...  (t += v, etc.)
+
+ Example:
+     if  and(eq(flag(11.d), 1.d), eq(flag(17.d), 0.d)), else *loc_892
+         ; true only if flag 11 == 1 AND flag 17 == 0
+
+
+--------------------------------------------------------------------------------
+ 3. CONTROL FLOW
+--------------------------------------------------------------------------------
+ if EXPR, else *LABEL
+     If EXPR is FALSE, jump to LABEL. If true, fall through into the block.
+         if eq(var(1860.d), 1.d), else *loc_closed
+             ... runs when flag 1860 == 1 ...
+         loc_closed:
+
+ elif EXPR, else *LABEL
+     "else if" - tested only when the previous if/elif was false.
+
+ endif *LABEL
+     Marks the end of an if-block; ALSO an unconditional jump to LABEL (it skips
+     the else branch). So the `else *X` target is the else-block, and `endif *Y`
+     is the join point after the whole statement:
+         if not(var(0.d)), else *loc_859     ; if var0==0 do the block, else jump
+             set flag(718.d), 1.w
+         endif *loc_858                       ; jump past the else block
+         loc_859:                             ; <- the else block
+             run *sub_783
+         loc_858:                             ; <- both paths continue here
+
+ case EXPR, else *LABEL    - like `if`, used to build switch-style chains.
+ while EXPR, else *LABEL   - loop: runs body while EXPR true, exits to LABEL.
+ break *LABEL              - jump out (used to leave a case/while), = goto.
+ goto *LABEL               - unconditional jump.
+ return                    - return from the current subroutine / handler.
+ abort                     - hard-stop the script.
+
+ run *LABEL    - call a subroutine; execution resumes after it returns.
+                   run *sub_862
+ lib INDEX     - call a shared library function (defined in globals.us via .lib).
+                   lib 73.w        ; runs the day/night setup routine
+ call OBJ, EXPR...  - invoke a built-in/system call, optionally on an object.
+                   call 20000.d, 701.d   ; a system call on Chibi-Robo
+
+
+--------------------------------------------------------------------------------
+ 4. SUBROUTINE ARGUMENTS  (pushbp / setsp / popbp / sp() / bp())
+--------------------------------------------------------------------------------
+ To pass arguments to a `run` or `lib`, push them on the stack first:
+     pushbp                 ; save the stack frame (always before pushing args)
+     setsp  10135.d         ; push arg(s) with setsp
+     setsp  10115.d
+     setsp  32.d
+     lib    114.w           ; call; the lib reads them
+     popbp                  ; restore the frame (always after the call)
+ Inside the called routine, arguments are read with bp(0), bp(1), ...
+ sp(i) refers to the current routine's own pushed slots.
+ set    sp(0.d), result     ; store a result back into a slot
+ (You rarely need to hand-write this; it mostly appears in decompiled calls.)
+
+
+--------------------------------------------------------------------------------
+ 5. OBJECT MANIPULATION
+--------------------------------------------------------------------------------
+ disp OBJ, 0|1
+     Show (1) or hide (0) an object. Hiding also removes its collision, so this
+     is the usual way to enable/disable a collision dummy or a loading zone.
+         disp 22.d, 1.d     ; enable the bedroom map_jump_box (loading zone)
+         disp 22.d, 0.d     ; disable it
+
+ kill OBJ
+     Destroy a spawned object by id.
+         kill 10001.d
+
+ born ID, TYPE, X, Y, Z, ROT, exX, exY, exZ, *ADDRESS
+     Spawn an object. 9 numeric args + a handler label (*0 / 0.w = none).
+       ID    = unique instance id (use a free number; e.g. 10000+ range)
+       TYPE  = object type. TYPE 2 = an INVISIBLE COLLISION BOX (a wall).
+       X,Y,Z = position in GAME UNITS (= JSON position * ~98.18). Y is the box's
+               vertical center.
+       ROT   = Y-axis rotation in degrees (0/90/180/270 or any angle).
+       exX/exY/exZ = half-size in each axis. The SMALLEST of X/Z is the wall's
+               thickness; the player is blocked from crossing that thin face.
+       ADDRESS = subroutine to attach (0.w = none; type-2 walls use 0.w).
+     Example - the invisible wall that blocks the kitchen door when closed:
+         born 10000.d, 2.d, -19660.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w
+     A born wall is recreated each room load and cleared when you leave the room.
+
+ attach OBJ, *LABEL   - run LABEL as a background routine tied to the object
+                          (each frame) until detached / object dies.
+                          attach 33.d, *sub_889
+ detach OBJ           - stop the attached background routine.
+
+
+--------------------------------------------------------------------------------
+ 6. ANIMATION & TRANSFORM
+--------------------------------------------------------------------------------
+ anim OBJ, INDEX [, ...]
+     Play animation INDEX on an object. For doors in this game, index 1 is the
+     OPEN animation and index 0 is the CLOSED pose:
+         anim 24.d, 1.w     ; open the door
+         anim 24.d, 0.w     ; close the door
+     Some objects use higher indices for other states (transition/impact poses).
+
+ dir OBJ, DEGREES
+     Set an object's Y-rotation (instant). Used to swing some doors open/closed:
+         dir 48.d, -12.d    ; parent_door open orientation
+         dir 48.d, 0.w      ; parent_door closed orientation
+
+ mdir OBJ, @MODE, ...   - "managed"/animated rotation over time. Modes:
+         @obj  - turn to face another object:  mdir 20003.d, @obj, 77.d, 1.w, -1.d
+         @pos  - turn to face a position       @dir - turn to a heading
+         @cam  - turn toward the camera
+
+ pos OBJ, X, Y, Z       - teleport an object to a position (game units).
+                            pos 177.d, -7100.d, 3348.w, -12086.d
+ move OBJ, X, Y, Z, TIME      - move smoothly to an offset/target over TIME.
+ moveto OBJ, X, Y, Z, ...     - advanced timed move with extra params.
+ scale OBJ, sx, sy, sz        - set scale factors.
+ mscale OBJ, sx, sy, sz, TIME - animated scale over time.
+ size OBJ, ...                - set object size.
+ rotate OBJ, ...              - rotate (axis/amount).
+ color OBJ, @modulate, R, G, B, TIME   - tint the object (RGBA, 0-255).
+ color OBJ, @blend, R, G, B, TIME      - blend the object's color.
+         color -2.d, @modulate, 255.w, 255.w, 255.w, 0.w   ; -2 = the scene/screen
+
+
+--------------------------------------------------------------------------------
+ 7. CAMERA, WAITING & TIMERS
+--------------------------------------------------------------------------------
+ camera @MODE, ...    - control the camera. Common modes:
+     @pos, X, Y, Z, MODE, SPEED        - move camera to a position
+     @unk227, X, Y, Z, MODE, SPEED     - the camera's look-at target
+     @distance, D, MODE, SPEED         - zoom distance
+     @obj, OBJ, ...                    - focus on an object
+     @reset, ...                       - reset the camera
+         camera @pos, -20877.d, 3598.w, 20655.w, 2.d, 100.w
+
+ wait @WHAT[, args]   - pause the script until something finishes:
+     @time, N         - wait N frames:        wait @time, 50.w
+     @anim, OBJ, -1.d - wait for an animation: wait @anim, 20001.d, -1.d
+     @move, OBJ       - wait for a move        @cam  - wait for camera
+     @fade            - wait for a fade        @read, OBJ - wait for a load
+ check @WHAT...       - like wait, but tests completion WITHOUT blocking
+                        (returns into `result`).
+ timer DELAY, *LABEL  - run LABEL after DELAY has elapsed.
+
+
+--------------------------------------------------------------------------------
+ 8. MESSAGES & MENUS
+--------------------------------------------------------------------------------
+ msg ...              - show a dialogue message. The "args" are a mix of inline
+                        functions and quoted text:
+         msg voice(3.b),
+             speed(0.b),
+             anim(1.b, 20001.w, 51.d),    ; play anim on the speaker mid-line
+             wait(5.b),
+             "Chibi-Robo! You gotta get it\n",
+             "back for me! You just GOTTA!",
+             stay
+   Inline msg functions:
+     voice(id)   - voice clip       speed(x)   - text speed (0=default-ish)
+     wait(n)     - pause n; 254/255 = wait for a button press
+     center(1)   - center text      icon(i)    - show an icon
+     format(str) - printf-style, pulls values from the stack
+     shake(...)  - shaky text       stay       - keep the window open at the end
+ select ...           - show a custom choice menu (same inline funcs as msg).
+ menu 0..7            - show a predefined menu; result comes back in `result`.
+ input(digits,...)    - number-entry prompt (e.g. passwords).
+ win @MODE, ...       - window control: @pos, @color, @reset, @letterbox, @obj.
+ printf "..."         - debug log only; does NOTHING in the retail game. Handy
+                        as a code comment/marker:   printf "born_PAMA_DOOR\n"
+
+
+--------------------------------------------------------------------------------
+ 9. AUDIO, SCREEN FX, LIGHTING, PARTICLES
+--------------------------------------------------------------------------------
+ sfx SOUND, @cue            - play a sound cue.
+ sfx SOUND, 0..6 [, args]   - sound control variants (stop/loop/volume/etc.).
+ scrn @MODE, ...            - full-screen effects:
+     @fade, ...      - fade in/out      @letterbox, ...  - cinematic bars
+     @shake, ...     - screen shake     @hud, 0..4       - show/hide the HUD
+     @mono / @wipe / @zblur - colour, wipe, depth-blur transitions
+         scrn @fade, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 255.w, 0.w
+ light SLOT, @color, R, G, B   - set a light's colour.
+ light SLOT, @pos, X, Y, Z     - set a light's position.
+ ptcl ID, @obj|@pos|@lead, ... - spawn a particle effect on an object/position.
+ shake(...)                    - (within msg) shaky text.
+
+
+--------------------------------------------------------------------------------
+ 10. RESOURCES & ROOM TRANSITIONS
+--------------------------------------------------------------------------------
+ read @anim, OBJ, "file.dat"  - load an animation resource for an object.
+ read @sfx,  OBJ, "file.ssm"  - load a sound bank.
+ warp STAGE, ENTRY            - send the player to another room.
+         warp 7.d, 1.w ; Living Room    (stage id 7, entry point 1)
+     Room ids: 1 Kitchen, 2 Foyer, 3 Basement, 4 Jenny's Room, 5 Chibi-House,
+     6 Bedroom, 7 Living Room, 9 Backyard, 11 Drain, 17 Chibi-House entry...
+ movie "file", ...            - play a video (e.g. the prologue cutscene).
+
+
+--------------------------------------------------------------------------------
+ 11. SET (writing values)
+--------------------------------------------------------------------------------
+ set TARGET, VALUE
+     Assign a flag / variable / slot.
+         set var(1860.d), 1.w     ; open the kitchen door (door flag)
+         set var(695.d), 0.w       ; clear a script variable
+         set time(0.d), 1.d        ; force night
+ set UPDATE_EXPR              - compound update form:
+         set adda(var(41.d), 1.w)  ; var41 += 1
+
+
+--------------------------------------------------------------------------------
+ 12. DIRECTIVES  (file/structure declarations, start with '.')
+--------------------------------------------------------------------------------
+ .stage "stageNN"     - declares this is a stage script (first line).
+ .globals             - declares this is the globals script.
+ .startup *LABEL      - LABEL runs every time the room loads. (Good place to set
+                        up doors, spawn walls, position NPCs.)
+ .prologue *LABEL     - the room's one-time prologue/intro entry.
+ .pose *LABEL         - handler for the pose action.
+ .dead *LABEL         - handler for player death.
+ .time_cycle *LABEL   - runs on a day/night transition (NOT every room load).
+                        NOTE: lib_73 is invoked from here - that's why putting
+                        door flags in lib_73 only set them on a time change.
+ .interact OBJ, *LABEL- LABEL runs when the player interacts with OBJ (e.g. a
+                        map_jump_box loading zone, or a talkable NPC):
+                            .interact 18.d, *evt_map_jump_box_18
+ .lib INDEX, *LABEL   - (globals only) defines library function INDEX -> LABEL.
+                            .lib 73.w, *lib_73
+ .db / .dw / .dd      - embed raw bytes / 16-bit / 32-bit data after a label
+                        (filenames, tables):   loc_2747: .db "cb_robo_1.dat"
+
+
+================================================================================
+ 13. WORKED EXAMPLE - a flag-controlled door (from this project)
+================================================================================
+ Putting it together, here is how a door is opened/closed by a flag. When the
+ flag is 1 the door animates open and no wall spawns; when 0 it stays shut and a
+ collision wall + (where needed) the loading zone is disabled.
+
+     sub_480:                                  ; runs from .startup
+         if eq(var(1860.d), 1.d), else *loc_kdoor_closed   ; 1 = open
+             anim 50.d, 1.w                    ; swing both door halves open
+             anim 49.d, 1.w
+             return
+         loc_kdoor_closed:                      ; 0 = closed
+             born 10000.d, 2.d, -19660.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w
+             return                             ; invisible wall blocks the way
+
+ And the matching loading-zone handler refuses to warp while the door is closed:
+
+     evt_map_jump_box_18:
+         if eq(var(1860.d), 0.d), else *loc_open   ; closed -> do nothing
+             return
+         loc_open:
+             ... camera / move ...
+             warp 7.d, 1.w ; Living Room
+
+ KEY UNITS REMINDER:  born/pos/camera positions are GAME UNITS = JSON x ~98.18.
+ To place something where an object sits, take its JSON position and multiply by
+ 98.18, or RAM-watch Chibi-Robo's X/Z (already game units) at the spot.
+================================================================================

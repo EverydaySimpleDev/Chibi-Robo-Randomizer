@@ -1,0 +1,199 @@
+================================================================================
+ CHIBI-ROBO (.us) PER-LEVEL SCRIPT GUIDE
+================================================================================
+ What the labels in each stage script are, and what each level's script contains.
+
+
+--------------------------------------------------------------------------------
+ LABEL TYPES (first - so the per-level lists make sense)
+--------------------------------------------------------------------------------
+   evt_<name>_<id>   NAMED event handlers - the meaningful "functions" of a
+                     level. The name tells you what it is (an NPC, an item, a
+                     loading zone, a stain...). These are what this guide lists.
+   loc_<N>           AUTO-GENERATED jump labels (branch targets inside a routine).
+                     There are thousands; individually they're just "go here"
+                     points with no standalone meaning, so they are NOT listed
+                     per-level. Read the code around a loc_ to see its role.
+   sub_<N>           Internal subroutines (called via `run *sub_N`). Mostly
+                     generic helpers specific to one routine.
+   lib_<N>           Library functions - these exist ONLY in globals.us and are
+                     shared by every stage (called via `lib N.w`). They are
+                     documented separately in lib_functions.txt, NOT per-level.
+
+ So "per level" the real content is: the ENTRY POINTS + the evt_* handlers.
+
+
+--------------------------------------------------------------------------------
+ ENTRY POINTS (every house stage declares the same set)
+--------------------------------------------------------------------------------
+   .prologue  *evt_prologue     one-time intro for the room
+   .startup   *evt_startup      runs EVERY time you enter the room (door setup,
+                                NPC placement, spawns - this is where the door
+                                flags are read)
+   .dead      *evt_dead         player-death handler
+   .pose      *evt_pose         pose-action handler
+   .time_cycle *evt_time_cycle  runs on a DAY/NIGHT change (calls lib 73); NOT
+                                on every room load
+   .interact <objId>, *evt_...  one per interactive object in the room
+
+
+--------------------------------------------------------------------------------
+ COMMON evt_ NAME PREFIXES (decoder)
+--------------------------------------------------------------------------------
+   map_jump_box       a room loading zone (a warp trigger). Its handler does the
+                      transition and `warp <room>`.
+   plug_start         a power outlet (plug in to recharge).
+   plug_dokodakadoor  a Chibi-Door (the warp-network doors / "dokodaka door").
+   house_r_chibi_h_*  Utilibot / Chibi-House warp objects (main/warp/door/dai).
+   npc_<who>          a character interaction. Names:
+                        tonpy=Telly  mama=Mom  papa=Dad  jenny=Jenny  tao=Tao
+                        bb=Sophie  et_1=Aliens  army_1=Sarge  army_2=Free Rangers
+                        army_3/4/5=ranger variants  hock=Captain Plankbeard
+                        fafa=Sunshine  sun_mida=Peekoe  keath=Drake Redcrest
+                        zobin=Mort  peets=Princess Pitts  t_rex/t_track=Dinah
+                        frog/dry_frog=Frog  bird=Bluebird  deca_robo=Giga-Robo
+                        consentman=Mr. Prongs  spider_1/2/3=Spydorz
+                        funky_f/funky_f_3=Funky Phil/Freaky Phil  primo=Primopuel
+   item_<name>        a pick-up (the <name> is the item, e.g. frog_ring, cracker,
+                      deka_denchi=Giga-Battery, papa_yubiwa=Dad's ring).
+   yogore_<kind>      a STAIN/mess to clean:
+                        water=water  shimi=dirt  hito=footprints  hun=bird poop
+                        oil=oil  kureyon=crayon (brush) / kureyon_k=crayon
+                        (squirter)  toy=Dinah prints  ff=Funky sweat  cook_o=honey
+                        h_s/h_k=Drain stains
+   living_happy_box   a breakable Happy-Point box.   sa_seal = Sunshine sticker.
+   living_asiato      Tao pawprint.   takarabako = treasure chest.
+   test_box_/test_dust_  debris / boxes.
+
+ Room IDs used by `warp`:
+   0 Debug  1 Kitchen  2 Foyer  3 Basement  4 Jenny's Room  5 Chibi-House
+   6 Bedroom  7 Living Room  9 Backyard  11 Drain  16/17 Chibi-House  (14 intro)
+
+
+================================================================================
+ PER-LEVEL BREAKDOWN
+================================================================================
+
+ stage01 - KITCHEN
+   Connects to: Living Room (7), Foyer (2), Drain (11).
+   Loading zones: map_jump_box 18 (->Living), 19 (->Foyer), 20/21/22.
+   Outlets: plug_start 72/73.  Chibi-Doors: plug_dokodakadoor 40-48.
+   NPCs: Telly(17), Mom(23), Jenny(24), Dad(26), Tao(25), Peekoe(222),
+         Sophie(212/365), Aliens(194-197), ranger(239).
+   Items/events: block_sugar, flower_cookie, parent_receipt/bills/account_book,
+         frog_ring(241), gas_plate(190), tao_dish, kingyo(fishbowl), conro.
+   Utilibots/Chibi-House: house_r_chibi_h_main 67/210, chibi_h_door_2 229.
+   Doors (randomizer): kitchen_door = flag 1860 (sub_480).
+
+ stage02 - FOYER (+ hallway / stairs)
+   Connects to: Kitchen(1), Basement(3), Jenny's(4), Bedroom(6), Living(7),
+                Backyard(9).
+   Loading zones: map_jump_box 19(->Living), 20(->Basement), 21(->Kitchen),
+                  22(->Bedroom), 23(->Jenny's).
+   Outlets: plug_start 67/68.
+   NPCs: Jenny(269), Dad(284/289 sleeping), Tao(110/507 sleeping), Sarge(87),
+         Free Rangers(88-107), ranger variants(108/109/375), Sunshine(449),
+         Spydorz(396-405).
+   Jungle/handrail training: rouka_army_ita_1 363-367.
+   Items: cracker 417/418.  Door prop: rouka_door_stop 319.
+   Doors (randomizer): rouka_door_j 1861, rouka_door_k 1862, rouka_door_l 1863,
+         rouka_door_pama 1864 (all in sub_862; door flags initialized in
+         stage05 sub_576). See door_flags.txt.
+
+ stage03 - BASEMENT (storehouse / souko)
+   Connects to: Foyer (via map_jump_box 4); plus map_jump_box 247.
+   NPCs: Telly(11), Captain Plankbeard(7), Aliens(102-105).
+   Items: deka_denchi(6, Giga-Battery), chibi_house_denti_2(121),
+          tonpy_i/j(96/97 - Telly props).
+   Chibi-House warps: house_r_chibi_h_warp 34/155, chibi_h_door_2 123/124.
+   Chibi-Doors: plug_dokodakadoor 21-24.
+   Stains: yogore_shimi 218-224, yogore_water 28-32.
+   Shelf: souko_shelf_dami 120.
+
+ stage04 - JENNY'S ROOM
+   Connects to: Foyer (2), Chibi-House (5).
+   Loading zones: map_jump_box (3).
+   NPCs: Mort(zobin x3), Princess Pitts(peets), Drake(keath), Jenny, Sunshine
+         (fafa), Aliens(et_1), castle soldiers(jenny_heitai_1/4).
+   Items: crayons (yogore_kureyon - 19 brush stains + kureyon_k squirter ones),
+          takarabako (treasure chest), sa_seal (Sunshine stickers).
+   Stains: yogore_shimi, yogore_water, yogore_cook_o (honey).
+   Chibi-Doors: plug_dokodakadoor (7).  Happy boxes: living_happy_box (7).
+   Doors (randomizer): jenny_door 1866; jenny_castle_door 1867 (special).
+
+ stage05 - CHIBI-HOUSE
+   Connects to: Living Room (7) on exit.
+   This is the home base. evt_startup -> sub_24 -> sub_576 ("first time loading
+   into chibi house") runs ONCE at game start and is where this project sets the
+   door flags (1860-1870) and many starting vars. See door_flags.txt / vars.txt.
+   Features: chibi_house_gacha (Recyclotron), chibi_house_denti_1/2 (Giga-Battery
+   / Giga-Charger), chibi_house_chi_pc (Chibi-PC), item_capsule_17 (Utilibot
+   capsule), item_cracker, test boxes.  NPC: Telly(tonpy).
+
+ stage06 - BEDROOM (parents' room)
+   Connects to: Foyer (2 x3), Living (7), Backyard (9).
+   Loading zones: map_jump_box (3).
+   NPCs: Mom(mama x5), Dad(papa x3), Dinah(t_rex / t_track), Funky Phil
+         (funky_f / funky_f_3 = Freaky Phil), Aliens(et_1).
+   Items: mini_funky_1 (Funky Phillies), parent_receipt/bills/mama_calculator,
+          parent_planter (Funky/Legendary seed planter).
+   Stains: yogore_toy (29! Dinah footprints), yogore_shimi(14), yogore_hito,
+           yogore_ff (Funky sweat).
+   Chibi-Doors: plug_dokodakadoor(12).  Happy boxes(3).  sa_seal.
+   Doors (randomizer): parent_door 1868 (sub_585).
+
+ stage07 - LIVING ROOM
+   Connects to: Foyer(2), Kitchen(1), Backyard(9), Chibi-House(17).
+   Loading zones: map_jump_box (13 - the busiest hub).
+   NPCs: Spydorz(spider_2 x11 - the siege), Sophie(bb), Tao, Dad, Mom, Jenny,
+         Sunshine(fafa), Telly, Peekoe(sun_mida), Drake(keath), Giga-Robo
+         (deca_robo_2), Mr. Prongs(consentman_atari), Aliens(et_1).
+   Items/events: living_window_ware (breakable window), test_dust (debris).
+   Stains: yogore_shimi(15), yogore_oil(8), yogore_water, yogore_hito.
+   Outlets: plug_start(7).  Chibi-Doors: plug_dokodakadoor(9).  Happy boxes(10).
+   Tao pawprints: living_asiato(13).
+   Doors (randomizer): living_door 1869, living_door_k 1870 (sub_1062).
+
+ stage09 - BACKYARD
+   Connects to: (outdoor map; map_jump_box x4 + treasure/exit).
+   NPCs: Frog(frog), Bluebird(bird), Tao, Dad, Drake(keath), Spydorz(spider_2),
+         Aliens(et_1).
+   Items: junk_unko (Spydorz junk x8), backyard_window_ware, living_mitu_flower
+          (nectar), takarabako (Scurvy Splinter treasure).
+   Stains: yogore_hun (24! bird poop), yogore_water(10), yogore_hito(8),
+           yogore_shimi, yogore_oil.
+   Chibi-Doors: plug_dokodakadoor(8).  Happy boxes(5).  Mr. Prongs(consentman).
+
+ stage11 - DRAIN (sink drain)
+   Connects to: Kitchen (1).
+   Item: papa_yubiwa (Dad's Wedding Ring).  Event: haisui_room_1_c (break the
+   wall hiding the Frog Ring).  Stains: yogore_h_s(13), yogore_h_k(8).
+   (NOTE: this stage's script is currently NOT recompiled by the randomizer -
+    its `script assemble` line is commented out in Form1.cs.)
+
+ stage14 - BIRTHDAY PARTY (intro / flashback)
+   Connects to: Chibi-House (5).  The opening party scene.
+   NPC: Telly(tonpy).  Props/items: living_cake, living_chicken, living_bone_r
+   (Tao's bone), living_hat, item_bara (rose).
+
+ stage18 - BEDROOM (past / flashback version)
+   Connects to: Basement(3), 16.
+   NPCs: Telly, Dad, Mom, Tao(tao_s = puppy Tao), Giga-Robo(deca_robo_2).
+   Items: kairozu (Circuit Schematic), parent_planter, living_tao_dish.
+   Effects: fx_warpzone (time machine).  kitchen_tuti_ana (dirt holes).
+
+ globals.us - SHARED LIBRARY (not a level)
+   No evt_ handlers and no rooms; it holds the 376 lib_ functions every stage
+   calls, plus shared data. See lib_functions.txt.
+
+
+--------------------------------------------------------------------------------
+ HOW TO INSPECT ANY SPECIFIC HANDLER
+--------------------------------------------------------------------------------
+   1. In the stage's .us, find the declaration:  .interact <id>, *evt_<name>
+   2. Jump to the label `evt_<name>:` and read down to its `return`.
+   3. loc_<N>: labels inside it are just internal branches; follow them as
+      needed. sub_<N> are `run`-called helpers; lib N.w are global (see
+      lib_functions.txt).
+   For the door-specific routines and flags, see door_flags.txt.
+================================================================================

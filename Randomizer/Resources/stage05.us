@@ -412,6 +412,27 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	flag(0.d), 1.w
 	set	flag(418.d), 0.w
 	set	flag(31.d), 1.w
+
+	set	var(671.d), 0.w ; custom variable setup for custom pan drop
+	set	var(672.d), 0.w ; custom variable checking left leg password
+	set	var(673.d), 0.w ; custom variable drake suit
+	set	var(674.d), 0.w ; custom variable frog suit
+	set	var(675.d), 0.w ; custom variable pajamas suit
+	set	var(676.d), 0.w ; custom variable trauma suit
+	set	var(677.d), 0.w ; custom variable ghost suit
+	set	var(678.d), 0.w ; custom variable tao suit
+
+	set	var(1860.d), 0.w ; kitchen_door | Kitchen -> Living Room: 1=open, 0=closed
+	set	var(1861.d), 0.w ; rouka_door_j | Foyer -> Jenny's Room: 1=open, 0=closed
+	set	var(1862.d), 0.w ; rouka_door_k | Foyer -> Kitchen: 1=open, 0=closed
+	set	var(1863.d), 0.w ; rouka_door_l | Foyer -> Living Room: 1=open, 0=closed
+	set	var(1864.d), 0.w ; rouka_door_pama | Foyer -> Bedroom: 1=open, 0=closed
+	set	var(1865.d), 0.w ; kitchen_door_r | Kitchen -> Foyer: 1=open, 0=closed
+	set	var(1866.d), 0.w ; jenny_door | Jenny's Room -> Foyer: 1=open, 0=closed
+	set	var(1868.d), 0.w ; parent_door | Parent's Room -> Foyer: 1=open, 0=closed
+	set	var(1869.d), 0.w ; living_door | Living Room -> Foyer: 1=open, 0=closed
+	set	var(1870.d), 0.w ; living_door_k | Living Room -> Kitchen: 1=open, 0=closed
+
 	call	10.d, 2.d, 1.d
 	pos	20005.d, 23.w, 1100.w, -9.d
 	dir	20005.d, 230.w

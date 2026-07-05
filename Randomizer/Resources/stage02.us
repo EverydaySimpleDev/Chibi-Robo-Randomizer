@@ -356,8 +356,6 @@ evt_prologue:
 	kill	405.d
 	kill	20001.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	kill	20003.d
@@ -457,30 +455,10 @@ evt_prologue:
 	kill	277.d
 	kill	278.d
 	kill	279.d
-	kill	432.d
-	kill	433.d
-	kill	434.d
-	kill	435.d
-	kill	436.d
-	kill	437.d
-	kill	438.d
-	kill	439.d
-	kill	440.d
-	kill	441.d
-	kill	442.d
-	kill	443.d
-	kill	444.d
-	kill	445.d
-	kill	446.d
-	kill	447.d
-	kill	448.d
 	kill	417.d
 	kill	418.d
 	kill	419.d
 	kill	420.d
-	kill	266.d
-	kill	267.d
-	kill	268.d
 	kill	499.d
 	kill	500.d
 	kill	501.d
@@ -602,8 +580,6 @@ loc_7:
 	if	eq(atc(2.d), 2.w), else *loc_174
 	kill	20001.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●パパ 本　クッキー 紙くず スリープパパ 寝袋 kill\n"
@@ -612,8 +588,6 @@ loc_174:
 	elif	or(eq(var(112.d), 46.d), eq(var(112.d), 49.d)), else *loc_176
 	kill	20001.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●パパ 本　クッキー 紙くず スリープパパ 寝袋 kill\n"
@@ -621,8 +595,6 @@ loc_174:
 loc_176:
 	elif	eq(var(112.d), 45.d), else *loc_178
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●本　クッキー 紙くず スリープパパ 寝袋 kill\n"
@@ -630,8 +602,6 @@ loc_176:
 loc_178:
 	elif	eq(var(112.d), 44.d), else *loc_180
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●本　クッキー 紙くず スリープパパ 寝袋 kill\n"
@@ -640,8 +610,6 @@ loc_180:
 	elif	or(eq(var(112.d), 42.d), eq(var(112.d), 43.d)), else *loc_182
 	kill	20001.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●パパ 本　クッキー 紙くず スリープパパ 寝袋 kill\n"
@@ -656,8 +624,6 @@ loc_184:
 	elif	eq(var(112.d), 40.d), else *loc_10
 	kill	20001.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	kill	289.d
 	kill	303.d
 	printf	"●パパ 本　クッキー 紙くず スリープパパ 寝袋  kill\n"
@@ -699,8 +665,6 @@ loc_186:
 	kill	289.d
 	kill	303.d
 	kill	330.d
-	kill	332.d
-	kill	267.d
 	printf	"●本　クッキー 紙くず スリープパパ 寝袋  kill\n"
 	if	eq(atc(2.d), 2.w), else *loc_196
 	kill	20001.d
@@ -1212,26 +1176,7 @@ loc_35:
 	kill	415.d
 	kill	416.d
 	printf	"●汚れkill\n"
-	kill	266.d
-	kill	268.d
 	kill	300.d
-	kill	432.d
-	kill	433.d
-	kill	434.d
-	kill	435.d
-	kill	436.d
-	kill	437.d
-	kill	438.d
-	kill	439.d
-	kill	440.d
-	kill	441.d
-	kill	442.d
-	kill	443.d
-	kill	444.d
-	kill	445.d
-	kill	446.d
-	kill	447.d
-	kill	448.d
 	printf	"●ゴミkill\n"
 	endif	*loc_37
 loc_106:
@@ -1302,26 +1247,7 @@ loc_106:
 	kill	415.d
 	kill	416.d
 	printf	"●汚れkill\n"
-	kill	266.d
-	kill	268.d
 	kill	300.d
-	kill	432.d
-	kill	433.d
-	kill	434.d
-	kill	435.d
-	kill	436.d
-	kill	437.d
-	kill	438.d
-	kill	439.d
-	kill	440.d
-	kill	441.d
-	kill	442.d
-	kill	443.d
-	kill	444.d
-	kill	445.d
-	kill	446.d
-	kill	447.d
-	kill	448.d
 	printf	"●ゴミkill\n"
 loc_37:
 	if	eq(flag(809.d), 0.d), else *loc_105
@@ -1718,6 +1644,22 @@ loc_246:
 	break	*loc_226
 loc_226:
 	set	flag(486.d), 0.d
+	disp	266.d, 1.d
+	disp	267.d, 1.d
+	disp	268.d, 1.d
+	disp	332.d, 1.d
+	disp	432.d, 1.d
+	disp	433.d, 1.d
+	disp	434.d, 1.d
+	disp	435.d, 1.d
+	disp	436.d, 1.d
+	disp	437.d, 1.d
+	disp	438.d, 1.d
+	disp	439.d, 1.d
+	disp	440.d, 1.d
+	disp	441.d, 1.d
+	disp	442.d, 1.d
+	disp	447.d, 1.d
 	set	flag(31.d), 0.d
 	return
 
@@ -3021,6 +2963,9 @@ loc_509:
 
 	.interact  19.d, *evt_map_jump_box_19
 evt_map_jump_box_19:
+	if	eq(var(1863.d), 0.d), else *loc_mj19_open ; rouka_door_l closed -> block warp to Living Room
+	return
+loc_mj19_open:
 	if	and(and(eq(flag(16.d), 1.w), eq(flag(17.d), 0.w)), lt(battery(0.d), div(mul(battery(1.d), 6.w), 10.w))), else *loc_3305
 	lib	38.w
 	msg	voice(0.b),
@@ -3057,7 +3002,7 @@ loc_3308:
 	lib	12.w
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	7.d, 1.w
+	warp	7.d, 1.w ; Living Room
 	return
 
 
@@ -3077,7 +3022,7 @@ evt_map_jump_box_20:
 	run	*sub_3313
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	3.d, 1.w
+	warp	3.d, 1.w ; Basement
 	endif	*loc_3312
 loc_3318:
 	set	flag(44.d), 1.d
@@ -3203,7 +3148,7 @@ loc_3320:
 	run	*sub_3313
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	3.d, 1.w
+	warp	3.d, 1.w ; Basement
 loc_3312:
 	return
 
@@ -3211,7 +3156,7 @@ loc_3312:
 	.interact  21.d, *evt_map_jump_box_21
 evt_map_jump_box_21:
 	run	*sub_2530
-	if	and(flag(42.d), flag(39.d)), else *loc_3323
+	if	var(1862.d), else *loc_3323 ; rouka_door_k closed -> block warp to Kitchen
 	lib	54.w
 	camera	@pos, 20577.w, 2438.w, -30602.d, 2.d, 100.w
 	camera	@unk227, 16032.w, 1000.w, -37903.d, 2.d, 100.w
@@ -3227,14 +3172,17 @@ evt_map_jump_box_21:
 	run	*sub_3313
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	1.d, 1.w
+	warp	1.d, 1.w ; Kitchen
 loc_3323:
 	return
 
 
 	.interact  22.d, *evt_map_jump_box_22
 evt_map_jump_box_22:
-	if	flag(41.d), else *loc_3326
+	if	eq(var(1864.d), 0.d), else *loc_mj22_open ; rouka_door_pama closed -> block warp to Bedroom
+	return
+loc_mj22_open:
+	if	var(1864.d), else *loc_3326 ; warp only when rouka_door_pama is open (was flag 41)
 	lib	54.w
 	camera	@pos, -1116.d, 29198.w, -31322.d, 2.d, 100.w
 	camera	@unk227, -4754.d, 27900.w, -36802.d, 2.d, 100.w
@@ -3251,14 +3199,14 @@ evt_map_jump_box_22:
 	run	*sub_3313
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	6.d, 1.w
+	warp	6.d, 1.w ; Bedroom
 loc_3326:
 	return
 
 
 	.interact  23.d, *evt_map_jump_box_23
 evt_map_jump_box_23:
-	if	flag(40.d), else *loc_3329
+	if	var(1861.d), else *loc_3329 ; rouka_door_j closed -> block warp to Jenny's Room
 	lib	54.w
 	camera	@pos, 15354.w, 30000.w, 32263.w, 2.d, 100.w
 	camera	@unk227, 21457.w, 27900.w, 26004.w, 2.d, 100.w
@@ -3275,7 +3223,7 @@ evt_map_jump_box_23:
 	run	*sub_3313
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	4.d, 1.w
+	warp	4.d, 1.w ; Jennys Room
 loc_3329:
 	return
 
@@ -12288,7 +12236,7 @@ sub_1736:
 	lib	21.w
 	set	flag(486.d), 1.w
 	set	var(695.d), 0.w
-	warp	6.d, 1.w
+	warp	6.d, 1.w ; Bedroom
 	return
 loc_1738:
 	lib	54.w
@@ -12306,49 +12254,46 @@ loc_1738:
 	lib	21.w
 	set	flag(486.d), 1.w
 	set	var(695.d), 0.w
-	warp	6.d, 1.w
+	warp	6.d, 1.w ; Bedroom
 	return
 
 
 sub_862:
-	if	and(eq(flag(18.d), 1.d), eq(flag(19.d), 0.d)), else *loc_864
-	return
+	; (Removed the original early-return guard `if flag18==1 && flag19==0 -> return`,
+	;  which skipped all door setup for most of the game and left the doors stuck
+	;  closed regardless of their flags. Door logic must always run.)
 loc_864:
 	born	10001.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 8000.w, 5000.w, 200.w, *sub_1736
 	born	10002.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 8000.w, 5000.w, 200.w, *sub_1736
-	if	flag(38.d), else *loc_894
-	disp	19.d, 1.d
-	anim	24.d, 1.w
-	disp	25.d, 1.d
+	if	var(1863.d), else *loc_894 ; living_door (same model as stage07 obj 77): 1=open
+	disp	19.d, 1.d ; enable warp trigger
+	disp	25.d, 0.d ; hide obj 25 (wall object present in scene by default)
+	anim	24.d, 1.w ; OPEN (matches stage07 pattern: anim 77, 1)
 	endif	*loc_866
-loc_894:
-	disp	25.d, 0.d
-	born	10000.d, 2.d, 23993.w, 9746.w, 19578.w, 0.w, 10.w, 30000.w, 18000.w, 0.w
+loc_894: ; Foyer→Living Room: CLOSED
+	disp	25.d, 0.d ; hide obj 25 so it doesn't create the persistent diagonal wall
+	anim	24.d, 0.w ; CLOSED pose (visual)
+	born	10000.d, 2.d, 24007.d, 9746.w, 22455.d, -40.d, 50.w, 30000.w, 13000.w, 0.w ; wall rotated -40° to match door frame angle
 loc_866:
-	if	and(flag(42.d), flag(39.d)), else *loc_893
-	if	and(eq(flag(11.d), 1.d), eq(flag(17.d), 0.d)), else *loc_892
-	disp	26.d, 0.d
-	born	10020.d, 2.d, sub(11000.w, 250.w), 10000.w, -38800.d, 0.w, 10000.w, 20000.w, 100.w, 0.w
-	call	-45.d, 1.w
-	endif	*loc_869
-loc_892:
+	if	var(1862.d), else *loc_893 ; rouka_door_k (Foyer→Kitchen): 1=open
 	disp	21.d, 1.d
-	anim	3.d, 1.w
-	disp	26.d, 1.d
-loc_869:
+	disp	26.d, 0.d ; obj 26 is the wall: hide it when door is open
+	anim	3.d, 1.w ; OPEN pose (kitchen_door anim 1 = open, mirrors stage01 pattern)
 	endif	*loc_870
-loc_893:
-	disp	26.d, 0.d
+loc_893: ; Foyer→Kitchen: CLOSED
+	anim	3.d, 0.w ; CLOSED pose
+	disp	26.d, 1.d ; show wall obj to block passage
 	born	10020.d, 2.d, sub(11000.w, 250.w), 10000.w, -38800.d, 0.w, 10000.w, 20000.w, 100.w, 0.w
 	call	-45.d, 1.w
 loc_870:
-	if	flag(40.d), else *loc_891
-	disp	23.d, 1.d
-	dir	2.d, -20.d
+	if	var(1861.d), else *loc_891 ; rouka_door_j (Foyer→Jenny's Room): 1=open
+	disp	23.d, 1.d ; enable warp trigger
+	dir	2.d, -15.w ; OPEN: reset door to scene default (against wall)
 	endif	*loc_872
-loc_891:
-	disp	23.d, 0.d
-	dir	2.d, 0.w
+loc_891: ; Foyer→Jenny's Room: CLOSED
+	disp	23.d, 0.d ; disable warp trigger
+	dir	2.d, 0 ; CLOSED: swing door ~halfway into doorway
+	born	10200.d, 2.d, 21500.d, 26509.w, 25800.d, 0.w, 10000.w, 30000.w, 50.w, 0.w ; wall at doorway (X≈21500 Z≈25800)
 loc_872:
 	if	flag(11.d), else *loc_886
 	set	flag(41.d), 1.w
@@ -12367,19 +12312,16 @@ loc_874:
 	if	and(eq(flag(11.d), 1.d), eq(flag(17.d), 0.d)), else *loc_885
 	disp	512.d, 1.d
 loc_885:
-	if	flag(41.d), else *loc_881
-	disp	22.d, 1.d
-	if	flag(50.d), else *loc_880
+	; RANDOMIZER: rouka_door_pama (var 1864) - Foyer→Bedroom.
+	; Overrides flag(41) so sub_1736 and other flag(41) readers see correct state.
+	if	eq(var(1864.d), 1.d), else *loc_pama_closed
+	set	flag(41.d), 1.w
 	disp	4.d, 0.d
 	disp	285.d, 1.d
 	dir	285.d, -20.d
 	pos	10001.d, -11123.d, 39447.d, -37718.d
 	dir	10001.d, -20.d
-	endif	*loc_878
-loc_880:
-	disp	285.d, 0.d
-	dir	4.d, -20.d
-loc_878:
+	disp	22.d, 1.d
 	pos	286.d, -13105.d, 36200.d, -36775.d
 	dir	286.d, -110.d
 	pos	287.d, -9628.d, 36200.d, -35510.d
@@ -12390,20 +12332,13 @@ loc_878:
 	dir	328.d, -20.d
 	born	10106.d, 1.d, -6259.d, 33290.d, -34520.d, 0.w, 500.w, 100.w, 500.w, *sub_1088
 	born	10107.d, 1.d, -6259.d, 30506.w, -34520.d, 0.w, 500.w, 100.w, 500.w, *sub_1088
-	endif	*loc_879
-loc_881:
-	disp	22.d, 0.d
-	call	-45.d, 2.w
-	if	flag(50.d), else *loc_884
-	disp	4.d, 0.d
-	disp	285.d, 1.d
-	dir	285.d, 0.w
-	pos	10002.d, -10910.d, 39447.d, -39710.d
-	endif	*loc_883
-loc_884:
+	return
+loc_pama_closed:
+	set	flag(41.d), 0.w
 	disp	285.d, 0.d
+	disp	4.d, 1.d
 	dir	4.d, 0.w
-loc_883:
+	disp	22.d, 0.d
 	pos	286.d, -12449.d, 36200.d, -38299.d
 	dir	286.d, -90.d
 	pos	287.d, -8749.d, 36200.d, -38299.d
@@ -12412,10 +12347,7 @@ loc_883:
 	dir	288.d, -90.d
 	pos	328.d, -5100.d, 36160.d, -38595.d
 	dir	328.d, 0.w
-	born	10106.d, 1.d, -5474.d, 33290.d, -38242.d, 0.w, 500.w, 100.w, 500.w, *sub_1088
-	born	10107.d, 1.d, -5474.d, 30506.w, -38242.d, 0.w, 500.w, 100.w, 500.w, *sub_1088
-	born	10108.d, 1.d, -5474.d, 33290.d, -38242.d, 0.w, 500.w, 100.w, 500.w, *sub_1088
-loc_879:
+	born	10201.d, 2.d, -16789.d, 26509.w, -38678.d, 0.w, 13000.w, 30000.w, 50.w, 0.w
 	return
 
 
@@ -12809,7 +12741,7 @@ loc_444:
 	lib	13.w
 	run	*sub_663
 	lib	14.w
-	warp	0.d, 1.w
+	warp	0.d, 1.w ; Debug?
 	endif	*loc_446
 loc_688:
 	elif	eq(var(199.d), 11.d), else *loc_446
@@ -12817,7 +12749,7 @@ loc_688:
 	run	*sub_690
 	pos	20000.d, 0.w, 0.w, 0.w
 	lib	14.w
-	warp	0.d, 1.w
+	warp	0.d, 1.w ; Debug?
 loc_446:
 	if	eq(flag(12.d), 1.w), else *loc_492
 	if	eq(flag(536.d), 0.w), else *loc_489
@@ -13947,7 +13879,7 @@ sub_1843:
 	popbp
 	read	@anim, 20001.d, 0.d
 	set	var(695.d), 0.w
-	warp	7.d, 1.w
+	warp	7.d, 1.w ; Living Room
 	return
 
 
@@ -15998,7 +15930,7 @@ loc_1261:
 	pos	20018.d, -930.d, 30.w, -18860.d
 	pos	20019.d, -444.d, 30.w, -19840.d
 	pos	20020.d, 111.w, 30.w, -18882.d
-	pos	20021.d, 3741.w, 30.w, -22045.d
+	pos	20021.d, 3741.w, 30.w, -22045.d ; Foyer To Kitchen Closed?
 	pos	20022.d, 2658.w, 30.w, -21833.d
 	pos	20023.d, 6708.w, 30.w, -16918.d
 	pos	20024.d, 6404.w, 30.w, -17936.d
@@ -16437,7 +16369,7 @@ sub_321:
 	pos	20018.d, -930.d, 30.w, -18860.d
 	pos	20019.d, -444.d, 30.w, -19840.d
 	pos	20020.d, 111.w, 30.w, -18882.d
-	pos	20021.d, 3741.w, 30.w, -22045.d
+	pos	20021.d, 3741.w, 30.w, -22045.d ; Foyer To Kitchen Closed?
 	pos	20022.d, 4625.w, 30.w, -21732.d
 	pos	20023.d, 6708.w, 30.w, -16918.d
 	pos	20024.d, 6404.w, 30.w, -17936.d
@@ -21809,7 +21741,7 @@ sub_1479:
 	setsp	100.w
 	lib	102.w
 	popbp
-	warp	9.d, 1.w
+	warp	9.d, 1.w ; Backyard
 	return
 
 
@@ -22110,7 +22042,7 @@ loc_1529:
 	setsp	100.w
 	lib	102.w
 	popbp
-	warp	9.d, 1.w
+	warp	9.d, 1.w ; Backyard
 	endif	*loc_1531
 loc_1532:
 	msg	voice(13.b),
@@ -26351,33 +26283,6 @@ sub_3961:
 	return
 
 
-	.interact  266.d, *evt_item_kami_kuzu_266
-evt_item_kami_kuzu_266:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  267.d, *evt_item_kami_kuzu_267
-evt_item_kami_kuzu_267:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  268.d, *evt_item_kami_kuzu_268
-evt_item_kami_kuzu_268:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
 	.interact  243.d, *evt_item_tonpy_c_243
 evt_item_tonpy_c_243:
 	pushbp
@@ -26403,158 +26308,6 @@ evt_item_tonpy_f_245:
 	lib	77.w
 	popbp
 	return
-	.interact  432.d, *evt_item_candy_gomi_432
-evt_item_candy_gomi_432:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  433.d, *evt_item_candy_gomi_433
-evt_item_candy_gomi_433:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  434.d, *evt_item_candy_gomi_434
-evt_item_candy_gomi_434:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  435.d, *evt_item_candy_gomi_435
-evt_item_candy_gomi_435:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  436.d, *evt_item_candy_gomi_436
-evt_item_candy_gomi_436:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  437.d, *evt_item_candy_gomi_437
-evt_item_candy_gomi_437:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  438.d, *evt_item_candy_gomi_438
-evt_item_candy_gomi_438:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  439.d, *evt_item_candy_gomi_439
-evt_item_candy_gomi_439:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  440.d, *evt_item_candy_gomi_440
-evt_item_candy_gomi_440:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  441.d, *evt_item_candy_gomi_441
-evt_item_candy_gomi_441:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  442.d, *evt_item_candy_gomi_442
-evt_item_candy_gomi_442:
-	pushbp
-	setsp	136.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  443.d, *evt_item_okasi_gomi_1_443
-evt_item_okasi_gomi_1_443:
-	pushbp
-	setsp	137.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  444.d, *evt_item_okasi_gomi_2_444
-evt_item_okasi_gomi_2_444:
-	pushbp
-	setsp	138.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  445.d, *evt_item_okasi_gomi_2_445
-evt_item_okasi_gomi_2_445:
-	pushbp
-	setsp	138.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  446.d, *evt_item_okasi_gomi_2_446
-evt_item_okasi_gomi_2_446:
-	pushbp
-	setsp	138.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  447.d, *evt_item_akikan_447
-evt_item_akikan_447:
-	pushbp
-	setsp	135.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  448.d, *evt_item_akikan_448
-evt_item_akikan_448:
-	pushbp
-	setsp	135.d
-	lib	77.w
-	popbp
-	return
-
 
 sub_2141:
 	wait	@time, 40.w
@@ -29617,7 +29370,7 @@ loc_280:
 	lib	102.w
 	popbp
 	read	@anim, 20017.d, 0.d
-	warp	7.d, 1.w
+	warp	7.d, 1.w ; Living Room 
 	return
 
 

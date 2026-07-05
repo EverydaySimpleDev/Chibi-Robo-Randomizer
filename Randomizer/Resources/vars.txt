@@ -1,0 +1,113 @@
+================================================================================
+ CHIBI-ROBO (.us) SCRIPT VARIABLE REFERENCE   (var N)
+================================================================================
+ `var(N)` is a numbered script variable. There are 637 distinct variables used
+ across the scripts. They hold gameplay state, counters, NPC schedule data, loop
+ indices, and temporary scratch values.
+
+     set  var(881.d), 6.d          ; write
+     if   eq(var(112.d), 40.d), else *loc   ; read
+
+
+--------------------------------------------------------------------------------
+ var  vs  flag  (which to use)
+--------------------------------------------------------------------------------
+   flag(N)  = a single ON/OFF bit, part of the SAVED game state. Persists across
+              save/load. Use for "has this happened / is this unlocked" (e.g. the
+              door open/closed flags 1860-1870).
+   var(N)   = a full numeric value (can be 0, 1, 40, 200, an id, a coordinate...).
+              It is SCRIPT/RUNTIME state - shared across scripts during play, but
+              it is NOT a saved flag. Treat it as "working memory."
+
+ Rule of thumb: if you want something to survive saving and to behave like a
+ switch, use a FLAG. If you need a number, a counter, an id, or scratch space,
+ use a VAR.
+
+
+--------------------------------------------------------------------------------
+ SCOPE & LIFETIME
+--------------------------------------------------------------------------------
+ - Vars are a shared global pool (any script/room can read or write any var).
+ - Low-numbered vars (0-3 especially) are reused everywhere as TEMPORARIES -
+   they're overwritten constantly, so never assume one holds a lasting value.
+ - Higher, purpose-specific vars (e.g. NPC schedule vars, counters) hold state
+   that lasts during play, but they are re-initialized by setup routines (often
+   sub_576 in stage05 at game start, or lib functions on load/time-change).
+ - Because they aren't saved flags, anything you stash in a var must be
+   (re)established at load if you need it reliably - same lesson as the doors.
+
+
+--------------------------------------------------------------------------------
+ TEMPORARIES / LOOP INDICES  (don't rely on these holding anything)
+--------------------------------------------------------------------------------
+   var(0)    The main scratch register - used ~2000 times to hold the result of
+             a `run`/`lib`/comparison just before branching. Always transient.
+   var(1), var(2), var(3)   General-purpose scratch (also heavily reused).
+   var(881)  The "current object id" in interaction-dispatch loops. You'll see
+             `setsp var(881.d) / run *sub_807` patterns walking objects.
+   var(171)  Holds a dialogue CHOICE result returned by lib 3 (NPC talk).
+
+
+--------------------------------------------------------------------------------
+ CUSTOM RANDOMIZER VARS  (added by this project - documented in-script)
+--------------------------------------------------------------------------------
+ Initialized to 0 in stage05.us sub_576 (and in globals lib_73):
+   var(671)  custom: pan-drop setup
+   var(672)  custom: checking the left-leg password
+   var(673)  custom: Drake suit
+   var(674)  custom: Frog suit
+   var(675)  custom: Pajamas suit
+   var(676)  custom: Trauma suit
+   var(677)  custom: Ghost suit
+   var(678)  custom: Tao suit
+
+
+--------------------------------------------------------------------------------
+ KNOWN / COMMENTED GAMEPLAY VARS
+--------------------------------------------------------------------------------
+   var(71)   Total Frog Ring count (checked vs 10).
+   var(112)  Main story-progress value (e.g. compared to 40). Set with the NPC
+             schedule block below; one of the main "where are we in the story"
+             dials.
+   var(115)  Rank/time helper (written by lib 154 from its arg).
+   var(124)  Plant / item growth state (set 100 at start; paired with 126=101).
+   var(125)  Plant / item growth state (set 10 at start; paired with 127=11).
+   var(126)  Plant / item growth state (101).
+   var(127)  Plant / item growth state (11).
+   var(144)  UFO pad state (set to 3 at game start).
+   var(695)  Cleared (0) on room startup - per-room scratch.
+   var(696)  Cleared (0) at game start.
+   var(728)  "Drake wants to see your new suit" trigger.
+   var(798)  Total Number of Times Recharged (counter; `adda var(798),1`).
+   var(877)  Close-animation position X (used by a door/object close move).
+   var(878)  Close-animation position Y.
+   var(879)  Close-animation position Z.
+   var(902)  Wash-Pan dialogue state.
+
+ NPC SCHEDULE / STATE PAIRS  (set together in stage05 sub_576 at game start)
+   var(75) / var(111)   NPC id + associated value/state   (75=1, 111=30)
+   var(76) / var(112)   NPC id + value (112 = main story, =40)   (76=10)
+   var(77) / var(113)   NPC id + value   (77=13, 113=12)
+   var(78) / var(114)   NPC id + value   (78=10, 114=200)
+   (lib 252 also writes var(75) / var(169) as NPC ids during the day/night
+    setup, so these drive which characters appear and where.)
+
+ var(130), var(131), var(123)   Misc state set to 1 at game start (treated like
+                                 boolean state-vars).
+
+
+--------------------------------------------------------------------------------
+ NOT DOCUMENTED
+--------------------------------------------------------------------------------
+ The large majority of the 637 vars are room/event-specific working state with
+ no in-script comment (e.g. var(35), var(37), var(1041-1043), var(1080), var(300)
+ and many others appear frequently but their meaning is only clear from local
+ context). To pin one down:
+
+   1. grep the scripts for `var(<N>.` to see every read/write.
+   2. The WRITES (`set var(N), ...`) tell you what values it takes and when.
+   3. The READS (`if eq(var(N), X)`) tell you what each value gates.
+   4. Nearby comments / printf strings / the enclosing label name give the topic.
+
+ (This is the same approach used to document the flags in flag_reference.txt.)
+================================================================================

@@ -7,14 +7,6 @@ lib_73:
 	run	*sub_8
 	call	20000.d, 901.d, 0.w
 	set	flag(35.d), 1.w
-	set	var(671.d), 0.w ; custom variable setup for custom pan drop
-	set	var(672.d), 0.w ; custom variable checking left leg password
-	set	var(673.d), 0.w ; custom variable drake suit
-	set	var(674.d), 0.w ; custom variable frog suit
-	set	var(675.d), 0.w ; custom variable pajamas suit
-	set	var(676.d), 0.w ; custom variable trauma suit
-	set	var(677.d), 0.w ; custom variable ghost suit
-	set	var(678.d), 0.w ; custom variable tao suit
 	if	eq(time(0.d), 0.d), else *loc_1538
 	run	*sub_1498
 	printf	"夜です\n" ;It's night
@@ -3114,7 +3106,7 @@ loc_2018:
 loc_2034:
 	set	adda(var(1528.d), 1.w)
 loc_2021: ; Default item pick up window
-	if	not(flag(add(1700.d, sp(0.b)))), else *loc_2033
+	if	not(flag(add(1700.d, sp(0.b)))), else *loc_2033 ; flag(1700 + item_id)
 	win	@color, 0.w, 0.w, 0.w, 255.w
 	set	var(62.d), sp(0.b)
 	wait	@anim, 20000.d, -1.d
@@ -3126,7 +3118,7 @@ loc_2021: ; Default item pick up window
 		color(0.b),
 		wait(254.b)
 	popbp
-	set	flag(add(1700.d, sp(0.b))), 1.d
+	set	flag(add(1700.d, sp(0.b))), 1.d ; flag(1700 + item_id) set flag on item pickup for the first time
 	pushbp
 	setsp	bp(0.b)
 	run	*sub_2027

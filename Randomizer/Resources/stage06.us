@@ -975,7 +975,7 @@ loc_602:
 loc_604:
 	set	flag(41.d), 1.w
 loc_589:
-	if	eq(flag(41.d), 1.w), else *loc_597
+	if	eq(var(1868.d), 1.w), else *loc_597 ; parent_door: randomizer flag (was story flag 41); 0=closed
 	printf	"ドア開いています\n"
 	pos	10002.d, -19675.d, 12447.w, 30510.w
 	dir	10002.d, -12.d
@@ -999,6 +999,7 @@ loc_593:
 	endif	*loc_594
 loc_597:
 	printf	"ドア閉じている\n"
+	born	10010.d, 2.d, -25723.d, 10029.w, 28472.w, 0.w, 50.w, 30000.w, 13000.w, 0.w ; parent_door collision wall (closed); verify/nudge coords in-game
 	pos	10002.d, -19666.d, 12447.w, 29130.w
 	if	eq(flag(1662.d), 0.w), else *loc_601
 	pos	10000.d, -15226.d, 16531.w, 26550.w
@@ -2002,6 +2003,9 @@ loc_707:
 
 	.interact  4.d, *evt_map_jump_box_4
 evt_map_jump_box_4:
+	if	eq(var(1868.d), 0.d), else *loc_mj4_open ; parent_door closed -> block warp to room 2
+	return
+loc_mj4_open:
 	lib	54.w
 	camera	@pos, -17517.d, 2299.w, 25630.w, 2.d, 100.w
 	camera	@unk227, -13373.d, 1000.w, 30669.w, 2.d, 100.w

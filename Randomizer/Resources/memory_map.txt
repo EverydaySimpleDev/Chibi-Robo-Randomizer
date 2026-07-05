@@ -1,0 +1,323 @@
+================================================================================
+ CHIBI-ROBO (GameCube, NTSC-U) - MEMORY MAP / RAM-WATCH REFERENCE
+================================================================================
+ Addresses are GameCube main RAM (MEM1), i.e. the 0x80000000-0x817FFFFF range
+ you watch in Dolphin. Values are big-endian (the GameCube is big-endian); a
+ "[Float BE]" entry is a 32-bit IEEE float, "[32-bit BE]" a 4-byte int, etc.
+
+ IMPORTANT - SOURCE & CONFIDENCE
+ -------------------------------
+ These addresses CANNOT be derived from the randomizer's files (the .us scripts
+ are high-level bytecode and contain no raw addresses; nothing in the repo lists
+ any). This document is therefore:
+   * a cleaned-up / organized copy of the address list you provided, PLUS
+   * arithmetic expansions of patterns you explicitly described (the 68
+     inventory slots), PLUS
+   * item-ID names cross-referenced from the randomizer's globals.json item
+     table (verified: item 0x88 = Candy Wrapper, matching your example).
+ Anything I could not verify is tagged [UNVERIFIED] or [CONFLICT]. I did not
+ invent new addresses - to confirm or discover more you need a live RAM scan
+ (Dolphin Cheat Search / RAM Watch).
+
+ NOTE: these RAM addresses are a DIFFERENT system from the .us script flag(N)
+ numbers (see flag_reference.txt). There is no clean 1:1 mapping between them.
+
+================================================================================
+ CORE STATS  (player-progress block around 0x8038f7xx)
+================================================================================
+  0x8038f752   Moolah (money)                              [Hex / int]
+  0x8038f756   Scrap                                       [Hex / int]
+  0x8038f73e   Happy Points                                [int]        [CONFLICT]
+  0x8038f73e   Total Number of Stains Cleaned [32-bit BE]               [CONFLICT]
+       ^ Your list assigns 0x8038f73e to BOTH Happy Points and Stains Cleaned.
+         One is wrong - verify which in a RAM scan; they cannot share a byte.
+  0x8038f748   Chibi-Robo's Current Battery                [Float BE]
+  0x8038f74c   Chibi-Robo's Max Battery                    [Float BE]
+  0x8038f744   Number of Times Upgraded Battery            [8-bit]
+  0x8038f742   Chibi Ranking                               [32-bit BE]
+       ^ (your list had a typo "88038f742"; corrected to 8038f742)
+  0x8038f75a   Infinite-battery flag                       [Hex / flag]
+
+================================================================================
+ COUNTERS
+================================================================================
+  0x8036f1bf   Number of Times Hit by Washpan              [8-bit]
+  0x803684a4   Washpan hit - Telly starts counting         [Bit0]
+  0x803684aa   Number of Wash Pans to Drop                 [8-bit]
+  0x803686a6   Number of Times Recharged                   [32-bit BE]
+  0x80367c4e   Giga-Battery - Total Charged Kilowatts      [8-bit]
+
+================================================================================
+ CHIBI-DOORS (found per room)
+================================================================================
+  0x8036923e   Chibi-Doors Found - Kitchen                 [8-bit]
+  0x80369242   Chibi-Doors Found - Foyer                   [8-bit]
+  0x80369246   Chibi-Doors Found - Basement                [8-bit]
+  0x8036924a   Chibi-Doors Found - Jenny's Room            [8-bit]
+  0x80369252   Chibi-Doors Found - Bedroom                 [8-bit]
+  0x80369256   Chibi-Doors Found - Living Room             [8-bit]
+  0x8036925e   Chibi-Doors Found - Backyard                [8-bit]
+  0x80368432   Chibi-Doors Found - TOTAL                   [8-bit]
+       Note: gaps in the address spacing (e.g. no ...4e or ...5a entry given)
+       suggest a couple of rooms in this table were not in your list.
+
+================================================================================
+ EQUIPMENT / STATE  (with value enumerations)
+================================================================================
+  0x8038f6c2   Currently Equipped Chibi-Gear/Tool          [8-bit]
+  0x8038f6c6   Chibi-Gear/Tool to Animate / Equip Into     [8-bit]
+        0x00 None        0x01 Chibi-Copter   0x02 Chibi-Blaster  0x03 Chibi-Radar
+        0x04 Toothbrush  0x05 Spoon          0x06 Mug            0x07 Squirter
+
+  0x803905cb   Plugged Into an Outlet                      [8-bit]  [UNVERIFIED]
+        0x00 Unplugged   0x01 Plugged
+
+  0x8025df17   Gameplay                                    [8-bit]
+  0x8025f847   Room ID                                     [8-bit]
+        0x01 Kitchen      0x02 Foyer      0x03 Basement      0x04 Jenny's Room
+        0x05 Chibi House  0x06 Bedroom    0x07 Living Room   0x09 Backyard
+        0x0a Ending Credits  0x0b Drain   0x0d Chibi-Manual  0x10 UFO
+
+  0x803938df   Suit Equipped                               [8-bit]
+        0x00 Normal   0x01 Drake Redcrest Suit   0x04 Trauma Suit   0x06 Ghost Suit
+
+================================================================================
+ UTILIBOTS / LADDERS  (0x00 not available, 0x01 available NEW, 0x02 available)
+================================================================================
+  0x80368522   Utilibot - Living Room Ladder               [8-bit]
+  0x8036852a   Utilibot - Foyer Ladder                     [8-bit]
+  0x8036852c   Utilibot - Foyer Teleport                   [8-bit]
+  0x80368532   Utilibot - Living Room Bridge               [8-bit]
+  0x80368526   Utilibot - Kitchen Ladder                   [8-bit]
+  0x80368536   Utilibot - Kitchen Bridge                   [8-bit]
+  0x8036853a   Utilibot - Bedroom Bridge                   [8-bit]
+  0x8036853e   Utilibot - Basement Teleport                [8-bit]
+  0x8036858e   Recyclotron - Number of Utilibots Built     [8-bit]
+
+================================================================================
+ TOOLS AVAILABLE  (0x00 not available, 0x01 available; trailing number = tool slot)
+================================================================================
+  0x80398ef2   Chibi-Copter   (1)                          [8-bit]
+  0x80398ef8   Chibi-Blaster  (2)                          [8-bit]
+  0x80398f00   Chibi-Radar    (3)                          [8-bit]
+  0x80398f0a   Toothbrush     (4)                          [8-bit]
+  0x80398f1a   Mug                                         [8-bit]
+  0x80398f22   Squirter       (7)                          [8-bit]
+       ^ These are NOT evenly spaced, so Spoon/others were not extrapolated.
+
+================================================================================
+ STICKER ALBUM  (each is a BIT inside a 16-bit word at the given address)
+================================================================================
+ Format:  address  mask(hex)  sticker  -  how to obtain
+  0x8036781c  0008  Giga-Robo          - Revive Giga-Robo.
+  0x8036789a  0100  Telly Vision       - Listen to Telly on the Foyer doorstop / Jenny's-Room mushroom.
+  0x803678ac  2000  Chibi-Door         - Open all Chibi-Doors and collect the Moolah within.
+  0x80367846  0002  Utilibot           - Create all of the Utilibots.
+  0x803678e6  1000  Frog Ring          - Find all ten Frog Rings and give them to Jenny.
+  0x8036786c  0800  Frog               - Squirt Frieda, bring Fred back, do the rain-dance ritual.
+  0x803678a0  0800  Bluebird           - Feed Cookie Crumbs, nectar, super eggplant to Bluebird.
+  0x803678a6  0004  Mr. Prongs         - Radar-find him in the Living Room, dig with Spoon, grow to max.
+  0x803678e4  0002  Drake Redcrest     - Complete Drake Redcrest's storyline.
+  0x803678d8  0008  Sophie             - Complete Sophie's storyline.
+  0x80367892  0100  Free Rangers       - Complete the Free Rangers' storyline.
+  0x803678d8  0400  Captain Plankbeard - Complete Captain Plankbeard's storyline.
+  0x803678a2  8000  The Great Peekoe   - Give Peekoe his snorkel & goggles while in the fish bowl.
+  0x803678da  0020  Sunshine           - Complete Sunshine's storyline.
+  0x80367882  8000  Mort & Princess    - Complete Mort and Princess Pitts' storyline.
+  0x803678a0  2000  Dinah              - Complete Dinah's storyline.
+  0x803678a0  1000  Funky Phil         - Complete Funky Phil's storyline.
+  0x8036781c  0002  Queen Spydor       - Defeat the Queen Spydor.
+  0x803678b6  0200  Hot Rod            - Get an S rank on the Hot Rod Chicken game.
+  0x803678b6  0400  Space Scrambler    - Get an S rank on the Space Scrambler game.
+  0x803678b6  0800  Cooking            - Cook burgers with George Sanderson (all patties on #3).
+  0x803678e6  8000  Kid Eggplant       - Find Kid Eggplant.
+  0x803678e4  0004  Primopuel          - Get Primopuel from the toy piano, give to Dad, interact.
+  0x803678e4  0008  Tamagotchi         - Get from Giga-Robo's old spot, give to Dad, play at night.
+       Note: several stickers share a word - e.g. 0x803678e4 holds Drake/Primopuel/
+       Tamagotchi at masks 0002/0004/0008; 0x803678a0 holds Bluebird/Funky Phil/Dinah
+       at 0800/1000/2000; 0x803678b6 holds Hot Rod/Space Scrambler/Cooking.
+
+================================================================================
+ INVENTORY  (base 0x8038f778; also called the "Item Bit Array" in your notes)
+================================================================================
+ Layout: 68 slots, 4 bytes per slot. Within each slot:
+     +0  item ID (see ITEM-ID LEGEND below)
+     +2  quantity
+ So:  Slot N item ID = 0x8038f778 + (N-1)*4 ;  quantity = that + 2.
+ (Verified against your examples: Slot 1 @ f778, Slot 2 @ f77c, qty @ +2.
+  Your "000x0088 / 000200xx" example = item 0x88 (Candy Wrapper), quantity 2.)
+
+  Slot  1:  item ID @ 0x8038f778   quantity @ 0x8038f77a
+  Slot  2:  item ID @ 0x8038f77c   quantity @ 0x8038f77e
+  Slot  3:  item ID @ 0x8038f780   quantity @ 0x8038f782
+  Slot  4:  item ID @ 0x8038f784   quantity @ 0x8038f786
+  Slot  5:  item ID @ 0x8038f788   quantity @ 0x8038f78a
+  Slot  6:  item ID @ 0x8038f78c   quantity @ 0x8038f78e
+  Slot  7:  item ID @ 0x8038f790   quantity @ 0x8038f792
+  Slot  8:  item ID @ 0x8038f794   quantity @ 0x8038f796
+  Slot  9:  item ID @ 0x8038f798   quantity @ 0x8038f79a
+  Slot 10:  item ID @ 0x8038f79c   quantity @ 0x8038f79e
+  Slot 11:  item ID @ 0x8038f7a0   quantity @ 0x8038f7a2
+  Slot 12:  item ID @ 0x8038f7a4   quantity @ 0x8038f7a6
+  Slot 13:  item ID @ 0x8038f7a8   quantity @ 0x8038f7aa
+  Slot 14:  item ID @ 0x8038f7ac   quantity @ 0x8038f7ae
+  Slot 15:  item ID @ 0x8038f7b0   quantity @ 0x8038f7b2
+  Slot 16:  item ID @ 0x8038f7b4   quantity @ 0x8038f7b6
+  Slot 17:  item ID @ 0x8038f7b8   quantity @ 0x8038f7ba
+  Slot 18:  item ID @ 0x8038f7bc   quantity @ 0x8038f7be
+  Slot 19:  item ID @ 0x8038f7c0   quantity @ 0x8038f7c2
+  Slot 20:  item ID @ 0x8038f7c4   quantity @ 0x8038f7c6
+  Slot 21:  item ID @ 0x8038f7c8   quantity @ 0x8038f7ca
+  Slot 22:  item ID @ 0x8038f7cc   quantity @ 0x8038f7ce
+  Slot 23:  item ID @ 0x8038f7d0   quantity @ 0x8038f7d2
+  Slot 24:  item ID @ 0x8038f7d4   quantity @ 0x8038f7d6
+  Slot 25:  item ID @ 0x8038f7d8   quantity @ 0x8038f7da
+  Slot 26:  item ID @ 0x8038f7dc   quantity @ 0x8038f7de
+  Slot 27:  item ID @ 0x8038f7e0   quantity @ 0x8038f7e2
+  Slot 28:  item ID @ 0x8038f7e4   quantity @ 0x8038f7e6
+  Slot 29:  item ID @ 0x8038f7e8   quantity @ 0x8038f7ea
+  Slot 30:  item ID @ 0x8038f7ec   quantity @ 0x8038f7ee
+  Slot 31:  item ID @ 0x8038f7f0   quantity @ 0x8038f7f2
+  Slot 32:  item ID @ 0x8038f7f4   quantity @ 0x8038f7f6
+  Slot 33:  item ID @ 0x8038f7f8   quantity @ 0x8038f7fa
+  Slot 34:  item ID @ 0x8038f7fc   quantity @ 0x8038f7fe
+  Slot 35:  item ID @ 0x8038f800   quantity @ 0x8038f802
+  Slot 36:  item ID @ 0x8038f804   quantity @ 0x8038f806
+  Slot 37:  item ID @ 0x8038f808   quantity @ 0x8038f80a
+  Slot 38:  item ID @ 0x8038f80c   quantity @ 0x8038f80e
+  Slot 39:  item ID @ 0x8038f810   quantity @ 0x8038f812
+  Slot 40:  item ID @ 0x8038f814   quantity @ 0x8038f816
+  Slot 41:  item ID @ 0x8038f818   quantity @ 0x8038f81a
+  Slot 42:  item ID @ 0x8038f81c   quantity @ 0x8038f81e
+  Slot 43:  item ID @ 0x8038f820   quantity @ 0x8038f822
+  Slot 44:  item ID @ 0x8038f824   quantity @ 0x8038f826
+  Slot 45:  item ID @ 0x8038f828   quantity @ 0x8038f82a
+  Slot 46:  item ID @ 0x8038f82c   quantity @ 0x8038f82e
+  Slot 47:  item ID @ 0x8038f830   quantity @ 0x8038f832
+  Slot 48:  item ID @ 0x8038f834   quantity @ 0x8038f836
+  Slot 49:  item ID @ 0x8038f838   quantity @ 0x8038f83a
+  Slot 50:  item ID @ 0x8038f83c   quantity @ 0x8038f83e
+  Slot 51:  item ID @ 0x8038f840   quantity @ 0x8038f842
+  Slot 52:  item ID @ 0x8038f844   quantity @ 0x8038f846
+  Slot 53:  item ID @ 0x8038f848   quantity @ 0x8038f84a
+  Slot 54:  item ID @ 0x8038f84c   quantity @ 0x8038f84e
+  Slot 55:  item ID @ 0x8038f850   quantity @ 0x8038f852
+  Slot 56:  item ID @ 0x8038f854   quantity @ 0x8038f856
+  Slot 57:  item ID @ 0x8038f858   quantity @ 0x8038f85a
+  Slot 58:  item ID @ 0x8038f85c   quantity @ 0x8038f85e
+  Slot 59:  item ID @ 0x8038f860   quantity @ 0x8038f862
+  Slot 60:  item ID @ 0x8038f864   quantity @ 0x8038f866
+  Slot 61:  item ID @ 0x8038f868   quantity @ 0x8038f86a
+  Slot 62:  item ID @ 0x8038f86c   quantity @ 0x8038f86e
+  Slot 63:  item ID @ 0x8038f870   quantity @ 0x8038f872
+  Slot 64:  item ID @ 0x8038f874   quantity @ 0x8038f876
+  Slot 65:  item ID @ 0x8038f878   quantity @ 0x8038f87a
+  Slot 66:  item ID @ 0x8038f87c   quantity @ 0x8038f87e
+  Slot 67:  item ID @ 0x8038f880   quantity @ 0x8038f882
+  Slot 68:  item ID @ 0x8038f884   quantity @ 0x8038f886
+
+================================================================================
+ ITEM-ID LEGEND  (value stored in an inventory slot; from globals.json)
+================================================================================
+ IDs not listed are blank/unused in the randomizer's item table.
+
+  0x00 (  0)  Frog Ring
+  0x08 (  8)  Giga-Battery
+  0x0e ( 14)  Dog Bone
+  0x10 ( 16)  Toothbrush
+  0x12 ( 18)  Filler AP Item
+  0x13 ( 19)  AP Item
+  0x14 ( 20)  Chibi-Battery
+  0x15 ( 21)  Spoon
+  0x16 ( 22)  Mug
+  0x17 ( 23)  Rose
+  0x18 ( 24)  Drake Redcrest Suit
+  0x19 ( 25)  Tao Suit
+  0x1a ( 26)  Frog Suit
+  0x1e ( 30)  Pajamas
+  0x1f ( 31)  Super Chibi-Robo Suit
+  0x20 ( 32)  Trauma Suit
+  0x22 ( 34)  Ghost Suit
+  0x29 ( 41)  Treasure Map A
+  0x2a ( 42)  Treasure Map B
+  0x2b ( 43)  Treasure Map C
+  0x2c ( 44)  Sugar Cube
+  0x2d ( 45)  Cookie
+  0x30 ( 48)  Giga-Charger
+  0x31 ( 49)  Popper Trash
+  0x32 ( 50)  Empty Bottle
+  0x33 ( 51)  Broken Bottle
+  0x34 ( 52)  Broken Bottle
+  0x35 ( 53)  Charge Chip
+  0x36 ( 54)  Range Chip
+  0x37 ( 55)  Toy Receipt
+  0x38 ( 56)  Squirter
+  0x39 ( 57)  Mom's Letter
+  0x3a ( 58)  D Battery
+  0x3b ( 59)  C Battery
+  0x3c ( 60)  AA Battery
+  0x3d ( 61)  Red Shoe
+  0x3e ( 62)  Alien Ear Chip
+  0x57 ( 87)  Timer 5
+  0x58 ( 88)  Dinah Teeth
+  0x59 ( 89)  Timer 10
+  0x5a ( 90)  Timer 15
+  0x5b ( 91)  Twig
+  0x5c ( 92)  Pink Flower Seed
+  0x5d ( 93)  Blue Flower Seed
+  0x5e ( 94)  White Flower Seed
+  0x61 ( 97)  Dried Flower
+  0x62 ( 98)  Gunpowder
+  0x63 ( 99)  Snorkle & Goggles
+  0x64 (100)  Love Letter
+  0x65 (101)  Dog Tags
+  0x66 (102)  Ticket Stub
+  0x67 (103)  Bandage
+  0x69 (105)  Drake Redcrest Album
+  0x6b (107)  Space Scrambler
+  0x6c (108)  Free Rangers Photo
+  0x6d (109)  Giga-Robo's Left Leg
+  0x6e (110)  Circuit Schematic
+  0x6f (111)  Giga-Battery (Full)
+  0x70 (112)  Small Handkerchief
+  0x71 (113)  Pink Flower
+  0x72 (114)  The Scurvy Splinter
+  0x73 (115)  Old Boxers
+  0x74 (116)  Outdated Scarf
+  0x75 (117)  Blue Block
+  0x76 (118)  Purple Block
+  0x77 (119)  White Block
+  0x78 (120)  Green Block
+  0x79 (121)  Yellow Block
+  0x7a (122)  Red Block
+  0x7b (123)  Hot Rod
+  0x7c (124)  Dad's Wedding Ring
+  0x7d (125)  Weeds
+  0x7e (126)  Block Layout
+  0x7f (127)  Passed-out Frog
+  0x83 (131)  Chibi-Blaster
+  0x84 (132)  Chibi-Radar
+  0x85 (133)  Tamagotchi
+  0x86 (134)  Primopuel
+  0x87 (135)  Empty Can
+  0x88 (136)  Candy Wrapper
+  0x89 (137)  Candy Bag
+  0x8a (138)  Cookie Box
+  0x8b (139)  Super Eggplant
+  0x8c (140)  Legendary Flower Seed
+  0x93 (147)  Red Crayon
+  0x94 (148)  Blue Crayon
+  0x95 (149)  Yellow Crayon
+  0x96 (150)  Green Crayon
+  0x97 (151)  Purple Crayon
+  0x98 (152)  Nectar Flower Seed
+  0x99 (153)  Philly
+  0x9a (154)  Freaky Phil
+  0x9b (155)  Funky Seed
+  0x9c (156)  Blue Flowers
+  0x9d (157)  White Flowers
+  0x9e (158)  Chibi-Battery
+
+================================================================================
+ END - generated 2026-06-17. Verify any [UNVERIFIED]/[CONFLICT] via RAM scan.
+================================================================================

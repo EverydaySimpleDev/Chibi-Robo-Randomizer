@@ -618,6 +618,8 @@ loc_148:
 	lib	55.w
 	break	*loc_137
 loc_137:
+	disp	154.d, 1.d
+	disp	157.d, 1.d
 	set	flag(31.d), 0.d
 	return
 
@@ -734,7 +736,7 @@ sub_544:
 	set	flag(1122.d), 0.w
 	set	var(695.d), 0.w
 	run	*sub_545
-	warp	11.d, 1.w
+	warp	11.d, 1.w ; Drain 
 	return
 
 
@@ -742,7 +744,7 @@ sub_550:
 	set	flag(1122.d), 1.w
 	set	var(695.d), 0.w
 	run	*sub_545
-	warp	11.d, 1.w
+	warp	11.d, 1.w ; Drain
 	return
 
 
@@ -1209,8 +1211,6 @@ loc_414:
 	disp	269.d, 0.d
 	disp	270.d, 0.d
 loc_439:
-	if	not(flag(423.d)), else *loc_438
-	disp	157.d, 0.d
 loc_438:
 	if	and(eq(var(684.d), 1.d), eq(flag(632.d), 1.w)), else *loc_437
 	disp	198.d, 1.d
@@ -1336,6 +1336,9 @@ loc_164:
 
 	.interact  18.d, *evt_map_jump_box_18
 evt_map_jump_box_18:
+	if	eq(var(1860.d), 0.d), else *loc_mj18_open ; kitchen door closed -> block warp to Living Room
+	return
+loc_mj18_open:
 	if	eq(flag(1620.d), 1.w), else *loc_2717
 	run	*sub_2716
 loc_2717:
@@ -1353,12 +1356,15 @@ loc_2717:
 	call	20000.d, 700.d
 	lib	21.w
 	set	var(695.d), 0.w
-	warp	7.d, 1.w
+	warp	7.d, 1.w ; Living Room
 	return
 
 
 	.interact  19.d, *evt_map_jump_box_19
 evt_map_jump_box_19:
+	if	eq(var(1865.d), 0.d), else *loc_mj19_open ; kitchen_door_r closed -> block warp to Foyer
+	return
+loc_mj19_open:
 	if	eq(flag(1620.d), 1.w), else *loc_2720
 	run	*sub_2716
 loc_2720:
@@ -1376,7 +1382,7 @@ loc_2720:
 	lib	21.w
 	set	var(695.d), 0.w
 	run	*sub_545
-	warp	2.d, 1.w
+	warp	2.d, 1.w ; Foyer
 	return
 
 
@@ -10852,18 +10858,38 @@ loc_184:
 
 
 sub_480:
-	if	or(flag(42.d), flag(2.d)), else *loc_486
-	if	and(eq(flag(11.d), 1.d), eq(flag(17.d), 0.d)), else *loc_485
-	born	10000.d, 2.d, -19660.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w
-	endif	*loc_483
-loc_485:
-	anim	50.d, 1.w
-loc_483:
-	endif	*loc_484
-loc_486:
-	born	10000.d, 2.d, -19660.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w
-loc_484:
-	anim	49.d, 1.w
+	; === Randomizer kitchen door control (two independent leaves) ============
+	; var(1860): kitchen_door   (49, x+189.98) — Kitchen -> Living Room
+	; var(1865): kitchen_door_r (50, x-200.24) — Kitchen -> Foyer
+	;   1 = open (anim 1, no wall)   0 = closed (born type-2 wall)
+	; born coords: JSON pos * ~98.18 (derived from original born 10000 / 10011)
+
+	; -- kitchen_door (49) - Living Room side, var(1860) --
+	if	eq(var(1860.d), 1.d), else *loc_kdoor_lr_closed
+	anim	49.d, 1.w ; kitchen_door Open
+	endif	*loc_kdoor_lr_done
+loc_kdoor_lr_closed:
+	anim	49.d, 0.w ; kitchen_door Closed
+	born	10011.d, 2.d, 18653.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ kitchen_door
+loc_kdoor_lr_done:
+	; -- kitchen_door_r (50) - Foyer side, var(1865) --
+	if	eq(var(1865.d), 1.d), else *loc_kdoor_f_closed
+	anim	50.d, 1.w ; kitchen_door_r Open
+	endif	*loc_kdoor_f_done
+loc_kdoor_f_closed:
+	anim	50.d, 0.w ; kitchen_door_r Closed
+	born	10000.d, 2.d, -18653.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ kitchen_door_r
+loc_kdoor_f_done:
+	; -- dami (74): show if either door is open, hide if both closed --
+	if	eq(var(1860.d), 1.d), else *loc_kdami_check2
+	disp	74.d, 1.d
+	return
+loc_kdami_check2:
+	if	eq(var(1865.d), 1.d), else *loc_kdami_closed
+	disp	74.d, 1.d
+	return
+loc_kdami_closed:
+	disp	74.d, 0.d
 	return
 
 
@@ -12234,7 +12260,7 @@ loc_855:
 	popbp
 	set	var(0.d), result
 	if	not(var(0.d)), else *loc_859
-	set	flag(718.d), 1.w ; kitchen door In front of the Living Room door
+	set	flag(718.d), 1.w ; Chibi Door?
 	set	flag(1013.d), 1.w
 	endif	*loc_858
 loc_859:
@@ -12928,22 +12954,6 @@ evt_yogore_water_114:
 	return
 
 
-	.interact  154.d, *evt_item_kami_kuzu_154
-evt_item_kami_kuzu_154:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
-	return
-
-
-	.interact  157.d, *evt_item_cookie_kakera_157
-evt_item_cookie_kakera_157:
-	pushbp
-	setsp	19.d
-	lib	77.w
-	popbp
-	return
 
 
 sub_892:
@@ -18096,7 +18106,8 @@ loc_1530:
 	set	var(0.d), 157.d
 	break	*loc_1512
 loc_1512:
-	if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1514
+	; if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1514
+	if	or(eq(hold, 1000.d), le(99.w, item(var(0.d)))), else *loc_1514
 	lib	38.w
 	lib	358.w
 	lib	39.w

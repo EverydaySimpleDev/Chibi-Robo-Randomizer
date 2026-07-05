@@ -57,7 +57,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.2";
+        string supportedAPVersion = "1.2.3";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -71,6 +71,179 @@ namespace WindowsFormsApp1
 
         //This will let us build the spoiler log later!
         Dictionary<string, string> spoilerLog = new Dictionary<string, string>();
+
+        // Tracks (apCode, objectID) per stage file for anti-respawn subroutine generation
+        Dictionary<string, List<(int code, int objID)>> stageAntiRespawnLocs = new Dictionary<string, List<(int code, int objID)>>();
+
+        // Maps each AP location name to its code (0-220) for flag(2100+code) anti-respawn tracking
+        static readonly Dictionary<string, int> apLocationCodes = new Dictionary<string, int>
+        {
+            { "Living Room - Frog Ring (Behind Window)", 0 },
+            { "Living Room - Frog Ring (Corkboard)", 1 },
+            { "Living Room - Frog Ring (Shelf)", 2 },
+            { "Living Room - Wastepaper by Trashbin B", 17 },
+            { "Living Room - Candy Wrapper above Trashbin A", 18 },
+            { "Living Room - Wastepaper by Trashbin A", 19 },
+            { "Living Room - Cupholder Wastepaper", 20 },
+            { "Living Room - Cookie Crumbs under Table", 21 },
+            { "Living Room - Cookie Crumbs by Record Player", 22 },
+            { "Living Room - Toothbrush", 23 },
+            { "Living Room - Wastepaper by Door to Kitchen", 34 },
+            { "Living Room - Fireplace Wastepaper A", 35 },
+            { "Living Room - Fireplace Wastepaper B", 36 },
+            { "Living Room - Wastepaper on Stack of Books", 37 },
+            { "Living Room - Couch Wastepaper B", 38 },
+            { "Living Room - Wastepaper by Toothbrush Spawn", 41 },
+            { "Living Room - Wastepaper below Cupholder", 42 },
+            { "Living Room - Couch Wastepaper A", 43 },
+            { "Living Room - Cookie Crumbs under Couch", 44 },
+            { "Living Room - Cookie Crumbs on Couch", 45 },
+            { "Living Room - Twig A", 46 },
+            { "Living Room - Twig B", 47 },
+            { "Living Room - Twig C", 48 },
+            { "Living Room - Wastepaper above Trashbin A", 54 },
+            { "Living Room - Wastepaper above Trashbin B", 55 },
+            { "Living Room - Candy Wrapper above Trashbin B", 56 },
+            { "Living Room - Candy Wrapper by Jenny A", 57 },
+            { "Living Room - Couch Candy Wrapper", 58 },
+            { "Living Room - Candy Wrapper by Jenny B", 59 },
+            { "Living Room - Candy Wrapper on Book Stack", 60 },
+            { "Living Room - Armchair Candy Wrapper B", 61 },
+            { "Living Room - Armchair Candy Wrapper A", 62 },
+            { "Living Room - Cupholder Candy Wrapper", 63 },
+            { "Living Room - Couch Candy Bag", 64 },
+            { "Living Room - Table Cookie Box A", 65 },
+            { "Living Room - Table Cookie Box B", 66 },
+            { "Living Room - Toy receipt on coach", 221 },
+            { "Kitchen - Mug Location", 67 },
+            { "Kitchen - Spoon Location", 68 },
+            { "Kitchen - Wastepaper by Foyer Door", 69 },
+            { "Kitchen - Wastepaper under Counter", 70 },
+            { "Kitchen - Cookie Crumbs by Tao's Bowl", 71 },
+            { "Kitchen - Cookie Crumbs by Spoon", 72 },
+            { "Kitchen - Cookie Crumbs on Kitchen Table", 73 },
+            { "Kitchen - Cookie Crumbs next to Fridge on Counter", 74 },
+            { "Kitchen - Twig A", 79 },
+            { "Kitchen - Twig B", 80 },
+            { "Kitchen - Twig C", 81 },
+            { "Kitchen - Dog Tags Location", 82 },
+            { "Kitchen - Bandage Location", 83 },
+            { "Kitchen - Frog Ring (Table)", 84 },
+            { "Kitchen - Pink Soda Can", 85 },
+            { "Kitchen - Purple Soda Can", 86 },
+            { "Kitchen - Table Candy Wrapper A", 87 },
+            { "Kitchen - Table Candy Wrapper B", 88 },
+            { "Kitchen - Table Candy Bag", 89 },
+            { "Kitchen - Cookie Box by Spoon A", 90 },
+            { "Kitchen - Cookie Box by Spoon B", 91 },
+            { "Kitchen - Wastepaper on Shelf by Toaster", 222 },
+            { "Kitchen - Cookie Crumbs under Counter", 245 },
+            { "Sink Drain - Frog Ring", 105 },
+            { "Foyer - Free Rangers Photo", 107 },
+            { "Foyer - Waterfall Frog Ring", 108 },
+            { "Foyer - Red Block", 109 },
+            { "Foyer - Wastepaper On Stairs", 223 },
+            { "Foyer - Candy Wrapper by Entrance", 224 },
+            { "Foyer - Candy Wrapper by Jenny Photo A", 225 },
+            { "Foyer - Candy Wrapper by Jenny Photo B", 226 },
+            { "Foyer - Soda Can on Shelf", 227 },
+            { "Foyer - Candy Wrapper by Spaceship Shelf A", 228 },
+            { "Foyer - Candy Wrapper by Spaceship Shelf B", 229 },
+            { "Foyer - Candy Wrapper on Sofa A", 230 },
+            { "Foyer - Candy Wrapper on Sofa B", 231 },
+            { "Foyer - Candy Wrapper on Floor by Door", 232 },
+            { "Foyer - Upstairs Wastepaper by Parents' Door", 233 },
+            { "Foyer - Upstairs Wastepaper by stairs", 234 },
+            { "Foyer - Upstairs Cookie Crumbs by stairs", 235 },
+            { "Foyer - Upstairs Candy Wrapper by Parents' Door", 236 },
+            { "Foyer - Upstairs Candy Wrapper by Jenny's Door A", 237 },
+            { "Foyer - Upstairs Candy Wrapper by Jenny's Door B", 238 },
+            { "Foyer - Candy Wrapper on Sofa C", 240 },
+            { "Foyer - Candy Wrapper on Lower Shelf by Entrance", 241 },
+            { "Foyer - Candy Wrapper by Spaceship Shelf C", 242 },
+            { "Foyer - Candy Wrapper on Stairs", 243 },
+            { "Foyer - Upstairs Soda Can", 244 },
+            { "Basement - Giga Battery", 110 },
+            { "Basement - Giga Charger", 111 },
+            { "Basement - Wine Bottle A", 112 },
+            { "Basement - Wine Bottle B", 113 },
+            { "Basement - Wastepaper below Dresser", 114 },
+            { "Basement - Wastepaper below Stairs", 115 },
+            { "Basement - Wastepaper on Stairs", 116 },
+            { "Basement - Wastepaper on Shelf", 117 },
+            { "Basement - Broken Bottle Bottom", 118 },
+            { "Basement - Broken Bottle Top", 119 },
+            { "Basement - Gunpowder", 120 },
+            { "Basement - Frog Ring", 121 },
+            { "Basement - Purple Can", 122 },
+            { "Basement - Cabinet Trash A", 123 },
+            { "Basement - Trash On Stairs", 124 },
+            { "Backyard - Twig by Glass Door", 131 },
+            { "Backyard - Twig by Fence", 132 },
+            { "Backyard - Twig under Tree", 133 },
+            { "Backyard - Twig under Awning", 134 },
+            { "Backyard - Frog Ring", 139 },
+            { "Backyard - White Block", 145 },
+            { "Jenny's Room - AA Battery", 146 },
+            { "Jenny's Room - D Battery", 152 },
+            { "Jenny's Room - C Battery", 153 },
+            { "Jenny's Room - Wastepaper by Trashcan", 154 },
+            { "Jenny's Room - Wastepaper by Piano", 155 },
+            { "Jenny's Room - Wastepaper under Dresser", 156 },
+            { "Jenny's Room - Wastepaper under Bed A", 157 },
+            { "Jenny's Room - Wastepaper under Bed B", 158 },
+            { "Jenny's Room - Wastepaper under Bed C", 159 },
+            { "Jenny's Room - Wastepaper under Bed D", 160 },
+            { "Jenny's Room - Wastepaper by Crayon Box", 161 },
+            { "Jenny's Room - Red Shoe", 162 },
+            { "Jenny's Room - Frog Ring", 163 },
+            { "Jenny's Room - Squirter", 164 },
+            { "Jenny's Room - Snorkel", 165 },
+            { "Jenny's Room - Cookie Crumbs under Bed A", 166 },
+            { "Jenny's Room - Cookie Crumbs under Bed B", 167 },
+            { "Jenny's Room - Cookie Crumbs under Bed C", 168 },
+            { "Jenny's Room - Cookie Crumbs under Bed D", 169 },
+            { "Jenny's Room - Cookie Crumbs by Chair", 170 },
+            { "Jenny's Room - Cookie Crumbs on Desk A", 171 },
+            { "Jenny's Room - Cookie Crumbs B", 172 },
+            { "Jenny's Room - Candy Wrapper below Bed A", 173 },
+            { "Jenny's Room - Candy Wrapper below Bed B", 174 },
+            { "Jenny's Room - Candy Wrapper below Bed C", 175 },
+            { "Jenny's Room - Candy Wrapper on Bed A", 176 },
+            { "Jenny's Room - Candy Wrapper on Bed B", 177 },
+            { "Jenny's Room - Candy Wrapper by TV", 178 },
+            { "Jenny's Room - Candy Wrapper by Crayon Box A", 179 },
+            { "Jenny's Room - Candy Wrapper by Crayon Box B", 180 },
+            { "Jenny's Room - Candy Bag under Bed", 181 },
+            { "Jenny's Room - Candy Bag on Bed", 182 },
+            { "Jenny's Room - Cookie Box under Bed A", 183 },
+            { "Jenny's Room - Cookie Box under Bed B", 184 },
+            { "Jenny's Room - Cookie Box on Desk", 185 },
+            { "Jenny's Room - Orange Can", 186 },
+            { "Jenny's Room - Purple Can", 187 },
+            { "Jenny's Room - Red Crayon", 188 },
+            { "Jenny's Room - Yellow Crayon", 189 },
+            { "Jenny's Room - Green Crayon", 190 },
+            { "Jenny's Room - Purple Crayon", 191 },
+            { "Jenny's Room - Green Block", 192 },
+            { "Jenny's Room - Wastepaper under Bed E", 239 },
+            { "Bedroom - Dinahs Teeth", 198 },
+            { "Bedroom - Ticket Stub", 200 },
+            { "Bedroom - Passed Out Frog", 201 },
+            { "Bedroom - Wastepaper by Bills B", 202 },
+            { "Bedroom - Wastepaper by Bills A", 203 },
+            { "Bedroom - Wastepaper under Bed", 204 },
+            { "Bedroom - Wastepaper under Vanity", 205 },
+            { "Bedroom - Wastepaper on Vanity", 206 },
+            { "Bedroom - Wastepaper on Bed", 207 },
+            { "Bedroom - Wastepaper by Dinahs Place A", 208 },
+            { "Bedroom - Wastepaper by Dinahs Place B", 209 },
+            { "Bedroom - Cookie Crumbs on Toybox", 210 },
+            { "Bedroom - Vanity Candy Wrapper A", 211 },
+            { "Bedroom - Vanity Candy Wrapper B", 212 },
+            { "Bedroom - Shelf Candy Wrapper", 213 },
+            { "Bedroom - Vanity Candy Bag", 214 },
+        };
 
         public Form1()
         {
@@ -290,6 +463,12 @@ namespace WindowsFormsApp1
                         {
                             globals.SelectToken("items[" + i + "].flags.chibiVision").Replace(false);
                         }
+                    } else
+                    {
+                        for (int i = 0; i < 159; i++)
+                        {
+                            globals.SelectToken("items[" + i + "].flags.chibiVision").Replace(true);
+                        }
                     }
 
                     // Randomizes left foot and suit case passcode, if enabled
@@ -357,6 +536,16 @@ namespace WindowsFormsApp1
                         StreamReader readOpenUpstairs = new StreamReader(openUpstairsStream);
                         latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
                     }
+
+                    // Living Room door (rouka_door_l, id 24) is permanently open with no closed pose.
+                    // Swap to living_door — the same model used on the Living Room side (stage07 obj 77),
+                    // which has correct open/closed animation frames and faces the right direction.
+                    foyerObj.SelectToken("objects[?(@.id == 24)].object").Replace("living_door");
+
+                    // Kitchen door (rouka_door_k, id 3) has no working open animation frame (anim 1 is a no-op).
+                    // Swap to kitchen_door — same model used in stage01 (obj 49) which has proper anim 0=closed / anim 1=open.
+                    foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
+
                     PBar.Value = 65;
 
                     // Spoiler log output (note: uses the captured locals, not the controls)
@@ -379,6 +568,7 @@ namespace WindowsFormsApp1
                         }
                     }
 
+                    generateAntiRespawnSubroutines();
                     reimportStages();
                     PBar.Value = 100;
 
@@ -560,7 +750,7 @@ namespace WindowsFormsApp1
         private Dictionary<string, string> shuffleItemsGlitchless()
         {
             //*** SETUP ***
-
+            stageAntiRespawnLocs = new Dictionary<string, List<(int code, int objID)>>();
 
             ItemLocation chargerLocation = null;
             ItemLocation batteryLocation = null;
@@ -640,7 +830,7 @@ namespace WindowsFormsApp1
                     string locationName = location.Key;
                     string name = location.Value.SelectToken("name").ToString();
                     string objectName = location.Value.SelectToken("object").ToString();
-                    int locationID = location.Value.SelectToken("location_id").ToObject<int>();
+                    int locationID = location.Value.SelectToken("location_id")?.ToObject<int?>() ?? 0;
 
                     string playerID = location.Value.SelectToken("player").ToString();
 
@@ -670,42 +860,70 @@ namespace WindowsFormsApp1
                     if (locationName == "Living Room - Drake Redcrest Suit")
                     {
                         updateDrakeSuitLoc(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
 
                     }
                     else if (locationName == "Backyard - Frog Suit")
                     {
                         updateFrogSuitLoc(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
 
                     }
                     else if (locationName == "Chibi House - Trauma Suit")
                     {
                         updateTraumaSuitLoc(Directory.GetCurrentDirectory() + @"\stage05_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
 
                     }
                     else if (locationName == "Chibi House - Ghost Suit")
                     {
                         updateGhostSuitLoc(Directory.GetCurrentDirectory() + @"\stage05_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
                     }
                     else if (locationName == "Bedroom - Pajama Suit")
                     {
                         updatePajamaSuitLoc(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectName, playerID, name);
                         updatePajamaSuitKitchenLoc(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
                     }
-                    else if (locationName == "Foyer - Toa Suit")
+                    else if (locationName == "Foyer - Tao Suit")
                     {
                         updateToaSuitLoc(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectName, playerID, name);
+                        spoilerLog.Add(locationName, name);
                         continue;
                     }
 
-                    // if locations isn't a suit and is a AP item, add a in game message of what the player pickedup
+                    // Resolve the AP location code for this location regardless of what item is placed here
+                    int apCode = apLocationCodes.ContainsKey(locationName) ? apLocationCodes[locationName] : -1;
+
+                    // Collect ALL AP locations for anti-respawn (skip Shop roomID=8 and Sink Drain roomID=2)
+                    if (apCode >= 0 && roomID != 8 && roomID != 2)
+                    {
+                        string stageFile = getStageFileNameForRoom(roomID);
+                        if (stageFile != null)
+                        {
+                            if (!stageAntiRespawnLocs.ContainsKey(stageFile))
+                                stageAntiRespawnLocs[stageFile] = new List<(int code, int objID)>();
+                            stageAntiRespawnLocs[stageFile].Add((apCode, locationID));
+                        }
+                    }
+
+                    // if location has an AP placeholder item, add an in-game message of what the player picked up
                     if (objectName.Contains("item_kami_kuzu") || objectName.Contains("item_cookie_kakera") || objectName.Contains("item_cos_obake") || objectName.Contains("item_capsule_"))
                     {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name);
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, false, 0, apCode);
+                    }
+                    else if (apCode >= 0 && roomID != 8 && roomID != 2)
+                    {
+                        // Native Chibi-Robo item placed here: add a flag-only interact handler so anti-respawn works
+                        string stageFile = getStageFileNameForRoom(roomID);
+                        if (stageFile != null)
+                            addFlagOnlyHandler(Directory.GetCurrentDirectory() + @"\" + stageFile, locationID, apCode);
                     }
 
                     // shop items are not the same as normal items
@@ -733,7 +951,10 @@ namespace WindowsFormsApp1
                             case "chibi_battery":
                             case "cb_cannon_lv_2":
                             case "cb_propeller_lv_2":
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
+                            case "item_tug":
+                            case "item_pajama_kiji":
+                            case "item_pajama_kiji_2":
+                            case "item_pajama_kiji_3":
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("cull");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("lift");
@@ -750,7 +971,6 @@ namespace WindowsFormsApp1
 
                                 break;
                             default:
-                                roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("spawn");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("flash");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("cull");
                                 roomObject.SelectToken("objects[" + locationID + "].flags[0]").AddAfterSelf("lift");
@@ -804,6 +1024,36 @@ namespace WindowsFormsApp1
                             roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
 
                             roomObject.SelectToken("objects[" + locationID + "].rotation.y").Replace(0);
+                        }
+
+                    }
+
+                    // Kitchen
+                    if (roomID == 1)
+                    {
+                        // Kitchen - Wastepaper on Shelf by Toaster
+                        if (locationID == 154)
+                        {
+                            var posZ = roomObject.SelectToken("objects[" + locationID + "].position.z");
+                            posZ = ((float)posZ) + 3.0f;
+
+                            roomObject.SelectToken("objects[" + locationID + "].position.z").Replace(posZ);
+
+                        }
+
+                    }
+
+                    // Foyer
+                    if (roomID == 3)
+                    {
+                        // Foyer - Wastepaper On Stairs
+                        if (locationID == 268)
+                        {
+                            var posY = roomObject.SelectToken("objects[" + locationID + "].position.y");
+                            posY = ((float)posY) + 1.0f;
+
+                            roomObject.SelectToken("objects[" + locationID + "].position.y").Replace(posY);
+
                         }
 
                     }
@@ -1147,7 +1397,7 @@ namespace WindowsFormsApp1
 
         }
 
-        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0)
+        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0, int locationCode = -1)
         {
             if (roomID == 0) // Living Room
             {
@@ -1158,7 +1408,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, locationCode);
 
                     }
                     else
@@ -1177,7 +1427,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
@@ -1194,11 +1444,11 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName);
+                        //addInGameMessages(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
-                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, atcID);
+                        //enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, atcID);
                     }
                 }
             }
@@ -1211,7 +1461,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
@@ -1227,7 +1477,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
@@ -1243,7 +1493,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
@@ -1259,7 +1509,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
@@ -1275,13 +1525,28 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, locationCode);
                     }
                     else
                     {
                         enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, atcID);
                     }
                 }
+            }
+        }
+
+        private string getStageFileNameForRoom(int roomID)
+        {
+            switch (roomID)
+            {
+                case 0: return "stage07_Edited.us";
+                case 1: return "stage01_Edited.us";
+                case 3: return "stage02_Edited.us";
+                case 4: return "stage03_Edited.us";
+                case 5: return "stage09_Edited.us";
+                case 6: return "stage04_Edited.us";
+                case 7: return "stage06_Edited.us";
+                default: return null;
             }
         }
         private string objectNameToGameID(string objectName)
@@ -1815,7 +2080,7 @@ namespace WindowsFormsApp1
             File.AppendAllText(
             stagefile,
             "loc_504:" +
-            "\r\n\telif\tand(eq(item(34.d), 0.w), flag(661.d)), else *loc_506" +
+            "\r\n\telif\teq(item(34.d), 0.w), else *loc_506" +
             "\r\n\tsetsp\t" + objectID +
             //"\r\n\tlib\t79.w ; Give Set Item" +
 
@@ -2156,27 +2421,114 @@ namespace WindowsFormsApp1
             );
         }
 
-        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName)
+        // Returns the existing handler label for objectID in stagefile, or null if none.
+        private string findExistingInteractLabel(string content, int objectID)
         {
-            if (newObjectName.Contains("Frog Ring"))
+            string marker = "\t.interact  " + objectID + ".d, *";
+            int idx = content.IndexOf(marker);
+            if (idx < 0) return null;
+            int labelStart = idx + marker.Length;
+            int labelEnd = content.IndexOfAny(new char[] { '\r', '\n' }, labelStart);
+            return content.Substring(labelStart, labelEnd - labelStart).Trim();
+        }
+
+        // Replaces an existing .interact registration to point to a new wrapper label.
+        private string redirectInteract(string content, int objectID, string newLabel)
+        {
+            string marker = "\t.interact  " + objectID + ".d, *";
+            int idx = content.IndexOf(marker);
+            if (idx < 0) return content;
+            int lineEnd = content.IndexOfAny(new char[] { '\r', '\n' }, idx + marker.Length);
+            return content.Substring(0, idx) + "\t.interact  " + objectID + ".d, *" + newLabel + content.Substring(lineEnd);
+        }
+
+        private void addFlagOnlyHandler(string stagefile, int objectID, int locationCode)
+        {
+            int flagNum = 2100 + locationCode;
+            string content = File.ReadAllText(stagefile);
+
+            string originalLabel = findExistingInteractLabel(content, objectID);
+            if (originalLabel != null)
+            {
+                // Redirect: replace the .interact registration to our wrapper, then append
+                // a wrapper that sets the flag and delegates to the original handler via run.
+                // This preserves ALL original logic (item grants, cutscenes, etc.).
+                string wrapperLabel = "ap_flag_" + objectID;
+                content = redirectInteract(content, objectID, wrapperLabel);
+                content += "\r\n" + wrapperLabel + ":" + Environment.NewLine +
+                           "\trun\t*" + originalLabel + Environment.NewLine +
+                           "\tset\tflag(" + flagNum + ".d), 1.d" + Environment.NewLine +
+                           "\treturn\n" + Environment.NewLine;
+                File.WriteAllText(stagefile, content);
+            }
+            else
+            {
+                File.AppendAllText(
+                    stagefile,
+                    "\t.interact  " + objectID + ".d, *ap_flag_" + objectID + Environment.NewLine + Environment.NewLine +
+                    "ap_flag_" + objectID + ":" + Environment.NewLine +
+                    "\tset\tflag(" + flagNum + ".d), 1.d" + Environment.NewLine +
+                    "\treturn\n" + Environment.NewLine);
+            }
+        }
+
+        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1)
+        {
+            string flagSet = locationCode >= 0
+                ? "\r\n\tset\tflag(" + (2100 + locationCode) + ".d), 1.d"
+                : "";
+
+            string content = File.ReadAllText(stagefile);
+            string originalLabel = findExistingInteractLabel(content, objectID);
+
+            if (originalLabel != null)
+            {
+                // This object already has an interact handler in the original script (e.g., the
+                // Giga Charger handler that adds item 48 and triggers Plankbeard's reunion).
+                // Redirect .interact to our wrapper, show the AP message, then run the original
+                // handler so ALL its logic (item grants, cutscenes, flag sets) still executes.
+                string wrapperLabel = "ap_text_" + objectID;
+                content = redirectInteract(content, objectID, wrapperLabel);
+
+                string frogRingExtra = newObjectName.Contains("Frog Ring")
+                    ? "\r\n\tpushbp\r\n\tsetsp\t0.d\r\n\tlib\t77.w\r\n\tpopbp"
+                    : "";
+
+                content +=
+                    "\r\n" + wrapperLabel + ":" + Environment.NewLine +
+                    "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
+                    "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
+                    "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
+                    "\t\twait(254.b)" +
+                    frogRingExtra +
+                    flagSet + Environment.NewLine +
+                    "\trun\t*" + originalLabel + Environment.NewLine +
+                    "\treturn\n" + Environment.NewLine;
+
+                File.WriteAllText(stagefile, content);
+            }
+            else if (newObjectName.Contains("Frog Ring"))
             {
                 File.AppendAllText(
                stagefile,
                "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                "ap_text_" + objectID + ":" + Environment.NewLine +
+               // Add the frog ring to inventory (item(0)) so it can be carried to Jenny.
+               // Counting is handled entirely by Jenny's turn-in (item(0)+1 -> var(71)),
+               // so do NOT bump var(71)/var(147) here or rings get double-counted.
+               // Check result so a full inventory doesn't falsely set the AP flag.
+               "\tpushbp" + Environment.NewLine +
+               "\tsetsp\t0.d" + Environment.NewLine +
+               "\tlib\t77.w" + Environment.NewLine +
+               "\tpopbp" + Environment.NewLine +
+               "\tif\tresult, else *ap_text_" + objectID + "_skip" + Environment.NewLine +
                "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                "\t\twait(254.b)" +
-               // Add the frog ring to inventory (item(0)) so it can be carried to Jenny.
-               // Counting is handled entirely by Jenny's turn-in (item(0)+1 -> var(71)),
-               // so do NOT bump var(71)/var(147) here or rings get double-counted.
-               "\r\n\tpushbp" +
-               "\r\n\tsetsp\t0.d" +
-               "\r\n\tlib\t77.w" +
-               "\r\n\tpopbp" + Environment.NewLine +
+               flagSet + Environment.NewLine +
+               "ap_text_" + objectID + "_skip:" + Environment.NewLine +
                "\treturn\n" + Environment.NewLine);
-
             }
             else
             {
@@ -2187,10 +2539,91 @@ namespace WindowsFormsApp1
                 "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                 "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                 "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
-                "\t\twait(254.b)" + Environment.NewLine +
+                "\t\twait(254.b)" +
+                flagSet + Environment.NewLine +
                 "\treturn\n" + Environment.NewLine);
             }
 
+        }
+
+        private void generateAntiRespawnSubroutines()
+        {
+            var stageLabels = new Dictionary<string, string>
+            {
+                { "stage07_Edited.us", "07" },
+                { "stage01_Edited.us", "01" },
+                { "stage02_Edited.us", "02" },
+                { "stage03_Edited.us", "03" },
+                { "stage04_Edited.us", "04" },
+                { "stage06_Edited.us", "06" },
+                { "stage09_Edited.us", "09" },
+            };
+
+            foreach (var kvp in stageAntiRespawnLocs)
+            {
+                if (!stageLabels.ContainsKey(kvp.Key)) continue;
+
+                string label = stageLabels[kvp.Key];
+                string fullPath = Directory.GetCurrentDirectory() + @"\" + kvp.Key;
+                var locs = kvp.Value;
+
+                // Append the per-stage show+hide subroutines
+                var sb = new System.Text.StringBuilder();
+
+                // Show subroutine: make all AP items visible on room load (counters the
+                // game engine hiding objects that have the "spawn" flag in their JSON flags array)
+                sb.Append("\r\nsub_ap_show_" + label + ":");
+                for (int i = 0; i < locs.Count; i++)
+                {
+                    int objID = locs[i].objID;
+                    sb.Append("\r\n\tdisp\t" + objID + ".d, 1.d");
+                }
+                sb.Append("\r\n\treturn\r\n");
+
+                // Hide subroutine: re-hide items whose collection flag is set
+                sb.Append("\r\nsub_ap_hide_" + label + ":");
+                for (int i = 0; i < locs.Count; i++)
+                {
+                    int flagNum = 2100 + locs[i].code;
+                    int objID = locs[i].objID;
+                    sb.Append("\r\n\tif\tflag(" + flagNum + ".d), else *loc_ah_" + label + "_" + i);
+                    sb.Append("\r\n\tdisp\t" + objID + ".d, 0.d");
+                    sb.Append("\r\nloc_ah_" + label + "_" + i + ":");
+                }
+                sb.Append("\r\n\treturn\r\n");
+                File.AppendAllText(fullPath, sb.ToString());
+
+                // Patch the END of evt_startup's day/night branch to call the hide sub.
+                // That branch always ends with: set flag(31.d), 0.X  followed immediately by return.
+                // We target only the FIRST occurrence so we land inside evt_startup, not evt_time_cycle.
+                string content = File.ReadAllText(fullPath);
+
+                string[] startupEndCandidates = new[]
+                {
+                    "\tset\tflag(31.d), 0.d\r\n\treturn",
+                    "\tset\tflag(31.d), 0.w\r\n\treturn",
+                    "\tset\tflag(31.d), 0.d\n\treturn",
+                    "\tset\tflag(31.d), 0.w\n\treturn",
+                };
+
+                bool patched = false;
+                foreach (string candidate in startupEndCandidates)
+                {
+                    int idx = content.IndexOf(candidate);
+                    if (idx >= 0)
+                    {
+                        string insertion = "\r\n\trun\t*sub_ap_show_" + label + "\r\n\trun\t*sub_ap_hide_" + label;
+                        // Insert run call before the return
+                        int returnOffset = candidate.LastIndexOf("\treturn");
+                        string newChunk = candidate.Substring(0, returnOffset) + insertion + "\r\n" + "\treturn";
+                        content = content.Substring(0, idx) + newChunk + content.Substring(idx + candidate.Length);
+                        patched = true;
+                        break;
+                    }
+                }
+
+                File.WriteAllText(fullPath, content);
+            }
         }
 
         private void enableATCToolPickup(string stagefile, int objectID, string player, string newObjectName, int toolID)

@@ -1,0 +1,100 @@
+================================================================================
+ CHIBI-ROBO RANDOMIZER - PER-DOOR OPEN/CLOSED FLAG SYSTEM
+================================================================================
+ Goal: each room/hallway door has a flag; 0 = closed (default), 1 = open.
+ CLOSED must physically block the player (no walking through, no warping).
+
+ A fully-controlled door needs THREE parts, all keyed to its flag:
+   1. MODEL   - play the open anim/dir only when open (cosmetic).
+   2. WALL    - an invisible collision box spawned with
+                `born <id>, 2.d, X, Y, Z, 0.w, exX, exY, exZ, 0.w` (TYPE 2 = wall)
+                in the CLOSED branch. The dami objects do NOT block; only a
+                born type-2 box does.
+   3. MAP-JUMP- early-`return` from the door's map_jump_box .interact handler
+                while closed, so the player can't warp to the next room.
+
+ Born world coords = JSON object position * ~98.18 (verified).
+ NOTE: every new wall's coords/extents should be eyeballed in Dolphin and
+ nudged - the kitchen wall took a couple of tries to sit in the doorway.
+
+ FLAG ALLOCATION (block 1860-1870, all previously unused)
+ --------------------------------------------------------
+   1860  kitchen_door (+ kitchen_door_r)   stage01   DONE - verified in-game
+   1861  rouka_door_j                       stage02   DONE - pending test (new wall 10200)
+   1862  rouka_door_k                       stage02   DONE - pending test (reuses wall 10020)*
+   1863  rouka_door_l                       stage02   DONE - model swapped to rouka_door_k (Form1.cs)
+                                                       so anim 24,0/1 closes/opens it; wall 10000
+   1864  rouka_door_pama (+ half 285)       stage02   SPECIAL - climb/stair door (not done)
+   1865  rouka_door_e                       stage02   SPECIAL - cosmetic, no warp (not done)
+   1866  jenny_door                         stage04   DONE - pending test (new wall 10100)
+   1867  jenny_castle_door                  stage04   SPECIAL - JSON pos (0,0,0) (not done)
+   1868  parent_door                        stage06   DONE - pending test (new wall 10010)
+   1869  living_door                        stage07   DONE - pending test (existing wall 10000)
+   1870  living_door_k                      stage07   DONE - pending test (existing wall 10001)
+
+   * rouka_door_k keeps its inner spider-trap sub-condition: when 1862=1 it opens
+     UNLESS the foyer spider state is active (flag 11 set & flag 17 clear), in
+     which case the trap wall still spawns. 1862=0 always closes it. This avoids
+     breaking the spider sequence.
+
+ IMPLEMENTATION NOTE (how each DONE door was converted)
+ -----------------------------------------------------
+ Per door: (a) the load-time init gate was changed from the old story flag to the
+ new door flag (so default 0 = closed -> born wall branch runs), and (b) the
+ door's map_jump_box handler got an early `return` when the flag is closed.
+ Cutscene/ending/reset code that directly opens a door was LEFT ALONE - it opens
+ the door in-the-moment (fine) and the door reverts to its flag state on reload.
+ New walls (10200/10100/10010) use coords = JSON pos * 98.18 and STILL NEED an
+ in-game placement check like the kitchen wall did.
+
+ KEY FINDING
+ -----------
+ Most doors ALREADY have parts 1-3 built in, but keyed to STORY flags, and
+ several are woven into cutscenes / the ending / the spider-attack reset:
+   - living_door   <-> flag 38   (stage07 sub_1062; wall born 10000; map_jump 32;
+                                   ALSO re-armed by spider-attack reset sub_328
+                                   and force-opened in the ending ~line 22137)
+   - living_door_k <-> flag 39   (stage07; wall born 10001; map_jump 31; same)
+   - rouka_door_k  <-> flag 42+39 (stage02 sub_862; wall born 10020; map_jump 21)
+   - rouka_door_l  <-> flag 38    (stage02; wall born 10000; map_jump 19=battery-gated)
+   - rouka_door_j  <-> flag 40    (stage02; dir only, no wall; map_jump 23)
+   - rouka_door_pama <-> flag 41  (stage02; half-swap; map_jump 22)
+   - parent_door   <-> flag 41    (stage06 sub_585, computed from flag 11/2000/time;
+                                   no wall; map_jump 4 = plain warp, no gate)
+ Cutting the story-integrated ones to independent flags risks those sequences,
+ so they need either (a) careful flag swap + reset handling, or (b) reuse of the
+ existing story flag as the door control. ISOLATED doors (kitchen, jenny_door)
+ took the clean kitchen pattern with no story risk.
+
+ DONE SO FAR
+ -----------
+ * stage01 kitchen_door (flag 1860): born walls 10000 (kitchen_door_r) + 10011
+   (kitchen_door); map_jump 18 (Living Room) & 19 (Foyer) gated. Verified in-game.
+ * stage04 jenny_door (flag 1866): born wall 10100; map_jump 12 (room 2) gated.
+   Pending in-game test of wall placement.
+
+ MAP-JUMP -> DOOR -> DESTINATION (matched by position)
+ -----------------------------------------------------
+   stage01: mjb18 -> kitchen_door   -> Living Room
+            mjb19 -> kitchen_door_r -> Foyer
+   stage02: mjb21 -> rouka_door_k   -> Kitchen
+            mjb19 -> rouka_door_l   -> Living Room (handler is battery-gated)
+            mjb23 -> rouka_door_j   -> Jenny's Room
+            mjb22 -> rouka_door_pama-> Bedroom
+            (rouka_door_e has NO associated warp)
+   stage04: mjb12 -> jenny_door     -> room 2
+            (jenny_castle_door has no clean warp; nearest box 366 has no handler)
+   stage06: mjb4  -> parent_door    -> room 2
+   stage07: mjb32 -> living_door    -> room 2
+            mjb31 -> living_door_k  -> room 1
+
+ SPECIAL CASES (need decisions)
+ ------------------------------
+ * rouka_door_pama (1864): a climb/clamber stair-top door done via swapping two
+   visual halves (4 / 285) + dir; no simple wall. Blocking it cleanly is awkward.
+ * rouka_door_e   (1865): never referenced in script, no warp behind it - purely
+   cosmetic. A wall is the only thing that would do anything; low value.
+ * jenny_castle_door (1867): JSON position is (0,0,0) (baked into static castle
+   mesh), so wall coords can't be derived from JSON - must be measured in-game.
+   It also has no plain warp handler. Likely skip or treat as visibility-only.
+================================================================================

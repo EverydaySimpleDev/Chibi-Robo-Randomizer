@@ -1,0 +1,2163 @@
+################################################################################
+#                                                                              #
+#            CHIBI-ROBO RANDOMIZER  -  SCRIPT FLAG REFERENCE                    #
+#                                                                              #
+#   Every one of the 978 distinct flag(N) values used across the .us script    #
+#   files (globals + stage01-18), with a meaning, a confidence tag, and where   #
+#   each flag is set / read.                                                    #
+#                                                                              #
+################################################################################
+
+
+HOW TO READ AN ENTRY
+====================
+  Each flag takes two lines:
+
+      19  CONFIRMED  Giga Robo sticker / Giga Robo state (in All-Stickers block)
+                      set 1 / read 104  -  stage01, globals, stage02, ...
+      |   |          |                     |          |
+      |   |          |                     |          +- files that touch it
+      |   |          |                     +------------ how many times set vs read
+      |   |          +---------------------------------- what the flag means
+      |   +--------------------------------------------- confidence (see below)
+      +------------------------------------------------- the flag number
+
+  The list is in ascending flag-number order, broken into labelled BANDS so you
+  can scan by topic. To find a specific flag, just search for it (e.g. "  718 ").
+
+
+CONFIDENCE TAGS
+===============
+  CONFIRMED   From an explicit in-script comment, the sticker list, or a known
+              convention. Trust these.
+  INFERRED    Read off a named event label or surrounding code. Usually right,
+              occasionally imprecise.
+  GUESS       Weak / ambiguous - only generic labels or no context. A hint, not
+              a fact (often just part of a bulk reset block).
+
+  Totals:  52 CONFIRMED   .   558 INFERRED   .   368 GUESS
+
+
+WHAT A FLAG IS
+==============
+  Flags are global on/off game-state bits.  `set flag(N.d), 1.w` turns flag N
+  on;  `if eq(flag(N.d), 1.d) ...` reads it.  The .b / .w / .d suffixes are just
+  integer sizes (byte / word / dword) and carry no meaning.
+
+  Two related, NON-flag states show up in some descriptions for context:
+    atc(N)    unlocked attachment:  1 = copter, 2 = blaster, 3 = radar
+    cur_suit  the costume / suit Chibi-Robo is currently wearing
+
+
+EVENT-LABEL DECODER  (the main signal behind INFERRED meanings)
+===============================================================
+  evt_item_<name>        a collectible / story item  (the <name> IS the item)
+  evt_map_jump_box_<n>   a room / scene transition  (loading zone / door warp)
+  evt_npc_<name>_<n>     an NPC conversation / event  (dialogue progress)
+  evt_living_* / evt_backyard_* / evt_chibi_house_*    location-specific events
+  evt_prologue / startup / dead / pose    intro / boot / death / pose cutscenes
+  lib_<n>                shared library subroutine  (weak signal)
+  loc_<n> / sub_<n>      auto-generated labels  (no semantic meaning)
+
+
+NOTABLE FLAG BLOCKS  (these are the bands in the list below)
+============================================================
+  add(1700, itemId)   "item itemId has been collected/received" - the
+                      item-received markers (~1700-1834). They use a
+                      computed index, so they do NOT appear as numbers below.
+  100 - 156    Battery system (100 = enabled, 101-137 level-up bits,
+               119 = LV2 milestone, 138-156 level-up notifications).
+  160 - 208    lib_74 NPC / event-progress dispatch table (per-NPC bits).
+  209 - 299    "shown current suit to this NPC" reaction bits (suit x NPC).
+  604 - 607    Four collectible panels / parts, set together.
+  701 - 799    lib_275 day/time reset block (zeroed each day/time reset).
+               Mostly unknown; 701 = ladder-bot / saving-family,
+               716 / 717 / 718 / 1013 = Chibi-Door panels.
+  908 - 928    Toy soldiers rescued / captured (win-condition group).
+  1030 - 1048  Chibi-House door used, per stage.
+  1100 - 1119  Stage 11 (drain) scripted-sequence step markers.
+  1200 - 1224  Player position / footstep trigger markers.
+  1501 - 1520  First-time "wearing suit X" effects + suit-shown reactions.
+  1606 - 1611  Tracks the current suit / costume worn (lib_264).
+
+
+STICKER ALBUM  (the "All Stickers" set - all CONFIRMED)
+=======================================================
+    19  Giga Robo           1000  Telly              1181  Chibi Doors
+   321  All Utili-bots      1612  All Frog Rings      667  Frog
+  1083  Blue Bird           1090  Mr Prongs          1617  Drake Redcrest
+  1523  Sophie               936  Free Rangers       1530  Captain Plankbeard
+  1071  Peekoe              1509  Sunshine            815  Mort & Princess
+  1085  Dinah               1084  Funky Phil           17  Queen Spider
+  1225  Hot Rod             1226  Space Scrambler    1227  Cooking
+  1615  Kid Eggplant        1618  Primopeul          1619  Tamagotchi
+
+
+################################################################################
+#  MASTER FLAG LIST                                                            #
+################################################################################
+
+  -------------------------------------------------------------------------
+   GENERAL - intro, toothbrush, items, map warps (0-99)
+  -------------------------------------------------------------------------
+
+     0  CONFIRMED  Toothbrush brushing sequence active/started (set with 476 "touched toothbrush")
+                    set 2 / read 5  -  globals, stage05, stage07
+     1  INFERRED   Toothbrush brushing sub-state (set alongside flag 0; gates brushing dialogue)
+                    set 2 / read 5  -  globals, stage05, stage07
+     2  INFERRED   Plug/start event done (evt_plug_start) — power-plug intro sequence
+                    set 1 / read 20  -  stage01, globals, stage02, stage03, stage05, stage07
+     4  GUESS      Backyard NPC/object spawn condition (var(728) state in stage05); undocumented
+                    set 1 / read 2  -  stage02, stage05
+     5  INFERRED   ET-1 NPC (et_1) conversation/event progress
+                    set 1 / read 10  -  globals, stage09
+     6  INFERRED   ET-1 NPC (et_1) conversation/event progress (read-only check)
+                    set 0 / read 9  -  globals, stage09
+     9  INFERRED   Funky Phil mini-set kill progress (low bit; with 11 controls which set spawns)
+                    set 0 / read 11  -  globals, stage06
+    10  INFERRED   Funky Phil mini-set progress (set with 11 after animation)
+                    set 1 / read 1  -  globals, stage06
+    11  CONFIRMED  Love letter item obtained / TV-switch event done (evt_item_love_letter, evt_living_tv_switch)
+                    set 1 / read 92  -  stage01, globals, stage02, stage04, stage05, stage06, stage07, stage09
+    12  INFERRED   Dialogue/voice branch state checked in globals message routine
+                    set 1 / read 5  -  globals, stage02, stage07
+    13  INFERRED   Death/pose cutscene state (evt_dead / evt_pose)
+                    set 1 / read 21  -  globals, stage02, stage07
+    14  CONFIRMED  Kairozu item obtained (evt_item_kairozu)
+                    set 1 / read 1  -  stage18
+    15  CONFIRMED  Papa's wedding ring obtained (evt_item_papa_yubiwa)
+                    set 1 / read 2  -  globals, stage11
+    16  INFERRED   Death/pose/map-warp cutscene state (evt_dead, evt_pose, evt_map_jump_box)
+                    set 1 / read 34  -  globals, stage02, stage07
+    17  CONFIRMED  Queen Spider sticker / Queen Spider state (shared map-warp + love-letter gate)
+                    set 0 / read 75  -  stage01, globals, stage02, stage03, stage04, stage05, stage07, stage09
+    18  INFERRED   Prologue/startup cutscene played (evt_prologue / evt_startup)
+                    set 1 / read 46  -  stage01, stage02, stage03, stage07, stage09
+    19  CONFIRMED  Giga Robo sticker / Giga Robo state (prologue/startup; in All-Stickers block)
+                    set 1 / read 104  -  stage01, globals, stage02, stage03, stage05, stage06, stage07, stage09
+    20  INFERRED   Blaster-acquired post-event state (set after atc(2) blaster equip in stage07)
+                    set 1 / read 6  -  globals, stage07
+    27  INFERRED   Battery-upgrade / item-name dialogue seen (10,000 kilowatt battery text)
+                    set 1 / read 9  -  globals, stage03, stage05
+    28  INFERRED   Spider-bot spawn/intro state in stage03 (gated with 19)
+                    set 1 / read 8  -  globals, stage03
+    29  INFERRED   Cutscene/camera event trigger (with 30, 660; counts var 799)
+                    set 2 / read 10  -  globals, stage05
+    30  INFERRED   Chibi-House dentist/teeth event (evt_chibi_house_denti)
+                    set 2 / read 11  -  stage03, stage05
+    31  INFERRED   Scene-load/cutscene transient flag (set/cleared on stage entry, very high set count)
+                    set 48 / read 15  -  stage01, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11, stage14, stage18
+    32  INFERRED   Living-room access/event prerequisite (with 661; sets 31/37)
+                    set 3 / read 2  -  globals, stage05
+    33  GUESS      lib_0 shared init state in globals/stage05; undocumented; no clear context
+                    set 4 / read 1  -  globals, stage05
+    34  INFERRED   Transient SFX/attachment trigger flag in globals (set then immediately cleared)
+                    set 27 / read 2  -  globals
+    35  INFERRED   Startup/scene-init pending flag (lib + evt_startup; checked-and-cleared on load)
+                    set 13 / read 28  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11, stage18
+    37  INFERRED   Scene-load completion flag (set with 31 on stage entry)
+                    set 12 / read 6  -  stage05
+    38  INFERRED   Display/animation object-enable state (toggles disp 19 in stage02; set with 13)
+                    set 4 / read 3  -  stage02, stage07, stage14
+    39  INFERRED   Map warp/door used (evt_map_jump_box_21/33)
+                    set 5 / read 8  -  globals, stage02, stage05, stage07
+    40  INFERRED   Map warp/door used (evt_map_jump_box_23)
+                    set 2 / read 3  -  stage02, stage04, stage05, stage14
+    41  INFERRED   Map warp/door used (evt_map_jump_box_22)
+                    set 11 / read 12  -  stage02, stage05, stage06, stage07, stage14
+    42  INFERRED   Map warp/door used (evt_map_jump_box_21)
+                    set 3 / read 3  -  stage01, stage02, stage03, stage07
+    43  INFERRED   Transient object-spawn trigger in stage02 (set then cleared)
+                    set 1 / read 1  -  stage02
+    44  INFERRED   Map warp/door used (evt_map_jump_box_20)
+                    set 1 / read 2  -  globals, stage02
+    45  CONFIRMED  ET-1 NPC dialogue master progress flag (many evt_npc_et_1 events; huge ref count)
+                    set 37 / read 184  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11
+    46  INFERRED   lib_121 shared subroutine state (toggled in stage05 move routine)
+                    set 2 / read 1  -  globals, stage05
+    47  INFERRED   Event-progress flag gating attach in stage02/stage07 (set with 2001)
+                    set 3 / read 6  -  stage02, stage07, stage09
+    48  INFERRED   Window-cleaning event done (evt_living_window_ware / evt_backyard_window_ware)
+                    set 2 / read 7  -  stage07, stage09
+    49  INFERRED   Map warp/door used (evt_map_jump_box_6)
+                    set 8 / read 4  -  stage07, stage09
+    50  INFERRED   Door-switch object spawned/used (born DOOR_SWITCH in stage06)
+                    set 1 / read 12  -  globals, stage02, stage06
+    51  GUESS      State flag set in globals near flag 35 reset; undocumented; no clear context
+                    set 2 / read 1  -  globals, stage05
+    52  INFERRED   Post-event state set after a stage07 timed sequence (clears flag 31)
+                    set 2 / read 1  -  stage02, stage07
+    53  INFERRED   One-shot SFX/event gate in stage05 (gated with 19)
+                    set 1 / read 3  -  stage05
+    99  INFERRED   Transient backpack/voice routine flag in globals (lib subroutines; set/cleared)
+                    set 9 / read 0  -  globals
+
+  -------------------------------------------------------------------------
+   BATTERY SYSTEM (100-156)
+  -------------------------------------------------------------------------
+
+   100  INFERRED   Battery-system enabled flag (gates battery level-up logic in stage05/globals)
+                    set 1 / read 18  -  globals, stage05
+   101  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 17  -  globals, stage05
+   102  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 16  -  globals, stage05
+   103  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 15  -  globals, stage05
+   104  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 14  -  globals, stage05
+   105  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 13  -  globals, stage05
+   106  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 12  -  globals, stage05
+   107  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 11  -  globals, stage05
+   108  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 10  -  globals, stage05
+   109  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 9  -  globals, stage05
+   110  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 8  -  globals, stage05
+   111  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 7  -  globals, stage05
+   112  INFERRED   Battery level-up progress bit (battery LV array, stage05)
+                    set 1 / read 6  -  globals, stage05
+   113  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   114  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   115  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   116  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   117  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   118  INFERRED   Battery level-up progress bit (battery LV array, read-only, stage05)
+                    set 0 / read 3  -  globals, stage05
+   119  CONFIRMED  Battery LV2 milestone reached (printf "battery LV2"; gated by flag 100)
+                    set 19 / read 2  -  stage05
+   120  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 18 / read 2  -  stage05
+   121  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 17 / read 2  -  stage05
+   122  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 16 / read 2  -  stage05
+   123  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 15 / read 2  -  stage05
+   124  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 14 / read 2  -  stage05
+   125  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 13 / read 2  -  stage05
+   126  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 12 / read 2  -  stage05
+   127  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 11 / read 2  -  stage05
+   128  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 10 / read 2  -  stage05
+   129  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 9 / read 2  -  stage05
+   130  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 8 / read 2  -  stage05
+   131  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 7 / read 2  -  stage05
+   132  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 6 / read 2  -  stage05
+   133  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 5 / read 2  -  stage05
+   134  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 4 / read 2  -  stage05
+   135  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 3 / read 2  -  stage05
+   136  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 2 / read 2  -  stage05
+   137  INFERRED   Battery LV milestone reached (battery-level milestone array, stage05)
+                    set 1 / read 2  -  stage05
+   138  INFERRED   Battery-level notification shown (set once when flag 100 set; globals)
+                    set 1 / read 15  -  globals
+   139  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 14  -  globals
+   140  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 13  -  globals
+   141  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 12  -  globals
+   142  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 11  -  globals
+   143  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 10  -  globals
+   144  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 9  -  globals
+   145  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 8  -  globals
+   146  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 7  -  globals
+   147  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 6  -  globals
+   148  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 5  -  globals
+   149  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 4  -  globals
+   150  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 3  -  globals
+   151  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+   152  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+   153  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+   154  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+   155  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+   156  INFERRED   Battery-level notification flag (battery notify array, globals)
+                    set 1 / read 1  -  globals
+
+  -------------------------------------------------------------------------
+   NPC EVENT DISPATCH TABLE - lib_74 (160-208)
+  -------------------------------------------------------------------------
+
+   160  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch; kitchen conro/kingyo/keath events; reset on stage entry)
+                    set 67 / read 81  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11, stage14
+   161  INFERRED   Shared NPC/event-progress flag (lib_74; kitchen kingyo/goldfish event)
+                    set 18 / read 22  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11
+   162  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 22 / read 9  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09, stage11
+   163  INFERRED   Shared NPC/event-progress flag (lib_74; also map_jump_box_22)
+                    set 30 / read 16  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09, stage11
+   164  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 28 / read 10  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09, stage11
+   165  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 30 / read 13  -  stage01, globals, stage02, stage03, stage06, stage07, stage09
+   166  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 13 / read 11  -  stage01, globals, stage02, stage03, stage04, stage07, stage09
+   167  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 23 / read 7  -  stage01, globals, stage02, stage04, stage06, stage07, stage09
+   168  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 27 / read 13  -  stage01, globals, stage02, stage04, stage06, stage07, stage09
+   169  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 15 / read 7  -  stage01, globals, stage02, stage04, stage06, stage07, stage09
+   170  INFERRED   Shared NPC/event-progress flag (lib_74; dry-frog and bird NPC events)
+                    set 19 / read 12  -  stage01, globals, stage02, stage04, stage06, stage07, stage09
+   171  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 12 / read 4  -  stage01, globals, stage02, stage04, stage06, stage07
+   172  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 13 / read 4  -  stage01, globals, stage04, stage06, stage07
+   173  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 17 / read 7  -  stage01, globals, stage02, stage04, stage06, stage07
+   174  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 9 / read 4  -  stage01, globals, stage02, stage04, stage07
+   175  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 6 / read 4  -  stage01, globals, stage02, stage04
+   176  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 7 / read 4  -  stage01, globals, stage02, stage04
+   177  INFERRED   Parent account-book event progress (evt_parent_account_book; gates attach in stage04)
+                    set 18 / read 13  -  stage01, globals, stage02, stage04
+   178  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 7 / read 3  -  stage01, globals, stage02, stage04
+   179  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 6 / read 2  -  stage01, globals, stage02, stage04
+   180  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 18 / read 3  -  stage01, globals, stage02, stage04
+   181  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 6 / read 3  -  stage01, globals, stage02, stage04
+   182  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 4 / read 3  -  stage01, globals, stage02, stage04
+   183  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 6 / read 4  -  stage01, globals, stage02, stage04
+   184  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 2 / read 4  -  stage01, globals, stage04
+   185  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 2 / read 2  -  stage01, globals, stage04
+   186  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 1 / read 1  -  globals, stage04
+   187  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 2 / read 1  -  stage01, globals
+   188  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 19 / read 5  -  stage01, globals, stage04
+   189  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 8 / read 7  -  stage01, globals, stage04
+   190  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 3 / read 1  -  globals, stage04
+   191  INFERRED   Shared NPC/event-progress flag (lib_74 dispatch table)
+                    set 2 / read 1  -  stage01, globals
+   192  GUESS      Shared lib_74 flag, set-only in globals; undocumented; no read context
+                    set 1 / read 0  -  globals
+   193  GUESS      Shared lib_74 flag, set-only in globals; undocumented; no read context
+                    set 1 / read 0  -  globals
+   194  GUESS      Shared lib_74 flag, set-only in globals; undocumented; no read context
+                    set 1 / read 0  -  globals
+   195  GUESS      Shared lib_74 flag, set-only in globals; undocumented; no read context
+                    set 1 / read 0  -  globals
+   196  GUESS      Shared lib_74 flag, set-only in globals; undocumented; no read context
+                    set 1 / read 0  -  globals
+   197  GUESS      Shared lib_74 flag, reset together in globals; no read context
+                    set 1 / read 0  -  globals
+   198  GUESS      undocumented; reset together in globals lib_74 routine, no read context
+                    set 1 / read 0  -  globals
+   199  GUESS      undocumented; reset together in globals lib_74 routine, no read context
+                    set 1 / read 0  -  globals
+   200  GUESS      undocumented; reset together in globals lib_74 routine, no read context
+                    set 1 / read 0  -  globals
+   202  GUESS      undocumented; set/cleared in globals loc_2039, no clear purpose
+                    set 1 / read 0  -  globals
+   203  GUESS      undocumented; set/cleared in globals loc_2043, no clear purpose
+                    set 1 / read 0  -  globals
+   205  GUESS      undocumented; set/cleared in globals loc_2049, no clear purpose
+                    set 1 / read 0  -  globals
+   207  GUESS      stage07 toggle flag (set 1 then 0), purpose unclear
+                    set 5 / read 0  -  stage07
+
+  -------------------------------------------------------------------------
+   "SHOWN CURRENT SUIT TO THIS NPC" REACTION BITS (209-299)
+  -------------------------------------------------------------------------
+
+   209  INFERRED   "shown suit 1 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 5 / read 3  -  stage01, globals, stage02, stage07
+   210  INFERRED   "shown suit 3 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 5 / read 3  -  stage01, globals, stage02, stage07
+   211  INFERRED   "shown suit 2 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 1 / read 3  -  stage01, globals, stage02, stage07
+   212  INFERRED   "shown suit 7 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 5 / read 3  -  stage01, globals, stage02, stage07
+   213  INFERRED   "shown suit 4 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 5 / read 3  -  stage01, globals, stage02, stage07
+   214  INFERRED   "shown suit 5 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 0 / read 2  -  stage01, stage02
+   215  INFERRED   "shown suit 6 to this NPC" reaction flag (cur_suit-keyed, group A)
+                    set 5 / read 3  -  stage01, globals, stage02, stage07
+   216  INFERRED   "shown suit 1 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   217  INFERRED   "shown suit 3 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   218  INFERRED   "shown suit 2 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   219  INFERRED   "shown suit 7 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   220  INFERRED   "shown suit 4 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   222  INFERRED   "shown suit 6 to this NPC" reaction flag (cur_suit-keyed, group B)
+                    set 2 / read 2  -  stage01, globals, stage06
+   223  INFERRED   "shown suit 1 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   224  INFERRED   "shown suit 3 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   225  INFERRED   "shown suit 2 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   226  INFERRED   "shown suit 7 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   227  INFERRED   "shown suit 4 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   229  INFERRED   "shown suit 6 to this NPC" reaction flag (cur_suit-keyed, group C)
+                    set 4 / read 2  -  stage01, globals, stage07
+   230  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D, globals/stage04/07)
+                    set 5 / read 3  -  globals, stage04, stage07
+   231  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D)
+                    set 3 / read 3  -  globals, stage04, stage07
+   232  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D)
+                    set 3 / read 3  -  globals, stage04, stage07
+   233  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D)
+                    set 3 / read 2  -  globals, stage04, stage07
+   234  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D)
+                    set 3 / read 3  -  globals, stage04, stage07
+   236  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, group D)
+                    set 4 / read 2  -  globals, stage04, stage07
+   237  INFERRED   "shown suit 1 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 3 / read 4  -  stage01, globals, stage02, stage07
+   238  INFERRED   "shown suit 3 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 3 / read 4  -  stage01, globals, stage02, stage07
+   239  INFERRED   "shown suit 2 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 3 / read 4  -  stage01, globals, stage02, stage07
+   240  INFERRED   "shown suit 7 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 3 / read 3  -  stage01, globals, stage02, stage07
+   241  INFERRED   "shown suit 4 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 4 / read 5  -  stage01, globals, stage02, stage07
+   243  INFERRED   "shown suit 6 to this NPC" reaction flag (cur_suit-keyed, group E)
+                    set 5 / read 4  -  stage01, globals, stage02, stage07
+   244  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   245  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   246  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   247  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   248  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   250  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage02 group)
+                    set 2 / read 1  -  globals, stage02
+   251  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   252  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   253  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   254  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   255  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   257  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage01 group)
+                    set 2 / read 1  -  stage01, globals
+   258  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   259  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   260  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   261  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   262  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   264  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage03 group)
+                    set 2 / read 1  -  globals, stage03
+   265  INFERRED   "shown suit 1 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   266  INFERRED   "shown suit 3 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   267  INFERRED   "shown suit 2 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   268  INFERRED   "shown suit 7 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   269  INFERRED   "shown suit 4 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   271  INFERRED   "shown suit 6 to this NPC" reaction flag (cur_suit-keyed, globals group)
+                    set 3 / read 1  -  globals, stage07
+   272  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   273  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   274  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   275  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   276  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   278  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 3 / read 2  -  globals, stage04
+   279  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   280  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   281  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   282  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   283  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   285  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 2  -  globals, stage06
+   286  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   287  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   288  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   289  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   290  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   292  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage06 group)
+                    set 2 / read 1  -  globals, stage06
+   293  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 2 / read 1  -  globals, stage04
+   294  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 2 / read 1  -  globals, stage04
+   295  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 2 / read 1  -  globals, stage04
+   296  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, reset in lib_264)
+                    set 1 / read 0  -  globals
+   297  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 2 / read 1  -  globals, stage04
+   299  INFERRED   "shown suit to NPC" reaction flag (cur_suit-keyed, globals/stage04 group)
+                    set 2 / read 1  -  globals, stage04
+
+  -------------------------------------------------------------------------
+   GENERAL - story / event progress (301-603)
+  -------------------------------------------------------------------------
+
+   301  INFERRED   stage05 event-seen flag (gates loc_29/31/36 dialogue, set once)
+                    set 2 / read 3  -  stage05
+   303  INFERRED   paired toggle with 304 in globals loc_1301/1303 (mutually exclusive state A)
+                    set 2 / read 0  -  globals
+   304  INFERRED   paired toggle with 303 in globals loc_1301/1303 (mutually exclusive state B)
+                    set 2 / read 0  -  globals
+   305  INFERRED   Queen Spider defeated/spider event done (gates spider entity attach 20005 vs flag 17)
+                    set 1 / read 6  -  stage01, globals, stage02, stage03, stage07, stage09
+   306  INFERRED   stage03 warehouse (souko) event/progress flag, gates multiple dialogue branches
+                    set 2 / read 6  -  stage03
+   307  GUESS      stage07 event-seen flag, set once; specific event unclear
+                    set 1 / read 1  -  stage07
+   311  GUESS      stage14 (intro/title) flag, single set; purpose unclear
+                    set 1 / read 0  -  stage14
+   312  INFERRED   intro window already-seen flag (with 313 skips intro window in stage14)
+                    set 1 / read 2  -  globals, stage14
+   313  CONFIRMED  skip_intro_window: intro window seen/skipped flag (stage14)
+                    set 2 / read 3  -  globals, stage14
+   315  INFERRED   stage05/07 event-seen flag (gates loc_5 cutscene branch)
+                    set 3 / read 1  -  stage05, stage07
+   317  INFERRED   prologue event done (evt_prologue, stage02)
+                    set 2 / read 1  -  stage02
+   321  CONFIRMED  All Utili-bots sticker (also a stage05 event-seen one-shot, sub_789)
+                    set 1 / read 1  -  stage05
+   332  INFERRED   stage03 event/item progress flag (gates loc_177/189/279, set in sub_384)
+                    set 1 / read 3  -  stage03
+   333  CONFIRMED  enable spiders to spawn / Spider Spawn enabled (also gates leaving living room)
+                    set 2 / read 8  -  stage05, stage07
+   334  CONFIRMED  can leave the living room (Spider Spawn / leave living room)
+                    set 2 / read 34  -  stage01, globals, stage02, stage03, stage05, stage07, stage09
+   335  CONFIRMED  enable spiders to spawn (related to 701 ladder-bot / saving-family flag)
+                    set 2 / read 13  -  globals, stage07
+   336  INFERRED   globals event-progress flag (set sub, gates loc_1919/1925/2129 dialogue)
+                    set 2 / read 4  -  globals, stage02
+   337  INFERRED   Deka Denchi (big battery) item obtained (set with 344/360 in evt_item_deka_denchi_6)
+                    set 1 / read 5  -  globals, stage03
+   339  GUESS      stage07 flag, single set; purpose unclear
+                    set 1 / read 1  -  stage07
+   340  INFERRED   globals timer-gated flag (read with time==0, set 0 in loc_1262)
+                    set 4 / read 2  -  globals, stage07
+   344  INFERRED   Deka Denchi (big battery) item obtained (set alongside 337 in evt_item_deka_denchi_6)
+                    set 1 / read 2  -  stage03
+   347  INFERRED   major story-progress flag (army NPC / plug-start event chain, evt_npc_army_2)
+                    set 1 / read 13  -  globals, stage02
+   348  INFERRED   army NPC dialogue/event progress (evt_npc_army_2 chain, evt_rouka_door_stop)
+                    set 1 / read 30  -  globals, stage02, stage03
+   350  CONFIRMED  TV turned on / Drake intro played flag
+                    set 2 / read 10  -  stage01, globals, stage02, stage07
+   351  GUESS      stage07 flag; specific event unclear
+                    set 2 / read 1  -  stage07
+   352  INFERRED   Mag Cup item obtained/event done (evt_item_mag_cup_36, stage01)
+                    set 4 / read 3  -  stage01
+   353  INFERRED   globals/stage07 event-seen flag (set sub_1500, gates loc_1941 dialogue)
+                    set 2 / read 8  -  globals, stage07
+   357  INFERRED   stage07/globals event-seen flag (set with 315/420, gates Drake/suit dialogue)
+                    set 3 / read 5  -  globals, stage07
+   358  CONFIRMED  showed Drake you're wearing the suit
+                    set 2 / read 8  -  globals, stage07
+   359  INFERRED   stage07 state flag (repeatedly reset to 0, transient state)
+                    set 9 / read 6  -  stage07
+   360  INFERRED   warehouse shelf / Deka Denchi event done (evt_souko_shelf_dami, evt_item_deka_denchi_6)
+                    set 10 / read 16  -  stage03
+   372  INFERRED   stage01 state flag gating dialogue with flag 477 (toothbrush) and flag 2
+                    set 1 / read 2  -  stage01
+   380  INFERRED   stage01 event-seen/progress flag (gates loc_330/334/1652, set in sub_2821)
+                    set 2 / read 4  -  stage01
+   381  INFERRED   globals toggle flag paired with 393 (set/cleared in loc_1971)
+                    set 2 / read 1  -  globals
+   392  INFERRED   parent receipt / kitchen food-item event done (block_sugar/flower_cookie/parent_receipt, time-gated)
+                    set 4 / read 14  -  stage01, stage05
+   393  INFERRED   globals toggle flag paired with 381 (set in loc_1975)
+                    set 1 / read 1  -  globals
+   394  INFERRED   stage01 event-seen flag, set once after dialogue (sub_552/1433)
+                    set 3 / read 3  -  stage01
+   395  INFERRED   widely-shared one-time event/intro-seen flag (set once, read across most stages)
+                    set 8 / read 25  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09, stage11
+   418  INFERRED   stage05/14 startup/intro flag (set in sub_576/sub_2, gates intro window with 312/313)
+                    set 2 / read 2  -  globals, stage05, stage14
+   419  INFERRED   stage07 event flag (set sub_1757, gates loc_952 spider/suit branch)
+                    set 1 / read 2  -  stage07
+   420  INFERRED   living room cb_book event done (evt_living_cb_book_2, gates map_jump_box_12)
+                    set 2 / read 6  -  stage05, stage07
+   421  INFERRED   Deca Robo NPC conversation progress (evt_npc_deca_robo_2, toggled on/off)
+                    set 12 / read 4  -  stage07
+   422  INFERRED   stage02 event-seen flag, set once (sub_1169)
+                    set 1 / read 1  -  stage02
+   423  CONFIRMED  Mama given a cookie in Kitchen / cookie crumbs spawned (Kitchen object 157)
+                   Set in sub_1670 when player gives item 45 (Cookie) to Mama (object 23) at
+                   var(76)==22 with flag(392)==0. Causes object 157 (item_cookie_kakera) to
+                   permanently appear on the Kitchen floor. stage01.us line 1212 hides obj 157
+                   at load while this flag is unset; line 4106 shows it when set.
+                    set 1 / read 1  -  stage01
+   424  INFERRED   living room cb_book event sub-flag (evt_living_cb_book_2, paired with 420)
+                    set 1 / read 1  -  stage07
+   427  INFERRED   stage02 multi-part progress flag (read with 460/532, set in sub_556)
+                    set 1 / read 7  -  stage02
+   429  GUESS      globals lib_115 library subroutine flag; purpose unclear
+                    set 1 / read 1  -  globals
+   430  GUESS      globals lib_116 library subroutine flag; purpose unclear
+                    set 1 / read 1  -  globals
+   432  INFERRED   stage02 event-seen flag, set once (sub_1984)
+                    set 1 / read 1  -  stage02
+   433  CONFIRMED  TV turned on flag (read with 350 "Drake intro played")
+                    set 2 / read 2  -  stage07
+   434  GUESS      stage14 flag, single set; purpose unclear
+                    set 1 / read 2  -  stage14
+   435  GUESS      stage14 flag, single set; purpose unclear
+                    set 1 / read 1  -  stage14
+   445  INFERRED   stage07 event-seen flag (gates loc_1335/1361 dialogue branches)
+                    set 1 / read 3  -  stage07
+   447  GUESS      undocumented; stage01 one-shot set/read, no clear context
+                    set 1 / read 0  -  stage01
+   448  INFERRED   stage07: gated by flag 335 (spiders); enables climbable record-player rope born
+                    set 3 / read 1  -  stage07
+   449  INFERRED   globals: set when battery(0)==battery(1) (full/equal battery check) gating an effect
+                    set 2 / read 2  -  globals
+   450  GUESS      shared lib_257 routine flag; cross-stage, no clear semantic context
+                    set 1 / read 5  -  stage01, globals, stage02, stage07
+   451  INFERRED   stage09: set in cutscene sub; pirate/animation event progress flag
+                    set 2 / read 2  -  stage01, globals, stage09
+   452  GUESS      shared lib_121 routine flag; undocumented
+                    set 3 / read 0  -  globals, stage07
+   453  INFERRED   stage07: proximity toggle (set near var 2223, cleared near 2231); object nearby state
+                    set 6 / read 1  -  stage07
+   455  GUESS      undocumented; stage02 one-shot, no clear context
+                    set 1 / read 1  -  stage02
+   457  GUESS      undocumented; stage07 one-shot, no clear context
+                    set 1 / read 1  -  stage07
+   459  INFERRED   globals: gates an NPC message branch (dialogue/event seen)
+                    set 1 / read 2  -  globals, stage07
+   460  INFERRED   shared lib_265 flag; paired with 532, gates backyard event (cross-stage, frequently read)
+                    set 1 / read 51  -  globals, stage02
+   461  INFERRED   pirate/Hocotate troops spawn control (paired with 604/607 to kill pirates per stage)
+                    set 1 / read 21  -  stage01, stage02, stage04, stage06, stage09
+   462  INFERRED   stage01: living-room NPC (177) placement/event-done flag
+                    set 2 / read 1  -  stage01
+   463  GUESS      globals: time-of-day related state (set 0 near flag 19 / time checks); undocumented
+                    set 3 / read 3  -  globals, stage07
+   464  INFERRED   stage05 (Mr. Prongs shop): "heard the Spydorz-scrap dialogue" flag
+                    set 2 / read 5  -  globals, stage05
+   466  INFERRED   stage09: set alongside 471 when battery runs out (out-of-power/rescue event)
+                    set 2 / read 3  -  globals, stage04, stage09
+   467  INFERRED   stage07 startup cutscene flag (evt_startup)
+                    set 1 / read 0  -  stage07
+   468  INFERRED   warp/scene-active flag set on stage entry, cleared on warp out (shared lib_204/207, warpzone)
+                    set 16 / read 1  -  globals, stage02, stage05, stage18
+   469  GUESS      undocumented; stage04 read-mostly, no clear context
+                    set 1 / read 3  -  stage04
+   470  INFERRED   shared lib_47 flag; set when var77==13, gates a cutscene/born event
+                    set 32 / read 1  -  stage01, globals, stage02, stage06, stage07
+   471  INFERRED   stage09: battery-depleted / out-of-power state (set with 466)
+                    set 1 / read 6  -  globals, stage02, stage05, stage09
+   472  CONFIRMED  giant battery present in bathroom (stage03), gates the big-battery enemies/objects
+                    set 1 / read 114  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09
+   473  CONFIRMED  giant battery defeated/collected (paired with 472: active = 472&&!473)
+                    set 1 / read 118  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09
+   474  INFERRED   stage05: progress flag paired with flag 471 (post out-of-power shop state)
+                    set 1 / read 3  -  stage05
+   476  CONFIRMED  touched toothbrush / time is night
+                    set 2 / read 4  -  globals, stage05, stage07
+   477  INFERRED   stage05: set when item(22) owned; "have item 22" check flag
+                    set 2 / read 5  -  stage01, globals, stage05
+   478  INFERRED   Spoon item event (evt_item_spoon_37)
+                    set 2 / read 4  -  stage01, globals, stage05, stage07
+   479  CONFIRMED  Squirter flag
+                    set 0 / read 4  -  globals, stage04, stage05
+   480  GUESS      shared lib_101 flag; undocumented
+                    set 2 / read 1  -  globals
+   481  INFERRED   stage02: paper-scraps cleanup/event done flag (controls trash NPC spawns)
+                    set 1 / read 9  -  stage02
+   482  GUESS      undocumented; stage04 read-only, no clear context
+                    set 0 / read 1  -  stage04
+   483  GUESS      undocumented; globals/stage09, no clear context
+                    set 2 / read 4  -  globals, stage09
+   484  GUESS      undocumented; stage06 set-only, no clear context
+                    set 2 / read 0  -  stage06
+   485  GUESS      undocumented; stage07 one-shot, no clear context
+                    set 1 / read 1  -  stage07
+   486  INFERRED   stage02: bedroom/map-6 event-active flag (toggled with flag 31, gated by flag 41)
+                    set 7 / read 5  -  stage02, stage06
+   488  GUESS      undocumented; stage06 set-only, no clear context
+                    set 1 / read 0  -  stage06
+   491  GUESS      undocumented; stage06 one-shot, no clear context
+                    set 1 / read 1  -  stage06
+   493  GUESS      undocumented; stage07 read-mostly, no clear context
+                    set 1 / read 3  -  stage07
+   495  INFERRED   stage02: NPC 298/299 spawn-state event flag (set after displaying NPC 298)
+                    set 2 / read 4  -  globals, stage02, stage06
+   496  GUESS      shared lib_264/lib_161 flag; undocumented
+                    set 2 / read 1  -  globals
+   497  INFERRED   stage04: enemy/NPC 180 spawn-control flag (paired with var 130)
+                    set 1 / read 4  -  stage04
+   498  INFERRED   stage04: event-pending gate (checked ==0 with 497 to run a scene)
+                    set 1 / read 2  -  stage04
+   499  INFERRED   stage07: dialogue-variant flag (set 1642 then branches on 499 for voiced msg)
+                    set 1 / read 10  -  stage04, stage07
+   500  INFERRED   stage04: reset-on-entry event flag (cleared with 520 at stage init)
+                    set 5 / read 2  -  stage04
+   501  INFERRED   stage01: tea-party "seated at table" animation state (toggled on/off)
+                    set 5 / read 5  -  stage01
+   502  GUESS      undocumented; stage04 set/read several times, event progress
+                    set 7 / read 0  -  stage04
+   504  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 3  -  stage06
+   505  GUESS      undocumented; stage09, no clear context
+                    set 1 / read 1  -  stage09
+   507  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   511  GUESS      undocumented; stage02, no clear context
+                    set 1 / read 1  -  stage02
+   512  INFERRED   stage02: gates item(57)-related kitchen event (checked ==0 with flag 2000/481)
+                    set 1 / read 1  -  stage02
+   513  GUESS      undocumented; globals one-shot, no clear context
+                    set 1 / read 1  -  globals
+   514  GUESS      undocumented; globals/stage04/stage09, no clear context
+                    set 1 / read 2  -  globals, stage04, stage09
+   515  GUESS      undocumented; stage05, no clear context
+                    set 2 / read 2  -  stage05
+   516  GUESS      undocumented; stage04, no clear context
+                    set 1 / read 3  -  stage04
+   517  GUESS      undocumented; stage04 set-heavy, event progress
+                    set 6 / read 0  -  stage04
+   518  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   519  INFERRED   stage02: first-use dialogue flag (set on first interaction, gates voiced intro msg)
+                    set 2 / read 2  -  stage02
+   520  INFERRED   stage04: reset-on-entry event flag (cleared with 500 at stage init)
+                    set 6 / read 1  -  stage04
+   522  GUESS      undocumented; globals/stage02, no clear context
+                    set 2 / read 1  -  globals, stage02
+   523  INFERRED   stage04: event gate read with 497/498 to run a scene
+                    set 2 / read 2  -  stage04
+   524  GUESS      undocumented; stage04 set-only, no clear context
+                    set 1 / read 0  -  stage04
+   526  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   527  GUESS      undocumented; stage04, no clear context
+                    set 1 / read 1  -  stage04
+   528  GUESS      shared lib_174 flag; undocumented
+                    set 1 / read 0  -  globals
+   529  GUESS      undocumented; stage04/stage07, no clear context
+                    set 2 / read 2  -  stage04, stage07
+   530  INFERRED   stage01: menu-selected state (set on menu result 55, with 1667; cleared after scene)
+                    set 4 / read 1  -  stage01, globals, stage06
+   531  GUESS      undocumented; stage02 read-heavy, event progress
+                    set 2 / read 11  -  stage02
+   532  INFERRED   shared lib_265 flag; paired with 460 to gate backyard event
+                    set 1 / read 15  -  globals, stage02
+   533  INFERRED   stage09: gates suit-3 (Drake suit) hit interaction (checked with cur_suit==3)
+                    set 2 / read 7  -  stage01, globals, stage02, stage09
+   534  INFERRED   shared lib_162 flag; cross-stage event progress
+                    set 6 / read 8  -  stage01, globals, stage02, stage07, stage09
+   535  GUESS      undocumented; stage07 read-mostly, no clear context
+                    set 1 / read 7  -  stage07
+   536  INFERRED   death/pose cutscene flag (evt_dead | evt_pose)
+                    set 1 / read 13  -  globals, stage02
+   537  INFERRED   globals: time/character-schedule flag (selects var77/var112 values, e.g. Tao location)
+                    set 1 / read 4  -  globals, stage07
+   540  INFERRED   stage02: set with 597/670 in a kitchen event-completion block
+                    set 1 / read 2  -  globals, stage02, stage07
+   542  GUESS      undocumented; stage07 one-shot, no clear context
+                    set 1 / read 0  -  stage07
+   546  INFERRED   stage01: tea-party/Free Rangers event triggered (set with 547)
+                    set 4 / read 2  -  stage01, stage06
+   547  INFERRED   stage01: tea party with Tao/Drake completed (set with 546; gates Tao schedule)
+                    set 3 / read 7  -  stage01, globals, stage06
+   548  GUESS      undocumented; stage01 set/read several times, event progress
+                    set 5 / read 5  -  stage01
+   549  GUESS      undocumented; stage04, no clear context
+                    set 3 / read 1  -  stage04
+   550  GUESS      undocumented; stage04, no clear context
+                    set 2 / read 3  -  stage04
+   551  GUESS      undocumented; stage04, no clear context
+                    set 1 / read 2  -  stage04
+   552  GUESS      undocumented; stage04, no clear context
+                    set 1 / read 3  -  stage04
+   553  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   554  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   555  GUESS      undocumented; stage07, no clear context
+                    set 1 / read 1  -  stage07
+   556  GUESS      shared lib_196 flag; undocumented
+                    set 2 / read 1  -  globals
+   557  INFERRED   shared lib_196 flag; cross-stage event progress (set-heavy)
+                    set 9 / read 3  -  stage01, globals, stage02
+   558  INFERRED   startup flag set on stage entry (lib_199 | evt_startup), set when flag 1645 cleared
+                    set 9 / read 7  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07
+   559  INFERRED   shared lib_199 startup-related flag; cross-stage
+                    set 6 / read 8  -  stage01, globals, stage07
+   560  GUESS      undocumented; stage06, no clear context
+                    set 2 / read 2  -  stage06
+   562  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   563  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   565  GUESS      shared lib_196 flag; undocumented
+                    set 1 / read 1  -  globals
+   566  INFERRED   prologue cutscene flag (evt_prologue, stage03/stage18)
+                    set 1 / read 4  -  stage03, stage18
+   567  INFERRED   prologue cutscene flag (evt_prologue; gates flashback with 568)
+                    set 1 / read 6  -  stage03, stage18
+   568  INFERRED   stage03: post-flashback/letterbox cutscene-done flag (set with HUD/flag 31)
+                    set 1 / read 2  -  stage03
+   569  GUESS      undocumented; stage01 one-shot, no clear context
+                    set 1 / read 0  -  stage01
+   573  INFERRED   stage01: water-training (suijou shugyou) dialogue-variant flag
+                    set 1 / read 4  -  stage01
+   574  INFERRED   stage01: water-training (suijou shugyou) active state (gates camera/invuln in training)
+                    set 2 / read 13  -  stage01
+   575  GUESS      undocumented; globals/stage18, no clear context
+                    set 1 / read 2  -  globals, stage18
+   576  GUESS      undocumented; stage09, no clear context
+                    set 2 / read 1  -  stage09
+   577  GUESS      undocumented; stage01, no clear context
+                    set 1 / read 1  -  stage01
+   578  GUESS      undocumented; stage06, no clear context
+                    set 2 / read 2  -  stage06
+   582  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 1  -  stage06
+   586  GUESS      undocumented; stage04, no clear context
+                    set 1 / read 1  -  stage04
+   587  INFERRED   stage04: Mort/Princess (815) related NPC 357/358 spawn-control flag
+                    set 1 / read 3  -  globals, stage04
+   591  GUESS      undocumented; stage02 set-heavy, event progress
+                    set 7 / read 3  -  stage02
+   592  INFERRED   stage03 backyard: NPC/object 145 + Giga (flag 1126) event-done flag
+                    set 1 / read 9  -  stage01, stage03, stage04, stage06, stage09
+   593  INFERRED   stage02: backyard event gate (read with 460/532 and flag 45 to run scene)
+                    set 6 / read 2  -  stage02, stage07
+   594  INFERRED   shared lib_199 startup-related flag; cross-stage
+                    set 4 / read 4  -  globals, stage02, stage07
+   595  GUESS      undocumented; stage09 one-shot, no clear context
+                    set 1 / read 0  -  stage09
+   596  GUESS      undocumented; stage02/stage07, no clear context
+                    set 1 / read 3  -  stage02, stage07
+   597  INFERRED   stage02: kitchen event-completion flag (set with 540/670)
+                    set 2 / read 5  -  stage02, stage07
+   598  GUESS      undocumented; stage06, no clear context
+                    set 1 / read 2  -  stage06
+   599  INFERRED   globals: Queen Spider (flag 17) endgame state gate; controls boss-related effects
+                    set 1 / read 11  -  globals, stage06
+   600  INFERRED   living-room floor-hole event (evt_living_tana_ana = under-shelf hole)
+                    set 1 / read 4  -  stage07
+   601  INFERRED   stage05: Mr. Prongs "told the rumor / bought it" shop dialogue-done flag
+                    set 1 / read 9  -  stage05
+   602  INFERRED   stage07: family-saved/ending state (Tamagotchi/Papa/Jenny kill checks gate on it)
+                    set 3 / read 19  -  stage01, globals, stage02, stage06, stage07, stage09
+   603  INFERRED   globals: paired with 602 in endgame/family-room effect gate
+                    set 1 / read 2  -  globals, stage06
+
+  -------------------------------------------------------------------------
+   COLLECTIBLE PANELS / PARTS (604-607)
+  -------------------------------------------------------------------------
+
+   604  INFERRED   one of four collectible panels/parts (set together with 605/606/607; displays obj 20040)
+                    set 2 / read 29  -  stage03, stage09
+   605  INFERRED   one of four collectible panels/parts (with 604/606/607; displays obj 20041)
+                    set 2 / read 28  -  stage01, stage03
+   606  INFERRED   one of four collectible panels/parts (with 604/605/607; displays obj 20042)
+                    set 2 / read 28  -  stage03, stage06
+   607  INFERRED   one of four collectible panels/parts (with 604/605/606; displays obj 20043)
+                    set 1 / read 28  -  stage03, stage04
+
+  -------------------------------------------------------------------------
+   GENERAL - story / event progress (608-700)
+  -------------------------------------------------------------------------
+
+   608  GUESS      undocumented; stage01/globals, no clear context
+                    set 1 / read 3  -  stage01, globals
+   609  GUESS      undocumented; stage01 one-shot, no clear context
+                    set 1 / read 1  -  stage01
+   610  INFERRED   room/scene warp via map jump box (evt_map_jump_box_156); Giga-gated object 160 display
+                    set 1 / read 8  -  stage03, stage04, stage09
+   611  INFERRED   room/scene warp via map jump box (evt_map_jump_box_156); paired with 610
+                    set 1 / read 4  -  stage03, stage04, stage09
+   612  GUESS      undocumented; stage07 one-shot, no clear context
+                    set 1 / read 1  -  stage07
+   613  INFERRED   globals: time/Giga (flag 19,1576/1577) schedule state flag
+                    set 1 / read 3  -  globals, stage07
+   614  GUESS      undocumented; globals/stage07, no clear context
+                    set 2 / read 2  -  globals, stage07
+   615  GUESS      undocumented; stage07, no clear context
+                    set 2 / read 1  -  stage07
+   616  GUESS      undocumented; stage04/stage07, event progress, no clear context
+                    set 2 / read 7  -  stage04, stage07
+   617  GUESS      undocumented; stage07, no clear context
+                    set 1 / read 2  -  stage07
+   618  GUESS      undocumented; stage09, no clear context
+                    set 1 / read 2  -  stage09
+   619  GUESS      undocumented; stage06 read-only, no clear context
+                    set 0 / read 1  -  stage06
+   623  GUESS      undocumented; stage06 read-only, no clear context
+                    set 0 / read 1  -  stage06
+   624  INFERRED   Blueprint item event (evt_item_sekkeizu = blueprint/design plans)
+                    set 1 / read 0  -  stage06
+   632  INFERRED   Snack Bone item event (evt_item_snack_bone)
+                    set 2 / read 3  -  stage01, globals, stage09
+   634  GUESS      undocumented; stage07, no clear context
+                    set 1 / read 2  -  stage07
+   636  INFERRED   stage02 flag gating an item(100)-related interaction (toggled on/off)
+                    set 2 / read 1  -  stage02
+   637  GUESS      stage04 one-shot event flag set in sub_572 (paired with read of 642); undocumented purpose
+                    set 1 / read 0  -  stage04
+   638  INFERRED   Chibi-House door 2 state (evt_house_r_chibi_h_door_2) - door used/opened, cross-stage
+                    set 11 / read 10  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09
+   639  INFERRED   stage06 drawer pulled out / object 380 deployed (evt_time_cycle reset)
+                    set 3 / read 1  -  stage06
+   640  GUESS      gates an NPC dialogue branch in globals; paired with flag 13 in stage07 (Telly/intro progress); undocumented
+                    set 1 / read 11  -  globals, stage07
+   641  GUESS      stage09 read-heavy state flag; undocumented; no clear context
+                    set 1 / read 5  -  stage09
+   642  GUESS      shared lib_325/246-248 condition flag; undocumented; no clear context
+                    set 2 / read 11  -  globals, stage04, stage07, stage09
+   643  INFERRED   stage06 object/drawer opened ("It's already opened" msg); reset on evt_time_cycle
+                    set 3 / read 3  -  stage06
+   656  INFERRED   Drake rip-off vending machine active; gates Giga-Robo/spider-suit logic
+                    set 1 / read 13  -  globals, stage03
+   657  GUESS      stage06 read-only state checked near flag 643 (drawer-related); undocumented
+                    set 0 / read 1  -  stage06
+   658  INFERRED   stage05 one-time event done (set once after flag 29 check)
+                    set 1 / read 1  -  stage05
+   659  GUESS      gates an NPC dialogue line in globals (paired branch with 640); undocumented
+                    set 1 / read 3  -  globals, stage07
+   660  INFERRED   map warp / loading zone 12 used (evt_map_jump_box_12)
+                    set 1 / read 2  -  globals, stage05
+   661  GUESS      globals state set after lib_21 (item hold/pickup); reset to 0 at startup; undocumented
+                    set 3 / read 1  -  globals, stage05
+   663  INFERRED   globals one-shot flag, set after running lib_38 (first-time trigger)
+                    set 1 / read 1  -  globals
+   664  INFERRED   globals one-shot flag, set after running lib_38 (first-time trigger, sibling of 663)
+                    set 1 / read 1  -  globals
+   665  INFERRED   globals one-shot flag, set after running lib_38/lib_39 (first-time trigger, sibling of 663/664)
+                    set 1 / read 1  -  globals
+   666  GUESS      stage09 state flag; undocumented; no clear context
+                    set 3 / read 2  -  stage09
+   667  CONFIRMED  Frog sticker
+                    set 1 / read 5  -  stage09
+   668  INFERRED   globals state flag reset alongside Sophie/Bebe placement vars; undocumented detail
+                    set 3 / read 3  -  stage01, globals
+   670  GUESS      stage02 flag set in sub_449 alongside flag 597; undocumented
+                    set 2 / read 1  -  stage02, stage07
+   671  INFERRED   Sophie (Bebe) placement / startup state flag (evt_startup); set from flag 1653
+                    set 6 / read 8  -  stage01, globals, stage02, stage05, stage07
+   674  GUESS      stage06 state flag; undocumented; no clear context
+                    set 1 / read 1  -  stage06
+   676  GUESS      stage01 read-heavy state flag; undocumented; no clear context
+                    set 2 / read 10  -  stage01
+   677  GUESS      stage06 state flag (mostly set); undocumented; no clear context
+                    set 5 / read 2  -  stage06
+   678  GUESS      stage06 state flag (mostly set); undocumented; no clear context
+                    set 5 / read 1  -  stage06
+   679  GUESS      stage06 state flag (mostly set); undocumented; no clear context
+                    set 4 / read 1  -  stage06
+   680  GUESS      stage06 state flag; undocumented; no clear context
+                    set 1 / read 3  -  stage06
+   681  GUESS      stage06 state flag; undocumented; no clear context
+                    set 2 / read 2  -  stage06
+   684  GUESS      stage06 state flag; undocumented; no clear context
+                    set 1 / read 1  -  stage06
+   685  INFERRED   "T-Block" item 2 obtained/displayed (evt_item_t_block_2); display gated by flags 1629/1621
+                    set 2 / read 2  -  stage06
+   686  INFERRED   "T-Block" item 3 obtained (evt_item_t_block_3)
+                    set 2 / read 2  -  stage06, stage09
+   687  INFERRED   "T-Block" item 4 obtained (evt_item_t_block_4)
+                    set 2 / read 2  -  stage04, stage06
+   688  INFERRED   "T-Block" item 5 obtained (evt_item_t_block_5); gates Giga-Robo block display
+                    set 4 / read 7  -  globals, stage03, stage06, stage09
+   689  INFERRED   "T-Block" item 6 obtained (evt_item_t_block_6)
+                    set 2 / read 2  -  stage02, stage06
+   690  INFERRED   Chibi-House dentist/teeth event 2 progress (evt_item_chibi_house_denti_2)
+                    set 1 / read 2  -  stage03
+   691  INFERRED   stage03 sub_797 event done (set with 692 when var136 in range)
+                    set 2 / read 1  -  stage03
+   692  INFERRED   stage03 sub_797 trigger guard (set once with 691)
+                    set 1 / read 1  -  stage03
+   695  INFERRED   stage01 item-124 give/hold state (NPC accepts item 124)
+                    set 1 / read 2  -  stage01
+   696  INFERRED   stage01 item-124 handed over flag (set after item 124 case)
+                    set 1 / read 2  -  stage01, stage03
+   697  INFERRED   Legendary Flower collected/collision removed (evt_item_mini_funky)
+                    set 1 / read 11  -  stage06, stage18
+   698  INFERRED   Sophie-related state gate (checked with flags 1531/1532 on map 1)
+                    set 7 / read 8  -  stage01, globals, stage02, stage07
+   699  INFERRED   stage07 Papa/Jenny actor killed-after-cutscene flag
+                    set 1 / read 2  -  stage07
+
+  -------------------------------------------------------------------------
+   DAY / TIME RESET BLOCK - lib_275 (701-799)
+  -------------------------------------------------------------------------
+
+   701  CONFIRMED  ladder-bot / saving-family flag (part of lib_275 day/time reset block)
+                    set 2 / read 2  -  globals, stage07
+   702  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   703  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   704  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   705  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   706  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   707  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 1 / read 2  -  globals
+   708  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   709  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   710  GUESS      part of lib_275 reset block (zeroed at day/time reset); individual purpose undocumented
+                    set 2 / read 2  -  globals, stage07
+   711  GUESS      part of lib_275 reset block (zeroed at day/time reset); also touched in stage01; undocumented
+                    set 2 / read 2  -  stage01, globals
+   712  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 2 / read 2  -  stage01, globals
+   713  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 2 / read 2  -  stage01, globals
+   714  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 2 / read 2  -  stage01, globals
+   715  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 2 / read 2  -  stage01, globals
+   716  CONFIRMED  Chibi-Door panel (related to 717/718; set with Chibi-Door open)
+                    set 2 / read 2  -  stage01, globals
+   717  CONFIRMED  Chibi-Door panel (related to 716/718; set with Chibi-Door open)
+                    set 2 / read 2  -  stage01, globals
+   718  CONFIRMED  kitchen door in front of the Living Room door
+                    set 2 / read 2  -  stage01, globals
+   719  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 2 / read 2  -  stage01, globals
+   720  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   721  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   722  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   730  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   731  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   732  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   733  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   734  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   735  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   736  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   737  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   738  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   739  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   740  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   741  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   742  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   743  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   744  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   745  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage02; undocumented
+                    set 2 / read 2  -  globals, stage02
+   746  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   747  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   748  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage03; undocumented
+                    set 2 / read 2  -  globals, stage03
+   749  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   750  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage03; undocumented
+                    set 2 / read 2  -  globals, stage03
+   751  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage03; undocumented
+                    set 2 / read 2  -  globals, stage03
+   752  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   753  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage03; undocumented
+                    set 2 / read 2  -  globals, stage03
+   754  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   755  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   756  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   757  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   758  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   759  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   760  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   761  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   762  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   763  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   764  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage04; undocumented
+                    set 2 / read 2  -  globals, stage04
+   765  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   766  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   767  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   768  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   769  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   770  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   771  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   772  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   773  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   774  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   775  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   776  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   777  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   778  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   779  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   780  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   781  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   782  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   783  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   784  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   785  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   786  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage06; undocumented
+                    set 2 / read 2  -  globals, stage06
+   787  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   788  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   789  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   790  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   791  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   792  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   793  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   794  GUESS      part of lib_275 reset block (zeroed at day/time reset); undocumented
+                    set 1 / read 2  -  globals
+   795  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   796  GUESS      part of lib_275 reset block (zeroed at day/time reset); also stage09; undocumented
+                    set 2 / read 2  -  globals, stage09
+   799  GUESS      high-traffic shared state flag across all stages (lib_204/lib_219); undocumented global toggle
+                    set 18 / read 10  -  stage01, globals, stage02, stage03, stage04, stage05, stage06, stage07, stage09
+
+  -------------------------------------------------------------------------
+   GENERAL - story / event progress (800-907)
+  -------------------------------------------------------------------------
+
+   800  INFERRED   stage02 puzzle/door state (read with Free Rangers flag 936; part of 800-805 group)
+                    set 1 / read 4  -  stage02
+   801  INFERRED   stage02 state toggle (set/read with flag 809; part of 800-805 sequence)
+                    set 1 / read 2  -  globals, stage02
+   802  INFERRED   stage02 state toggle in sub_2601 (part of 800-805 group, reset together)
+                    set 2 / read 2  -  stage02
+   803  INFERRED   stage02 state toggle (set/read with Free Rangers area flag 936)
+                    set 3 / read 3  -  stage02
+   804  INFERRED   stage02 state flag (reset alongside 802/803 in loc_1886)
+                    set 3 / read 3  -  stage02
+   805  INFERRED   stage02 state toggle (part of 800-805 group)
+                    set 3 / read 3  -  stage02
+   806  CONFIRMED  UFO pad flag
+                    set 2 / read 2  -  stage05, stage09
+   807  GUESS      globals toggle flag (set/checked then cleared); undocumented, no clear context
+                    set 5 / read 2  -  globals
+   809  INFERRED   stage04 event progress flag (set once, read across many stages)
+                    set 1 / read 7  -  globals, stage02
+   810  INFERRED   stage04 local event/state flag
+                    set 1 / read 1  -  stage04
+   811  INFERRED   stage04 local event/state flag
+                    set 1 / read 2  -  stage04
+   812  INFERRED   stage04 local event/state flag
+                    set 1 / read 2  -  stage04
+   813  INFERRED   stage04 event flag read in stage04/stage07
+                    set 1 / read 8  -  stage04, stage07
+   814  INFERRED   stage04 local event/state flag
+                    set 1 / read 2  -  stage04
+   815  CONFIRMED  Mort & Princess sticker (also map_jump_box_231 warp event)
+                    set 1 / read 11  -  globals, stage02, stage04, stage07, stage09
+   816  INFERRED   stage04 event/state flag
+                    set 1 / read 6  -  stage04
+   900  GUESS      stage02 one-shot setup flag; undocumented, no clear context
+                    set 1 / read 0  -  stage02
+   902  INFERRED   Jenny soldier (heitai) event 3/4 progress
+                    set 1 / read 6  -  stage04
+   903  INFERRED   Jenny soldier (heitai) event 5 progress
+                    set 1 / read 3  -  stage04
+   904  INFERRED   Jenny soldier (heitai) event 1 progress
+                    set 1 / read 4  -  stage04
+   905  INFERRED   Jenny needle/pin (hari) event progress
+                    set 1 / read 1  -  stage04
+   906  INFERRED   storeroom shelf / Deca Denchi (big battery) item event
+                    set 1 / read 6  -  stage03
+   907  INFERRED   rescue mission active state in backyard
+                    set 4 / read 19  -  globals, stage02, stage09
+
+  -------------------------------------------------------------------------
+   TOY SOLDIERS rescued / captured (908-928)
+  -------------------------------------------------------------------------
+
+   908  INFERRED   toy soldier #1 (20017) rescued/captured flag
+                    set 2 / read 1  -  stage09
+   909  INFERRED   toy soldier #2 (20018) rescued/captured flag
+                    set 2 / read 3  -  stage09
+   910  INFERRED   toy soldier rescued/captured flag (group of soldiers)
+                    set 2 / read 3  -  stage09
+   911  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   912  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   913  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   914  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 1  -  stage09
+   915  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   916  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   917  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 1  -  stage09
+   918  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 1  -  stage09
+   919  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   920  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   921  INFERRED   toy soldier rescued/captured flag
+                    set 1 / read 1  -  stage09
+   922  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 0  -  stage09
+   923  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   924  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 3  -  stage09
+   925  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 2  -  stage09
+   926  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 1  -  stage09
+   927  INFERRED   toy soldier rescued/captured flag
+                    set 2 / read 1  -  stage09
+   928  INFERRED   toy soldier rescued/captured flag (all-soldiers win-condition group 909-928)
+                    set 2 / read 3  -  stage09
+
+  -------------------------------------------------------------------------
+   GENERAL - story / event progress (929-1029)
+  -------------------------------------------------------------------------
+
+   929  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage02
+   930  INFERRED   stage02 outlet-man / strategy-board state, gated with 936
+                    set 3 / read 4  -  stage02, stage09
+   931  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage02
+   932  INFERRED   soldier/NPC pose state in stage02 (controls 20017-20019 anim)
+                    set 1 / read 15  -  stage02, stage03, stage04, stage09
+   933  INFERRED   storeroom shelf event (souko_shelf_dami) progress
+                    set 1 / read 2  -  stage03
+   934  INFERRED   Chibi-House gachapon (capsule machine) event flag
+                    set 2 / read 1  -  stage05
+   935  CONFIRMED  prologue/time-cycle rescue-mission state (paired with 907)
+                    set 5 / read 25  -  globals, stage02, stage09
+   936  CONFIRMED  Free Rangers sticker / Free Rangers prologue mission gate
+                    set 1 / read 67  -  globals, stage02, stage03, stage04, stage09
+   937  GUESS      stage09 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage09
+   938  GUESS      stage04 local state flag; undocumented, no clear context
+                    set 1 / read 3  -  stage04
+   939  INFERRED   stage03/04/09 map_jump_box_156 warp used/unlocked
+                    set 1 / read 7  -  stage03, stage04, stage09
+   941  CONFIRMED  Shoes flag
+                    set 1 / read 2  -  stage04, stage05
+   942  CONFIRMED  Jenny / Mort stairs flag
+                    set 2 / read 2  -  stage04, stage05
+   943  GUESS      shared library (lib_265) state flag; undocumented, no clear context
+                    set 2 / read 1  -  globals
+   944  GUESS      globals/stage06 state flag; undocumented, no clear context
+                    set 1 / read 2  -  globals, stage06
+   945  GUESS      globals local state flag; undocumented, no clear context
+                    set 1 / read 2  -  globals
+   946  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 2 / read 5  -  stage02
+   947  INFERRED   Sergeant wound/event state (kills wound effect objects)
+                    set 1 / read 7  -  stage02
+   948  INFERRED   stage02 soldier/NPC display state flag
+                    set 2 / read 4  -  stage02
+   949  GUESS      stage07 local state flag; undocumented, no clear context
+                    set 2 / read 2  -  stage07
+   950  GUESS      stage05 local state flag; undocumented, no clear context
+                    set 2 / read 4  -  stage05
+   960  INFERRED   livingroom TV power switch state (evt_living_tv_switch)
+                    set 1 / read 22  -  globals, stage05, stage07, stage09
+   962  GUESS      globals/stage07 state flag; undocumented, no clear context
+                    set 1 / read 2  -  globals, stage07
+   963  GUESS      shared library (lib_141) state flag; undocumented, no clear context
+                    set 4 / read 1  -  globals, stage05
+   965  INFERRED   map_jump_box_265 warp used/unlocked (stage04)
+                    set 1 / read 2  -  stage04
+   966  GUESS      stage03 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage03
+   967  GUESS      stage04 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage04
+   968  GUESS      stage03 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage03
+   969  INFERRED   "can leave living room" area SFX gate (paired with flag 334)
+                    set 9 / read 3  -  globals, stage05, stage07
+   970  GUESS      stage04 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage04
+   971  GUESS      stage04 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage04
+   972  GUESS      stage05 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage05
+   973  INFERRED   stage02 conversation/event progress flag
+                    set 3 / read 3  -  stage02
+   974  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage02
+   975  INFERRED   stage05 NPC dialogue tree step (first line shown)
+                    set 1 / read 2  -  stage05
+   976  INFERRED   stage05 NPC dialogue tree step (requires copter atc)
+                    set 1 / read 3  -  stage05
+   977  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   978  INFERRED   stage05 NPC dialogue tree step (requires blaster atc)
+                    set 1 / read 2  -  stage05
+   979  INFERRED   stage05 NPC dialogue tree step (requires item 21)
+                    set 1 / read 2  -  stage05
+   980  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   981  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   982  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   983  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   984  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   985  INFERRED   stage05 NPC dialogue tree step
+                    set 2 / read 2  -  stage05
+   986  GUESS      stage05 dialogue/state flag (read-only); undocumented, no clear context
+                    set 0 / read 2  -  stage05
+   987  INFERRED   stage05 NPC dialogue tree step
+                    set 1 / read 2  -  stage05
+   991  GUESS      stage01 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage01
+   992  GUESS      stage09 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage09
+   993  INFERRED   Deca Robo (giant robot) NPC event progress
+                    set 1 / read 1  -  stage07
+   994  GUESS      stage07 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage07
+   995  INFERRED   stage02 one-shot conversation/event flag
+                    set 2 / read 2  -  stage02
+   999  GUESS      globals/stage06 state flag; undocumented, no clear context
+                    set 1 / read 1  -  globals, stage06
+  1000  CONFIRMED  Telly sticker
+                    set 1 / read 0  -  globals
+  1001  GUESS      stage05 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage05
+  1005  INFERRED   globals/stage07 state flag gating lib_96 routine
+                    set 3 / read 8  -  globals, stage07
+  1013  CONFIRMED  Chibi-Door opened (set alongside 716/717/718)
+                    set 61 / read 1  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09
+  1014  GUESS      stage01 read-only state flag; undocumented, no clear context
+                    set 0 / read 2  -  stage01
+  1016  INFERRED   stage07 time-cycle (evt_time_cycle) state flag
+                    set 5 / read 6  -  stage07
+  1019  GUESS      stage06 read-only state flag; undocumented, no clear context
+                    set 0 / read 1  -  stage06
+  1021  GUESS      stage06 read-only state flag; undocumented, no clear context
+                    set 0 / read 1  -  stage06
+  1022  GUESS      stage06 read-only state flag; undocumented, no clear context
+                    set 0 / read 1  -  stage06
+
+  -------------------------------------------------------------------------
+   CHIBI-HOUSE DOORS, per stage (1030-1048)
+  -------------------------------------------------------------------------
+
+  1030  INFERRED   Chibi-House door (house_r_chibi_h_door) used in stage07
+                    set 1 / read 2  -  stage07
+  1033  INFERRED   Chibi-House door used in stage01
+                    set 1 / read 2  -  stage01
+  1036  INFERRED   Chibi-House door used in stage02
+                    set 1 / read 2  -  stage02
+  1037  INFERRED   Chibi-House door used in stage02
+                    set 1 / read 2  -  stage02
+  1039  INFERRED   Chibi-House door used in stage03
+                    set 1 / read 2  -  stage03
+  1040  INFERRED   Chibi-House door used in stage03
+                    set 1 / read 2  -  stage03
+  1042  INFERRED   Chibi-House door used in stage04
+                    set 1 / read 2  -  stage04
+  1043  INFERRED   Chibi-House door used in stage04
+                    set 1 / read 2  -  stage04
+  1045  INFERRED   Chibi-House door used in stage06
+                    set 1 / read 2  -  stage06
+  1048  INFERRED   Chibi-House door used in stage09
+                    set 1 / read 2  -  stage09
+
+  -------------------------------------------------------------------------
+   GENERAL - stickers & story (1049-1099)
+  -------------------------------------------------------------------------
+
+  1051  INFERRED   prologue cutscene progress flag (stage02)
+                    set 4 / read 1  -  stage02
+  1052  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage02
+  1057  INFERRED   Free Ranger NPC conversation-seen flag (stage02)
+                    set 1 / read 2  -  stage02
+  1058  INFERRED   Free Ranger NPC conversation-seen flag (stage02)
+                    set 1 / read 1  -  stage02
+  1059  INFERRED   Free Ranger NPC conversation-seen flag (stage02)
+                    set 1 / read 1  -  stage02
+  1062  INFERRED   stage01 one-time talk/event flag (gated by flag 676/695)
+                    set 1 / read 4  -  stage01, stage11
+  1063  GUESS      stage07 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage07
+  1064  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage02
+  1065  GUESS      stage04 read-only state flag; undocumented, no clear context
+                    set 0 / read 1  -  stage04
+  1066  GUESS      stage09 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage09
+  1067  GUESS      globals/stage09 state flag; undocumented, no clear context
+                    set 2 / read 1  -  globals, stage09
+  1068  GUESS      globals/stage07 state flag; undocumented, no clear context
+                    set 3 / read 2  -  globals, stage07
+  1069  GUESS      stage07 set-only state flag; undocumented, no clear context
+                    set 1 / read 0  -  stage07
+  1070  GUESS      globals/stage07/09 state flag; undocumented, no clear context
+                    set 1 / read 3  -  globals, stage07, stage09
+  1071  CONFIRMED  Peekoe sticker (set when 1087 & 1088 both set)
+                    set 2 / read 2  -  stage01, stage03
+  1072  INFERRED   Free Rangers NPC event/dialogue progress (stage02)
+                    set 1 / read 5  -  stage02
+  1073  GUESS      stage02/09 state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage02, stage09
+  1074  GUESS      stage06 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage06
+  1075  GUESS      stage06 local state flag; undocumented, no clear context
+                    set 1 / read 2  -  stage06
+  1076  GUESS      stage06 read-only state flag; undocumented, no clear context
+                    set 0 / read 2  -  stage06
+  1077  GUESS      stage09 frequently-read conditional flag; undocumented, no clear context
+                    set 1 / read 12  -  stage09
+  1080  GUESS      stage01 read-only state flag; undocumented, no clear context
+                    set 0 / read 1  -  stage01
+  1081  INFERRED   stage09 object 214 growth/state stage 1
+                    set 1 / read 5  -  stage09
+  1082  INFERRED   stage09 object 214 growth/state stage 2
+                    set 1 / read 5  -  stage09
+  1083  CONFIRMED  Blue Bird sticker
+                    set 1 / read 1  -  stage09
+  1084  CONFIRMED  Funky Phil sticker
+                    set 1 / read 0  -  stage06
+  1085  CONFIRMED  Dinah sticker
+                    set 1 / read 20  -  stage06
+  1087  INFERRED   stage01 Peekoe prerequisite flag (with 1088 -> sets 1071)
+                    set 1 / read 16  -  stage01, stage03, stage09
+  1088  INFERRED   stage01 Peekoe prerequisite flag (with 1087 -> sets 1071)
+                    set 1 / read 3  -  stage01, stage03
+  1090  CONFIRMED  Mr Prongs sticker
+                    set 1 / read 0  -  stage07
+  1092  GUESS      stage02 local state flag; undocumented, no clear context
+                    set 1 / read 1  -  stage02
+
+  -------------------------------------------------------------------------
+   STAGE 11 (DRAIN) - scripted sequence markers (1100-1119)
+  -------------------------------------------------------------------------
+
+  1100  GUESS      stage11 (drain) scripted-sequence step marker; no context labels
+                    set 2 / read 1  -  stage11
+  1101  GUESS      stage11 (drain) scripted-sequence step marker; no context labels
+                    set 2 / read 1  -  stage11
+  1102  GUESS      stage11 (drain) scripted-sequence step marker; no context labels
+                    set 2 / read 1  -  stage11
+  1103  GUESS      stage11 (drain) scripted-sequence step marker; no context labels
+                    set 2 / read 1  -  stage11
+  1104  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1105  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1106  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1107  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1108  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1109  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1110  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1111  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1112  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1113  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1114  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1115  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1116  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1117  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1118  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+  1119  GUESS      stage11 (drain) set-once scene step marker; no context labels
+                    set 1 / read 0  -  stage11
+
+  -------------------------------------------------------------------------
+   GENERAL - minigames, crayons, mini-funky, seals (1120-1199)
+  -------------------------------------------------------------------------
+
+  1120  INFERRED   stage01 fly minigame: fly currently airborne/active flag
+                    set 3 / read 1  -  stage01
+  1121  INFERRED   stage01 fly minigame: fly-swat hit registered / fly killed flag
+                    set 2 / read 2  -  stage01
+  1122  INFERRED   stage01/stage11 toggle controlling Chibi spawn position in drain warp
+                    set 2 / read 1  -  stage01, stage11
+  1125  INFERRED   stage09 garbage-can lid event done (alternate path to item 114)
+                    set 1 / read 1  -  stage09
+  1126  INFERRED   stage09/stage11 lid-and-collision removed (item 114 / can lid obtained)
+                    set 1 / read 3  -  stage03, stage09, stage11
+  1128  INFERRED   "crackers are nearby" proximity flag (globals cracker-locator)
+                    set 2 / read 1  -  globals, stage05
+  1129  INFERRED   stage06 rotating-sound state toggle (sfx on/off region)
+                    set 2 / read 1  -  stage06
+  1132  INFERRED   stage04 crayon collected #1 (drawing/crayon set; disp 312)
+                    set 1 / read 6  -  stage04
+  1133  INFERRED   stage04 crayon collected #2 (disp 314)
+                    set 1 / read 6  -  stage04
+  1134  INFERRED   stage04 crayon collected #3 (disp 315)
+                    set 1 / read 6  -  stage04
+  1135  INFERRED   stage04 crayon collected #4 (disp 316); all four trigger sub_2094
+                    set 1 / read 6  -  stage04
+  1136  INFERRED   stage04 all crayons collected / Jenny crayon-box event done (evt_jenny_kureyon)
+                    set 1 / read 1  -  stage04
+  1141  INFERRED   stage06 mini-funky seed grow event flag (item 153 path)
+                    set 1 / read 1  -  stage06
+  1142  INFERRED   stage06 toy-bullying (daytime) state set after menu choice
+                    set 2 / read 4  -  stage06
+  1145  INFERRED   stage06 Toiletex night peeping-CLL event triggered/seen
+                    set 2 / read 4  -  stage06
+  1146  INFERRED   stage06 Toiletex night peeping companion flag (set with 1145)
+                    set 2 / read 1  -  stage06
+  1149  INFERRED   stage06 mini-funky first-time dialogue shown
+                    set 1 / read 1  -  stage06
+  1152  INFERRED   stage06 "Blind Rechic" pre-Rex toy state flag
+                    set 1 / read 2  -  stage06
+  1154  INFERRED   stage06/stage09 family-rescue mission active flag
+                    set 2 / read 10  -  stage06, stage09
+  1155  INFERRED   stage06 mini-funky plant grown state (left/var125=16)
+                    set 1 / read 2  -  stage06
+  1156  INFERRED   stage06 mini-funky plant #2 grown/harvested state
+                    set 1 / read 3  -  stage06
+  1157  INFERRED   stage06 mini-funky plant state (paired with 1158)
+                    set 1 / read 2  -  stage06
+  1158  INFERRED   stage06 mini-funky plant grown state (item disp 254/246)
+                    set 1 / read 3  -  stage06
+  1160  INFERRED   stage01 sticker-album seal panel #1 obtained (disp 354 off)
+                    set 1 / read 1  -  stage01
+  1161  INFERRED   stage06/stage01 sticker-album seal panel obtained (disp 348/336 off)
+                    set 1 / read 3  -  stage06
+  1162  INFERRED   stage01 sticker-album seal panel #3 obtained (evt_sa_seal_366; disp 366 off)
+                    set 1 / read 3  -  stage01
+  1163  INFERRED   stage18 Tao's dish event done / talked to Tao (evt_npc_tao_s)
+                    set 1 / read 6  -  globals, stage18
+  1170  INFERRED   stage09 kill object 209 trigger; set in globals attach event
+                    set 1 / read 1  -  globals, stage09
+  1172  GUESS      lib_275 shared per-stage routine state; generic library flag
+                    set 2 / read 3  -  globals, stage05
+  1173  GUESS      lib_275 shared per-stage routine state (globals); generic library flag
+                    set 2 / read 1  -  globals
+  1174  GUESS      lib_275 stage01 per-stage run-once toggle (set then cleared)
+                    set 2 / read 1  -  stage01, globals
+  1175  GUESS      lib_275 stage02 per-stage run-once toggle
+                    set 2 / read 1  -  globals, stage02
+  1176  INFERRED   lib_275 stage03 per-stage run-once toggle (run sub_10 then clear)
+                    set 2 / read 1  -  globals, stage03
+  1177  GUESS      lib_275 stage04 per-stage run-once toggle
+                    set 2 / read 1  -  globals, stage04
+  1178  INFERRED   lib_275 stage06 per-stage run-once toggle (run sub_28 then clear)
+                    set 2 / read 1  -  globals, stage06
+  1179  GUESS      lib_275 stage07 per-stage run-once toggle
+                    set 2 / read 1  -  globals, stage07
+  1180  GUESS      lib_275 stage09 per-stage run-once toggle
+                    set 2 / read 1  -  globals, stage09
+  1181  CONFIRMED  Chibi Doors sticker (sticker-album block)
+                    set 1 / read 1  -  globals
+  1182  INFERRED   stage06 mini-funky item left-row middle slot present (evt_item_mini_funky_1)
+                    set 1 / read 2  -  stage06
+  1183  INFERRED   stage06 mini-funky item left-row right slot present
+                    set 1 / read 2  -  stage06
+  1184  INFERRED   stage06 mini-funky item left-row left slot present
+                    set 1 / read 2  -  stage06
+  1185  INFERRED   stage06 mini-funky item right-row middle slot present
+                    set 1 / read 2  -  stage06
+  1186  INFERRED   stage06 mini-funky item right-row left slot present
+                    set 1 / read 2  -  stage06
+  1187  INFERRED   stage06 mini-funky "buti" item slot present (evt_item_mini_funky_buti)
+                    set 1 / read 2  -  stage06
+  1188  INFERRED   stage06 Funky Phil dead / "depressed" toy state flag
+                    set 1 / read 5  -  globals, stage06
+  1189  INFERRED   stage06 Toiletex sprung-into-action event done
+                    set 1 / read 1  -  globals
+  1190  INFERRED   stage06 Toiletex action follow-up flag (set with 1189)
+                    set 1 / read 2  -  globals, stage06
+  1191  INFERRED   stage06 TV placed/displayed state #1
+                    set 3 / read 5  -  stage06
+  1192  INFERRED   stage06 TV placed/displayed state #2 (sfx on)
+                    set 2 / read 3  -  stage06
+  1195  INFERRED   stage05/stage14 intro-window state on (skip_intro_window)
+                    set 2 / read 1  -  stage05, stage14
+  1196  INFERRED   stage05/stage14 intro-window cleared/skipped (skip_intro_window)
+                    set 3 / read 1  -  stage05, stage14
+  1197  GUESS      lib_48 stage07 shared library routine flag; generic
+                    set 2 / read 1  -  globals, stage07
+  1198  INFERRED   stage18 one-shot sfx/anim played guard flag
+                    set 1 / read 1  -  stage18
+  1199  INFERRED   stage06 mini-funky seed item ("tane_funky") collected (evt_item_tane_funky)
+                    set 1 / read 1  -  stage06
+
+  -------------------------------------------------------------------------
+   PLAYER POSITION / FOOTSTEP TRIGGER MARKERS (1200-1224)
+  -------------------------------------------------------------------------
+
+  1200  INFERRED   footstep/position trigger marker, reset at startup (per-stage step bit)
+                    set 1 / read 0  -  globals
+  1201  INFERRED   position-trigger step marker (Chibi crosses coordinate threshold)
+                    set 3 / read 3  -  globals, stage02, stage06, stage07
+  1202  INFERRED   position-trigger step marker (Chibi crosses coordinate threshold)
+                    set 2 / read 1  -  globals, stage07
+  1203  INFERRED   position-trigger step marker (Chibi crosses coordinate threshold)
+                    set 2 / read 1  -  globals, stage07
+  1204  INFERRED   position/step trigger marker, reset at startup
+                    set 1 / read 0  -  globals
+  1205  INFERRED   position/step trigger marker, reset at startup
+                    set 1 / read 0  -  globals
+  1206  INFERRED   stage02 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage02
+  1207  INFERRED   stage02 position-trigger step marker (coordinate threshold)
+                    set 2 / read 0  -  globals, stage02
+  1208  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1209  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1210  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1211  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1212  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1213  INFERRED   position/step trigger marker (stage01/globals)
+                    set 2 / read 1  -  stage01, globals
+  1214  INFERRED   position/step trigger marker, reset at startup
+                    set 1 / read 0  -  globals
+  1215  INFERRED   position/step trigger marker, reset at startup
+                    set 1 / read 0  -  globals
+  1216  INFERRED   stage06 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage06
+  1217  INFERRED   stage04/stage07 position-trigger step marker (coordinate threshold)
+                    set 4 / read 3  -  globals, stage04, stage07
+  1218  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1219  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1220  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1221  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1222  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1223  INFERRED   stage04 position-trigger step marker (coordinate threshold)
+                    set 2 / read 1  -  globals, stage04
+  1224  INFERRED   position/step trigger marker, reset at startup
+                    set 1 / read 0  -  globals
+
+  -------------------------------------------------------------------------
+   GENERAL - stickers & story (1225-1500)
+  -------------------------------------------------------------------------
+
+  1225  CONFIRMED  Hot Rod sticker (set once on stage02 event)
+                    set 1 / read 1  -  stage02
+  1226  CONFIRMED  Space Scrambler sticker (set once on stage02 event)
+                    set 1 / read 1  -  stage02
+  1227  CONFIRMED  Cooking sticker (set once on stage01 event)
+                    set 1 / read 1  -  stage01
+  1229  INFERRED   stage06 mini-funky right-planter grown/active state gate
+                    set 1 / read 4  -  stage06
+  1230  INFERRED   stage06 mini-funky left-planter grown/active state gate
+                    set 1 / read 4  -  stage06
+  1231  CONFIRMED  Kitchen Planter Rope flag (hand-annotated)
+                    set 2 / read 1  -  stage01, stage05
+  1232  INFERRED   stage01 prologue Queen Spider (obj 10100) spawned/active flag
+                    set 2 / read 2  -  stage01
+  1233  INFERRED   stage01 prologue family-member actor (20011) placement/visible state
+                    set 3 / read 9  -  stage01
+  1234  GUESS      globals lib_74/lib_362 run-once gate (set/cleared, drives lib_369)
+                    set 1 / read 1  -  globals
+
+  -------------------------------------------------------------------------
+   SUIT WEAR & SUIT-SHOWN REACTIONS (1501-1520)
+  -------------------------------------------------------------------------
+
+  1501  INFERRED   first time wearing suit 1 (Mort/legend suit) effect played (lib_158)
+                    set 2 / read 4  -  stage01, globals, stage02, stage07, stage09
+  1502  GUESS      suit-related flag reset with 1501-1507 block; specific suit unclear
+                    set 1 / read 0  -  globals
+  1503  INFERRED   first time wearing suit 2 effect played (lib_158)
+                    set 2 / read 4  -  stage01, globals, stage02, stage07, stage09
+  1504  INFERRED   first time wearing suit 7 effect played (lib_158)
+                    set 2 / read 4  -  stage01, globals, stage02, stage07, stage09
+  1505  INFERRED   first time wearing suit 4 effect played (lib_158)
+                    set 2 / read 4  -  stage01, globals, stage02, stage07, stage09
+  1507  INFERRED   first time wearing suit 6 effect played (lib_158)
+                    set 2 / read 4  -  stage01, globals, stage02, stage07, stage09
+  1508  GUESS      stage07 read-only flag; undocumented, no clear context
+                    set 0 / read 1  -  stage07
+  1509  CONFIRMED  Sunshine sticker (also stage04 receipt/object disp gate)
+                    set 1 / read 6  -  stage04
+  1510  INFERRED   stage01 parent-receipt item event done (evt_parent_receipt)
+                    set 1 / read 1  -  stage01
+  1511  INFERRED   stage02 Jenny (actor 20003) killed/removed story state
+                    set 1 / read 5  -  globals, stage02
+  1512  GUESS      stage02 set-once event flag; undocumented, no clear context
+                    set 1 / read 1  -  stage02
+  1513  INFERRED   stage09 suit-shown-to-NPC / mission progress flag (suit 2/3 gated)
+                    set 8 / read 8  -  stage09
+  1514  INFERRED   stage01 transient toggle set/cleared within a loop (state switch)
+                    set 2 / read 17  -  stage01, stage07
+  1515  INFERRED   stage04 showed suit 1 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+  1516  INFERRED   stage04 showed suit 3 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+  1517  INFERRED   stage04 showed suit 2 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+  1518  INFERRED   stage04 showed suit 7 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+  1519  INFERRED   stage04 showed suit 4 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+  1520  INFERRED   stage04 showed suit 6 to backyard NPC reaction played
+                    set 1 / read 1  -  stage04
+
+  -------------------------------------------------------------------------
+   GENERAL - story / endgame / startup (1521-1605)
+  -------------------------------------------------------------------------
+
+  1521  INFERRED   stage01 sticker/reward event flag (set with 1522 & Drake sticker 1620)
+                    set 4 / read 6  -  stage01, globals, stage07
+  1522  INFERRED   stage01 sticker/reward event flag (set with 1521)
+                    set 2 / read 2  -  stage01, globals, stage07
+  1523  CONFIRMED  Sophie sticker (sticker-album block)
+                    set 1 / read 13  -  stage01, globals, stage02, stage06, stage07
+  1524  INFERRED   stage01 Sophie-related dialogue first-time-said flag (gated by 1523)
+                    set 1 / read 2  -  stage01
+  1526  INFERRED   stage01 Bebe (dog) busy/available dialogue state flag
+                    set 2 / read 10  -  stage01, globals, stage07
+  1527  INFERRED   stage03 NPC event reached (gates sub_821 dialogue)
+                    set 1 / read 2  -  stage03
+  1528  INFERRED   stage03 NPC dialogue (sub_821) already shown
+                    set 1 / read 2  -  stage03
+  1529  INFERRED   globals endgame/save-family runtime state (reset at frame 0)
+                    set 2 / read 3  -  globals, stage07
+  1530  CONFIRMED  Captain Plankbeard sticker (set on stage09 event)
+                    set 1 / read 1  -  stage09
+  1531  INFERRED   globals Giga-Robo save-family sequence armed/eligible flag
+                    set 1 / read 10  -  stage01, globals, stage07
+  1532  INFERRED   globals Giga-Robo save-family sequence completed/active flag
+                    set 6 / read 20  -  stage01, globals, stage07
+  1534  INFERRED   globals random-dialogue first-time gate (set after first play)
+                    set 1 / read 1  -  globals
+  1535  INFERRED   globals save-family sequence done marker (set with 1532)
+                    set 3 / read 1  -  stage01, globals
+  1536  INFERRED   globals timer/counter-enable state flag (drives var156 increment)
+                    set 1 / read 1  -  globals
+  1537  INFERRED   shared-library (lib_25) state flag; gates a happy-point/var threshold check
+                    set 5 / read 6  -  stage01, globals, stage06
+  1538  INFERRED   shared-library state flag paired with 1537 (lib_25 threshold tracking)
+                    set 5 / read 6  -  stage01, globals, stage06
+  1539  GUESS      undocumented; set in globals.us, no label/context
+                    set 1 / read 0  -  globals
+  1540  GUESS      undocumented; set in globals.us, no label/context
+                    set 1 / read 0  -  globals
+  1541  INFERRED   shared-library (lib_277) state flag
+                    set 6 / read 10  -  stage01, globals, stage07, stage09
+  1542  INFERRED   shared-library state flag paired with 1541 (lib_277)
+                    set 5 / read 10  -  stage01, globals, stage07, stage09
+  1543  GUESS      undocumented; stage06.us only, no label
+                    set 2 / read 2  -  stage06
+  1544  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1545  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1546  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1547  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1548  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1549  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1550  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1551  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1552  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1553  GUESS      undocumented; stage02.us state flag (one of 1544-1553 block)
+                    set 2 / read 1  -  stage02
+  1564  INFERRED   shared-library (lib_81) state flag, used across multiple stages
+                    set 5 / read 6  -  stage01, globals, stage02, stage06, stage07
+  1565  INFERRED   shared-library (lib_321) state flag, used across multiple stages
+                    set 5 / read 2  -  stage01, globals, stage02, stage06, stage07
+  1566  GUESS      undocumented; globals.us/stage09.us, no label
+                    set 1 / read 1  -  globals, stage09
+  1567  GUESS      undocumented; multi-stage state flag, no label
+                    set 3 / read 5  -  globals, stage02, stage06
+  1568  GUESS      undocumented; stage02.us set-only, no label
+                    set 1 / read 0  -  stage02
+  1569  GUESS      undocumented; globals.us/stage06.us, no label
+                    set 1 / read 2  -  globals, stage06
+  1570  INFERRED   shared-library (lib_274) state flag, used across multiple stages
+                    set 2 / read 5  -  stage01, globals, stage06, stage07
+  1571  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1572  GUESS      undocumented; stage05.us, no label
+                    set 1 / read 1  -  stage05
+  1573  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1574  GUESS      undocumented; globals/stage05/stage07 state flag, no label
+                    set 3 / read 3  -  globals, stage05, stage07
+  1575  GUESS      undocumented; multi-stage state flag, no label
+                    set 5 / read 6  -  stage01, stage02, stage06, stage07
+  1576  GUESS      undocumented; stage01.us/globals.us, no label
+                    set 1 / read 1  -  stage01, globals
+  1577  INFERRED   prologue/living-room (consentman) state flag; gates intro behavior, checked at game start
+                    set 2 / read 49  -  stage01, globals, stage04, stage06, stage07, stage09, stage11
+  1578  INFERRED   prologue state flag paired with 1577 (lib_252); intro/start-of-day gating
+                    set 2 / read 46  -  stage01, globals, stage04, stage06, stage07, stage09
+  1580  GUESS      undocumented; stage01/02/07 state flag, no label
+                    set 4 / read 3  -  stage01, stage02, stage07
+  1581  GUESS      undocumented; stage01/globals/stage06 state flag, no label
+                    set 1 / read 2  -  stage01, globals, stage06
+  1582  GUESS      undocumented; stage01/stage07 state flag, no label
+                    set 3 / read 2  -  stage01, stage07
+  1583  GUESS      undocumented; stage01/globals/stage07 state flag, no label
+                    set 1 / read 2  -  stage01, globals, stage07
+  1584  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1585  GUESS      undocumented; stage07.us, no label
+                    set 2 / read 1  -  stage07
+  1586  GUESS      undocumented; multi-stage state flag, no label
+                    set 2 / read 4  -  stage01, globals, stage02, stage07
+  1587  GUESS      undocumented; stage02.us, no label
+                    set 1 / read 1  -  stage02
+  1588  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 2  -  stage06
+  1589  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1600  GUESS      undocumented; stage04.us, no label
+                    set 1 / read 1  -  stage04
+  1601  GUESS      undocumented; stage04.us, no label
+                    set 2 / read 2  -  stage04
+  1602  GUESS      undocumented; stage03.us, no label
+                    set 1 / read 1  -  stage03
+  1603  GUESS      undocumented; globals.us set-only, no label
+                    set 1 / read 0  -  globals
+  1604  GUESS      undocumented; stage04.us, no label
+                    set 1 / read 1  -  stage04
+  1605  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+
+  -------------------------------------------------------------------------
+   CURRENT-SUIT TRACKING - lib_264 (1606-1611)
+  -------------------------------------------------------------------------
+
+  1606  INFERRED   tracks current suit/costume worn (set from cur_suit case, lib_264)
+                    set 3 / read 2  -  stage01, globals
+  1607  INFERRED   tracks a current suit/costume worn variant (cur_suit case, lib_264)
+                    set 1 / read 1  -  stage01, globals
+  1608  INFERRED   tracks a current suit/costume worn variant (cur_suit case, lib_264)
+                    set 2 / read 1  -  stage01, globals
+  1609  INFERRED   tracks a current suit/costume worn variant (cur_suit case, lib_264)
+                    set 2 / read 1  -  stage01, globals
+  1610  INFERRED   tracks a current suit/costume worn variant (cur_suit case, lib_264)
+                    set 2 / read 1  -  stage01, globals
+  1611  INFERRED   tracks a current suit/costume worn variant (cur_suit case, lib_264)
+                    set 3 / read 1  -  stage01, globals
+
+  -------------------------------------------------------------------------
+   GENERAL - stickers, items, prologue, day-state (1612+)
+  -------------------------------------------------------------------------
+
+  1612  CONFIRMED  All Frog Rings sticker
+                    set 1 / read 12  -  stage01, globals, stage02, stage03, stage04, stage06, stage07, stage09, stage11
+  1613  GUESS      undocumented; stage01/stage07 state flag, no label
+                    set 2 / read 2  -  stage01, stage07
+  1614  INFERRED   shared-library (lib_225) state flag
+                    set 2 / read 2  -  globals
+  1615  CONFIRMED  Kid Eggplant sticker
+                    set 1 / read 1  -  stage09
+  1616  INFERRED   living-room consentman/atari event flag (evt_living_consentman_atari)
+                    set 2 / read 1  -  stage09
+  1617  CONFIRMED  Drake Redcrest sticker
+                    set 1 / read 2  -  globals, stage07, stage09
+  1618  CONFIRMED  Primopeul sticker
+                    set 1 / read 1  -  stage01
+  1619  CONFIRMED  Tamagotchi sticker
+                    set 1 / read 1  -  stage07
+  1620  INFERRED   map/door warp flag (evt_map_jump_box / evt_chibi_jump); tracks a used warp/transition
+                    set 10 / read 8  -  stage01, globals, stage07
+  1621  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1622  INFERRED   "T block" collectible item obtained (evt_item_t_block_5); gates related object display
+                    set 1 / read 6  -  stage01, stage02, stage03, stage04, stage06, stage09
+  1623  INFERRED   "T block" collectible item obtained (evt_item_t_block_1)
+                    set 4 / read 3  -  stage01, stage06, stage09
+  1624  GUESS      undocumented; stage01.us/globals.us, no label
+                    set 1 / read 1  -  stage01, globals
+  1625  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1626  GUESS      undocumented; globals.us/stage03.us, no label
+                    set 1 / read 5  -  globals, stage03
+  1628  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 4  -  stage06
+  1629  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 2  -  stage06
+  1630  GUESS      undocumented; globals.us/stage06.us, no label
+                    set 1 / read 9  -  globals, stage06
+  1632  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1633  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1634  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1635  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1636  INFERRED   Tamagotti item event done in stage03 (evt_item_tamagotti); gates object display
+                    set 1 / read 1  -  stage03
+  1637  INFERRED   prologue / NPC Primo conversation event flag (evt_prologue, evt_npc_primo)
+                    set 1 / read 2  -  stage01, stage04
+  1638  INFERRED   NPC happy-point/var threshold reached marker (var>=12, lib_25)
+                    set 4 / read 30  -  globals
+  1639  INFERRED   NPC happy-point/var threshold reached marker (var>=12, lib_25)
+                    set 4 / read 30  -  globals
+  1640  INFERRED   NPC happy-point/var threshold reached marker (var>=12, lib_25)
+                    set 4 / read 30  -  globals
+  1641  INFERRED   NPC happy-point/var threshold reached marker (var>=12, lib_25)
+                    set 4 / read 30  -  globals
+  1642  GUESS      undocumented; stage07.us, no label
+                    set 1 / read 2  -  stage07
+  1643  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1644  GUESS      undocumented; stage01.us/globals.us, no label
+                    set 2 / read 1  -  stage01, globals
+  1645  INFERRED   startup flag: when set, on stage load grants flag 558 and sets vars (evt_startup pending action)
+                    set 7 / read 6  -  stage02, stage03, stage04, stage05, stage06, stage07
+  1646  GUESS      undocumented; globals.us/stage06.us, no label
+                    set 2 / read 1  -  globals, stage06
+  1647  GUESS      undocumented; globals.us/stage06.us, no label
+                    set 2 / read 1  -  globals, stage06
+  1648  GUESS      undocumented; stage01.us/stage07.us, no label
+                    set 2 / read 1  -  stage01, stage07
+  1649  GUESS      undocumented; stage01.us/stage07.us, no label
+                    set 3 / read 1  -  stage01, stage07
+  1650  INFERRED   living-room/backyard window-washing event flag (evt_living_window_ware / evt_backyard_window_ware)
+                    set 3 / read 2  -  stage07, stage09
+  1651  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 2  -  stage01
+  1652  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 2  -  stage01
+  1653  INFERRED   startup-related shared-library flag (evt_startup, lib_199)
+                    set 4 / read 3  -  stage01, globals, stage02, stage05
+  1654  INFERRED   startup-related shared-library flag (evt_startup, lib_12/lib_96)
+                    set 7 / read 2  -  stage01, globals, stage05
+  1655  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 2  -  stage06
+  1656  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 2  -  stage06
+  1657  GUESS      undocumented; stage06.us read-only, no label
+                    set 0 / read 1  -  stage06
+  1658  INFERRED   Tamagotti item event flag in stage07 (evt_item_tamagotti)
+                    set 1 / read 1  -  stage07
+  1659  GUESS      undocumented; stage09.us, no label
+                    set 2 / read 2  -  stage09
+  1660  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1661  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1662  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 3  -  stage06
+  1663  GUESS      undocumented; stage07.us, no label
+                    set 1 / read 1  -  stage07
+  1664  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1665  GUESS      undocumented; stage01.us, no label
+                    set 4 / read 1  -  stage01
+  1666  GUESS      undocumented; stage07.us, no label
+                    set 1 / read 1  -  stage07
+  1667  GUESS      undocumented; stage01.us, no label
+                    set 3 / read 1  -  stage01
+  1668  GUESS      undocumented; stage03.us, no label
+                    set 1 / read 1  -  stage03
+  1669  GUESS      undocumented; stage01.us/stage07.us, no label
+                    set 2 / read 1  -  stage01, stage07
+  1670  INFERRED   drainage/sewer room event flag (evt_haisui_room) in stage11
+                    set 1 / read 1  -  stage11
+  1671  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1672  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1673  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1674  GUESS      undocumented; globals.us, no label
+                    set 1 / read 1  -  globals
+  1675  GUESS      undocumented; stage06.us, no label
+                    set 1 / read 1  -  stage06
+  1676  GUESS      undocumented; stage01.us/stage07.us, no label
+                    set 1 / read 3  -  stage01, stage07
+  1677  INFERRED   shared-library state flag (lib_204/lib_207/lib_97)
+                    set 2 / read 2  -  globals, stage07
+  1678  GUESS      undocumented; globals/stage03/stage06 state flag, no label
+                    set 1 / read 3  -  globals, stage03, stage06
+  1679  GUESS      undocumented; stage07.us, no label
+                    set 1 / read 1  -  stage07
+  1680  INFERRED   map/door warp flag (evt_map_jump_box_12); tracks a used warp/transition
+                    set 2 / read 1  -  stage05, stage07
+  1681  INFERRED   shared-library state flag (lib_39/lib_204/lib_207)
+                    set 2 / read 1  -  globals
+  1682  GUESS      undocumented; stage14.us, no label
+                    set 1 / read 1  -  stage14
+  1683  GUESS      undocumented; stage01.us, no label
+                    set 1 / read 1  -  stage01
+  1684  GUESS      undocumented; stage07.us, no label
+                    set 3 / read 2  -  stage07
+  1687  GUESS      undocumented; stage01.us/globals.us, no label
+                    set 2 / read 2  -  stage01, globals
+  1688  GUESS      undocumented; globals.us/stage09.us, no label
+                    set 1 / read 1  -  globals, stage09
+  1689  GUESS      undocumented; globals/stage03/stage05 state flag, no label
+                    set 2 / read 5  -  globals, stage03, stage05
+  1690  GUESS      undocumented; stage06.us, no label
+                    set 2 / read 2  -  stage06
+  1691  GUESS      undocumented; stage06.us, set-only transient state flag, no label
+                    set 12 / read 0  -  stage06
+  1692  INFERRED   stage01 transient NPC/object movement state flag (cleared after movement sequence)
+                    set 8 / read 1  -  stage01
+  1693  GUESS      undocumented; stage06.us, no label
+                    set 2 / read 1  -  stage06
+  1694  INFERRED   prologue cutscene progress flag (evt_prologue, stage01)
+                    set 2 / read 2  -  stage01
+  1695  INFERRED   prologue cutscene progress flag (evt_prologue, stage01)
+                    set 2 / read 4  -  stage01
+  1698  INFERRED   prologue cutscene progress flag (evt_prologue, stage01)
+                    set 8 / read 9  -  stage01
+  1699  INFERRED   prologue cutscene progress flag (evt_prologue); also checked/cleared in stage07/stage09
+                    set 13 / read 5  -  stage07, stage09
+  2000  INFERRED   global day/time-of-day state flag gating NPC spawns and object display across stages
+                    set 2 / read 22  -  stage01, globals, stage02, stage06, stage07
+  2001  INFERRED   global day/progression state flag gating object spawns (checked in stage06)
+                    set 1 / read 33  -  globals, stage02, stage05, stage06, stage07

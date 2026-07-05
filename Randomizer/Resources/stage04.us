@@ -351,6 +351,9 @@ evt_chibi_jump_11:
 
 	.interact  12.d, *evt_map_jump_box_12
 evt_map_jump_box_12:
+	if	eq(var(1866.d), 0.d), else *loc_mj12_open ; jenny_door closed -> block warp to room 2
+	return
+loc_mj12_open:
 	lib	12.w
 	lib	54.w
 	camera	@pos, -22379.d, 2530.w, 3313.w, 2.d, 100.w
@@ -6633,6 +6636,15 @@ sub_286:
 loc_289:
 	dir	86.d, 0.w
 loc_288:
+	; === Randomizer jenny_door control (flag 1866; 0=closed/default, 1=open) ===
+	; Swing via dir (overrides the flag-40 dir above): open = -15 (JSON rot), closed = 0.
+	; Wall coords = JSON pos (-280, 0, -37.96) * 98.18; verify/nudge in-game.
+	if	eq(var(1866.d), 1.d), else *loc_jdoor_closed
+	dir	86.d, -15.d ; jenny_door OPEN angle
+	return
+loc_jdoor_closed:
+	dir	86.d, 0.w ; jenny_door CLOSED (swing shut)
+	born	10100.d, 2.d, -27490.d, 10029.w, -3727.d, -15.d, 13000.w, 30000.w, 50.w, 0.w ; wall @ jenny_door
 	return
 
 
@@ -14839,8 +14851,6 @@ evt_item_tonpy_p_85:
 	return
 
 
-	.interact  160.d, *evt_item_kami_kuzu_160
-
 sub_948:
 	set	var(37.d), obj(@pos_x, 10000.d)
 	set	var(39.d), obj(@pos_y, 10000.d)
@@ -16194,7 +16204,8 @@ loc_1101:
 	set	var(0.d), 157.d
 	break	*loc_1083
 loc_1083:
-	if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1085
+	; if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1085
+	if	or(eq(hold, 1000.d), le(99.w, item(var(0.d)))), else *loc_1085
 	lib	38.w
 	lib	358.w
 	lib	39.w
@@ -16554,12 +16565,6 @@ sub_1117:
 	wait	@fade
 	lib	96.w
 	attach	368.d, *sub_1112
-	return
-evt_item_kami_kuzu_160:
-	pushbp
-	setsp	18.d
-	lib	77.w
-	popbp
 	return
 
 

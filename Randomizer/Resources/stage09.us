@@ -20869,7 +20869,8 @@ loc_1135:
 	set	var(0.d), 157.d
 	break	*loc_1117
 loc_1117:
-	if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1119
+	; if	or(eq(hold, 1000.d), le(10.w, item(var(0.d)))), else *loc_1119
+	if	or(eq(hold, 1000.d), le(99.w, item(var(0.d)))), else *loc_1119
 	lib	38.w
 	lib	358.w
 	lib	39.w

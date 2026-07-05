@@ -1,0 +1,161 @@
+================================================================================
+ CHIBI-ROBO (.us) LIBRARY FUNCTION REFERENCE   (lib N.w)
+================================================================================
+ Library functions are shared subroutines that live in globals.us. There are
+ 376 of them, indexed 0-375. Any stage script can call one with:
+
+     lib  <index>.w
+
+ They are DEFINED only in globals.us, one per index, like:
+
+     .lib  73.w, *lib_73        <- registers index 73 -> routine lib_73
+     ...
+     lib_73:                    <- the routine body
+         ...
+         return
+
+ So the mapping is trivial (index N -> label lib_N); the useful part is what
+ each one DOES, which is what this file documents.
+
+
+--------------------------------------------------------------------------------
+ CALLING CONVENTION (how to pass arguments and read the result)
+--------------------------------------------------------------------------------
+ Arguments are pushed on the stack before the call; the result comes back in the
+ `result` accessor:
+
+     pushbp                 ; save the stack frame (always first)
+     setsp  10135.d         ; push arg 0
+     setsp  10115.d         ; push arg 1
+     setsp  32.d            ; push arg 2
+     lib    114.w           ; call library function 114
+     popbp                  ; restore the frame (always last)
+
+ Inside the library routine the pushed args are read as sp(0), sp(1), sp(2)...
+ (and bp(i) from the caller's frame). A return value, if any, is left in
+ `result`, which the caller can read immediately after the call.
+
+ Many libs take NO args (e.g. the fade/letterbox helpers) and you just call
+ them directly:  lib 13.w   (fade to black).
+
+
+--------------------------------------------------------------------------------
+ WHAT THE LIBRARY IS, ROUGHLY
+--------------------------------------------------------------------------------
+ The 376 functions are the game's shared toolbox. By behaviour they fall into a
+ few buckets:
+   * Screen / cutscene transitions  (fades, letterbox, wipes, HUD on/off)
+   * Camera helpers                 (reset, framing)
+   * Dialogue / NPC interaction     (face player, talk, give/receive items)
+   * Player & object animation      (sit, action, pose cycles)
+   * Per-room audio/BGM triggers
+   * Bulk state resets              (clear ranges of flags/vars on load)
+   * Math / selection / table lookups
+ Most are short. The detailed list below covers the most-called ones and the
+ ones this project touches; the rest (the ~330 not listed) are similar small
+ helpers - open globals.us and read `lib_<N>:` to see any specific one.
+
+
+--------------------------------------------------------------------------------
+ DOCUMENTED FUNCTIONS  (most-called + project-relevant)
+--------------------------------------------------------------------------------
+ SCREEN / CUTSCENE TRANSITIONS
+   lib 8     Screen open: fade to black, then circular wipe-in reveal.
+   lib 13    Fade screen to black over 50 frames and wait.
+   lib 14    Fade screen up from black over 50 frames and wait.
+   lib 63    Fade to black, duration taken from arg sp(0).
+   lib 64    Fade up from black, duration from arg sp(0).
+   lib 102   Screen close: circular wipe-out, then fade up (arg duration).
+   lib 103   Screen open: fade black, then circular wipe-in (arg duration).
+   lib 38    Begin cutscene: letterbox-in, hide the HUD window, reset camera.
+   lib 39    End cutscene: letterbox-out, restore window/camera (map-5 tint).
+   lib 54    Begin cutscene letterbox (no-wait variant of lib 38).
+   lib 55    End cutscene letterbox (no-wait variant of lib 39).
+   lib 145   Cutscene letterbox-out, parameterized (sp0 wait, sp1 lib_37, sp2 fade).
+
+ CAMERA
+   lib 45    Reset camera to default and wait for the move to finish.
+
+ DIALOGUE / NPC INTERACTION
+   lib 3     NPC face-player + dialogue: orient to player, wait for choice, show
+             msg, return choice in var(171).
+   lib 23    Show "Thank you." dialogue (voice 17, NPC 20045 animation).
+   lib 47    NPC talk-start: turn to face the player, set dir/anim, run the NPC's
+             behaviour, brief wait.
+   lib 83    Place Chibi-Robo (20000) directly in front of NPC sp(0) using a
+             dir-based sin/cos offset.
+   lib 91    Pick the nearest valid object into var(29) by distance/angle test.
+   lib 161   Telly random idle chatter (voice 27); random dialogue branch.
+
+ ITEMS (give / pick up)
+   lib 65    Item-give START: call 551/500 with the item arg, then poll-wait.
+   lib 67    Item-give FINISH: call 501, wait, call 550.
+   lib 77    Item PICKUP handler: 99-cap check, show item-name message, add to
+             count, finish via lib 67.
+
+ PLAYER / OBJECT ANIMATION
+   lib 105   Play player anim 93 then 94 (sit / loop cycle), waiting between.
+   lib 106   Play player anim 95 then 17 (action then idle), waiting between.
+   lib 153   Display & initialize object sp(3): disp on, run setup calls 7/9/11.
+   lib 158   Suit ACTIVATE: per cur_suit, set the suit's ability flag, play SFX,
+             run that suit's sub.
+   lib 193   Spawn (born) two objects and run setup libs 71/82; conditional anim.
+   lib 219   Projectile homing move: track target sp(5)'s position and move toward
+             it with a velocity ramp.
+   lib 226   "Inside the ribs" hit handler: on a matching hit, animate/collect,
+             add experience.
+
+ AUDIO / BGM PER ROOM
+   lib 12    Per-map background SFX/BGM trigger (switch on map()).
+   lib 93    Trigger one of several call-200 effects, chosen by index sp(1).
+   lib 96    Per-map BGM/SFX trigger (printf names: kitchen/storehouse/etc.).
+
+ DAY/NIGHT & NPC SCHEDULING  (relevant to door flags - see note below)
+   lib 73    TOGGLE DAY/NIGHT: animate the transition, flip time(0), recolor the
+             scene, refresh NPCs (runs lib 252 / lib 41). Invoked from each
+             stage's .time_cycle handler -> it only runs on a time change, NOT on
+             every room load. (This is why door-flag sets placed in lib_73 only
+             took effect on a day/night transition.)
+   lib 252   Day/night NPC-state setup: set time-dependent flags and the NPC id
+             vars var(75) / var(169).
+
+ BULK STATE RESETS  (clear ranges of flags/vars at load or transition)
+   lib 74    Reset flags 160-200 and vars 31-61 / 173-176 (NPC/event dispatch).
+   lib 264   Reset NPC-presence flags (496, and the 209-248 "shown suit" range).
+   lib 275   Reset flags 711-776+ (the day/time reset block).
+
+ CHIBI-DOORS & DOOR COUNTERS
+   lib 114   "Total Doors Opened" counter: compute/display the total and update
+             the per-map door-count var.
+   lib 204   Chibi-Door ENTRY cutscene: camera/fade/move into the door, HUD off,
+             light flash.
+   lib 207   Chibi-Door EXIT restore: re-show HUD, clear door flags
+             (468 / 1677 / 1681), call 700/800.
+   lib 210   Increment a counter var, spawn/setup via subs 708/742/747, clear
+             flag(99).
+
+ MISC HELPERS
+   lib 21    No-op stub (empty body, returns immediately).
+   lib 25    Stage-clear check: set the door-area complete flags (1638-1641) and
+             run the matching sub.
+   lib 72    Battery/door warning: move to the door, low-battery prompt, then open.
+   lib 86    Movement/step counter, per current suit.
+   lib 154   Save arg sp(0) into var(115) (rank/time helper).
+   lib 259   Select a coordinate/path table (pad 7) by index sp(0).
+
+
+--------------------------------------------------------------------------------
+ THE REST (indices not listed above)
+--------------------------------------------------------------------------------
+ Every index 0-375 is defined in globals.us as `.lib N.w, *lib_N`. The ones not
+ documented here are mostly more of the same: small dialogue/animation/camera/
+ setup helpers and per-NPC behaviour routines. To inspect any specific one:
+
+     1. open globals.us
+     2. search for the label at column 0:   lib_<N>:
+     3. read down to its `return`
+
+ Look for `printf "..."` lines (they frequently name the routine), `msg`
+ (dialogue), `set flag(...)` / `set var(...)` (state it changes), and `anim` /
+ `camera` / `disp` to see what it animates or shows.
+================================================================================

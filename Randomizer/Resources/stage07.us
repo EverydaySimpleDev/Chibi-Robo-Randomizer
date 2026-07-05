@@ -2187,7 +2187,7 @@ loc_2972:
 	if	eq(flag(1016.d), 1.w), else *loc_2971
 	run	*sub_399
 loc_2971:
-	if	flag(39.d), else *loc_2970
+	if	var(1870.d), else *loc_2970 ; living_door_k closed -> block warp to room 1
 	call	20000.d, 701.d
 	dir	20000.d, 220.w
 	move	20000.d, 3000.w, 100.w, -1.d, -1.d
@@ -2232,7 +2232,7 @@ loc_2978:
 	if	eq(flag(1016.d), 1.w), else *loc_2982
 	run	*sub_399
 loc_2982:
-	if	flag(38.d), else *loc_2981
+	if	var(1869.d), else *loc_2981 ; living_door closed -> block warp to room 2
 	call	20000.d, 701.d
 	dir	20000.d, 302.w
 	move	20000.d, 3000.w, 100.w, -1.d, -1.d
@@ -7932,6 +7932,14 @@ loc_2693:
 		"signature pose, you can patrol with me!",
 		anim(0.b, 20008.w, 1020.d),
 		wait(255.b)
+	
+	if eq(var(673.d), 0), else *loc_2696 ; make sure the player has gotten the drake suit
+	msg	voice(7.b),
+		speed(0.b),
+		anim(0.b, 20008.w, 1019.d),
+		"Oh are you looking for this?",
+		anim(0.b, 20008.w, 1020.d)
+	run		*sub_2560
 	endif	*loc_2696
 loc_2697:
 	lib	247.w
@@ -11717,16 +11725,18 @@ sub_758:
 
 
 sub_1062:
-	if	flag(38.d), else *loc_1073
+	if	var(1869.d), else *loc_1073 ; living_door: randomizer flag (was story flag 38); 0=closed->born wall below
 	anim	77.d, 1.w
 	endif	*loc_1064
 loc_1073:
+	anim	77.d, 0.w ; living_door show CLOSED pose
 	born	10000.d, 2.d, -27848.d, 9044.w, 23174.w, 0.w, 10.w, 30000.w, 13000.w, 0.w
 loc_1064:
-	if	flag(39.d), else *loc_1072
+	if	var(1870.d), else *loc_1072 ; living_door_k: randomizer flag (was story flag 39); 0=closed->born wall below
 	anim	286.d, 1.w
 	endif	*loc_1066
 loc_1072:
+	anim	286.d, 0.w ; living_door_k show CLOSED pose
 	born	10001.d, 2.d, 11327.w, 10029.w, -38700.d, 0.w, 13000.w, 30000.w, 10.w, 0.w
 loc_1066:
 	if	flag(47.d), else *loc_1071
