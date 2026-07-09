@@ -12288,7 +12288,7 @@ loc_893: ; Foyer→Kitchen: CLOSED
 loc_870:
 	if	var(1861.d), else *loc_891 ; rouka_door_j (Foyer→Jenny's Room): 1=open
 	disp	23.d, 1.d ; enable warp trigger
-	dir	2.d, -15.w ; OPEN: reset door to scene default (against wall)
+	dir	2.d, -30.w ; OPEN: reset door to scene default (against wall)
 	endif	*loc_872
 loc_891: ; Foyer→Jenny's Room: CLOSED
 	disp	23.d, 0.d ; disable warp trigger

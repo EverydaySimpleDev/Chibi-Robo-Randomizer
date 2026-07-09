@@ -2212,15 +2212,6 @@ loc_2984:
 	set	flag(969.d), 1.d
 loc_2983:
 	lib	54.w
-	if	eq(flag(358.d), 0.w), else *loc_2978 
-	msg	voice(0.b),
-		speed(0.b),
-		"Chibi-Robo! Forget the other rooms for now.\n",
-		"Let's check out this room!",
-		wait(254.b)
-	lib	39.w
-	return
-loc_2978:
 	set	var(135.d), 2.d
 	set	var(146.d), var(107.d)
 	set	flag(340.d), 1.w
@@ -12089,7 +12080,7 @@ sub_1685: ; rope script
 	return
 
 
-sub_1686:
+sub_1686: ; tooth brush zoom event
 	disp	10106.d, 0.d
 	lib	12.w
 	lib	38.w
@@ -12689,10 +12680,9 @@ loc_492: ; Telly Teaching You About The Hud
 	setsp	60.w
 	lib	145.w
 	popbp
-	scrn	@hud, 0.d, 2.d
-	scrn	@hud, 1.d, 3.d
-	scrn	@hud, 1.d, 7.d
-	scrn	@hud, 1.d, 6.d
+
+	lib	55.w
+	lib	96.w
 
 	; run *wash_pan_drop
 

@@ -57,7 +57,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.3";
+        string supportedAPVersion = "1.2.4";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -771,10 +771,10 @@ namespace WindowsFormsApp1
 
 
             //Flattens out shop checks with null values
-            shopObj.SelectToken("items[3].item").Replace(null);
+            //shopObj.SelectToken("items[3].item").Replace(null);
             shopObj.SelectToken("items[4].item").Replace(null);
             shopObj.SelectToken("items[5].item").Replace(null);
-            shopObj.SelectToken("items[6].item").Replace(null);
+            //shopObj.SelectToken("items[6].item").Replace(null);
             shopObj.SelectToken("items[7].item").Replace(null);
             shopObj.SelectToken("items[9].item").Replace(null);
             shopObj.SelectToken("items[10].item").Replace(null);
