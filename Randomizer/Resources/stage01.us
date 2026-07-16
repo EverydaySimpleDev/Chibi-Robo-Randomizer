@@ -10878,7 +10878,7 @@ loc_kdoor_lr_done:
 	endif	*loc_kdoor_f_done
 loc_kdoor_f_closed:
 	anim	50.d, 0.w ; kitchen_door_r Closed
-	born	10000.d, 2.d, -18653.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ kitchen_door_r
+	born	10000.d, 2.d, -19660.d, 10029.w, 27559.w, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ kitchen_door_r (was reusing kitchen_door's mirrored X; now derived from its own JSON pos -200.24 * 98.18)
 loc_kdoor_f_done:
 	; -- dami (74): show if either door is open, hide if both closed --
 	if	eq(var(1860.d), 1.d), else *loc_kdami_check2

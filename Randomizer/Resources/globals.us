@@ -10644,7 +10644,12 @@ lib_36:
 loc_988:
 	call	20000.d, 100.d
 	if	result, else *loc_987
-	if	le(var(900.d), 7.w), else *loc_992
+	; RANDOMIZER: a pending Pan Drop Trap (var(1874) >= 1) must bypass this "still warming up"
+	; gate entirely - otherwise the trap is unreachable until var(900), a persistent
+	; save-counter, exceeds 7 (i.e. the player has already hit this check 8+ times over the
+	; life of the save). Left var(900)'s own counting/pacing behavior untouched for the
+	; non-trap case.
+	if	and(le(var(900.d), 7.w), lt(var(1874.d), 1.w)), else *loc_992
 	set	var(900.d), add(var(900.d), 1.w)
 	pushbp
 	setsp	var(900.d)
@@ -10652,7 +10657,17 @@ loc_988:
 	popbp
 	endif	*loc_991
 loc_992:
-	elif	ge(rand(9.w), 7.w), else *loc_991
+	elif	or(ge(var(1874.d), 1.w), ge(rand(9.w), 7.w)), else *loc_991
+	; RANDOMIZER: AP "Pan Drop Trap" filler item hooks in right here. var(1874) is the
+	; pending-trap counter (incremented by client.py on receipt). Forcing this vanilla gag to
+	; trigger (instead of just relying on the 2/9 random roll) whenever a trap is pending, and
+	; consuming exactly one trap per charge below, means the trap only ever fires while the
+	; player is genuinely mid-charge at a real outlet - guaranteed to already have full visible
+	; control (no fade/load-timing risk, unlike the earlier room-load-based attempt - see
+	; project_pan_drop_trap memory for that whole abandoned approach and why).
+	if	ge(var(1874.d), 1.w), else *loc_no_pan_drop_trap
+	set	var(1874.d), sub(var(1874.d), 1.w)
+loc_no_pan_drop_trap:
 	printf	"タライチャージ達成\n"
 	read	@anim, 20000.d, *loc_1003
 	wait	@read, 20000.d
@@ -12642,56 +12657,13 @@ loc_3953:
 
 	.lib	375.w, *lib_375
 lib_375:
-	if	ge(var(671.d), 1.w), else *loc_987
-	set	var(671.d), sub(var(671.d), 1.w)
-	printf	"タライチャージ達成\n" ; Tarai Charge Achieved 
-	read	@anim, 20000.d, *loc_1003
-	wait	@read, 20000.d
-	set	var(670.d), add(var(670.d), 1.w)
-	set	var(0.d), obj(@dir, sp(2.b))
-	set	var(1.d), obj(@pos_x, sp(2.b))
-	set	var(2.d), obj(@pos_y, sp(2.b))
-	set	var(3.d), obj(@pos_z, sp(2.b))
-	dir	sp(1.b), var(0.d)
-	pos	sp(1.b), var(1.d), var(2.d), var(3.d)
-	set	var(3.d), obj(@dir, -1.d)
-	mdir	20000.d, @dir, add(var(3.d), 180.w), 20.w, -1.d
-	wait	@dir, 20000.d
-	anim	20000.d, 4.d
-	sfx	237.d, 1.d
-	wait	@time, 30.w
-	anim	sp(2.b), 1153.d
-	wait	@anim, sp(2.b), -1.d
-	wait	@time, 45.w
-	anim	sp(1.b), 1.w
-	anim	sp(2.b), 1167.d
-	wait	@time, 24.w
-	pushbp
-	setsp	2.w
-	run	*lib_259
-	popbp
-	sfx	236.d, 1.d
-	wait	@time, 1.w
-	anim	20000.d, 53.d
-	wait	@time, 15.w
-	sfx	237.d, 1.d
-	wait	@anim, 20000.d, -1.d
-	anim	20000.d, 54.d
-	ptcl	5.d, @obj, sp(2.b), 0.w, 1000.w, 0.w, 100.w, 100.w, 100.w, 0.w
-	wait	@time, 50.w
-	sfx	70.d, 1.d
-	wait	@anim, sp(1.b), -1.d
-	wait	@time, 80.w
-	if	eq(var(902.d), 0.w), else *loc_1002 ; Wash Pan Dialog
-	wait	@time, 100.w
-	run	*lib_38
-	run	*lib_254
-
-	set	var(902.d), 1.w
-	run	*lib_39
-	endif	*loc_995
+	; RANDOMIZER: was going to be a Pan Drop Trap hookup point (both a shared globals.us hook
+	; and later per-stage subs were tried and abandoned - see project_pan_drop_trap memory).
+	; The trap is now delivered via lib_36 instead (this file, the vanilla charging gag), not
+	; here. Vanilla's own lib_375 body was already dead code before this project touched it,
+	; so `return` is equivalent to (and safer than) leaving that in place.
 	return
-	
+
 
 sub_3954:
 	run	*lib_73

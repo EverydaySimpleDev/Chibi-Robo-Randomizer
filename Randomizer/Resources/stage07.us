@@ -37,7 +37,7 @@ wash_pan_drop:
 	read	@anim, 20000.d, 0.d
 
 	return
-	
+
 loc_return:
 	return
 
@@ -2249,6 +2249,7 @@ loc_2993:
 loc_2992:
 	lib	54.w
 	set	flag(49.d), 1.w
+	if	var(1871.d), else *loc_niwa_closed_35 ; living_door_niwa closed -> block warp to Backyard
 	call	20000.d, 701.d
 	dir	20000.d, 90.w
 	move	20000.d, 3000.w, 100.w, -1.d, -1.d
@@ -2259,6 +2260,7 @@ loc_2992:
 	set	var(695.d), 0.w
 	run	*sub_305
 	warp	9.d, 1.w
+loc_niwa_closed_35:
 	return
 
 
@@ -11730,11 +11732,19 @@ loc_1072:
 	anim	286.d, 0.w ; living_door_k show CLOSED pose
 	born	10001.d, 2.d, 11327.w, 10029.w, -38700.d, 0.w, 13000.w, 30000.w, 10.w, 0.w
 loc_1066:
-	if	flag(47.d), else *loc_1071
-	pos	301.d, 31795.w, 0.w, -8275.d
+	; living_window_hiraku (obj 301) is the sliding-door panel for this doorway; it opens/closes by
+	; being repositioned (a true slide, not an anim swap) between two Z coords. This check used to
+	; read flag(47) (randomizer flag: was story flag 47, same story-integrated pattern as flags
+	; 38/39 for living_door/living_door_k - still set by the ending/reset code and still read
+	; separately elsewhere for an unrelated condition) - now reads var(1871) so it follows the same
+	; open/closed state as the rest of this door instead of vanilla's own flag. The slid-closed
+	; panel itself provides the collision for this doorway, so no separate invisible wall is needed
+	; (a dedicated wall reusing the spider-blocker's coords, born 10201, was tried first and removed).
+	if	var(1871.d), else *loc_1071
+	pos	301.d, 31795.w, 0.w, -8275.d ; slid OPEN
 	endif	*loc_1068
 loc_1071:
-	pos	301.d, 31795.w, 0.w, -2559.d
+	pos	301.d, 31795.w, 0.w, -2559.d ; slid CLOSED
 loc_1068:
 	if	flag(48.d), else *loc_1070
 	anim	12.d, 1.w
@@ -12021,6 +12031,7 @@ loc_1679:
 	if	eq(flag(334.d), 1.d), else *loc_1677
 	set	flag(969.d), 1.d
 loc_1677:
+	if	var(1871.d), else *loc_niwa_closed_1673 ; living_door_niwa closed -> block warp to Backyard
 	lib	54.w
 	call	20000.d, 701.d
 	dir	20000.d, 90.w
@@ -12032,6 +12043,7 @@ loc_1677:
 	set	var(695.d), 0.w
 	run	*sub_305
 	warp	9.d, 1.w
+loc_niwa_closed_1673:
 	return
 loc_1680:
 	return
@@ -12077,6 +12089,7 @@ loc_1684:
 
 sub_1685: ; rope script
 	set	flag(448.d), 1.d
+	
 	return
 
 

@@ -615,9 +615,19 @@ STICKER ALBUM  (the "All Stickers" set - all CONFIRMED)
                     set 4 / read 2  -  globals, stage07
    344  INFERRED   Deka Denchi (big battery) item obtained (set alongside 337 in evt_item_deka_denchi_6)
                     set 1 / read 2  -  stage03
-   347  INFERRED   major story-progress flag (army NPC / plug-start event chain, evt_npc_army_2)
+   347  CONFIRMED  stage02 (Foyer): "unauthorized intruder" Free Rangers cutscene DONE flag - set
+                    once, at the very end of the full Sarge/soldiers cutscene (sub_562, stage02.us
+                    ~line 14617). While 0, entering the army encampment triggers the whole scripted
+                    intro (dialogue, camera work, "Form a perimeter, men!"); once 1, re-entry skips
+                    straight past it via ~8 `if flag(347.d)`/`if not(...)` branches. Gatekept overall
+                    by var(128)==0 (see vars.txt) + sub_343. Does NOT appear to be the actual
+                    ongoing "get shot if spotted" hazard - that looks like a separate mechanic this
+                    pass didn't fully trace; see project_foyer_free_rangers memory for the trail.
                     set 1 / read 13  -  globals, stage02
-   348  INFERRED   army NPC dialogue/event progress (evt_npc_army_2 chain, evt_rouka_door_stop)
+   348  INFERRED   Advances the Foyer's Free Rangers questline past var(128)==0 (stage02.us's main
+                    story-stage dispatcher, ~line 3412) - set in stage03.us (Basement), not stage02
+                    itself, implying something found/done in the Basement is what progresses this
+                    questline. See project_foyer_free_rangers memory.
                     set 1 / read 30  -  globals, stage02, stage03
    350  CONFIRMED  TV turned on / Drake intro played flag
                     set 2 / read 10  -  stage01, globals, stage02, stage07
@@ -2159,5 +2169,21 @@ STICKER ALBUM  (the "All Stickers" set - all CONFIRMED)
                     set 13 / read 5  -  stage07, stage09
   2000  INFERRED   global day/time-of-day state flag gating NPC spawns and object display across stages
                     set 2 / read 22  -  stage01, globals, stage02, stage06, stage07
-  2001  INFERRED   global day/progression state flag gating object spawns (checked in stage06)
+  2001  CONFIRMED  "Divorce scare" story arc RESOLVED. Set exactly once (stage02.us:2437), right
+                    after Mom threatens divorce ("The only option I've got left is...divorce."),
+                    Dad has a nightmare reaction, then resolves "I've got no time to lose!... I
+                    have to win her back!" (stage02.us:2280-2437). Trigger condition for the whole
+                    cutscene is item(57)==1 (Mom's Letter, NOT item 100 "Love Letter" - that's an
+                    unrelated NPC's Drake Redcrest fan-letter subplot, item 100 vs 57 confirmed
+                    against unplug's items.inc.rs) AND flag(2001)==0; flag(2001) also gates
+                    re-entry into the same cutscene (stage02.us:1766), so it reliably means "this
+                    story beat has played." No further "Mom actually forgives Dad" flag found -
+                    this is Dad's commitment beat, the natural endpoint of this arc as scripted.
+                    Also read more broadly elsewhere as a general day/progression gate (33 reads
+                    across globals/stage02/05/06/07), but the SET site is unambiguous and singular.
+                    See project_divorce_arc memory for the full trail (candidate AP victory
+                    condition).
                     set 1 / read 33  -  globals, stage02, stage05, stage06, stage07
+  (2002 was briefly used as a custom re-entrancy guard for an earlier, abandoned room-load-based
+   Pan Drop Trap design - no longer used now that the trap is delivered via globals.us lib_36
+   instead. See project_pan_drop_trap memory. Free again.)

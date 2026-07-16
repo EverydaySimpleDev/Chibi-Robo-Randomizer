@@ -413,7 +413,10 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	flag(418.d), 0.w
 	set	flag(31.d), 1.w
 
-	set	var(671.d), 0.w ; custom variable setup for custom pan drop
+	set	flag(1650.d), 1.w ; backyard glass door sticker event
+	disp	10164.d, 0.d ; backyard glass door sticker event object?
+
+	set	var(671.d), 0.w ; NOT used by the randomizer 
 	set	var(672.d), 0.w ; custom variable checking left leg password
 	set	var(673.d), 0.w ; custom variable drake suit
 	set	var(674.d), 0.w ; custom variable frog suit
@@ -432,6 +435,10 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(1868.d), 0.w ; parent_door | Parent's Room -> Foyer: 1=open, 0=closed
 	set	var(1869.d), 0.w ; living_door | Living Room -> Foyer: 1=open, 0=closed
 	set	var(1870.d), 0.w ; living_door_k | Living Room -> Kitchen: 1=open, 0=closed
+	set	var(1871.d), 0.w ; living_door_niwa | Living Room -> Backyard: 1=open, 0=closed
+	set	var(1872.d), 0.w ; foyer_basement_door (obj 76, repurposed rouka_door_e, living_door model) | Foyer -> Basement: 1=open, 0=closed
+	set	var(1873.d), 0.w ; backyard_door_niwa (obj 35, backyard_window_2_l) | Backyard -> Living Room: 1=open, 0=closed
+	set	var(1874.d), 0.w ; pan_drop_trap pending count - consumed by globals.us lib_36 (vanilla charging gag), see client.py PAN_DROP_TRAP_VAR_ADDR
 
 	call	10.d, 2.d, 1.d
 	pos	20005.d, 23.w, 1100.w, -9.d

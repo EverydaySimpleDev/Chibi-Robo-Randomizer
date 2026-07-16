@@ -949,6 +949,7 @@ loc_147:
 
 	.interact  6.d, *evt_map_jump_box_6
 evt_map_jump_box_6:
+	if	var(1873.d), else *loc_niwa_b_mjb6_closed ; backyard_door_niwa closed -> block warp to Living Room
 	lib	54.w
 	set	flag(49.d), 1.w
 	call	20000.d, 701.d
@@ -962,6 +963,7 @@ evt_map_jump_box_6:
 	run	*sub_696
 	set	var(695.d), 0.w
 	warp	7.d, 1.w
+loc_niwa_b_mjb6_closed:
 	return
 
 
@@ -1719,6 +1721,7 @@ loc_157:
 sub_694:
 	set	var(0.d), obj(@pos_y, 20000.d)
 	if	ge(var(0.d), 2000.w), else *loc_699
+	if	var(1873.d), else *loc_699 ; backyard_door_niwa closed -> block this climb-warp too
 	lib	54.w
 	call	20000.d, 701.d
 	dir	20000.d, 270.w
@@ -1991,11 +1994,17 @@ loc_1153:
 
 
 sub_613:
-	if	flag(47.d), else *loc_618
-	pos	35.d, 26491.w, 1171.w, -8600.d
+	; backyard_door_niwa (obj 35, backyard_window_2_l) - Backyard side of the same physical doorway
+	; as living_door_niwa (stage07, var 1871/obj 301). Uses its own var(1873) instead of flag(47)
+	; (the shared vanilla door-state flag) so each side can be unlocked independently, same as how
+	; kitchen_door/kitchen_door_r already use two separate vars for one physical doorway. No separate
+	; wall is needed - the slid-closed panel itself blocks the passage (a dedicated wall, born 10021,
+	; was tried first and removed as redundant, same as the Living Room side).
+	if	var(1873.d), else *loc_618
+	pos	35.d, 26491.w, 1171.w, -8600.d ; slid OPEN
 	endif	*loc_615
 loc_618:
-	pos	35.d, 26491.w, 1171.w, -2800.d
+	pos	35.d, 26491.w, 1171.w, -2800.d ; slid CLOSED
 loc_615:
 	if	flag(48.d), else *loc_617
 	anim	34.d, 1.w

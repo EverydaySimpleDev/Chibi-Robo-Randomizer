@@ -57,7 +57,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.4";
+        string supportedAPVersion = "1.2.5";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -525,7 +525,6 @@ namespace WindowsFormsApp1
                     batteryGlobal.SelectToken("squirterSpray").Replace(apData.SelectToken("battery_drain_squirter_spray"));
 
 
-                    
 
                     // Edits for Open Upstairs setting
                     if (openUpstairsChecked)
@@ -544,7 +543,22 @@ namespace WindowsFormsApp1
 
                     // Kitchen door (rouka_door_k, id 3) has no working open animation frame (anim 1 is a no-op).
                     // Swap to kitchen_door — same model used in stage01 (obj 49) which has proper anim 0=closed / anim 1=open.
-                    foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
+                    //foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
+
+                    // RANDOMIZER: Foyer<->Basement door (rouka_door_e, id 76) - this doorway had no door
+                    // of its own in vanilla. rouka_door_e is confirmed cosmetic-only with no warp behind
+                    // it (see door_flags.txt), so repurpose it here instead of adding a new object -
+                    // adding a brand-new object index (beyond this stage's original 0-512 range) was
+                    // tried first and produced a stray empty destination-label box in the overhead
+                    // camera view near the Basement map_jump_box that followed the object wherever it
+                    // moved; reusing an existing in-range object avoids that entirely.
+                    foyerObj.SelectToken("objects[?(@.id == 76)].object").Replace("living_door");
+                    foyerObj.SelectToken("objects[?(@.id == 76)].position.x").Replace(-182.56);
+                    foyerObj.SelectToken("objects[?(@.id == 76)].position.y").Replace(0.0);
+                    foyerObj.SelectToken("objects[?(@.id == 76)].position.z").Replace(-392.99);
+                    foyerObj.SelectToken("objects[?(@.id == 76)].rotation.x").Replace(0);
+                    foyerObj.SelectToken("objects[?(@.id == 76)].rotation.y").Replace(0);
+                    foyerObj.SelectToken("objects[?(@.id == 76)].rotation.z").Replace(0);
 
                     PBar.Value = 65;
 
@@ -823,6 +837,11 @@ namespace WindowsFormsApp1
 
                 //int shopId = 0;
 
+                // "Name" is this ROM's own player/slot name - every location's "player" field is
+                // compared against it below to tell apart a self-found item from one placed here
+                // for a different player in the multiworld.
+                string myPlayerName = apData.SelectToken("Name")?.ToString();
+
                 // Loop through each location josin
                 foreach (KeyValuePair<string, JToken> location in locations)
                 {
@@ -833,6 +852,12 @@ namespace WindowsFormsApp1
                     int locationID = location.Value.SelectToken("location_id")?.ToObject<int?>() ?? 0;
 
                     string playerID = location.Value.SelectToken("player").ToString();
+
+                    // RANDOMIZER: trigger the Pan Drop Trap animation immediately on pickup when
+                    // it's specifically this player's own trap (not one placed here for someone
+                    // else in the multiworld, which is delivered to them separately over the
+                    // network instead - see project_pan_drop_trap memory).
+                    bool isSelfPanDropTrap = name == "Pan Drop Trap" && playerID == myPlayerName;
 
                     var roomID = get_room_id_by_name(location.Key);
 
@@ -846,7 +871,7 @@ namespace WindowsFormsApp1
 
                         string classification = location.Value.SelectToken("classification").ToString();
 
-                        if (classification == "progression" || classification == "usefull")
+                        if (classification == "progression" || classification == "usefull" || classification == "trap")
                         {
                             objectName = "item_cookie_kakera";
                         }
@@ -916,7 +941,7 @@ namespace WindowsFormsApp1
                     // if location has an AP placeholder item, add an in-game message of what the player picked up
                     if (objectName.Contains("item_kami_kuzu") || objectName.Contains("item_cookie_kakera") || objectName.Contains("item_cos_obake") || objectName.Contains("item_capsule_"))
                     {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name, false, 0, apCode);
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, false, 0, apCode, isSelfPanDropTrap);
                     }
                     else if (apCode >= 0 && roomID != 8 && roomID != 2)
                     {
@@ -1397,7 +1422,7 @@ namespace WindowsFormsApp1
 
         }
 
-        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0, int locationCode = -1)
+        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0, int locationCode = -1, bool triggerPanDropAnim = false)
         {
             if (roomID == 0) // Living Room
             {
@@ -1408,7 +1433,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
 
                     }
                     else
@@ -1427,7 +1452,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -1461,7 +1486,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -1477,7 +1502,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -1493,7 +1518,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -1509,7 +1534,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -1525,7 +1550,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, locationCode);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
                     }
                     else
                     {
@@ -2080,7 +2105,12 @@ namespace WindowsFormsApp1
             File.AppendAllText(
             stagefile,
             "loc_504:" +
-            "\r\n\telif\teq(item(34.d), 0.w), else *loc_506" +
+            // RANDOMIZER: gate on our own AP-tracking vars instead of the vanilla item(34.d)
+            // check - requires the player to already have the Trauma Suit (var(676)=1, set by
+            // updateTraumaSuitLoc) and not yet have this AP item (var(677)=0), rather than relying
+            // on vanilla's own trauma/ghost unlock flags. See project_chibi_house_suits memory.
+            "\r\n\telif\tand(eq(var(676.d), 1.w), eq(var(677.d), 0.w)), else *loc_506" +
+            "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID +
             //"\r\n\tlib\t79.w ; Give Set Item" +
 
@@ -2101,9 +2131,14 @@ namespace WindowsFormsApp1
             "\r\n\tset\tvar(90.d), 0.w" +
             "\r\n\tset\tvar(96.d), 0.w" +
 
-
             "\r\n\tset\tvar(677.d), 1.w" +
             "\r\n\tset\tflag(add(1700.d, 34.d)), 1.w" +
+
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\twait\t@time, 1.w" +
+            "\r\n\tlib\t105.w ; @anim" +
             "\r\n\tendif\t*loc_29\r\n"
             );
 
@@ -2472,11 +2507,97 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1)
+        // RANDOMIZER: Pan Drop Trap "living_tub" object id per stage, for the instant on-pickup
+        // animation below - null means the room has no tub prop, so the animation is sound +
+        // fall only. See project_pan_drop_trap memory for the full design trail (this mirrors
+        // the vanilla lib_36 charging-gag reuse; stage03/stage09 genuinely have no tub prop).
+        private string getPanDropTrapTubId(string stagefile)
+        {
+            string fileName = Path.GetFileName(stagefile);
+            if (fileName.StartsWith("stage07")) return "62";
+            if (fileName.StartsWith("stage01")) return "161";
+            if (fileName.StartsWith("stage02")) return "421";
+            if (fileName.StartsWith("stage04")) return "262";
+            if (fileName.StartsWith("stage06")) return "115";
+            return null;
+        }
+
+        // RANDOMIZER: builds the instant Pan Drop Trap animation - fires right in the pickup's
+        // own .interact handler (a synchronous, player-in-control moment, same safety class as
+        // the outlet-charging trigger) instead of waiting for the next outlet charge. This is
+        // purely additional flavor: the item is still delivered over the network as normal and
+        // will independently queue/resolve via var(1874)/lib_36 too - see project_pan_drop_trap
+        // memory for why a self-found trap firing twice was accepted rather than engineered
+        // around.
+        private string buildPanDropTrapAnimSnippet(string stagefile)
+        {
+            string tub = getPanDropTrapTubId(stagefile);
+            string nl = Environment.NewLine;
+
+            if (tub != null)
+            {
+                return
+                    nl + "\t; RANDOMIZER: instant Pan Drop Trap animation (this player's own trap)" +
+                    nl + "\tcall\t20000.d, 701.d" +
+                    nl + "\tset\tvar(1875.d), obj(@dir, " + tub + ".d)" +
+                    nl + "\tset\tvar(1876.d), obj(@pos_x, " + tub + ".d)" +
+                    nl + "\tset\tvar(1877.d), obj(@pos_y, " + tub + ".d)" +
+                    nl + "\tset\tvar(1878.d), obj(@pos_z, " + tub + ".d)" +
+                    nl + "\tdir\t" + tub + ".d, obj(@dir, 20000.d)" +
+                    nl + "\tpos\t" + tub + ".d, obj(@pos_x, 20000.d), obj(@pos_y, 20000.d), obj(@pos_z, 20000.d)" +
+                    nl + "\tsfx\t237.d, 1.d" +
+                    nl + "\twait\t@time, 30.w" +
+                    nl + "\tanim\t20000.d, 1153.d" +
+                    nl + "\twait\t@anim, 20000.d, -1.d" +
+                    nl + "\twait\t@time, 45.w" +
+                    nl + "\tanim\t" + tub + ".d, 1.w" +
+                    nl + "\tanim\t20000.d, 1167.d" +
+                    nl + "\twait\t@time, 24.w" +
+                    nl + "\tsfx\t236.d, 1.d" +
+                    nl + "\twait\t@time, 1.w" +
+                    nl + "\tanim\t20000.d, 53.d" +
+                    nl + "\twait\t@time, 15.w" +
+                    nl + "\tsfx\t237.d, 1.d" +
+                    nl + "\twait\t@anim, 20000.d, -1.d" +
+                    nl + "\tanim\t20000.d, 54.d" +
+                    nl + "\tptcl\t5.d, @obj, " + tub + ".d, 0.w, 1000.w, 0.w, 100.w, 100.w, 100.w, 0.w" +
+                    nl + "\twait\t@time, 50.w" +
+                    nl + "\tsfx\t70.d, 1.d" +
+                    nl + "\twait\t@anim, " + tub + ".d, -1.d" +
+                    nl + "\twait\t@time, 80.w" +
+                    nl + "\tanim\t20000.d, 55.d" +
+                    nl + "\twait\t@anim, 20000.d, -1.d" +
+                    nl + "\tanim\t" + tub + ".d, 0.w" +
+                    nl + "\tread\t@anim, 20000.d, 0.d" +
+                    nl + "\tpos\t" + tub + ".d, var(1876.d), var(1877.d), var(1878.d)" +
+                    nl + "\tdir\t" + tub + ".d, var(1875.d)" +
+                    nl + "\tanim\t20000.d, 1.d" +
+                    nl + "\tcall\t20000.d, 700.d";
+            }
+
+            return
+                nl + "\t; RANDOMIZER: instant Pan Drop Trap animation (this player's own trap, no" +
+                nl + "\t; tub prop in this room - sound + fall only)" +
+                nl + "\tcall\t20000.d, 701.d" +
+                nl + "\tsfx\t236.d, 1.d" +
+                nl + "\twait\t@time, 1.w" +
+                nl + "\tanim\t20000.d, 53.d" +
+                nl + "\twait\t@time, 60.w" +
+                nl + "\tsfx\t70.d, 1.d" +
+                nl + "\tanim\t20000.d, 55.d" +
+                nl + "\twait\t@time, 45.w" +
+                nl + "\tread\t@anim, 20000.d, 0.d" +
+                nl + "\tanim\t20000.d, 1.d" +
+                nl + "\tcall\t20000.d, 700.d";
+        }
+
+        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1, bool triggerPanDropAnim = false)
         {
             string flagSet = locationCode >= 0
                 ? "\r\n\tset\tflag(" + (2100 + locationCode) + ".d), 1.d"
                 : "";
+
+            string panDropAnim = triggerPanDropAnim ? buildPanDropTrapAnimSnippet(stagefile) : "";
 
             string content = File.ReadAllText(stagefile);
             string originalLabel = findExistingInteractLabel(content, objectID);
@@ -2501,7 +2622,8 @@ namespace WindowsFormsApp1
                     "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                     "\t\twait(254.b)" +
                     frogRingExtra +
-                    flagSet + Environment.NewLine +
+                    flagSet +
+                    panDropAnim + Environment.NewLine +
                     "\trun\t*" + originalLabel + Environment.NewLine +
                     "\treturn\n" + Environment.NewLine;
 
@@ -2526,7 +2648,8 @@ namespace WindowsFormsApp1
                "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                "\t\twait(254.b)" +
-               flagSet + Environment.NewLine +
+               flagSet +
+               panDropAnim + Environment.NewLine +
                "ap_text_" + objectID + "_skip:" + Environment.NewLine +
                "\treturn\n" + Environment.NewLine);
             }
@@ -2540,7 +2663,8 @@ namespace WindowsFormsApp1
                 "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                 "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                 "\t\twait(254.b)" +
-                flagSet + Environment.NewLine +
+                flagSet +
+                panDropAnim + Environment.NewLine +
                 "\treturn\n" + Environment.NewLine);
             }
 

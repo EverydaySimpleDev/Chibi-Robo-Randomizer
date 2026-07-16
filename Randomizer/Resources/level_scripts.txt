@@ -99,6 +99,11 @@
    Doors (randomizer): rouka_door_j 1861, rouka_door_k 1862, rouka_door_l 1863,
          rouka_door_pama 1864 (all in sub_862; door flags initialized in
          stage05 sub_576). See door_flags.txt.
+   Doors (randomizer, NEW): foyer_basement_door 1872 - mjb 20 (->Basement) had no
+         door in vanilla; obj 76 (repurposed rouka_door_e, swapped to living_door
+         model via Form1.cs) now sits in that doorway, gated in sub_862 alongside
+         the others. See door_flags.txt "NEW DOORS ADDED" for why a brand-new
+         object index was avoided in favor of reusing rouka_door_e.
 
  stage03 - BASEMENT (storehouse / souko)
    Connects to: Foyer (via map_jump_box 4); plus map_jump_box 247.
@@ -153,9 +158,17 @@
    Outlets: plug_start(7).  Chibi-Doors: plug_dokodakadoor(9).  Happy boxes(10).
    Tao pawprints: living_asiato(13).
    Doors (randomizer): living_door 1869, living_door_k 1870 (sub_1062).
+   Doors (randomizer, NEW): living_door_niwa 1871 - Backyard exit (mjb 35 + climb
+         variant sub_1673) had no door in vanilla; it's a SLIDING glass door
+         realized by repositioning obj 301 "living_window_hiraku" between two Z
+         coords (not an anim swap) in sub_1062. No separate wall on this side -
+         the slid-closed panel itself blocks the passage (a dedicated wall
+         reusing the spider-siege blocker's coords was tried and removed as
+         redundant). See door_flags.txt.
 
  stage09 - BACKYARD
-   Connects to: (outdoor map; map_jump_box x4 + treasure/exit).
+   Connects to: Living Room (7, via mjb 6 / climb variant sub_694); plus outdoor
+                map_jump_box x4 + treasure/exit.
    NPCs: Frog(frog), Bluebird(bird), Tao, Dad, Drake(keath), Spydorz(spider_2),
          Aliens(et_1).
    Items: junk_unko (Spydorz junk x8), backyard_window_ware, living_mitu_flower
@@ -163,6 +176,13 @@
    Stains: yogore_hun (24! bird poop), yogore_water(10), yogore_hito(8),
            yogore_shimi, yogore_oil.
    Chibi-Doors: plug_dokodakadoor(8).  Happy boxes(5).  Mr. Prongs(consentman).
+   Doors (randomizer, NEW): backyard_door_niwa 1873 - the Backyard side of the
+         same sliding-glass connection as stage07's living_door_niwa (1871); obj
+         35 "backyard_window_2_l" slides between two Z coords in sub_613 (was
+         flag(47), now its own var since each side uses a separate object/var,
+         same pattern as kitchen_door/kitchen_door_r). No separate wall - the
+         slid-closed panel blocks the passage itself (a dedicated wall was tried
+         and removed as redundant). See door_flags.txt.
 
  stage11 - DRAIN (sink drain)
    Connects to: Kitchen (1).

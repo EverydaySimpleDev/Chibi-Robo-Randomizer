@@ -3009,6 +3009,7 @@ loc_3308:
 	.interact  20.d, *evt_map_jump_box_20
 evt_map_jump_box_20:
 	run	*sub_2530
+	if	var(1872.d), else *loc_3312 ; foyer_basement_door closed -> block warp/cutscene entirely
 	if	flag(44.d), else *loc_3318
 	lib	54.w
 	lib	12.w
@@ -12286,14 +12287,32 @@ loc_893: ; Foyer→Kitchen: CLOSED
 	born	10020.d, 2.d, sub(11000.w, 250.w), 10000.w, -38800.d, 0.w, 10000.w, 20000.w, 100.w, 0.w
 	call	-45.d, 1.w
 loc_870:
+	; RANDOMIZER: foyer_basement_door (obj 76, repurposed from rouka_door_e - see Form1.cs) -
+	; Foyer->Basement, no door existed here in vanilla. rouka_door_e was cosmetic-only with no warp
+	; behind it, so it was repositioned into this doorway and swapped to the living_door model
+	; (working anim 0/1 frames) instead of adding a brand-new object, which had produced a stray
+	; empty destination-label box near the Basement map_jump_box that followed the object around.
+	; dir sets its final facing - nudge this value in-game rather than the JSON rotation.
+	dir	76.d, 0.w
+	if	var(1872.d), else *loc_fbdoor_closed ; foyer_basement_door: 1=open
+	anim	76.d, 1.w ; OPEN pose
+	endif	*loc_fbdoor_done
+loc_fbdoor_closed:
+	anim	76.d, 0.w ; CLOSED pose
+	born	10012.d, 2.d, -17924.d, 10029.w, -38584.d, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ foyer_basement_door (position derived from JSON pos * 98.18; needs in-game placement check like every new door wall)
+loc_fbdoor_done:
 	if	var(1861.d), else *loc_891 ; rouka_door_j (Foyer→Jenny's Room): 1=open
 	disp	23.d, 1.d ; enable warp trigger
-	dir	2.d, -30.w ; OPEN: reset door to scene default (against wall)
+	dir	2.d, -15.w ; OPEN: reset door to scene default (against wall)
 	endif	*loc_872
 loc_891: ; Foyer→Jenny's Room: CLOSED
 	disp	23.d, 0.d ; disable warp trigger
 	dir	2.d, 0 ; CLOSED: swing door ~halfway into doorway
-	born	10200.d, 2.d, 21500.d, 26509.w, 25800.d, 0.w, 10000.w, 30000.w, 50.w, 0.w ; wall at doorway (X≈21500 Z≈25800)
+	; RANDOMIZER: was born 10200.d - collided with vanilla lib_171.w's hardcoded registration
+	; ID for the Foyer Teleport pad (obj 290, stage02.us ~line 12192/12688), silently breaking
+	; its step-on trigger every time this door was closed (i.e. almost always). Moved to
+	; 10202, confirmed unused anywhere else in this file. See project_foyer_teleport memory.
+	born	10202.d, 2.d, 24026.d, 26509.w, 13055.d, -20.w, 10000.w, 30000.w, 50.w, 0.w ; wall @ rouka_door_j (was hand-eyeballed placeholder; now derived from JSON pos/rot: 244.71,270.0,133.0 * 98.18, rotY -20)
 loc_872:
 	if	flag(11.d), else *loc_886
 	set	flag(41.d), 1.w
@@ -12347,7 +12366,10 @@ loc_pama_closed:
 	dir	288.d, -90.d
 	pos	328.d, -5100.d, 36160.d, -38595.d
 	dir	328.d, 0.w
-	born	10201.d, 2.d, -16789.d, 26509.w, -38678.d, 0.w, 13000.w, 30000.w, 50.w, 0.w
+	; RANDOMIZER: was born 10201.d - collided with vanilla lib_171.w's hardcoded registration
+	; ID for the Foyer Teleport pad (obj 291, stage02.us ~line 12200/12717). Moved to 10203.
+	; See project_foyer_teleport memory.
+	born	10203.d, 2.d, -16789.d, 26509.w, -38678.d, 0.w, 13000.w, 30000.w, 50.w, 0.w
 	return
 
 

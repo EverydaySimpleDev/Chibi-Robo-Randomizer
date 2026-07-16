@@ -17,20 +17,32 @@
  NOTE: every new wall's coords/extents should be eyeballed in Dolphin and
  nudged - the kitchen wall took a couple of tries to sit in the doorway.
 
- FLAG ALLOCATION (block 1860-1870, all previously unused)
+ FLAG ALLOCATION (block 1860-1873, all previously unused)
  --------------------------------------------------------
-   1860  kitchen_door (+ kitchen_door_r)   stage01   DONE - verified in-game
-   1861  rouka_door_j                       stage02   DONE - pending test (new wall 10200)
+ NOTE: this table was corrected against the actual stage05.us sub_576 init block -
+ an earlier draft of this doc had 1865 assigned to rouka_door_e, but the real var
+ for rouka_door_e's kept object was kitchen_door_r; rouka_door_e itself was never
+ given its own flag since it originally had no warp (see 1872 below - it has since
+ been repurposed instead of left unused).
+
+   1860  kitchen_door                       stage01   DONE - verified in-game
+   1861  rouka_door_j                       stage02   DONE - pending test (wall 10202 - was 10200,
+                                                       collided with vanilla lib_171.w's Foyer
+                                                       Teleport pad registration ID, see
+                                                       project_foyer_teleport memory)
    1862  rouka_door_k                       stage02   DONE - pending test (reuses wall 10020)*
-   1863  rouka_door_l                       stage02   DONE - model swapped to rouka_door_k (Form1.cs)
+   1863  rouka_door_l                       stage02   DONE - model swapped to living_door (Form1.cs)
                                                        so anim 24,0/1 closes/opens it; wall 10000
    1864  rouka_door_pama (+ half 285)       stage02   SPECIAL - climb/stair door (not done)
-   1865  rouka_door_e                       stage02   SPECIAL - cosmetic, no warp (not done)
+   1865  kitchen_door_r                     stage01   DONE - verified in-game
    1866  jenny_door                         stage04   DONE - pending test (new wall 10100)
    1867  jenny_castle_door                  stage04   SPECIAL - JSON pos (0,0,0) (not done)
    1868  parent_door                        stage06   DONE - pending test (new wall 10010)
    1869  living_door                        stage07   DONE - pending test (existing wall 10000)
    1870  living_door_k                      stage07   DONE - pending test (existing wall 10001)
+   1871  living_door_niwa (obj 301 slide)   stage07   DONE - no separate wall (slid panel blocks it)
+   1872  foyer_basement_door (obj 76)       stage02   DONE - pending in-game test (new wall 10012)
+   1873  backyard_door_niwa (obj 35 slide)  stage09   DONE - no separate wall (slid panel blocks it)
 
    * rouka_door_k keeps its inner spider-trap sub-condition: when 1862=1 it opens
      UNLESS the foyer spider state is active (flag 11 set & flag 17 clear), in
@@ -44,8 +56,10 @@
  door's map_jump_box handler got an early `return` when the flag is closed.
  Cutscene/ending/reset code that directly opens a door was LEFT ALONE - it opens
  the door in-the-moment (fine) and the door reverts to its flag state on reload.
- New walls (10200/10100/10010) use coords = JSON pos * 98.18 and STILL NEED an
- in-game placement check like the kitchen wall did.
+ New walls (10202/10100/10010) use coords = JSON pos * 98.18 and STILL NEED an
+ in-game placement check like the kitchen wall did. (rouka_door_j's wall was moved from
+ 10200 to 10202 - the original number collided with vanilla's Foyer Teleport pad
+ registration, see project_foyer_teleport memory.)
 
  KEY FINDING
  -----------
@@ -81,20 +95,111 @@
             mjb19 -> rouka_door_l   -> Living Room (handler is battery-gated)
             mjb23 -> rouka_door_j   -> Jenny's Room
             mjb22 -> rouka_door_pama-> Bedroom
-            (rouka_door_e has NO associated warp)
+            mjb20 -> foyer_basement_door (obj 76) -> Basement (NEW - see below)
    stage04: mjb12 -> jenny_door     -> room 2
             (jenny_castle_door has no clean warp; nearest box 366 has no handler)
    stage06: mjb4  -> parent_door    -> room 2
    stage07: mjb32 -> living_door    -> room 2
             mjb31 -> living_door_k  -> room 1
+            mjb35 + sub_1673 (climb variant) -> living_door_niwa (obj 301, slides)
+                                                -> Backyard (room 9) (NEW - see below)
+   stage09: mjb6 + sub_694 (climb variant) -> backyard_door_niwa (obj 35, slides)
+                                             -> Living Room (room 7) (NEW - see below)
+
+ NEW DOORS ADDED (no door existed at these connections in vanilla)
+ ------------------------------------------------------------------
+ * living_door_niwa (1871) / backyard_door_niwa (1873) - Living Room <-> Backyard.
+   This connection has NO hinged door model; it's a SLIDING glass door realized by
+   REPOSITIONING a separate object between two fixed coordinates (a true slide, not
+   an anim 0/1 swap):
+     - Living Room side: obj 301 "living_window_hiraku" ("hiraku" = "to open"),
+       slid via `pos 301.d, 31795.w, 0.w, Z` where Z = -8275 (open) or -2559
+       (closed), in stage07.us sub_1062. This used to be driven by the shared
+       vanilla flag(47) (also force-set by the ending/spider-reset cutscene code,
+       same story-integrated pattern as flags 38/39 for living_door/living_door_k)
+       - now reads var(1871) instead, so it tracks the randomizer's own state.
+       flag(47) itself is left alone everywhere else (still set by that cutscene
+       code, still read separately elsewhere for an unrelated condition).
+     - Backyard side: obj 35 "backyard_window_2_l", the mirror-image object on
+       the other side of the same wall, slid the same way in stage09.us sub_613
+       (was flag(47), now var(1873) - a SEPARATE var, since this is a separate
+       object/side, matching how kitchen_door/kitchen_door_r already use two
+       vars for one physical doorway).
+     - NEITHER side has a separate collision wall: the slid-closed panel on
+       each side (living_window_hiraku in Living Room, backyard_window_2_l in
+       Backyard) already provides its own collision for this doorway. Dedicated
+       walls were tried first on both sides (born 10201 in stage07, reusing a
+       pre-existing spider-siege enemy blocker's coords; born 10021 in stage09)
+       and both were removed as redundant.
+     - Both real map_jump_box triggers (stage07 mjb 35 + its climb variant
+       sub_1673; stage09 mjb 6 + its climb variant sub_694) needed the var
+       gate added - neither had ANY door-closed gating in vanilla. A THIRD
+       "warp 9"/"warp 7" instance exists in each stage inside an NPC cutscene
+       (Frog in stage07, Sarge "Everyone, retreat!!" in stage09) - those are
+       forced story warps, deliberately left ungated.
+
+ * foyer_basement_door (1872) - Foyer <-> Basement. Also had no door model in
+   vanilla (mjb 20 there is normally gated only by a one-time "first time seeing
+   the stairs" cutscene flag 44, which is unrelated and was left alone).
+   IMPORTANT LESSON: the first attempt injected a brand-new JSON object (id 513,
+   appended past this stage's original 0-512 object range) via Form1.cs, using
+   the `unplug` tool's documented "append with id = lastId+1" pattern. This
+   object worked FUNCTIONALLY (model, open/close, wall) but produced a
+   persistent extra empty destination-label box in the Foyer's overhead
+   "which door leads where" camera view, tracking the object's live position no
+   matter where it was moved, and appearing REGARDLESS of model/data/interact-
+   flag - every one of those was tried and ruled out. Switching the object index
+   from a newly-injected 513 to an existing, already-unused, in-range object
+   (rouka_door_e, id 76 - confirmed cosmetic/no-warp, see below) with the exact
+   same model+position FIXED it. Root cause unconfirmed, but strongly suggests:
+   avoid appending brand-new object indices to a stage that's this stage's
+   original vanilla count; prefer repurposing an existing unused object (the
+   same pattern already used for rouka_door_l -> living_door and
+   rouka_door_k -> kitchen_door swaps) whenever adding a "new" door-like fixture.
+   foyer_basement_door is done via Form1.cs (`objects[?(@.id == 76)]` edits,
+   swapping rouka_door_e to the living_door model and repositioning it into the
+   Basement doorway) rather than any DefaultStages/Resources JSON file - see the
+   BUILD PIPELINE note below.
+
+ BUILD PIPELINE NOTE - where stage JSON actually comes from
+ ------------------------------------------------------------
+ `Randomizer/DefaultStages/*.json` is REFERENCE ONLY - not read by the app at
+ all; it's just there to see the shape of vanilla stage data.
+ `Randomizer/Resources/stageNN.json` is ALSO not the live source for object
+ data - Form1.cs's initializeStages() runs `unplug stage export --iso ...` on
+ the user's own ISO fresh every time, overwriting the working-directory copy of
+ stageNN.json before anything reads it. So the ONLY way to make a persistent
+ object-placement change (new door, repositioned object, model swap) is to add
+ JObject-mutation code in Form1.cs itself (see the id==24/id==3/id==76 examples
+ near the "Edits for Open Upstairs setting" block), NOT to hand-edit a JSON file
+ in the repo.
+ By contrast, `Randomizer/Resources/stageNN.us` IS the real source for script
+ changes - Form1.cs File.Copy's it to stageNN_Edited.us at build time (plus a
+ few further string-substitution patches), then assembles that. Editing these
+ .us files directly is correct and is how every door/wall/var change in this
+ doc was made.
 
  SPECIAL CASES (need decisions)
  ------------------------------
  * rouka_door_pama (1864): a climb/clamber stair-top door done via swapping two
    visual halves (4 / 285) + dir; no simple wall. Blocking it cleanly is awkward.
- * rouka_door_e   (1865): never referenced in script, no warp behind it - purely
-   cosmetic. A wall is the only thing that would do anything; low value.
+ * rouka_door_e (id 76): originally cosmetic-only with no warp behind it - has
+   since been REPURPOSED as foyer_basement_door (1872, see above) instead of
+   being left unused. Its original decorative appearance elsewhere in the
+   Foyer hallway (position -103.02, 0, 375.23) is gone as a result.
  * jenny_castle_door (1867): JSON position is (0,0,0) (baked into static castle
    mesh), so wall coords can't be derived from JSON - must be measured in-game.
    It also has no plain warp handler. Likely skip or treat as visibility-only.
+ * Kitchen <-> Backyard: LOOKS like a connection in-game (kitchen_window, obj 6
+   in stage01; backyard_window_k, obj 305 in stage09, "_k" = Kitchen-facing,
+   same suffix convention as rouka_door_k/rouka_door_l) but is NOT one - checked
+   thoroughly: no `warp 9` anywhere in stage01.us, no `warp 1` anywhere in
+   stage09.us, neither window object has any script/anim/pos/dir hookup at all
+   (both "script": null), and there's no map_jump_box within 250+ units of
+   either window. Purely decorative, same as rouka_door_e was. Unlike the
+   Foyer<->Basement and Living Room<->Backyard doors, there is no existing
+   map_jump_box here at all to repurpose - building this connection would need
+   an entirely new trigger object from scratch, not just gating logic. Decided
+   NOT to build this (user declined) - documented here so it isn't
+   re-investigated from scratch later.
 ================================================================================
