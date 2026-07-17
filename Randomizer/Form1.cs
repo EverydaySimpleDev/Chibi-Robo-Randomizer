@@ -871,7 +871,7 @@ namespace WindowsFormsApp1
 
                         string classification = location.Value.SelectToken("classification").ToString();
 
-                        if (classification == "progression" || classification == "usefull" || classification == "trap")
+                        if (classification == "progression" || classification == "usefull" || classification == "trap" || name == "Pan Drop Trap")
                         {
                             objectName = "item_cookie_kakera";
                         }

@@ -9,6 +9,15 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.iso
+*.zip
+chibi code docs.txt
+chibi code locations & flags with coins.txt
+chibi code locations & flags.txt
+chibi code rando notes 3.26.26.txt
+intro_screen.png
+intro_screen_skip.png
+item_pickups.png
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
