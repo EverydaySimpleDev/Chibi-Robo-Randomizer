@@ -628,6 +628,11 @@ STICKER ALBUM  (the "All Stickers" set - all CONFIRMED)
                     story-stage dispatcher, ~line 3412) - set in stage03.us (Basement), not stage02
                     itself, implying something found/done in the Basement is what progresses this
                     questline. See project_foyer_free_rangers memory.
+                    ALSO the top-level gate for the training-mission menu: evt_npc_army_2_88
+                    (stage02.us:6530-6532) returns immediately, no interaction at all, unless
+                    flag(348)==1. Once past this gate, the 5-training select menu (stage02.us:
+                    5806-5811 -> sub_1153, stage02.us:6462) is always reachable; only Jungle
+                    Training has a further hard block (var(703), see vars.txt).
                     set 1 / read 30  -  globals, stage02, stage03
    350  CONFIRMED  TV turned on / Drake intro played flag
                     set 2 / read 10  -  stage01, globals, stage02, stage07

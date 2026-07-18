@@ -94,7 +94,15 @@
    NPCs: Jenny(269), Dad(284/289 sleeping), Tao(110/507 sleeping), Sarge(87),
          Free Rangers(88-107), ranger variants(108/109/375), Sunshine(449),
          Spydorz(396-405).
-   Jungle/handrail training: rouka_army_ita_1 363-367.
+   Jungle/handrail training: rouka_army_ita_1 363-367 (physical course props).
+   Training-mission menu: all 5 trainings (Spy, Handrail, Jungle, Waterfall, Tao
+         Defense) are one `select` menu (stage02.us:5806-5811) reached via the
+         Free Rangers NPCs (20017-20019); evt_npc_army_2_88 (~6530) is the entry
+         point and hard-gates on flag(348)==1. Per-training subs: Spy=sub_1287,
+         Handrail=sub_1381, Jungle=sub_1411 (only one with a block: var(703)<1,
+         i.e. before the Foyer Ladder is found), Waterfall=sub_1445, Tao
+         Defense=sub_1473. See vars.txt (var 703, 1074-1078) and flag_reference.txt
+         (flag 348) for the gating detail; not day-count based.
    Items: cracker 417/418.  Door prop: rouka_door_stop 319.
    Doors (randomizer): rouka_door_j 1861, rouka_door_k 1862, rouka_door_l 1863,
          rouka_door_pama 1864 (all in sub_862; door flags initialized in

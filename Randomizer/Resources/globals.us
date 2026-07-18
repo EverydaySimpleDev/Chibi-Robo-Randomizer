@@ -3092,7 +3092,7 @@ lib_77:
 	wait	@anim, 20000.d, -1.d
 	; if	ge(item(hold), 10.d), else *loc_2018 ; If Player has 10 (Default Max) of a item?
 	if	ge(item(hold), 10.d), else *loc_2018
-	run	*sub_2017 ; Don't let them pick it up 
+	run	*sub_2017 ; Don't let them pick it up
 	return
 loc_2018:
 	pushbp

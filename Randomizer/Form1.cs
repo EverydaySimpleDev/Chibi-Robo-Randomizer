@@ -871,7 +871,7 @@ namespace WindowsFormsApp1
 
                         string classification = location.Value.SelectToken("classification").ToString();
 
-                        if (classification == "progression" || classification == "usefull" || classification == "trap" || name == "Pan Drop Trap")
+                        if (classification == "progression" || classification == "usefull" || classification == "trap" || name.Contains(" Trap"))
                         {
                             objectName = "item_cookie_kakera";
                         }
@@ -2494,6 +2494,7 @@ namespace WindowsFormsApp1
                            "\trun\t*" + originalLabel + Environment.NewLine +
                            "\tset\tflag(" + flagNum + ".d), 1.d" + Environment.NewLine +
                            "\treturn\n" + Environment.NewLine;
+
                 File.WriteAllText(stagefile, content);
             }
             else
@@ -2599,6 +2600,11 @@ namespace WindowsFormsApp1
 
             string panDropAnim = triggerPanDropAnim ? buildPanDropTrapAnimSnippet(stagefile) : "";
 
+         
+            string itemCapReset = newObjectName.Contains("Frog Ring")
+                ? ""
+                : "\r\n\tset\titem(hold), 1.d";
+
             string content = File.ReadAllText(stagefile);
             string originalLabel = findExistingInteractLabel(content, objectID);
 
@@ -2623,6 +2629,7 @@ namespace WindowsFormsApp1
                     "\t\twait(254.b)" +
                     frogRingExtra +
                     flagSet +
+                    itemCapReset +
                     panDropAnim + Environment.NewLine +
                     "\trun\t*" + originalLabel + Environment.NewLine +
                     "\treturn\n" + Environment.NewLine;
@@ -2664,6 +2671,7 @@ namespace WindowsFormsApp1
                 "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                 "\t\twait(254.b)" +
                 flagSet +
+                itemCapReset +
                 panDropAnim + Environment.NewLine +
                 "\treturn\n" + Environment.NewLine);
             }

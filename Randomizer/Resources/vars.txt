@@ -111,15 +111,35 @@
              Dispatches to a different sub_XXX (soldier dialogue/behavior set) per stage across
              many locations in stage02.us. See project_foyer_free_rangers memory for the trail;
              the exact "does the player get shot" hazard logic per stage is NOT yet confirmed.
+             NOTE: despite dispatching to a different sub_XXX per value, every value (0-6,
+             including the unhandled 4) falls through to the SAME training-select routine
+             (sub_1153, stage02.us:6462) when the player picks a training - it only swaps
+             flavor dialogue on approach. It does NOT gate which trainings are offered; see
+             flag(348) in flag_reference.txt and var(703) below for the real gates.
    var(144)  UFO pad state (set to 3 at game start).
    var(695)  Cleared (0) on room startup - per-room scratch.
    var(696)  Cleared (0) at game start.
+   var(703)  stage02 (Foyer) Ladder tool-item flag - vanilla, NOT randomizer-added. Set to 2 in
+             evt_house_r_chibi_h_main_134 (stage02.us:12638) when the Foyer Ladder is found.
+             Also the hard gate for Jungle Training: sub_1411 (stage02.us:18102-18108) returns
+             early with "We're prepping the next training course. Report back here later,
+             soldier." while var(703) < 1. Spy/Handrail/Waterfall/Tao Defense trainings
+             (sub_1287/1381/1445/1473) have no equivalent block. In the randomizer, "Foyer
+             Ladder" is a real progression item (Archipelago items.py:116); Form1.cs:2815-2825
+             sets var(703) the same way when that item is received. Sibling ladder/bridge vars:
+             701=Living Room Ladder, 702=Kitchen Ladder, 704=Foyer Teleport, 705=Living Room
+             Bridge, 706=Kitchen Bridge, 707=Bedroom Bridge (Form1.cs:2779-2850).
    var(728)  "Drake wants to see your new suit" trigger.
    var(798)  Total Number of Times Recharged (counter; `adda var(798),1`).
    var(877)  Close-animation position X (used by a door/object close move).
    var(878)  Close-animation position Y.
    var(879)  Close-animation position Z.
    var(902)  Wash-Pan dialogue state.
+   var(1074) stage02 (Foyer) Spy Training "most correct in a row" record (sub_1287).
+   var(1075) stage02 (Foyer) Handrail Training record time (sub_1381).
+   var(1076) stage02 (Foyer) Jungle Training record time (sub_1411).
+   var(1077) stage02 (Foyer) Waterfall Training record time (sub_1445).
+   var(1078) stage02 (Foyer) Tao Defense Training "barks needed" progress (sub_1473).
 
  NPC SCHEDULE / STATE PAIRS  (set together in stage05 sub_576 at game start)
    var(75) / var(111)   NPC id + associated value/state   (75=1, 111=30)

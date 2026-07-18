@@ -90,8 +90,19 @@
  ITEMS (give / pick up)
    lib 65    Item-give START: call 551/500 with the item arg, then poll-wait.
    lib 67    Item-give FINISH: call 501, wait, call 550.
-   lib 77    Item PICKUP handler: 99-cap check, show item-name message, add to
-             count, finish via lib 67.
+   lib 77    Item PICKUP handler: 9-max cap check (`ge(item(hold), 10.d)`), show
+             item-name message, add to count, finish via lib 67. On the cap-FAIL
+             path it shows "You can't hold any more of those!" (sub_2017) and
+             returns WITHOUT ever touching `result` - `result` is only ever set
+             on the success path, so it can't be used to detect a declined
+             pickup. Most junk-pickup objects have their own vanilla
+             .interact handler that calls this directly, but AP's repeated
+             filler items (same vanilla item placed at many different
+             locations) mostly have NO pre-existing .interact handler at all -
+             their native pickup/cap-check isn't script-visible in that case,
+             so Form1.cs's addInGameMessages resets `item(hold)` to 1 on every
+             AP pickup instead of trying to detect success/failure (see
+             project_ap_flag_inventory_cap_gate memory).
 
  PLAYER / OBJECT ANIMATION
    lib 105   Play player anim 93 then 94 (sit / loop cycle), waiting between.
