@@ -2291,8 +2291,10 @@ loc_1114:
 	msg	voice(4.b),
 		speed(0.b),
 		speed(0.b),
-		"The only option I've got left is...divorce.",
+		"The only option I've got left is...divorce.\n",
+		"(LET'S GO DIVORCE!)",
 		wait(254.b)
+	set	var(679.d), 1.w
 	sfx	-65517.d, 2.d, 300.w
 	color	-2.d, @blend, 0.w, 0.w, 0.w, 100.w
 	color	-2.d, @modulate, 255.w, 255.w, 255.w, 100.w

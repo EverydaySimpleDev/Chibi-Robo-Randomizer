@@ -5669,7 +5669,7 @@ loc_1767:
 loc_1769:
 	if	flag(45.d), else *loc_1780
 	if	or(or(or(or(or(or(eq(cur_suit, 1.d), eq(cur_suit, 2.d)), eq(cur_suit, 3.d)), eq(cur_suit, 4.d)), eq(cur_suit, 7.d)), eq(cur_suit, 6.d)), eq(cur_suit, 8.d)), else *loc_1780
-	if	eq(item(26.d), 1.w), else *loc_1780
+	if	eq(var(674.d), 1.w), else *loc_1780
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 255.w, 100.w
 	wait	@fade
 	pos	20000.d, 48597.d, 0.w, -18211.d
@@ -6170,7 +6170,7 @@ loc_1888:
 loc_1890:
 	if	flag(45.d), else *loc_1901
 	if	or(or(or(or(or(or(eq(cur_suit, 1.d), eq(cur_suit, 2.d)), eq(cur_suit, 3.d)), eq(cur_suit, 4.d)), eq(cur_suit, 7.d)), eq(cur_suit, 6.d)), eq(cur_suit, 8.d)), else *loc_1901
-	if	eq(item(26.d), 1.w), else *loc_1901
+	if	eq(var(674.d), 1.w), else *loc_1901
 	scrn	@fade, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 0.w, 255.w, 50.w
 	wait	@fade
 	camera	@pos, 47718.d, 993.w, -13862.d, 3.d, 0.w

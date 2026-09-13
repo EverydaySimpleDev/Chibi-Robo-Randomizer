@@ -421,9 +421,10 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(673.d), 0.w ; custom variable drake suit
 	set	var(674.d), 0.w ; custom variable frog suit
 	set	var(675.d), 0.w ; custom variable pajamas suit
-	set	var(676.d), 0.w ; custom variable trauma suit
+	set	var(676.d), 0.w ; NOT used by the randomizer (Ghost Suit gate now checks item(32.d) directly)
 	set	var(677.d), 0.w ; custom variable ghost suit
 	set	var(678.d), 0.w ; custom variable tao suit
+	set	var(679.d), 0.w ; custom variable LET'S GO DIVORCE!
 
 	set	var(1860.d), 0.w ; kitchen_door | Kitchen -> Living Room: 1=open, 0=closed
 	set	var(1861.d), 0.w ; rouka_door_j | Foyer -> Jenny's Room: 1=open, 0=closed
@@ -439,6 +440,10 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(1872.d), 0.w ; foyer_basement_door (obj 76, repurposed rouka_door_e, living_door model) | Foyer -> Basement: 1=open, 0=closed
 	set	var(1873.d), 0.w ; backyard_door_niwa (obj 35, backyard_window_2_l) | Backyard -> Living Room: 1=open, 0=closed
 	set	var(1874.d), 0.w ; pan_drop_trap pending count - consumed by globals.us lib_36 (vanilla charging gag), see client.py PAN_DROP_TRAP_VAR_ADDR
+
+	
+	set	var(176.d), 1.w
+	; set	flag(1234), 1.w
 
 	call	10.d, 2.d, 1.d
 	pos	20005.d, 23.w, 1100.w, -9.d

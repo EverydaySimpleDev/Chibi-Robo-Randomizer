@@ -39,6 +39,7 @@ namespace WindowsFormsApp1
         JObject basementObj;
         JObject bedroomObj;
         JObject jennyRoomObj;
+        JObject queenSpiderObj;
         JObject shopObj;
         JObject globals;
 
@@ -57,7 +58,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.5";
+        string supportedAPVersion = "1.2.6";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -243,6 +244,8 @@ namespace WindowsFormsApp1
             { "Bedroom - Vanity Candy Wrapper B", 212 },
             { "Bedroom - Shelf Candy Wrapper", 213 },
             { "Bedroom - Vanity Candy Bag", 214 },
+            { "Mother Spider - Frog Ring", 246 },
+            { "Mother Spider - Left Leg", 247 },
         };
 
         public Form1()
@@ -543,7 +546,7 @@ namespace WindowsFormsApp1
 
                     // Kitchen door (rouka_door_k, id 3) has no working open animation frame (anim 1 is a no-op).
                     // Swap to kitchen_door — same model used in stage01 (obj 49) which has proper anim 0=closed / anim 1=open.
-                    //foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
+                    foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
 
                     // RANDOMIZER: Foyer<->Basement door (rouka_door_e, id 76) - this doorway had no door
                     // of its own in vanilla. rouka_door_e is confirmed cosmetic-only with no warp behind
@@ -634,6 +637,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage06 -o \"" + Directory.GetCurrentDirectory() + @"\stage06.json" + "\"");
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage04 -o \"" + Directory.GetCurrentDirectory() + @"\stage04.json" + "\"");
             runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage02 -o \"" + Directory.GetCurrentDirectory() + @"\stage02.json" + "\"");
+            runUnplugCommand("stage export --iso \"" + newIsoPath + "\" stage22 -o \"" + Directory.GetCurrentDirectory() + @"\stage22.json" + "\"");
 
             runUnplugCommand("globals export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\globals.json");
 
@@ -653,6 +657,7 @@ namespace WindowsFormsApp1
             bedroomObj = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("stage06.json")) as JObject;
             jennyRoomObj = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("stage04.json")) as JObject;
             foyerObj = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("stage02.json")) as JObject;
+            queenSpiderObj = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("stage22.json")) as JObject;
 
             string shopInput = File.ReadAllText("shop.json");
             shopObj = Newtonsoft.Json.JsonConvert.DeserializeObject(@"{ 'items': " + shopInput + "}") as JObject;
@@ -834,6 +839,9 @@ namespace WindowsFormsApp1
 
                 // Bedroom (Old)
                 File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage18.us", Directory.GetCurrentDirectory() + @"\stage18_Edited.us", true);
+
+                // Mother Spider
+                File.Copy(Directory.GetCurrentDirectory() + @"\Resources\stage22.us", Directory.GetCurrentDirectory() + @"\stage22_Edited.us", true);
 
                 //int shopId = 0;
 
@@ -1114,6 +1122,7 @@ namespace WindowsFormsApp1
             File.WriteAllText("stage07.json", livingRoomObj.ToString());
             File.WriteAllText("stage09.json", backyardObj.ToString());
             File.WriteAllText("stage11.json", drainObj.ToString());
+            File.WriteAllText("stage22.json", queenSpiderObj.ToString());
             File.WriteAllText("globals.json", globals.ToString());
 
             PBar.Value = 70;
@@ -1157,6 +1166,9 @@ namespace WindowsFormsApp1
             //Chibi House
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage05_Edited.us" + "\"");
 
+            // Mother Spider
+            runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage22_Edited.us" + "\"");
+
             // Update Messages
             //runUnplugCommand("messages import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\Resources\messages.xml" + "\"");
 
@@ -1184,6 +1196,7 @@ namespace WindowsFormsApp1
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage07 \"" + Directory.GetCurrentDirectory() + @"\stage07.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage09 \"" + Directory.GetCurrentDirectory() + @"\stage09.json" + "\"");
             runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage11 \"" + Directory.GetCurrentDirectory() + @"\stage11.json" + "\"");
+            runUnplugCommand("stage import --iso \"" + newIsoPath + "\" stage22 \"" + Directory.GetCurrentDirectory() + @"\stage22.json" + "\"");
 
             runUnplugCommand("shop import --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
 
@@ -1263,6 +1276,10 @@ namespace WindowsFormsApp1
             else if (roomTempName == "Chibi House")
             {
                 return shopObj;
+            }
+            else if (roomTempName == "Mother Spider")
+            {
+                return queenSpiderObj;
             }
             else
             {
@@ -1357,6 +1374,17 @@ namespace WindowsFormsApp1
                 }
 
                 return 7;
+            }
+            else if (roomTempName == "Mother Spider")
+            {
+                if (lastRoom != "Mother Spider")
+                {
+                    lastRoom = roomTempName;
+                    apSpawnFlag = 1;
+
+                }
+
+                return 22;
             }
             else if (roomTempName == "Chibi House")
             {
@@ -1558,6 +1586,22 @@ namespace WindowsFormsApp1
                     }
                 }
             }
+            else if (roomID == 22) // Spider Queen
+            {
+                int[] skipLocations = { };
+
+                if (!skipLocations.Contains(objectID))
+                {
+                    if (atc == false)
+                    {
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage22_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                    }
+                    else
+                    {
+                        enableATCToolPickup(Directory.GetCurrentDirectory() + @"\stage22_Edited.us", objectID, player, newObjectName, atcID);
+                    }
+                }
+            }
         }
 
         private string getStageFileNameForRoom(int roomID)
@@ -1571,6 +1615,7 @@ namespace WindowsFormsApp1
                 case 5: return "stage09_Edited.us";
                 case 6: return "stage04_Edited.us";
                 case 7: return "stage06_Edited.us";
+                case 22: return "stage22_Edited.us";
                 default: return null;
             }
         }
@@ -2064,7 +2109,6 @@ namespace WindowsFormsApp1
             "\r\n\t\twait(254.b)" +
             "\r\n\tanim\t20005.d, 1.d" +
             "\r\n\tmenu\t1000.d, -1.d" +
-            "\r\n\tset\tvar(676.d), 1.w" +
             "\r\n\twait\t@time, 1.w" +
             "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID + ".d" +
@@ -2105,11 +2149,16 @@ namespace WindowsFormsApp1
             File.AppendAllText(
             stagefile,
             "loc_504:" +
-            // RANDOMIZER: gate on our own AP-tracking vars instead of the vanilla item(34.d)
-            // check - requires the player to already have the Trauma Suit (var(676)=1, set by
-            // updateTraumaSuitLoc) and not yet have this AP item (var(677)=0), rather than relying
-            // on vanilla's own trauma/ghost unlock flags. See project_chibi_house_suits memory.
-            "\r\n\telif\tand(eq(var(676.d), 1.w), eq(var(677.d), 0.w)), else *loc_506" +
+            // RANDOMIZER: item(32.d)/item(34.d) are the real vanilla Trauma/Ghost Suit
+            // inventory flags (confirmed against unplug's items.inc.rs) - they get set
+            // correctly whenever those AP items are received from ANY location in the
+            // multiworld, independent of whether this specific location has been visited.
+            // Requires the player to actually own the Trauma Suit (item(32)=1) and not yet
+            // have this AP item (var(677)=0, our own "this location already fired" flag -
+            // see project_chibi_house_suits memory). Do NOT use var(676)/vanilla flag(32)+
+            // flag(301) here - var(676) only meant "Trauma location visited", which let Ghost
+            // fire without the player actually owning Trauma Suit.
+            "\r\n\telif\tand(eq(item(32.d), 1.w), eq(var(677.d), 0.w)), else *loc_506" +
             "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID +
             //"\r\n\tlib\t79.w ; Give Set Item" +
@@ -2390,6 +2439,76 @@ namespace WindowsFormsApp1
 
         }
 
+        private void addMotherSpiderLeftLeg(string stagefile, string newObjectName, string player, string itemName)
+        {
+
+
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+              stagefile,
+              "\r\n\t.interact  41.d, *evt_item_frog_ring_41" +
+              "\r\nevt_item_frog_ring_41:" +
+
+              "\r\n\tsetsp\t" + objectID +
+              //"\r\n\tlib\t79.w ; Give Set Item" +
+
+
+              "\r\n\tset\tvar(62.d), sp(0.b)" +
+              "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+              "\r\n\twait\t@time, 1.w" +
+              "\r\n\twait\t@anim, 20000.d, 20.w" +
+              "\r\n\tsfx\t419.d, 1.d" +
+              "\r\n\tlib\t305.w" +
+              "\r\n\tset\tvar(62.d), sp(0.b)" +
+              "\r\n\tpushbp" +
+              "\r\n\tmsg\trgba(2164228351.d)," +
+              "\r\n\t\t\"You found " + player + "\'s \"," +
+              "\r\n\t\t\"" + itemName + "\"," +
+              "\r\n\t\tcolor(0.b)," +
+              "\r\n\t\twait(254.b)" +
+              "\r\n\tpopbp" +
+              "\r\n\trun *sub_71" +
+              "\r\n\treturn" +
+              "\r\n"
+
+          );
+
+        }
+
+        private void addMotherSpiderFrogRing(string stagefile, string newObjectName, string player, string itemName)
+        {
+
+            string objectID = objectNameToGameID(newObjectName);
+
+            File.AppendAllText(
+              stagefile,
+              "\r\n\t.interact  40.d, *evt_item_frog_ring_40" +
+              "\r\nevt_item_frog_ring_40:" +
+
+              "\r\n\tsetsp\t" + objectID +
+              //"\r\n\tlib\t79.w ; Give Set Item" +
+
+              "\r\n\tset\tvar(62.d), sp(0.b)" +
+              "\r\n\tcall\t20000.d, 503.d, var(62.d)" +
+              "\r\n\twait\t@time, 1.w" +
+              "\r\n\twait\t@anim, 20000.d, 20.w" +
+              "\r\n\tsfx\t419.d, 1.d" +
+              "\r\n\tlib\t305.w" +
+              "\r\n\tset\tvar(62.d), sp(0.b)" +
+              "\r\n\tpushbp" +
+              "\r\n\tmsg\trgba(2164228351.d)," +
+              "\r\n\t\t\"You found " + player + "\'s \"," +
+              "\r\n\t\t\"" + itemName + "\"," +
+              "\r\n\t\tcolor(0.b)," +
+              "\r\n\t\twait(254.b)" +
+              "\r\n\tpopbp" +
+              "\r\n\trun *sub_71" +
+              "\r\n\treturn" +
+              "\r\n"
+          );
+        }
+
         private void updateSuitCasePassword(string stagefile, int newPass)
         {
             File.AppendAllText(
@@ -2607,6 +2726,9 @@ namespace WindowsFormsApp1
 
             string content = File.ReadAllText(stagefile);
             string originalLabel = findExistingInteractLabel(content, objectID);
+            bool isQueenSpiderRoom = stagefile.Contains("stage22");
+            string queenSpiderWarp = "\trun\t*sub_71\r\n";
+
 
             if (originalLabel != null)
             {
@@ -2617,7 +2739,11 @@ namespace WindowsFormsApp1
                 string wrapperLabel = "ap_text_" + objectID;
                 content = redirectInteract(content, objectID, wrapperLabel);
 
-                string frogRingExtra = newObjectName.Contains("Frog Ring")
+                // Mother Spider's own Frog Ring pickup (evt_item_frog_ring_40) already grants item 0
+                // itself as part of its original handler - skip the extra grant here or it double-gives.
+                bool originalAlreadyGivesFrogRing = originalLabel.StartsWith("evt_item_frog_ring");
+
+                string frogRingExtra = (newObjectName.Contains("Frog Ring") && !originalAlreadyGivesFrogRing)
                     ? "\r\n\tpushbp\r\n\tsetsp\t0.d\r\n\tlib\t77.w\r\n\tpopbp"
                     : "";
 
@@ -2630,16 +2756,22 @@ namespace WindowsFormsApp1
                     frogRingExtra +
                     flagSet +
                     itemCapReset +
-                    panDropAnim + Environment.NewLine +
-                    "\trun\t*" + originalLabel + Environment.NewLine +
-                    "\treturn\n" + Environment.NewLine;
+                    panDropAnim  +
+                    "\trun\t*" + originalLabel + Environment.NewLine;
+
+                if (isQueenSpiderRoom)
+                {
+                    content += queenSpiderWarp;
+                }
+
+                content += "\treturn\n" + Environment.NewLine;
 
                 File.WriteAllText(stagefile, content);
             }
             else if (newObjectName.Contains("Frog Ring"))
             {
-                File.AppendAllText(
-               stagefile,
+
+                string output =
                "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                "ap_text_" + objectID + ":" + Environment.NewLine +
                // Add the frog ring to inventory (item(0)) so it can be carried to Jenny.
@@ -2654,26 +2786,44 @@ namespace WindowsFormsApp1
                "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
-               "\t\twait(254.b)" +
-               flagSet +
-               panDropAnim + Environment.NewLine +
-               "ap_text_" + objectID + "_skip:" + Environment.NewLine +
-               "\treturn\n" + Environment.NewLine);
+               "\t\twait(254.b)";
+
+                if (isQueenSpiderRoom)
+                {
+                    output += queenSpiderWarp;
+                }
+
+               output += 
+                   flagSet +
+                   panDropAnim + Environment.NewLine +
+                   "ap_text_" + objectID + "_skip:" + Environment.NewLine +
+                   "\treturn\n" + Environment.NewLine;
+
+                File.AppendAllText(stagefile, output);
             }
             else
             {
-                File.AppendAllText(
-                stagefile,
-                "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
+
+                string output = "\t.interact  " + objectID + ".d, *ap_text_" + objectID + Environment.NewLine + Environment.NewLine +
                 "ap_text_" + objectID + ":" + Environment.NewLine +
                 "\tmsg\tvoice(" + apItemVoice + ".b)," + Environment.NewLine +
                 "\t\t\"You found " + player + "\'s\", " + Environment.NewLine +
                 "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
-                "\t\twait(254.b)" +
-                flagSet +
-                itemCapReset +
-                panDropAnim + Environment.NewLine +
-                "\treturn\n" + Environment.NewLine);
+                "\t\twait(254.b)" ;
+
+                output +=
+                    flagSet +
+                    itemCapReset +
+                    panDropAnim + Environment.NewLine;
+
+                if (isQueenSpiderRoom)
+                {
+                    output += queenSpiderWarp;
+                }
+
+                output += "\treturn\n" + Environment.NewLine;
+
+                File.AppendAllText(stagefile, output);
             }
 
         }
@@ -2689,6 +2839,7 @@ namespace WindowsFormsApp1
                 { "stage04_Edited.us", "04" },
                 { "stage06_Edited.us", "06" },
                 { "stage09_Edited.us", "09" },
+                { "stage22_Edited.us", "22" },
             };
 
             foreach (var kvp in stageAntiRespawnLocs)
