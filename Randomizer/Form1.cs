@@ -344,6 +344,22 @@ namespace WindowsFormsApp1
                     //Get file name and remove file extention from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
 
+                    JToken apVersion = apData.SelectToken("Version");
+
+                    string apFileVersion = apVersion[0].ToString() + "." + apVersion[1].ToString() + "." + apVersion[2].ToString();
+
+                    if (apVersion == null)
+                    {
+                        AppendStatus("[ERROR] Can't Validate AP Version");
+                        return;
+                    }
+
+                    if (supportedAPVersion != apFileVersion)
+                    {
+                        AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
+                        return;
+                    }
+
                     apItemVoice = ((int)apData.SelectToken("favorite_character_voice"));
 
                     string openUpstairsCheck = apData.SelectToken("open_upstairs").ToString();
@@ -356,20 +372,6 @@ namespace WindowsFormsApp1
                     optRandomizePasswords = (passwordRandoString == "1");
 
                     logicSettings.SelectedItem = "AP Logic";
-
-                    JToken apVersion = apData.SelectToken("Version");
-
-                    string apFileVersion = apVersion[0].ToString() + "." + apVersion[1].ToString() + "." + apVersion[2].ToString();
-
-                    if (apVersion == null)
-                    {
-                        AppendStatus("[ERROR] Can't Validate AP Version");
-                    }
-
-                    if (supportedAPVersion != apFileVersion)
-                    {
-                        AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
-                    }
 
 
                 }
@@ -745,11 +747,13 @@ namespace WindowsFormsApp1
             if (apVersion == null)
             {
                 AppendStatus("[ERROR] Can't Validate AP Version");
+                return false;
             }
 
             if (supportedAPVersion != apFileVersion)
             {
                 AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
+                return false;
             }
 
             if (logicSettings.SelectedItem != null)
