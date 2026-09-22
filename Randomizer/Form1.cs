@@ -19,6 +19,7 @@ using System.Security.AccessControl;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -59,6 +60,14 @@ namespace WindowsFormsApp1
 
         int apItemVoice = 0;
         string supportedAPVersion = "1.2.6";
+
+        // RANDOMIZER: Resources\stageXX.us (the script text the randomizer edits) is decompiled
+        // once from a specific reference ISO dump, not re-exported from each user's own ISO - see
+        // project memory on the Backyard disc-read crash investigation. A player on a different
+        // region/revision dump can end up with a compiled script that doesn't match what's
+        // actually in their ISO, even though patching reports success. Warn early if the loaded
+        // ISO's game ID doesn't match what this build was made against.
+        const string expectedGameId = "GGTE01";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
@@ -274,6 +283,8 @@ namespace WindowsFormsApp1
             {
                 seed.Text += (char)r.Next(33, 126);
             }
+
+            sectionPanel4.Header = "Game Files / Supported AP Version " + supportedAPVersion;
 
 
         }
@@ -666,7 +677,7 @@ namespace WindowsFormsApp1
 
 
         }
-        private void runUnplugCommand(string command)
+        private bool runUnplugCommand(string command)
         {
             using (Process cmd = new Process())
             {
@@ -687,18 +698,105 @@ namespace WindowsFormsApp1
                 unplugCommandInfo.WorkingDirectory = @"C:\Windows\System32";
                 unplugCommandInfo.FileName = "cmd.exe";
                 unplugCommandInfo.Verb = "runas";
+
                 // Outer quotes wrap the whole command; cmd /C strips this outer pair,
                 // leaving the inner-quoted path intact.
                 unplugCommandInfo.Arguments = "/C \"" + fullCommand + "\"";
                 unplugCommandInfo.WindowStyle = ProcessWindowStyle.Minimized;
                 unplugCommandInfo.RedirectStandardOutput = true;
+                unplugCommandInfo.RedirectStandardError = true;
 
                 cmd.StartInfo = unplugCommandInfo;
-                cmd.Start();
 
-                StreamReader sr = cmd.StandardOutput;
-                string test = sr.ReadToEnd();   // read fully BEFORE WaitForExit to avoid deadlock
+                StringBuilder stdout = new StringBuilder();
+                StringBuilder stderr = new StringBuilder();
+                cmd.OutputDataReceived += (s, e) => { if (e.Data != null) stdout.AppendLine(e.Data); };
+                cmd.ErrorDataReceived += (s, e) => { if (e.Data != null) stderr.AppendLine(e.Data); };
+
+                cmd.Start();
+                cmd.BeginOutputReadLine();
+                cmd.BeginErrorReadLine();
                 cmd.WaitForExit();
+
+
+                if (cmd.ExitCode != 0)
+                {
+                    AppendStatus("\n[ERROR] unplug command failed (exit code " + cmd.ExitCode + "): " + command);
+                    if (stderr.Length > 0)
+                        AppendStatus("\n" + stderr.ToString().TrimEnd());
+                    if (stdout.Length > 0)
+                        AppendStatus("\n" + stdout.ToString().TrimEnd());
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+
+        private bool checkIsoGameId(string isoPath)
+        {
+            using (Process cmd = new Process())
+            {
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.CreateNoWindow = true;
+                info.WindowStyle = ProcessWindowStyle.Hidden;
+                info.UseShellExecute = false;
+
+                string exePath = Path.Combine(Directory.GetCurrentDirectory(), "unplug.exe");
+                string fullCommand = "\"" + exePath + "\" iso info --iso \"" + isoPath + "\"";
+
+                info.WorkingDirectory = @"C:\Windows\System32";
+                info.FileName = "cmd.exe";
+                info.Verb = "runas";
+                info.Arguments = "/C \"" + fullCommand + "\"";
+                info.WindowStyle = ProcessWindowStyle.Minimized;
+                info.RedirectStandardOutput = true;
+                info.RedirectStandardError = true;
+
+                cmd.StartInfo = info;
+
+                StringBuilder stdout = new StringBuilder();
+                StringBuilder stderr = new StringBuilder();
+                cmd.OutputDataReceived += (s, e) => { if (e.Data != null) stdout.AppendLine(e.Data); };
+                cmd.ErrorDataReceived += (s, e) => { if (e.Data != null) stderr.AppendLine(e.Data); };
+
+                cmd.Start();
+                cmd.BeginOutputReadLine();
+                cmd.BeginErrorReadLine();
+                cmd.WaitForExit();
+
+                if (cmd.ExitCode != 0)
+                {
+                    AppendStatus("\n[ERROR] Could not read ISO info (exit code " + cmd.ExitCode + ")");
+                    if (stderr.Length > 0)
+                        AppendStatus("\n" + stderr.ToString().TrimEnd());
+                    return false;
+                }
+
+                string output = stdout.ToString();
+                Match match = Regex.Match(output, @"\[(?<id>[A-Za-z0-9]{6})\]");
+                if (!match.Success)
+                {
+                    AppendStatus("\n[WARNING] Could not determine ISO game ID from unplug output.");
+                    return true;
+                }
+
+                string gameId = match.Groups["id"].Value;
+                if (gameId == expectedGameId)
+                {
+                    AppendStatus("\nISO Game ID: " + gameId + " (matches expected " + expectedGameId + ")");
+                }
+                else
+                {
+                    AppendStatus("\n[WARNING] ISO Game ID is \"" + gameId + "\", expected \"" + expectedGameId +
+                        "\". This ISO may be a different region/revision than this randomizer was built against. " +
+                        "The bundled room scripts are decompiled from a specific reference ISO, not re-exported " +
+                        "from yours, so a mismatched ISO can silently produce a corrupted patch (e.g. a room " +
+                        "crashing on load) even though patching itself reports success.");
+                }
+
+                return true;
             }
         }
 
@@ -716,7 +814,13 @@ namespace WindowsFormsApp1
             }
             else
             {
-                AppendStatus("[ERROR] Invalid file path to Chibi-Robo ISO");
+                AppendStatus("\n[ERROR] Invalid file path to Chibi-Robo ISO");
+                return false;
+            }
+
+            if (!checkIsoGameId(isoFilePath.Text))
+            {
+                AppendStatus("\n[ERROR] Could not verify the selected ISO - it may not be a valid GameCube disc image.");
                 return false;
             }
 
@@ -746,13 +850,13 @@ namespace WindowsFormsApp1
 
             if (apVersion == null)
             {
-                AppendStatus("[ERROR] Can't Validate AP Version");
+                AppendStatus("\n[ERROR] Can't Validate AP Version");
                 return false;
             }
 
             if (supportedAPVersion != apFileVersion)
             {
-                AppendStatus("[ERROR] Supplied AP File Version(" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
+                AppendStatus("\n[ERROR] Supplied AP File Version (" + apFileVersion + ") Is Not Supported In Current Patcher Version(" + supportedAPVersion + ")");
                 return false;
             }
 

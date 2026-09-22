@@ -2066,7 +2066,8 @@ sub_43:
 	if	eq(result, 0.w), else *loc_45
 	set	var(152.d), 5.d
 	lib	41.w
-	menu	4.d
+	; menu	4.d
+	menu	6.d
 loc_45:
 	return
 
