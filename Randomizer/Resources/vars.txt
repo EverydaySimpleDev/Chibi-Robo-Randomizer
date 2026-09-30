@@ -84,6 +84,19 @@
    var(676)  custom: Trauma suit
    var(677)  custom: Ghost suit
    var(678)  custom: Tao suit
+   var(1880) GBA link popup trigger: set to N to show message #N on a linked
+             GBA (table in chibi-mini-gba gc/source/messages.c). The GBA link
+             code reads it every frame and resets it to 0.
+   var(1881) GBA link: set to N by the GBA link code when message #N is closed
+             (also set right away for an unknown N).
+   var(1882) GBA link: 1 while a GBA is linked, 0 otherwise (written every frame).
+   var(1883) GBA link: sub_gba_msg_wait's timeout counter.
+             Every Resources\stageXX.us ends with two helpers that use these:
+                 pushbp / setsp 3.d / run *sub_gba_msg / popbp       ; show #3, carry on
+                 pushbp / setsp 3.d / run *sub_gba_msg_wait / popbp  ; show #3, wait until
+                                                                     ; closed (no wait if no
+                                                                     ; GBA, max 60 s)
+             Only does anything when the ISO was built with the GBA link option.
 
 
 --------------------------------------------------------------------------------

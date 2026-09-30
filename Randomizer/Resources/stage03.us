@@ -12258,3 +12258,28 @@ evt_item_junk_unko_187:
 
 
 	
+
+
+; RANDOMIZER: GBA link cable popups (chibi-mini-gba gc/source/messages.c)
+;   pushbp / setsp <id>.d / run *sub_gba_msg / popbp       show message #id on the GBA
+;   pushbp / setsp <id>.d / run *sub_gba_msg_wait / popbp  same, then wait until it is closed
+;   (the wait is skipped when no GBA is linked and gives up after 60 s)
+sub_gba_msg:
+	set	var(1880.d), sp(0.b)
+	return
+
+sub_gba_msg_wait:
+	set	var(1881.d), 0.w
+	set	var(1883.d), 0.w
+	set	var(1880.d), sp(0.b)
+loc_gba_msg_check:
+	if	eq(var(1882.d), 1.w), else *loc_gba_msg_done ; no GBA linked: nothing to wait for
+	if	eq(var(1881.d), sp(0.b)), else *loc_gba_msg_sleep
+	goto	*loc_gba_msg_done ; closed by the player
+loc_gba_msg_sleep:
+	set	adda(var(1883.d), 1.w)
+	if	lt(var(1883.d), 3600.w), else *loc_gba_msg_done ; 60 s safety timeout
+	wait	@time, 1.w
+	goto	*loc_gba_msg_check
+loc_gba_msg_done:
+	return

@@ -440,6 +440,11 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(1872.d), 0.w ; foyer_basement_door (obj 76, repurposed rouka_door_e, living_door model) | Foyer -> Basement: 1=open, 0=closed
 	set	var(1873.d), 0.w ; backyard_door_niwa (obj 35, backyard_window_2_l) | Backyard -> Living Room: 1=open, 0=closed
 	set	var(1874.d), 0.w ; pan_drop_trap pending count - consumed by globals.us lib_36 (vanilla charging gag), see client.py PAN_DROP_TRAP_VAR_ADDR
+	
+	set	var(1880.d), 0.w ; GBA link popup trigger - set to N to show message #N on the GBA (chibi-mini-gba gc/source/messages.c)
+	set	var(1881.d), 0.w ; GBA link popup done - set to N by the GBA link code when message #N is closed
+	set	var(1882.d), 0.w ; GBA link: 1 while a GBA is linked (written every frame by the GBA link code)
+	set	var(1883.d), 0.w ; GBA link: sub_gba_msg_wait timeout counter
 
 	
 	set	var(176.d), 1.w
@@ -5838,4 +5843,29 @@ sub_819:
 	disp	20005.d, 1.d
 	call	20005.d, 1.d, 1.d
 	moveto	20005.d, 1381.w, 900.w, 1080.w, 200.w, 1.d, -2.d
+	return
+
+
+; RANDOMIZER: GBA link cable popups (chibi-mini-gba gc/source/messages.c)
+;   pushbp / setsp <id>.d / run *sub_gba_msg / popbp       show message #id on the GBA
+;   pushbp / setsp <id>.d / run *sub_gba_msg_wait / popbp  same, then wait until it is closed
+;   (the wait is skipped when no GBA is linked and gives up after 60 s)
+sub_gba_msg:
+	set	var(1880.d), sp(0.b)
+	return
+
+sub_gba_msg_wait:
+	set	var(1881.d), 0.w
+	set	var(1883.d), 0.w
+	set	var(1880.d), sp(0.b)
+loc_gba_msg_check:
+	if	eq(var(1882.d), 1.w), else *loc_gba_msg_done ; no GBA linked: nothing to wait for
+	if	eq(var(1881.d), sp(0.b)), else *loc_gba_msg_sleep
+	goto	*loc_gba_msg_done ; closed by the player
+loc_gba_msg_sleep:
+	set	adda(var(1883.d), 1.w)
+	if	lt(var(1883.d), 3600.w), else *loc_gba_msg_done ; 60 s safety timeout
+	wait	@time, 1.w
+	goto	*loc_gba_msg_check
+loc_gba_msg_done:
 	return

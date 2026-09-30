@@ -59,7 +59,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.2.6";
+        string supportedAPVersion = "1.3.0";
 
         // RANDOMIZER: Resources\stageXX.us (the script text the randomizer edits) is decompiled
         // once from a specific reference ISO dump, not re-exported from each user's own ISO - see
@@ -72,6 +72,52 @@ namespace WindowsFormsApp1
         bool optOpenUpstairs;
         bool optChibiVisionOff;
         bool optRandomizePasswords;
+        bool optGbaLink;
+
+        // Door vars each key opens (initialised to 0 in Resources\stage05.us sub_576; the AP
+        // client's KEY_DOOR_VARS uses the same table). A key found in this player's own world
+        // sets them right in its pickup script; keys from other players come from the client.
+        static readonly Dictionary<string, int[]> KeyDoorVars = new Dictionary<string, int[]>
+        {
+            { "Living Room - Kitchen Key",  new[] { 1870, 1860 } },  // Living Room <-> Kitchen
+            { "Living Room - Foyer Key",    new[] { 1863, 1869 } },  // Foyer <-> Living Room
+            { "Kitchen - Foyer Key",        new[] { 1862, 1865 } },  // Foyer <-> Kitchen
+            { "Foyer - Jenny's Room Key",   new[] { 1861, 1866 } },  // Foyer <-> Jenny's Room
+            { "Foyer - Bedroom Key",        new[] { 1864, 1868 } },  // Foyer <-> Bedroom
+            { "Living Room - Backyard Key", new[] { 1871, 1873 } },  // Living Room <-> Backyard
+            { "Foyer - Basement Key",       new[] { 1872 } },        // Foyer -> Basement
+        };
+
+        // Script lines that grant other items of this player's own, the same way the vanilla
+        // scripts do (e.g. stage scripts `set atc(2.d), 1.w` / `set item(54.d), 1.w`):
+        // atc(N) 1 = Chibi-Copter, 2 = Chibi-Blaster, 3 = Chibi-Radar; items 53/54/62 are the
+        // Charge / Range / Alien Ear chips (0x35 / 0x36 / 0x3E in the apworld's items.py).
+        static readonly Dictionary<string, string> SelfGrantLines = new Dictionary<string, string>
+        {
+            { "Chibi-Copter Chibi-Gear",  "set\tatc(1.d), 1.w" },
+            { "Chibi-Blaster Chibi-Gear", "set\tatc(2.d), 1.w" },
+            { "Chibi-Radar Chibi-Gear",   "set\tatc(3.d), 1.w" },
+            { "Charge Chip",              "set\titem(53.d), 1.w" },
+            { "Range Chip",               "set\titem(54.d), 1.w" },
+            { "Alien Ear Chip",           "set\titem(62.d), 1.w" },
+
+            // Utilibots: var(701-708) = 0 not built, 1 built (what the vanilla scripts set, and
+            // what makes the room show it - e.g. stage07 sub_882 `if ge(var(701.d), 1.d)`),
+            // 2 = built and already used once (the game sets that itself on first use).
+            { "Living Room Ladder",       "set\tvar(701.d), 1.w" },
+            { "Kitchen Ladder",           "set\tvar(702.d), 1.w" },
+            { "Foyer Ladder",             "set\tvar(703.d), 1.w" },
+            { "Foyer Teleport",           "set\tvar(704.d), 1.w" },
+            { "Living Room Bridge",       "set\tvar(705.d), 1.w" },
+            { "Kitchen Bridge",           "set\tvar(706.d), 1.w" },
+            { "Bedroom Bridge",           "set\tvar(707.d), 1.w" },
+            { "Basement Teleport",        "set\tvar(708.d), 1.w" },
+
+            // battery(1) = max battery in script units: it starts at 16000 while the RAM float
+            // the AP client edits (0x8038f74c) reads 80, so 200 units = 1 on that float. +2000 is
+            // the same +10 the client's first Max Battery Increase gives (80 -> 90).
+            { "Max Battery Increase",     "set\tbattery(1.d), add(battery(1.d), 2000.w)" },
+        };
 
         //List of all checks
         List<ItemLocation> allLocations = new List<ItemLocation>();
@@ -324,7 +370,8 @@ namespace WindowsFormsApp1
             {
                 OpenUpstairs = optOpenUpstairs,
                 ChibiVisionOff = optChibiVisionOff,
-                RandomizePasswords = optRandomizePasswords
+                RandomizePasswords = optRandomizePasswords,
+                GbaLink = optGbaLink
             })
             {
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -332,6 +379,7 @@ namespace WindowsFormsApp1
                     optOpenUpstairs = dlg.OpenUpstairs;
                     optChibiVisionOff = dlg.ChibiVisionOff;
                     optRandomizePasswords = dlg.RandomizePasswords;
+                    optGbaLink = dlg.GbaLink;
                 }
             }
         }
@@ -382,6 +430,10 @@ namespace WindowsFormsApp1
                     string passwordRandoString = apData.SelectToken("password_rando").ToString();
                     optRandomizePasswords = (passwordRandoString == "1");
 
+                    // Optional: older .apcr files don't have this key
+                    JToken gbaLinkToken = apData.SelectToken("gba_link");
+                    optGbaLink = gbaLinkToken != null && gbaLinkToken.ToString() == "1";
+
                     logicSettings.SelectedItem = "AP Logic";
 
 
@@ -419,6 +471,7 @@ namespace WindowsFormsApp1
             bool chibiVisionChecked = optChibiVisionOff;
             bool passwordRandoChecked = optRandomizePasswords;
             bool openUpstairsChecked = optOpenUpstairs;
+            bool gbaLinkChecked = optGbaLink;
 
             randomizeButton.Enabled = false;   // prevent re-entry while running
             PBar.Value = 0;
@@ -590,6 +643,7 @@ namespace WindowsFormsApp1
                         //logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
                         logOutput.WriteLine("Randomize Password: " + passwordRandoChecked);
                         logOutput.WriteLine("Chibi-Vision Off: " + chibiVisionChecked);
+                        logOutput.WriteLine("GBA Link Cable: " + gbaLinkChecked);
                         logOutput.WriteLine("******\n");
 
                         foreach (string key in newSpoilerLog.Keys)
@@ -600,6 +654,13 @@ namespace WindowsFormsApp1
 
                     generateAntiRespawnSubroutines();
                     reimportStages();
+
+                    // GBA link cable: patch main.dol last, after unplug is done with the ISO
+                    if (gbaLinkChecked)
+                    {
+                        string res = Directory.GetCurrentDirectory() + @"\Resources\";
+                        AppendStatus("\n" + GbaLinkPatcher.PatchIso(newIsoPath, res + "chibi_link.bin", res + "chibi_link.sym"));
+                    }
                     PBar.Value = 100;
 
                     AppendStatus("\nISO Rebuilding Complete :)");
@@ -975,6 +1036,10 @@ namespace WindowsFormsApp1
                     // network instead - see project_pan_drop_trap memory).
                     bool isSelfPanDropTrap = name == "Pan Drop Trap" && playerID == myPlayerName;
 
+                    // RANDOMIZER: this player's own key / Chibi-Gear / chip - apply it in the
+                    // pickup script itself, so it doesn't depend on the AP client being connected.
+                    string selfGrant = playerID == myPlayerName ? buildSelfFoundSnippet(name, locationID) : "";
+
                     var roomID = get_room_id_by_name(location.Key);
 
                     var roomObject = get_room_object_id_by_name(location.Key);
@@ -1057,14 +1122,14 @@ namespace WindowsFormsApp1
                     // if location has an AP placeholder item, add an in-game message of what the player picked up
                     if (objectName.Contains("item_kami_kuzu") || objectName.Contains("item_cookie_kakera") || objectName.Contains("item_cos_obake") || objectName.Contains("item_capsule_"))
                     {
-                        roomCheckForInGameMessages(roomID, locationID, playerID, name, false, 0, apCode, isSelfPanDropTrap);
+                        roomCheckForInGameMessages(roomID, locationID, playerID, name, false, 0, apCode, isSelfPanDropTrap, selfGrant);
                     }
                     else if (apCode >= 0 && roomID != 8 && roomID != 2)
                     {
                         // Native Chibi-Robo item placed here: add a flag-only interact handler so anti-respawn works
                         string stageFile = getStageFileNameForRoom(roomID);
                         if (stageFile != null)
-                            addFlagOnlyHandler(Directory.GetCurrentDirectory() + @"\" + stageFile, locationID, apCode);
+                            addFlagOnlyHandler(Directory.GetCurrentDirectory() + @"\" + stageFile, locationID, apCode, selfGrant);
                     }
 
                     // shop items are not the same as normal items
@@ -1558,7 +1623,7 @@ namespace WindowsFormsApp1
 
         }
 
-        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0, int locationCode = -1, bool triggerPanDropAnim = false)
+        private void roomCheckForInGameMessages(int roomID, int objectID, string player, string newObjectName, bool atc = false, int atcID = 0, int locationCode = -1, bool triggerPanDropAnim = false, string selfGrant = "")
         {
             if (roomID == 0) // Living Room
             {
@@ -1569,7 +1634,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage07_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
 
                     }
                     else
@@ -1588,7 +1653,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1605,7 +1670,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        //addInGameMessages(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, locationCode);
+                        //addInGameMessages(Directory.GetCurrentDirectory() + @"\stage11_Edited.us", objectID, player, newObjectName, locationCode, false, selfGrant);
                     }
                     else
                     {
@@ -1622,7 +1687,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage02_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1638,7 +1703,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage03_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1654,7 +1719,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage09_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1670,7 +1735,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage04_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1686,7 +1751,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage06_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -1702,7 +1767,7 @@ namespace WindowsFormsApp1
                 {
                     if (atc == false)
                     {
-                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage22_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim);
+                        addInGameMessages(Directory.GetCurrentDirectory() + @"\stage22_Edited.us", objectID, player, newObjectName, locationCode, triggerPanDropAnim, selfGrant);
                     }
                     else
                     {
@@ -2704,7 +2769,7 @@ namespace WindowsFormsApp1
             return content.Substring(0, idx) + "\t.interact  " + objectID + ".d, *" + newLabel + content.Substring(lineEnd);
         }
 
-        private void addFlagOnlyHandler(string stagefile, int objectID, int locationCode)
+        private void addFlagOnlyHandler(string stagefile, int objectID, int locationCode, string selfGrant = "")
         {
             int flagNum = 2100 + locationCode;
             string content = File.ReadAllText(stagefile);
@@ -2719,7 +2784,7 @@ namespace WindowsFormsApp1
                 content = redirectInteract(content, objectID, wrapperLabel);
                 content += "\r\n" + wrapperLabel + ":" + Environment.NewLine +
                            "\trun\t*" + originalLabel + Environment.NewLine +
-                           "\tset\tflag(" + flagNum + ".d), 1.d" + Environment.NewLine +
+                           "\tset\tflag(" + flagNum + ".d), 1.d" + selfGrant + Environment.NewLine +
                            "\treturn\n" + Environment.NewLine;
 
                 File.WriteAllText(stagefile, content);
@@ -2730,7 +2795,7 @@ namespace WindowsFormsApp1
                     stagefile,
                     "\t.interact  " + objectID + ".d, *ap_flag_" + objectID + Environment.NewLine + Environment.NewLine +
                     "ap_flag_" + objectID + ":" + Environment.NewLine +
-                    "\tset\tflag(" + flagNum + ".d), 1.d" + Environment.NewLine +
+                    "\tset\tflag(" + flagNum + ".d), 1.d" + selfGrant + Environment.NewLine +
                     "\treturn\n" + Environment.NewLine);
             }
         }
@@ -2819,7 +2884,7 @@ namespace WindowsFormsApp1
                 nl + "\tcall\t20000.d, 700.d";
         }
 
-        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1, bool triggerPanDropAnim = false)
+        private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1, bool triggerPanDropAnim = false, string selfGrant = "")
         {
             string flagSet = locationCode >= 0
                 ? "\r\n\tset\tflag(" + (2100 + locationCode) + ".d), 1.d"
@@ -2862,9 +2927,12 @@ namespace WindowsFormsApp1
                     "\t\t\"" + " " + newObjectName + "\"," + Environment.NewLine +
                     "\t\twait(254.b)" +
                     frogRingExtra +
-                    flagSet +
+                    flagSet + selfGrant +
                     itemCapReset +
                     panDropAnim  +
+                    // own line: the snippets above don't end with a newline, and unplug
+                    // rejects two commands on one line ("missing `,` after operand")
+                    Environment.NewLine +
                     "\trun\t*" + originalLabel + Environment.NewLine;
 
                 if (isQueenSpiderRoom)
@@ -2902,7 +2970,7 @@ namespace WindowsFormsApp1
                 }
 
                output += 
-                   flagSet +
+                   flagSet + selfGrant +
                    panDropAnim + Environment.NewLine +
                    "ap_text_" + objectID + "_skip:" + Environment.NewLine +
                    "\treturn\n" + Environment.NewLine;
@@ -2920,7 +2988,7 @@ namespace WindowsFormsApp1
                 "\t\twait(254.b)" ;
 
                 output +=
-                    flagSet +
+                    flagSet + selfGrant +
                     itemCapReset +
                     panDropAnim + Environment.NewLine;
 
@@ -2934,6 +3002,38 @@ namespace WindowsFormsApp1
                 File.AppendAllText(stagefile, output);
             }
 
+        }
+
+        // Script lines that apply `itemName` right in its pickup script when it is one of this
+        // player's own keys (open its doors), Chibi-Gear (unlock it) or chips (add it), else "".
+        // Same format as the other snippets here: each line starts with a newline.
+        private static string buildSelfFoundSnippet(string itemName, int objectID = 0)
+        {
+            int[] vars;
+            string line;
+            if (itemName == "Giga Battery Charge")
+            {
+                // var(136) = Giga Battery charge (the game's own charging caps it at 10000 = full).
+                // Like the AP client: +1000 while below 9000, never above 9000 - the player puts
+                // in the last bit themselves. The label must be unique in the stage file.
+                string skip = "loc_ap_giga_" + objectID;
+                return "\r\n\t; RANDOMIZER: Giga Battery Charge (self-found) - +1000, max 9000" +
+                       "\r\n\tif\tlt(var(136.d), 9000.w), else *" + skip +
+                       "\r\n\tset\tvar(136.d), add(var(136.d), 1000.w)" +
+                       "\r\n\tif\tgt(var(136.d), 9000.w), else *" + skip +
+                       "\r\n\tset\tvar(136.d), 9000.w" +
+                       "\r\n" + skip + ":";
+            }
+            if (KeyDoorVars.TryGetValue(itemName, out vars))
+            {
+                string snippet = "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - open its doors now";
+                foreach (int v in vars)
+                    snippet += "\r\n\tset\tvar(" + v + ".d), 1.w";
+                return snippet;
+            }
+            if (SelfGrantLines.TryGetValue(itemName, out line))
+                return "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - grant it now\r\n\t" + line;
+            return "";
         }
 
         private void generateAntiRespawnSubroutines()

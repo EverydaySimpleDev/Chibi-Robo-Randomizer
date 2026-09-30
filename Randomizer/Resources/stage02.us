@@ -2295,6 +2295,7 @@ loc_1114:
 		"(LET'S GO DIVORCE!)",
 		wait(254.b)
 	set	var(679.d), 1.w
+	set	var(1880.d), 7.d 
 	sfx	-65517.d, 2.d, 300.w
 	color	-2.d, @blend, 0.w, 0.w, 0.w, 100.w
 	color	-2.d, @modulate, 255.w, 255.w, 255.w, 100.w
@@ -30529,3 +30530,28 @@ evt_rouka_kokuban_406:
 
 	
 	
+
+
+; RANDOMIZER: GBA link cable popups (chibi-mini-gba gc/source/messages.c)
+;   pushbp / setsp <id>.d / run *sub_gba_msg / popbp       show message #id on the GBA
+;   pushbp / setsp <id>.d / run *sub_gba_msg_wait / popbp  same, then wait until it is closed
+;   (the wait is skipped when no GBA is linked and gives up after 60 s)
+sub_gba_msg:
+	set	var(1880.d), sp(0.b)
+	return
+
+sub_gba_msg_wait:
+	set	var(1881.d), 0.w
+	set	var(1883.d), 0.w
+	set	var(1880.d), sp(0.b)
+loc_gba_msg_check:
+	if	eq(var(1882.d), 1.w), else *loc_gba_msg_done ; no GBA linked: nothing to wait for
+	if	eq(var(1881.d), sp(0.b)), else *loc_gba_msg_sleep
+	goto	*loc_gba_msg_done ; closed by the player
+loc_gba_msg_sleep:
+	set	adda(var(1883.d), 1.w)
+	if	lt(var(1883.d), 3600.w), else *loc_gba_msg_done ; 60 s safety timeout
+	wait	@time, 1.w
+	goto	*loc_gba_msg_check
+loc_gba_msg_done:
+	return
