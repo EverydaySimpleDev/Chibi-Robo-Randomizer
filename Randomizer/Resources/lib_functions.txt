@@ -101,8 +101,7 @@
              locations) mostly have NO pre-existing .interact handler at all -
              their native pickup/cap-check isn't script-visible in that case,
              so Form1.cs's addInGameMessages resets `item(hold)` to 1 on every
-             AP pickup instead of trying to detect success/failure (see
-             project_ap_flag_inventory_cap_gate memory).
+             AP pickup instead of trying to detect success/failure.
 
  PLAYER / OBJECT ANIMATION
    lib 105   Play player anim 93 then 94 (sit / loop cycle), waiting between.

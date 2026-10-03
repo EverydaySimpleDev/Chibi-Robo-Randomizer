@@ -28,8 +28,7 @@
    1860  kitchen_door                       stage01   DONE - verified in-game
    1861  rouka_door_j                       stage02   DONE - pending test (wall 10202 - was 10200,
                                                        collided with vanilla lib_171.w's Foyer
-                                                       Teleport pad registration ID, see
-                                                       project_foyer_teleport memory)
+                                                       Teleport pad registration ID, )
    1862  rouka_door_k                       stage02   DONE - pending test (reuses wall 10020)*
    1863  rouka_door_l                       stage02   DONE - model swapped to living_door (Form1.cs)
                                                        so anim 24,0/1 closes/opens it; wall 10000
@@ -59,7 +58,7 @@
  New walls (10202/10100/10010) use coords = JSON pos * 98.18 and STILL NEED an
  in-game placement check like the kitchen wall did. (rouka_door_j's wall was moved from
  10200 to 10202 - the original number collided with vanilla's Foyer Teleport pad
- registration, see project_foyer_teleport memory.)
+ registration)
 
  KEY FINDING
  -----------

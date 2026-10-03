@@ -3090,8 +3090,7 @@ lib_306:
 	.lib	77.w, *lib_77
 lib_77:
 	wait	@anim, 20000.d, -1.d
-	if	ge(item(hold), 10.d), else *loc_2018 ; If Player has 10 (Default Max) of a item?
-	; if	ge(item(hold), 99.d), else *loc_2018
+	if	ge(item(hold), 99.d), else *loc_2018 ; If Player has 99 of a item? (vanilla max 10, raised in main.dol by ItemCapPatcher.cs)
 	run	*sub_2017 ; Don't let them pick it up
 	return
 loc_2018:
@@ -10663,8 +10662,7 @@ loc_992:
 	; trigger (instead of just relying on the 2/9 random roll) whenever a trap is pending, and
 	; consuming exactly one trap per charge below, means the trap only ever fires while the
 	; player is genuinely mid-charge at a real outlet - guaranteed to already have full visible
-	; control (no fade/load-timing risk, unlike the earlier room-load-based attempt - see
-	; project_pan_drop_trap memory for that whole abandoned approach and why).
+	; control (no fade/load-timing risk, unlike the earlier room-load-based attempt).
 	if	ge(var(1874.d), 1.w), else *loc_no_pan_drop_trap
 	set	var(1874.d), sub(var(1874.d), 1.w)
 loc_no_pan_drop_trap:
@@ -12658,7 +12656,7 @@ loc_3953:
 	.lib	375.w, *lib_375
 lib_375:
 	; RANDOMIZER: was going to be a Pan Drop Trap hookup point (both a shared globals.us hook
-	; and later per-stage subs were tried and abandoned - see project_pan_drop_trap memory).
+	; and later per-stage subs were tried and abandoned).
 	; The trap is now delivered via lib_36 instead (this file, the vanilla charging gag), not
 	; here. Vanilla's own lib_375 body was already dead code before this project touched it,
 	; so `return` is equivalent to (and safer than) leaving that in place.

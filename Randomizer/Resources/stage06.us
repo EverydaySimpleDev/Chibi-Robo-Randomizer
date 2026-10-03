@@ -2003,8 +2003,9 @@ loc_707:
 
 	.interact  4.d, *evt_map_jump_box_4
 evt_map_jump_box_4:
-	if	eq(var(1868.d), 0.d), else *loc_mj4_open ; parent_door closed -> block warp to room 2
-	return
+	; parent_door closed -> block warp to room 2. Written like the guards whose map labels work (skip to a return at the end)
+	; rather than an early return, which left this door's map label blank.
+	if	var(1868.d), else *loc_mj4_closed
 loc_mj4_open:
 	lib	54.w
 	camera	@pos, -17517.d, 2299.w, 25630.w, 2.d, 100.w
@@ -2021,6 +2022,8 @@ loc_mj4_open:
 	run	*sub_704
 	set	var(695.d), 0.w
 	warp	2.d, 1.w
+	return
+loc_mj4_closed:
 	return
 
 

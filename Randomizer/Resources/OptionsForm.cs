@@ -10,12 +10,10 @@ namespace WindowsFormsApp1
         public bool OpenUpstairs { get; set; }
         public bool ChibiVisionOff { get; set; }
         public bool RandomizePasswords { get; set; }
-        public bool GbaLink { get; set; }
 
         private readonly FlatCheckBox chkOpenUpstairs;
         private readonly FlatCheckBox chkChibiVision;
         private readonly FlatCheckBox chkPasswords;
-        private readonly FlatCheckBox chkGbaLink;
 
         public OptionsForm()
         {
@@ -38,9 +36,7 @@ namespace WindowsFormsApp1
             chkPasswords = new FlatCheckBox { Text = "Randomize passwords", Location = new Point(14, 90) };
             card.Controls.Add(chkOpenUpstairs);
             card.Controls.Add(chkChibiVision);
-            chkGbaLink = new FlatCheckBox { Text = "GBA link cable (port 2-4)", Location = new Point(14, 116), AutoSize = true };
             card.Controls.Add(chkPasswords);
-            card.Controls.Add(chkGbaLink);
 
             var okButton = new FlatButton
             {
@@ -75,7 +71,6 @@ namespace WindowsFormsApp1
             chkOpenUpstairs.Checked = OpenUpstairs;
             chkChibiVision.Checked = ChibiVisionOff;
             chkPasswords.Checked = RandomizePasswords;
-            chkGbaLink.Checked = GbaLink;
         }
 
         private void OkButton_Click(object sender, EventArgs e)
@@ -83,7 +78,6 @@ namespace WindowsFormsApp1
             OpenUpstairs = chkOpenUpstairs.Checked;
             ChibiVisionOff = chkChibiVision.Checked;
             RandomizePasswords = chkPasswords.Checked;
-            GbaLink = chkGbaLink.Checked;
             DialogResult = DialogResult.OK;
             Close();
         }

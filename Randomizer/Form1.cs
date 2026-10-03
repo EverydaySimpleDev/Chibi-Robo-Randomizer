@@ -59,20 +59,18 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.3.0";
+        string supportedAPVersion = "1.3.1";
 
         // RANDOMIZER: Resources\stageXX.us (the script text the randomizer edits) is decompiled
-        // once from a specific reference ISO dump, not re-exported from each user's own ISO - see
-        // project memory on the Backyard disc-read crash investigation. A player on a different
-        // region/revision dump can end up with a compiled script that doesn't match what's
+        // once from a specific reference ISO dump, not re-exported from each user's own ISO  A player 
+        // on a different egion/revision dump can end up with a compiled script that doesn't match what's
         // actually in their ISO, even though patching reports success. Warn early if the loaded
-        // ISO's game ID doesn't match what this build was made against.
+        // ISO's game ID doesn't match what this build was made against. (Just as a extra check just in case someone tries a differnt ISO)
         const string expectedGameId = "GGTE01";
 
         bool optOpenUpstairs;
         bool optChibiVisionOff;
         bool optRandomizePasswords;
-        bool optGbaLink;
 
         // Door vars each key opens (initialised to 0 in Resources\stage05.us sub_576; the AP
         // client's KEY_DOOR_VARS uses the same table). A key found in this player's own world
@@ -112,12 +110,14 @@ namespace WindowsFormsApp1
             { "Kitchen Bridge",           "set\tvar(706.d), 1.w" },
             { "Bedroom Bridge",           "set\tvar(707.d), 1.w" },
             { "Basement Teleport",        "set\tvar(708.d), 1.w" },
-
-            // battery(1) = max battery in script units: it starts at 16000 while the RAM float
-            // the AP client edits (0x8038f74c) reads 80, so 200 units = 1 on that float. +2000 is
-            // the same +10 the client's first Max Battery Increase gives (80 -> 90).
-            { "Max Battery Increase",     "set\tbattery(1.d), add(battery(1.d), 2000.w)" },
         };
+
+        // battery(1) = max battery in script units: it starts at 16000 while the RAM float
+        // the AP client edits (0x8038f74c) reads 80, so 200 units = 1 on that float. +2000 is
+        // the same +10 the client's first Max Battery Increase gives (80 -> 90). A save with a
+        // max battery over 999 comes up as corrupted, so it stops at 999 (199800 units).
+        const int MaxBatteryStep = 2000;
+        const int MaxBatteryLimit = 199800;
 
         //List of all checks
         List<ItemLocation> allLocations = new List<ItemLocation>();
@@ -131,7 +131,7 @@ namespace WindowsFormsApp1
         // Tracks (apCode, objectID) per stage file for anti-respawn subroutine generation
         Dictionary<string, List<(int code, int objID)>> stageAntiRespawnLocs = new Dictionary<string, List<(int code, int objID)>>();
 
-        // Maps each AP location name to its code (0-220) for flag(2100+code) anti-respawn tracking
+        // Maps each AP location name to its code (0-254) for flag(2100+code) anti-respawn tracking
         static readonly Dictionary<string, int> apLocationCodes = new Dictionary<string, int>
         {
             { "Living Room - Frog Ring (Behind Window)", 0 },
@@ -371,7 +371,6 @@ namespace WindowsFormsApp1
                 OpenUpstairs = optOpenUpstairs,
                 ChibiVisionOff = optChibiVisionOff,
                 RandomizePasswords = optRandomizePasswords,
-                GbaLink = optGbaLink
             })
             {
                 if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -379,7 +378,6 @@ namespace WindowsFormsApp1
                     optOpenUpstairs = dlg.OpenUpstairs;
                     optChibiVisionOff = dlg.ChibiVisionOff;
                     optRandomizePasswords = dlg.RandomizePasswords;
-                    optGbaLink = dlg.GbaLink;
                 }
             }
         }
@@ -430,10 +428,6 @@ namespace WindowsFormsApp1
                     string passwordRandoString = apData.SelectToken("password_rando").ToString();
                     optRandomizePasswords = (passwordRandoString == "1");
 
-                    // Optional: older .apcr files don't have this key
-                    JToken gbaLinkToken = apData.SelectToken("gba_link");
-                    optGbaLink = gbaLinkToken != null && gbaLinkToken.ToString() == "1";
-
                     logicSettings.SelectedItem = "AP Logic";
 
 
@@ -471,7 +465,6 @@ namespace WindowsFormsApp1
             bool chibiVisionChecked = optChibiVisionOff;
             bool passwordRandoChecked = optRandomizePasswords;
             bool openUpstairsChecked = optOpenUpstairs;
-            bool gbaLinkChecked = optGbaLink;
 
             randomizeButton.Enabled = false;   // prevent re-entry while running
             PBar.Value = 0;
@@ -605,22 +598,11 @@ namespace WindowsFormsApp1
                         latestToken.AddAfterSelf(Newtonsoft.Json.JsonConvert.DeserializeObject(readOpenUpstairs.ReadToEnd()) as JObject);
                     }
 
-                    // Living Room door (rouka_door_l, id 24) is permanently open with no closed pose.
-                    // Swap to living_door — the same model used on the Living Room side (stage07 obj 77),
-                    // which has correct open/closed animation frames and faces the right direction.
+                    // New Foyer doors for the keys
                     foyerObj.SelectToken("objects[?(@.id == 24)].object").Replace("living_door");
 
-                    // Kitchen door (rouka_door_k, id 3) has no working open animation frame (anim 1 is a no-op).
-                    // Swap to kitchen_door — same model used in stage01 (obj 49) which has proper anim 0=closed / anim 1=open.
                     foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
 
-                    // RANDOMIZER: Foyer<->Basement door (rouka_door_e, id 76) - this doorway had no door
-                    // of its own in vanilla. rouka_door_e is confirmed cosmetic-only with no warp behind
-                    // it (see door_flags.txt), so repurpose it here instead of adding a new object -
-                    // adding a brand-new object index (beyond this stage's original 0-512 range) was
-                    // tried first and produced a stray empty destination-label box in the overhead
-                    // camera view near the Basement map_jump_box that followed the object wherever it
-                    // moved; reusing an existing in-range object avoids that entirely.
                     foyerObj.SelectToken("objects[?(@.id == 76)].object").Replace("living_door");
                     foyerObj.SelectToken("objects[?(@.id == 76)].position.x").Replace(-182.56);
                     foyerObj.SelectToken("objects[?(@.id == 76)].position.y").Replace(0.0);
@@ -628,6 +610,14 @@ namespace WindowsFormsApp1
                     foyerObj.SelectToken("objects[?(@.id == 76)].rotation.x").Replace(0);
                     foyerObj.SelectToken("objects[?(@.id == 76)].rotation.y").Replace(0);
                     foyerObj.SelectToken("objects[?(@.id == 76)].rotation.z").Replace(0);
+
+                    foyerObj.SelectToken("objects[?(@.id == 25)].object").Replace("rouka_door_e");
+                    foyerObj.SelectToken("objects[?(@.id == 25)].position.x").Replace(-103.02);
+                    foyerObj.SelectToken("objects[?(@.id == 25)].position.y").Replace(0.0);
+                    foyerObj.SelectToken("objects[?(@.id == 25)].position.z").Replace(375.23);
+                    foyerObj.SelectToken("objects[?(@.id == 25)].rotation.x").Replace(0);
+                    foyerObj.SelectToken("objects[?(@.id == 25)].rotation.y").Replace(0);
+                    foyerObj.SelectToken("objects[?(@.id == 25)].rotation.z").Replace(0);
 
                     PBar.Value = 65;
 
@@ -643,7 +633,6 @@ namespace WindowsFormsApp1
                         //logOutput.WriteLine("Charged Battery: " + batteryCharge.Checked);
                         logOutput.WriteLine("Randomize Password: " + passwordRandoChecked);
                         logOutput.WriteLine("Chibi-Vision Off: " + chibiVisionChecked);
-                        logOutput.WriteLine("GBA Link Cable: " + gbaLinkChecked);
                         logOutput.WriteLine("******\n");
 
                         foreach (string key in newSpoilerLog.Keys)
@@ -655,12 +644,6 @@ namespace WindowsFormsApp1
                     generateAntiRespawnSubroutines();
                     reimportStages();
 
-                    // GBA link cable: patch main.dol last, after unplug is done with the ISO
-                    if (gbaLinkChecked)
-                    {
-                        string res = Directory.GetCurrentDirectory() + @"\Resources\";
-                        AppendStatus("\n" + GbaLinkPatcher.PatchIso(newIsoPath, res + "chibi_link.bin", res + "chibi_link.sym"));
-                    }
                     PBar.Value = 100;
 
                     AppendStatus("\nISO Rebuilding Complete :)");
@@ -716,10 +699,6 @@ namespace WindowsFormsApp1
             runUnplugCommand("globals export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\globals.json");
 
             runUnplugCommand("shop export --iso \"" + newIsoPath + "\" -o \"" + Directory.GetCurrentDirectory() + @"\shop.json" + "\"");
-
-            //XmlDocument doc = new XmlDocument();
-            //doc.Load(Directory.GetCurrentDirectory() + @"\Resources\messages.xml");
-            //doc.Save(Directory.GetCurrentDirectory() + @"\messages.xml");
 
             globals = Newtonsoft.Json.JsonConvert.DeserializeObject(File.ReadAllText("globals.json")) as JObject;
 
@@ -846,7 +825,8 @@ namespace WindowsFormsApp1
                 string gameId = match.Groups["id"].Value;
                 if (gameId == expectedGameId)
                 {
-                    AppendStatus("\nISO Game ID: " + gameId + " (matches expected " + expectedGameId + ")");
+                    // Nice debug message to test version quickly just in case I mess something up in the main.dol file
+                    //AppendStatus("\nISO Game ID: " + gameId + " (matches expected " + expectedGameId + ")");
                 }
                 else
                 {
@@ -1031,9 +1011,7 @@ namespace WindowsFormsApp1
                     string playerID = location.Value.SelectToken("player").ToString();
 
                     // RANDOMIZER: trigger the Pan Drop Trap animation immediately on pickup when
-                    // it's specifically this player's own trap (not one placed here for someone
-                    // else in the multiworld, which is delivered to them separately over the
-                    // network instead - see project_pan_drop_trap memory).
+                    // it's specifically this player's own trap 
                     bool isSelfPanDropTrap = name == "Pan Drop Trap" && playerID == myPlayerName;
 
                     // RANDOMIZER: this player's own key / Chibi-Gear / chip - apply it in the
@@ -1312,7 +1290,7 @@ namespace WindowsFormsApp1
             // Kitchen
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage01_Edited.us" + "\"");
 
-            // Sink Drain
+            // Sink Drain 
             //runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage11_Edited.us" + "\"");
 
             // Foyer
@@ -2323,14 +2301,14 @@ namespace WindowsFormsApp1
             stagefile,
             "loc_504:" +
             // RANDOMIZER: item(32.d)/item(34.d) are the real vanilla Trauma/Ghost Suit
-            // inventory flags (confirmed against unplug's items.inc.rs) - they get set
+            // inventory flags (verifed against unplug's items.inc.rs) - they get set
             // correctly whenever those AP items are received from ANY location in the
             // multiworld, independent of whether this specific location has been visited.
             // Requires the player to actually own the Trauma Suit (item(32)=1) and not yet
-            // have this AP item (var(677)=0, our own "this location already fired" flag -
-            // see project_chibi_house_suits memory). Do NOT use var(676)/vanilla flag(32)+
-            // flag(301) here - var(676) only meant "Trauma location visited", which let Ghost
-            // fire without the player actually owning Trauma Suit.
+            // have this AP item (var(677)=0, our own "this location already fired" flag ).
+            // Do NOT use var(676)/vanilla flag(32)+ flag(301) here - var(676) only meant 
+            // "Trauma location visited", which let Ghost fire without the player actually
+            // owning Trauma Suit.
             "\r\n\telif\tand(eq(item(32.d), 1.w), eq(var(677.d), 0.w)), else *loc_506" +
             "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID +
@@ -2801,9 +2779,7 @@ namespace WindowsFormsApp1
         }
 
         // RANDOMIZER: Pan Drop Trap "living_tub" object id per stage, for the instant on-pickup
-        // animation below - null means the room has no tub prop, so the animation is sound +
-        // fall only. See project_pan_drop_trap memory for the full design trail (this mirrors
-        // the vanilla lib_36 charging-gag reuse; stage03/stage09 genuinely have no tub prop).
+        // animation below - null means the room has no tub prop, so the animation is sound + fall only. 
         private string getPanDropTrapTubId(string stagefile)
         {
             string fileName = Path.GetFileName(stagefile);
@@ -2819,9 +2795,8 @@ namespace WindowsFormsApp1
         // own .interact handler (a synchronous, player-in-control moment, same safety class as
         // the outlet-charging trigger) instead of waiting for the next outlet charge. This is
         // purely additional flavor: the item is still delivered over the network as normal and
-        // will independently queue/resolve via var(1874)/lib_36 too - see project_pan_drop_trap
-        // memory for why a self-found trap firing twice was accepted rather than engineered
-        // around.
+        // will independently queue/resolve via var(1874)/lib_36 too
+
         private string buildPanDropTrapAnimSnippet(string stagefile)
         {
             string tub = getPanDropTrapTubId(stagefile);
@@ -3024,15 +2999,42 @@ namespace WindowsFormsApp1
                        "\r\n\tset\tvar(136.d), 9000.w" +
                        "\r\n" + skip + ":";
             }
+            if (itemName == "Max Battery Increase")
+            {
+                // try to limit the max battery so saves don't crash. Couple of users reported saves
+                // crashing and it may be due to this?
+                string skip = "loc_ap_maxbattery_" + objectID;
+                return "\r\n\t; RANDOMIZER: Max Battery Increase (self-found) - +10, max 999" +
+                       "\r\n\tset\tbattery(1.d), add(battery(1.d), " + MaxBatteryStep + ".w)" +
+                       "\r\n\tif\tgt(battery(1.d), " + MaxBatteryLimit + ".d), else *" + skip +
+                       "\r\n\tset\tbattery(1.d), " + MaxBatteryLimit + ".d" +
+                       "\r\n" + skip + ":";
+            }
             if (KeyDoorVars.TryGetValue(itemName, out vars))
             {
-                string snippet = "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - open its doors now";
+                string snippet = "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - open its doors now please";
                 foreach (int v in vars)
                     snippet += "\r\n\tset\tvar(" + v + ".d), 1.w";
                 return snippet;
             }
             if (SelfGrantLines.TryGetValue(itemName, out line))
-                return "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - grant it now\r\n\t" + line;
+            {
+                string snippet = "\r\n\t; RANDOMIZER: " + itemName + " (self-found) - grant it now\r\n\t" + line;
+                if (line.Contains("var(70"))
+                {
+                    // Utilibot: vanilla only awards the Utilibot Sticker (flag 321) in stage05
+                    // sub_789 after a Chibi-PC build, which never happens now since the player almost never in the chibi house to buy these bots.
+                    // Award it here once all 8 are built (the AP client also sets it for bots received from others).
+                    string skip = "loc_ap_utilisticker_" + objectID;
+                    snippet += "\r\n\t; RANDOMIZER: Utilibot Sticker once all utilibots are built" +
+                               "\r\n\tif\tand(and(and(and(and(and(and(ge(var(701.d), 1.d), ge(var(702.d), 1.d)), ge(var(703.d), 1.d)), ge(var(704.d), 1.d)), ge(var(705.d), 1.d)), ge(var(706.d), 1.d)), ge(var(707.d), 1.d)), ge(var(708.d), 1.d)), else *" + skip +
+                               "\r\n\tif\teq(flag(321.d), 0.w), else *" + skip +
+                               "\r\n\tset\tflag(321.d), 1.d" +
+                               "\r\n\tpushbp\r\n\tsetsp\t1.d\r\n\tsetsp\t3.w\r\n\tlib\t299.w\r\n\tpopbp" +
+                               "\r\n" + skip + ":";
+                }
+                return snippet;
+            }
             return "";
         }
 

@@ -2966,8 +2966,10 @@ loc_509:
 
 	.interact  19.d, *evt_map_jump_box_19
 evt_map_jump_box_19:
-	if	eq(var(1863.d), 0.d), else *loc_mj19_open ; rouka_door_l closed -> block warp to Living Room
-	return
+	; rouka_door_l closed -> block warp to Living Room. Written like box 20/21/23's guard
+	; (skip to a return at the end) rather than an early return, which left this door's map
+	; label blank.
+	if	var(1863.d), else *loc_mj19_closed
 loc_mj19_open:
 	if	and(and(eq(flag(16.d), 1.w), eq(flag(17.d), 0.w)), lt(battery(0.d), div(mul(battery(1.d), 6.w), 10.w))), else *loc_3305
 	lib	38.w
@@ -3006,6 +3008,8 @@ loc_3308:
 	lib	21.w
 	set	var(695.d), 0.w
 	warp	7.d, 1.w ; Living Room
+	return
+loc_mj19_closed:
 	return
 
 
@@ -3183,9 +3187,8 @@ loc_3323:
 
 	.interact  22.d, *evt_map_jump_box_22
 evt_map_jump_box_22:
-	if	eq(var(1864.d), 0.d), else *loc_mj22_open ; rouka_door_pama closed -> block warp to Bedroom
-	return
-loc_mj22_open:
+	; rouka_door_pama closed -> block warp to Bedroom (the guard below; an early-return guard
+	; in front of it was redundant and left this door's map label blank, like box 19's did)
 	if	var(1864.d), else *loc_3326 ; warp only when rouka_door_pama is open (was flag 41)
 	lib	54.w
 	camera	@pos, -1116.d, 29198.w, -31322.d, 2.d, 100.w
@@ -12271,11 +12274,11 @@ loc_864:
 	born	10002.d, 3.d, 0.w, -100000.d, 0.w, 0.w, 8000.w, 5000.w, 200.w, *sub_1736
 	if	var(1863.d), else *loc_894 ; living_door (same model as stage07 obj 77): 1=open
 	disp	19.d, 1.d ; enable warp trigger
-	disp	25.d, 0.d ; hide obj 25 (wall object present in scene by default)
+	; (obj 25 is no longer the Living Room door's stand-in wall - Form1.cs makes it the
+	;  front entrance door, see loc_fbdoor_done - so it is not hidden here any more)
 	anim	24.d, 1.w ; OPEN (matches stage07 pattern: anim 77, 1)
 	endif	*loc_866
 loc_894: ; Foyer→Living Room: CLOSED
-	disp	25.d, 0.d ; hide obj 25 so it doesn't create the persistent diagonal wall
 	anim	24.d, 0.w ; CLOSED pose (visual)
 	born	10000.d, 2.d, 24007.d, 9746.w, 22455.d, -40.d, 50.w, 30000.w, 13000.w, 0.w ; wall rotated -40° to match door frame angle
 loc_866:
@@ -12304,6 +12307,11 @@ loc_fbdoor_closed:
 	anim	76.d, 0.w ; CLOSED pose
 	born	10012.d, 2.d, -17924.d, 10029.w, -38584.d, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ foyer_basement_door (position derived from JSON pos * 98.18; needs in-game placement check like every new door wall)
 loc_fbdoor_done:
+	; RANDOMIZER: front entrance door (obj 25 retyped to rouka_door_e at the vanilla obj 76 pose
+	; (-103.02, 0, 375.23) - see Form1.cs). It leads nowhere, so it's always shut: this wall keeps
+	; Chibi in the house. Same size / facing as the Basement door wall; position = JSON pos * 98.18,
+	; needs the same in-game placement check.
+	born	10030.d, 2.d, -10115.d, 10029.w, 36840.d, 0.w, 13000.w, 30000.w, 50.w, 0.w ; wall @ front entrance door
 	if	var(1861.d), else *loc_891 ; rouka_door_j (Foyer→Jenny's Room): 1=open
 	disp	23.d, 1.d ; enable warp trigger
 	dir	2.d, -15.w ; OPEN: reset door to scene default (against wall)
@@ -12314,7 +12322,7 @@ loc_891: ; Foyer→Jenny's Room: CLOSED
 	; RANDOMIZER: was born 10200.d - collided with vanilla lib_171.w's hardcoded registration
 	; ID for the Foyer Teleport pad (obj 290, stage02.us ~line 12192/12688), silently breaking
 	; its step-on trigger every time this door was closed (i.e. almost always). Moved to
-	; 10202, confirmed unused anywhere else in this file. See project_foyer_teleport memory.
+	; 10202, confirmed unused anywhere else in this file.
 	born	10202.d, 2.d, 24026.d, 26509.w, 13055.d, -20.w, 10000.w, 30000.w, 50.w, 0.w ; wall @ rouka_door_j (was hand-eyeballed placeholder; now derived from JSON pos/rot: 244.71,270.0,133.0 * 98.18, rotY -20)
 loc_872:
 	if	flag(11.d), else *loc_886
@@ -12371,7 +12379,6 @@ loc_pama_closed:
 	dir	328.d, 0.w
 	; RANDOMIZER: was born 10201.d - collided with vanilla lib_171.w's hardcoded registration
 	; ID for the Foyer Teleport pad (obj 291, stage02.us ~line 12200/12717). Moved to 10203.
-	; See project_foyer_teleport memory.
 	born	10203.d, 2.d, -16789.d, 26509.w, -38678.d, 0.w, 13000.w, 30000.w, 50.w, 0.w
 	return
 

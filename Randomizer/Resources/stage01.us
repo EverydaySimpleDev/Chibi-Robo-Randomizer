@@ -1336,8 +1336,9 @@ loc_164:
 
 	.interact  18.d, *evt_map_jump_box_18
 evt_map_jump_box_18:
-	if	eq(var(1860.d), 0.d), else *loc_mj18_open ; kitchen door closed -> block warp to Living Room
-	return
+	; kitchen door closed -> block warp to Living Room. Written like the guards whose map labels work (skip to a return at the end)
+	; rather than an early return, which left this door's map label blank.
+	if	var(1860.d), else *loc_mj18_closed
 loc_mj18_open:
 	if	eq(flag(1620.d), 1.w), else *loc_2717
 	run	*sub_2716
@@ -1358,12 +1359,15 @@ loc_2717:
 	set	var(695.d), 0.w
 	warp	7.d, 1.w ; Living Room
 	return
+loc_mj18_closed:
+	return
 
 
 	.interact  19.d, *evt_map_jump_box_19
 evt_map_jump_box_19:
-	if	eq(var(1865.d), 0.d), else *loc_mj19_open ; kitchen_door_r closed -> block warp to Foyer
-	return
+	; kitchen_door_r closed -> block warp to Foyer. Written like the guards whose map labels work (skip to a return at the end)
+	; rather than an early return, which left this door's map label blank.
+	if	var(1865.d), else *loc_mj19_closed
 loc_mj19_open:
 	if	eq(flag(1620.d), 1.w), else *loc_2720
 	run	*sub_2716
@@ -1383,6 +1387,8 @@ loc_2720:
 	set	var(695.d), 0.w
 	run	*sub_545
 	warp	2.d, 1.w ; Foyer
+	return
+loc_mj19_closed:
 	return
 
 

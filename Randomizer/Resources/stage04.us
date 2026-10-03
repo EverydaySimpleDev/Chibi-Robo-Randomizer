@@ -351,8 +351,9 @@ evt_chibi_jump_11:
 
 	.interact  12.d, *evt_map_jump_box_12
 evt_map_jump_box_12:
-	if	eq(var(1866.d), 0.d), else *loc_mj12_open ; jenny_door closed -> block warp to room 2
-	return
+	; jenny_door closed -> block warp to room 2. Written like the guards whose map labels work (skip to a return at the end)
+	; rather than an early return, which left this door's map label blank.
+	if	var(1866.d), else *loc_mj12_closed
 loc_mj12_open:
 	lib	12.w
 	lib	54.w
@@ -370,6 +371,8 @@ loc_mj12_open:
 	lib	21.w
 	set	var(695.d), 0.w
 	warp	2.d, 1.w
+	return
+loc_mj12_closed:
 	return
 
 

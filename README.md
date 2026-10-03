@@ -31,3 +31,9 @@ You will need an NTSC-U (GGTE01) Chibi-Robo! Plug Into Adventure! ISO. Other ver
 
 - The program will crash if any part of the file path where the program is extracted contains a space
 - AP Worlds do not have the shop items included in the rando
+
+# AI USAGE
+
+This project had AI usage for research and debugging only. As of today - AI is no longer going to be used at all in this project even just to research or debug things. All code in this project was hand written by me and always has been (Even though AI most likly would have done a way better job then we writting all this spaghetti code) and understood clearly. I have cleared out all AI comments I could find and deleted all memory notes so I won't be temped to use AI for this project in future use.
+
+I am very sorry for those people who lost trust in this project and in me due to this AI usage.

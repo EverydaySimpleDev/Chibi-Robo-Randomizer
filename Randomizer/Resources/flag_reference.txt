@@ -622,12 +622,12 @@ STICKER ALBUM  (the "All Stickers" set - all CONFIRMED)
                     straight past it via ~8 `if flag(347.d)`/`if not(...)` branches. Gatekept overall
                     by var(128)==0 (see vars.txt) + sub_343. Does NOT appear to be the actual
                     ongoing "get shot if spotted" hazard - that looks like a separate mechanic this
-                    pass didn't fully trace; see project_foyer_free_rangers memory for the trail.
+                    pass didn't fully trace;
                     set 1 / read 13  -  globals, stage02
    348  INFERRED   Advances the Foyer's Free Rangers questline past var(128)==0 (stage02.us's main
                     story-stage dispatcher, ~line 3412) - set in stage03.us (Basement), not stage02
                     itself, implying something found/done in the Basement is what progresses this
-                    questline. See project_foyer_free_rangers memory.
+                    questline.
                     ALSO the top-level gate for the training-mission menu: evt_npc_army_2_88
                     (stage02.us:6530-6532) returns immediately, no interaction at all, unless
                     flag(348)==1. Once past this gate, the 5-training select menu (stage02.us:
