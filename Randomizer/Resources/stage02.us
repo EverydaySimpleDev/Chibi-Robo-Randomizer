@@ -12284,6 +12284,9 @@ loc_894: ; Foyer→Living Room: CLOSED
 loc_866:
 	if	var(1862.d), else *loc_893 ; rouka_door_k (Foyer→Kitchen): 1=open
 	disp	21.d, 1.d
+	dir	21.d, 0.w ; obj 21 (map_jump_box) correct rotation
+	pos	21.d, 10083.d, 5512.d, -38681.d
+	scale	21.d, 2550.w, 40000.d, 185.d
 	disp	26.d, 0.d ; obj 26 is the wall: hide it when door is open
 	anim	3.d, 1.w ; OPEN pose (kitchen_door anim 1 = open, mirrors stage01 pattern)
 	endif	*loc_870
@@ -15962,7 +15965,10 @@ loc_1261:
 	pos	20018.d, -930.d, 30.w, -18860.d
 	pos	20019.d, -444.d, 30.w, -19840.d
 	pos	20020.d, 111.w, 30.w, -18882.d
-	pos	20021.d, 3741.w, 30.w, -22045.d ; Foyer To Kitchen Closed?
+	pos	20021.d, 3741.w, 30.w, -22045.d 
+	;pos   <object>,  <x>,   <y>,  <z>
+	;      Object 21, 37.41, 0.30, −220.45
+	; 20000 is Chibi-Robo, 20001 Dad, etc
 	pos	20022.d, 2658.w, 30.w, -21833.d
 	pos	20023.d, 6708.w, 30.w, -16918.d
 	pos	20024.d, 6404.w, 30.w, -17936.d

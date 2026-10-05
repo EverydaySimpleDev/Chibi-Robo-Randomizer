@@ -599,10 +599,14 @@ namespace WindowsFormsApp1
                     }
 
                     // New Foyer doors for the keys
+
+                    // Foyer -> Living Room
                     foyerObj.SelectToken("objects[?(@.id == 24)].object").Replace("living_door");
 
+                    // Foyer -> Kitchen
                     foyerObj.SelectToken("objects[?(@.id == 3)].object").Replace("kitchen_door");
 
+                    // Foyer -> Basement
                     foyerObj.SelectToken("objects[?(@.id == 76)].object").Replace("living_door");
                     foyerObj.SelectToken("objects[?(@.id == 76)].position.x").Replace(-182.56);
                     foyerObj.SelectToken("objects[?(@.id == 76)].position.y").Replace(0.0);
@@ -611,6 +615,7 @@ namespace WindowsFormsApp1
                     foyerObj.SelectToken("objects[?(@.id == 76)].rotation.y").Replace(0);
                     foyerObj.SelectToken("objects[?(@.id == 76)].rotation.z").Replace(0);
 
+                    // Foyer -> Outside (Stay inside the house Chibi!)
                     foyerObj.SelectToken("objects[?(@.id == 25)].object").Replace("rouka_door_e");
                     foyerObj.SelectToken("objects[?(@.id == 25)].position.x").Replace(-103.02);
                     foyerObj.SelectToken("objects[?(@.id == 25)].position.y").Replace(0.0);
