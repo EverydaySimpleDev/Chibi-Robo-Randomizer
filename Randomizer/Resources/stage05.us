@@ -421,7 +421,7 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(673.d), 0.w ; custom variable drake suit
 	set	var(674.d), 0.w ; custom variable frog suit
 	set	var(675.d), 0.w ; custom variable pajamas suit
-	set	var(676.d), 0.w ; NOT used by the randomizer (Ghost Suit gate now checks item(32.d) directly)
+	set	var(676.d), 0.w ; custom variable trauma suit
 	set	var(677.d), 0.w ; custom variable ghost suit
 	set	var(678.d), 0.w ; custom variable tao suit
 	set	var(679.d), 0.w ; custom variable LET'S GO DIVORCE!
@@ -445,6 +445,9 @@ sub_576: ; first time loading into chibi house after birthday party
 	set	var(1881.d), 0.w ; GBA link popup done - set to N by the GBA link code when message #N is closed
 	set	var(1882.d), 0.w ; GBA link: 1 while a GBA is linked (written every frame by the GBA link code)
 	set	var(1883.d), 0.w ; GBA link: sub_gba_msg_wait timeout counter
+
+	; AP_SLOT_INFO
+
 
 	
 	set	var(176.d), 1.w
@@ -2071,8 +2074,8 @@ sub_43:
 	if	eq(result, 0.w), else *loc_45
 	set	var(152.d), 5.d
 	lib	41.w
-	; menu	4.d
-	menu	6.d
+	menu	4.d
+	; menu	6.d
 loc_45:
 	return
 

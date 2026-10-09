@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Numerics;
@@ -59,7 +60,7 @@ namespace WindowsFormsApp1
         int apSpawnFlag = 1;
 
         int apItemVoice = 0;
-        string supportedAPVersion = "1.3.1";
+        string supportedAPVersion = "1.3.2";
 
         // RANDOMIZER: Resources\stageXX.us (the script text the randomizer edits) is decompiled
         // once from a specific reference ISO dump, not re-exported from each user's own ISO  A player 
@@ -301,6 +302,8 @@ namespace WindowsFormsApp1
             { "Bedroom - Vanity Candy Bag", 214 },
             { "Mother Spider - Frog Ring", 246 },
             { "Mother Spider - Left Leg", 247 },
+            { "Backyard - Scurvy Splinter", 135 },
+            { "Kitchen - Flower Cookie", 255 },
         };
 
         public Form1()
@@ -396,7 +399,7 @@ namespace WindowsFormsApp1
 
                     string fileExtention = Path.GetExtension(ofd.FileName);
 
-                    apData = JsonConvert.DeserializeObject(File.ReadAllText(apZipPath.Text)) as JObject;
+                    apData = readApcr(apZipPath.Text);
 
                     //Get file name and remove file extention from the path
                     seed.Text = fileName.Remove(fileName.Length - 5, 5);
@@ -435,6 +438,27 @@ namespace WindowsFormsApp1
             }
 
 
+        }
+
+        // New .apcr files are a zip with data.json inside; old ones are plain JSON text
+        private JObject readApcr(string path)
+        {
+            byte[] bytes = File.ReadAllBytes(path);
+            bool isZip = bytes.Length > 1 && bytes[0] == 'P' && bytes[1] == 'K';
+            if (!isZip)
+                return JsonConvert.DeserializeObject(File.ReadAllText(path)) as JObject;
+
+            using (ZipArchive zip = ZipFile.OpenRead(path))
+            {
+                ZipArchiveEntry entry = zip.GetEntry("data.json");
+                if (entry == null)
+                    throw new InvalidDataException("This .apcr has no data.json inside - regenerate the seed with the updated apworld.");
+
+                using (StreamReader reader = new StreamReader(entry.Open()))
+                {
+                    return JsonConvert.DeserializeObject(reader.ReadToEnd()) as JObject;
+                }
+            }
         }
 
 
@@ -1086,6 +1110,14 @@ namespace WindowsFormsApp1
                         spoilerLog.Add(locationName, name);
                         continue;
                     }
+                    if (locationName == "Kitchen - Mug Location")
+                    {
+                        updateMugLoc(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectName, playerID, name);
+                    }
+                    else if (locationName == "Kitchen - Spoon Location")
+                    {
+                        updateSpoonLoc(Directory.GetCurrentDirectory() + @"\stage01_Edited.us", objectName, playerID, name);
+                    }
 
                     // Resolve the AP location code for this location regardless of what item is placed here
                     int apCode = apLocationCodes.ContainsKey(locationName) ? apLocationCodes[locationName] : -1;
@@ -1318,6 +1350,13 @@ namespace WindowsFormsApp1
             // Bedroom (Old)
             updateSuitCasePasswordText(Directory.GetCurrentDirectory() + @"\stage18_Edited.us", newSuitCasePassword);
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage18_Edited.us" + "\"");
+
+            if (apData != null) // double check the player is running a AP seed
+            {
+                writeApSlotInfo(Directory.GetCurrentDirectory() + @"\stage05_Edited.us",
+                                apData.SelectToken("Name")?.ToString() ?? "",
+                                apData.SelectToken("Seed")?.ToString() ?? "");
+            }
 
             //Chibi House
             runUnplugCommand("script assemble --iso \"" + newIsoPath + "\" \"" + Directory.GetCurrentDirectory() + @"\stage05_Edited.us" + "\"");
@@ -2268,6 +2307,7 @@ namespace WindowsFormsApp1
             "\r\n\twait\t@time, 1.w" +
             "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID + ".d" +
+            "\r\n\tset\tvar(676.d),\t1.w" +
             //"\r\n\tlib\t79.w ; Give Set Item" +
 
 
@@ -2314,7 +2354,7 @@ namespace WindowsFormsApp1
             // Do NOT use var(676)/vanilla flag(32)+ flag(301) here - var(676) only meant 
             // "Trauma location visited", which let Ghost fire without the player actually
             // owning Trauma Suit.
-            "\r\n\telif\tand(eq(item(32.d), 1.w), eq(var(677.d), 0.w)), else *loc_506" +
+            "\r\n\telif\tand(ne(item(32.d), 0.w), eq(var(677.d), 0.w)), else *loc_506" +
             "\r\n\tpushbp" +
             "\r\n\tsetsp\t" + objectID +
             //"\r\n\tlib\t79.w ; Give Set Item" +
@@ -2500,6 +2540,123 @@ namespace WindowsFormsApp1
 
             );
 
+        }
+
+        private void updateMugLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+
+            File.AppendAllText(
+            stagefile,
+            "\r\n\t.interact  36.d, *evt_item_mag_cup_36" +
+            "\r\nevt_item_mag_cup_36:" +
+            "\r\n\tif\tnot(flag(352.d)), else *loc_2746" +
+            "\r\n\tset\tflag(352.d), 1.w" +
+            "\r\n\tif\tflag(1232.d), else *loc_2746" +
+            "\r\n\tdisp\t10100.d, 0.d" +
+            "\r\nloc_2746:" +
+            "\r\n\tset\tflag(462.d), 1.w" +
+            "\r\n\tread\t@anim, 20000.d, *loc_2747" +
+            "\r\n\tlib\t38.w" +
+            "\r\n\twait\t@time, 60.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\twait\t@read, 20000.d" +
+            "\r\n\tmdir\t20000.d, @cam, 30.w, -1.d" +
+            "\r\n\tsfx\t-65536.d, 4.d, 50.w, 0.w" +
+            "\r\n\tanim\t20000.d, 1232.d" +
+            "\r\n\tanim\t36.d, 5.w" +
+            "\r\n\twait\t@anim, 20000.d, -1.d" +
+            "\r\n\twait\t@time, 40.w" +
+            "\r\n\tsfx\t-65536.d, 4.d, 100.w, 255.w" +
+            "\r\n\tset\tflag(477.d), 1.d" +
+            "\r\n\tif\teq(flag(165.d), 0.w), else *loc_2745" +
+            "\r\n\tif\tand(eq(flag(160.d), 0.w), or(ge(var(133.d), 1.d), ge(var(134.d), 1.d))), else *loc_2742" +
+            "\r\n\tif\tflag(1692.d), else *loc_2741" +
+            "\r\n\tcamera\t@unk232, -2.d" +
+            "\r\n\ttimer\t1.w, *sub_2749" +
+            "\r\n\tendif\t*loc_2735" +
+            "\r\nloc_2741:" +
+            "\r\n\tlib\t39.w" +
+            "\r\nloc_2735:" +
+            "\r\n\tendif\t*loc_2736" +
+            "\r\nloc_2742:" +
+            "\r\n\telif\tand(flag(168.d), flag(177.d)), else *loc_2744" +
+            "\r\n\tcamera\t@unk232, -2.d" +
+            "\r\n\ttimer\t1.w, *sub_2748" +
+            "\r\n\tendif\t*loc_2736" +
+            "\r\nloc_2744:" +
+            "\r\n\tlib\t39.w" +
+            "\r\nloc_2736:" +
+            "\r\n\tendif\t*loc_2737" +
+            "\r\nloc_2745:" +
+            "\r\n\tlib\t39.w" +
+            "\r\nloc_2737:" +
+            "\r\n\tif\teq(time(0.d), 1.d), else *loc_2740" +
+            "\r\n\tif\teq(flag(2.d), 0.d), else *loc_2740" +
+            "\r\n\ttimer\t15.w, *sub_766" +
+            "\r\nloc_2740:" +
+            "\r\n\tread\t@anim, 20000.d, 0.d" +
+            "\r\n\treturn\r\n\r\n"
+            );
+        }
+
+        private void updateSpoonLoc(string stagefile, string newObjectName, string player, string itemName)
+        {
+
+            File.AppendAllText(
+            stagefile,
+            "\r\n\t.interact  37.d, *evt_item_spoon_37" +
+            "\r\nevt_item_spoon_37:" +
+            "\r\n\tcamera\t@pos, 5958.w, 17876.w, -9226.d, 2.d, 200.w" +
+            "\r\n\tcamera\t@unk227, 10867.w, 12846.w, -16795.d, 2.d, 200.w" +
+            "\r\n\tcamera\t@unk229, 26.w, 2.d, 200.w" +
+            "\r\n\tcamera\t@distance, 103.w, 2.d, 200.w" +
+            "\r\n\tlib\t38.w" +
+            "\r\n\twait\t@time, 60.w" +
+            "\r\n\tpushbp" +
+            "\r\n\tmsg\trgba(2164228351.d)," +
+            "\r\n\t\t\"You found " + player + "\'s \"," +
+            "\r\n\t\t\"" + itemName + "\"," +
+            "\r\n\t\tcolor(0.b)," +
+            "\r\n\t\twait(254.b)" +
+            "\r\n\tpopbp" +
+            "\r\n\tcall\t-26.d, 37.d, 46.d" +
+            "\r\n\tmdir\t20000.d, @cam, 30.w, -1.d" +
+            "\r\n\tcamera\t@unk236, 3.w" +
+            "\r\n\tsfx\t-65536.d, 4.d, 50.w, 0.w" +
+            "\r\n\tanim\t20000.d, 213.d" +
+            "\r\n\tanim\t37.d, 6.w" +
+            "\r\n\twait\t@anim, 20000.d, -1.d" +
+            "\r\n\twait\t@time, 40.w" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\tsize(28.b)," +
+            "\r\n\t\t\"Hey!\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tsfx\t288.d, 1.d" +
+            "\r\n\tcamera\t@pos, 4541.w, 17875.w, -11902.d, 2.d, 400.w" +
+            "\r\n\tcamera\t@unk227, 12044.w, 13081.w, -6666.d, 2.d, 400.w" +
+            "\r\n\tcamera\t@unk229, 30.w, 2.d, 400.w" +
+            "\r\n\tcamera\t@distance, 103.w, 2.d, 400.w" +
+            "\r\n\twait\t@cam" +
+            "\r\n\tmsg\tvoice(0.b)," +
+            "\r\n\t\tspeed(0.b)," +
+            "\r\n\t\t\"I bet you can dig over there!\"," +
+            "\r\n\t\twait(255.b)" +
+            "\r\n\tcamera\t@unk237, 3.w" +
+            "\r\n\twait\t@time, 30.w" +
+            "\r\n\tlib\t67.w" +
+            "\r\n\tset\tflag(478.d), 1.d" +
+            "\r\n\tsfx\t-65536.d, 4.d, 100.w, 255.w" +
+            "\r\n\tcamera\t@unk230" +
+            "\r\n\tlib\t39.w" +
+            "\r\n\treturn\r\n\r\n"
+            );
         }
 
         private void updateToaSuitLoc(string stagefile, string newObjectName, string player, string itemName)
@@ -2863,7 +3020,7 @@ namespace WindowsFormsApp1
                 nl + "\tanim\t20000.d, 1.d" +
                 nl + "\tcall\t20000.d, 700.d";
         }
-
+    
         private void addInGameMessages(string stagefile, int objectID, string player, string newObjectName, int locationCode = -1, bool triggerPanDropAnim = false, string selfGrant = "")
         {
             string flagSet = locationCode >= 0
@@ -3277,6 +3434,43 @@ namespace WindowsFormsApp1
 
         }
 
+        // AP slot info for the client's auto-connect, set by stage05 sub_576 (new-game setup):
+        // var(1884) = the seed number (last 9 digits of the seed name)
+        // var(1885)-(1900) = the slot name, one character per var (0 = end of the name)
+        // It replaces the "; AP_SLOT_INFO" line in Resources\stage05.us.
+        private void writeApSlotInfo(string stagefile, string slotName, string seed)
+        {
+            string lines = "\tset\tvar(1884.d), " + SeedNumber(seed) + ".d ; seed " + seed;
+
+            for (int i = 0; i < 16; i++)
+            {
+                int character = i < slotName.Length ? slotName[i] : 0;
+                lines += "\r\n\tset\tvar(" + (1885 + i) + ".d), " + character + ".d";
+            }
+
+            string content = File.ReadAllText(stagefile);
+            File.WriteAllText(stagefile, content.Replace("\t; AP_SLOT_INFO", lines));
+        }
+
+        // The last 9 digits of the seed name (AP seed names are all digits), small enough for a var
+        private static int SeedNumber(string seed)
+        {
+            string digits = "";
+            foreach (char c in seed)
+            {
+                if (char.IsDigit(c))
+                {
+                    digits += c;
+                }
+            }
+
+            if (digits.Length > 9)
+            {
+                digits = digits.Substring(digits.Length - 9);
+            }
+
+            return digits.Length > 0 ? int.Parse(digits) : 0;
+        }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
