@@ -1059,7 +1059,7 @@ namespace WindowsFormsApp1
 
                         string classification = location.Value.SelectToken("classification").ToString();
 
-                        if (classification == "progression" || classification == "usefull" || classification == "trap" || name.Contains(" Trap"))
+                        if (classification == "progression" || classification == "useful" || classification == "trap" || name.Contains(" Trap"))
                         {
                             objectName = "item_cookie_kakera";
                         }
@@ -1356,6 +1356,9 @@ namespace WindowsFormsApp1
                 writeApSlotInfo(Directory.GetCurrentDirectory() + @"\stage05_Edited.us",
                                 apData.SelectToken("Name")?.ToString() ?? "",
                                 apData.SelectToken("Seed")?.ToString() ?? "");
+
+                writePjSuitStyle(Directory.GetCurrentDirectory() + @"\stage05_Edited.us",
+                                 apData.SelectToken("pj_suit_style")?.ToObject<int?>() ?? -1);
             }
 
             //Chibi House
@@ -2666,7 +2669,8 @@ namespace WindowsFormsApp1
             File.AppendAllText(
             stagefile,
             "sub_1480:" +
-            "\r\n\tif\teq(item(25.d), 0.w), else *loc_1483" +
+            //"\r\n\tif\teq(item(25.d), 0.w), else *loc_1483" +
+            "\r\n\tif\teq(var(678.d), 0.w), else *loc_1483" + // check if the player has gotten the location before instead of having the suit
             "\r\n\tmsg\tvoice(13.b)," +
             "\r\n\t\tspeed(0.b)," +
             "\r\n\t\tanim(0.b, 20017.w, 20.d)," +
@@ -3450,6 +3454,20 @@ namespace WindowsFormsApp1
 
             string content = File.ReadAllText(stagefile);
             File.WriteAllText(stagefile, content.Replace("\t; AP_SLOT_INFO", lines));
+        }
+
+        // Sets the Pajama Suit style from the AP option at the start of the game.
+        // pj_suit_style (0 = Old Boxers, 1 = Outdated Scarf, 2 = Small Handkerchief) is the same number
+        // the game uses when Mom takes the fabric: call 20000.d, 450.d, N in stage06.us.
+        // It replaces the "; AP_PJ_STYLE" line in Resources\stage05.us.
+        private void writePjSuitStyle(string stagefile, int style)
+        {
+            if (style < 0 || style > 2)
+                return; // unknown value - leave the placeholder as a comment
+
+            string line = "\tcall\t20000.d, 450.d, " + style + ".d ; PJ suit style from the AP options";
+            string content = File.ReadAllText(stagefile);
+            File.WriteAllText(stagefile, content.Replace("\t; AP_PJ_STYLE", line));
         }
 
         // The last 9 digits of the seed name (AP seed names are all digits), small enough for a var

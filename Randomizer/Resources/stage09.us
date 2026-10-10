@@ -16036,18 +16036,20 @@ loc_1689:
 	return
 loc_1690:
 	elif	eq(flag(1513.d), 1.w), else *loc_1729
-	if	ge(item(19.d), 1.w), else *loc_1724
+	; if	ge(item(19.d), 1.w), else *loc_1724 ; Accept the player giving a progressive or filler AP item
+	if	or(ge(item(19.d), 1.w), ge(item(18.d), 1.w)), else *loc_1724 
 	case	eq(cur_suit, 2.d), else *loc_1709
 	run	*sub_1708
 	menu	2.d
-	case	eq(result, 19.d), else *loc_1702
+	set	var(32.d), result   ; remember what the player picked
+	case	or(eq(var(32.d), 19.d), eq(var(32.d), 18.d)), else *loc_1702
 	if	eq(hold, 56.d), else *loc_1701
 	lib	67.w
 	wait	@time, 1.w
 	wait	@anim, 20000.d, -1.d
 loc_1701:
 	pushbp
-	setsp	19.d
+	setsp	var(32.d)           ; hand over the item they actually picked
 	lib	65.w
 	popbp
 	wait	@time, 1.w
@@ -16085,14 +16087,15 @@ loc_1709:
 	case	eq(cur_suit, 3.d), else *loc_1723
 	run	*sub_1708
 	menu	2.d
-	case	eq(result, 19.d), else *loc_1718
+	set	var(32.d), result   ; remember what the player picked
+	case	or(eq(var(32.d), 19.d), eq(var(32.d), 18.d)), else *loc_1718
 	if	eq(hold, 56.d), else *loc_1717
 	lib	67.w
 	wait	@time, 1.w
 	wait	@anim, 20000.d, -1.d
 loc_1717:
 	pushbp
-	setsp	19.d
+	setsp	var(32.d)           ; hand over the item they actually picked
 	lib	65.w
 	popbp
 	wait	@time, 1.w
@@ -16491,12 +16494,11 @@ sub_1704:
 	msg	sfx(393240.d, 1.b),
 		anim(0.b, 214.w, 2.d),
 		"I want a perfect-sized AP Item\n",
-		"and not that filler type either, chirp!",
+		"or even the filler-type would work, chirp!",
 		anim(0.b, 214.w, 1.d),
 		wait(254.b)
 	lib	39.w
 	camera	@unk230
-	set	var(1880.d), 10.d ; Show GBA Message 10
 	return
 
 

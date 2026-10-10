@@ -448,7 +448,7 @@ sub_576: ; first time loading into chibi house after birthday party
 
 	; AP_SLOT_INFO
 
-
+	; AP_PJ_STYLE
 	
 	set	var(176.d), 1.w
 	; set	flag(1234), 1.w

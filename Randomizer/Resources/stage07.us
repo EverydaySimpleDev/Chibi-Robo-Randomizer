@@ -7916,7 +7916,7 @@ loc_2691:
 	endif	*loc_2507
 loc_2693:
 	elif	eq(var(135.d), 2.d), else *loc_2703
-	if	eq(item(22.d), 1.w), else *loc_2697
+	if	ne(item(22.d), 0.w), else *loc_2697
 	lib	247.w
 	msg	voice(7.b),
 		speed(0.b),

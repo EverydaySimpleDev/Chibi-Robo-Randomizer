@@ -2441,7 +2441,7 @@ loc_1114:
 	set	flag(47.d), 1.w
 	set	var(77.d), 25.d
 	set	var(75.d), 13.d
-	if	and(eq(item(26.d), 1.w), eq(flag(471.d), 0.w)), else *loc_1110
+	if	and(ne(item(26.d), 0.w), eq(flag(471.d), 0.w)), else *loc_1110
 	set	var(113.d), 33.d
 	endif	*loc_1104
 loc_1110:
@@ -21785,7 +21785,7 @@ sub_1479:
 
 loc_1483:
 	if	ne(cur_suit, 3.d), else *loc_1482
-	set	cur_suit, 3.d
+	;set	cur_suit, 3.d ;Put on the Toa suit
 loc_1482:
 	return
 
